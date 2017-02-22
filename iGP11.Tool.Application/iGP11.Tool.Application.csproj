@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{125A88DF-56B0-4738-9D43-401178C2FCE1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>iGP11.Tool.Application</RootNamespace>
+    <AssemblyName>iGP11.Tool.Application</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>iGP11.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=5.2.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.2.0\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Bootstrapper\Configuration.Designer.cs">
+      <DependentUpon>Configuration.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Bootstrapper\ConstantSettings.cs" />
+    <Compile Include="Bootstrapper\ConstantSettingsProvider.cs" />
+    <Compile Include="Bootstrapper\Plugins.cs" />
+    <Compile Include="CommandHandler\AddInjectionSettingsCommandHandler.cs" />
+    <Compile Include="CommandHandler\GenerateTexturePreviewCommandHandler.cs" />
+    <Compile Include="CommandHandler\ConvertTextureCommandHandler.cs" />
+    <Compile Include="CommandHandler\IndicateFirstLaunchCommandHandler.cs" />
+    <Compile Include="CommandHandler\InitializeCommandCommandHandler.cs" />
+    <Compile Include="CommandHandler\LoadProxySettingsCommandHandler.cs" />
+    <Compile Include="CommandHandler\LoadProxyActivationStatusCommandHandler.cs" />
+    <Compile Include="CommandHandler\LoadTextureFilesCommandHandler.cs" />
+    <Compile Include="CommandHandler\RemoveInjectionSettingsCommandHandler.cs" />
+    <Compile Include="CommandHandler\StartApplicationCommandHandler.cs" />
+    <Compile Include="CommandHandler\UpdateApplicationSettingsCommandHandler.cs" />
+    <Compile Include="CommandHandler\UpdateInjectionSettingsCommandHandler.cs" />
+    <Compile Include="CommandHandler\UpdateLastEditedInjectionSettingsCommandHandler.cs" />
+    <Compile Include="CommandHandler\UpdateProxySettingsCommandHandler.cs" />
+    <Compile Include="CommandHandler\UpdateTextureManagementSettingsCommandHandler.cs" />
+    <Compile Include="Bootstrapper\BootstrapperConfiguration.cs" />
+    <Compile Include="FileContentLoadingPolicy.cs" />
+    <Compile Include="ICommunicator.cs" />
+    <Compile Include="ICommunicatorFactory.cs" />
+    <Compile Include="Mapper.cs" />
+    <Compile Include="MapperExtensions.cs" />
+    <Compile Include="IInjectionService.cs" />
+    <Compile Include="Model\CommunicationResult.cs" />
+    <Compile Include="Model\InjectProxySettings.cs" />
+    <Compile Include="ITextureService.cs" />
+    <Compile Include="Model\ProxyPluginSettings.cs" />
+    <Compile Include="Model\ProxySettings.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\iGP11.Library.Component.DataAnnotations\iGP11.Library.Component.DataAnnotations.csproj">
+      <Project>{833934cf-5080-46da-80a6-37641318a86f}</Project>
+      <Name>iGP11.Library.Component.DataAnnotations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Library.Component\iGP11.Library.Component.csproj">
+      <Project>{3df9a073-e6bb-4c85-8b72-e4fd51b0f23e}</Project>
+      <Name>iGP11.Library.Component</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Library.DDD\iGP11.Library.DDD.csproj">
+      <Project>{e776d5ee-650c-460d-927f-b200e214186c}</Project>
+      <Name>iGP11.Library.DDD</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Library.Hub.Client\iGP11.Library.Hub.Client.csproj">
+      <Project>{d6237064-e9be-4bcb-a1c7-81bdbbda5785}</Project>
+      <Name>iGP11.Library.Hub.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Library\iGP11.Library.csproj">
+      <Project>{fedf2fa9-7ca3-4488-9983-3079d9661847}</Project>
+      <Name>iGP11.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Tool.Application.Api\iGP11.Tool.Application.Api.csproj">
+      <Project>{a257bf4e-5c28-48f2-8d9b-1a1090093ef5}</Project>
+      <Name>iGP11.Tool.Application.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Tool.Shared\iGP11.Tool.Shared.csproj">
+      <Project>{33fc4b70-e64e-4f7d-818e-e404362163a9}</Project>
+      <Name>iGP11.Tool.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Tool.Domain\iGP11.Tool.Domain.csproj">
+      <Project>{b279abbb-da91-493f-902b-6a6f9b9f2d16}</Project>
+      <Name>iGP11.Tool.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Bootstrapper\ConstantSettings.json" />
+    <None Include="iGP11.snk" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Bootstrapper\Configuration.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Configuration.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,492 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Abort" xml:space="preserve">
+    <value>ABORT</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="AboutFileMissing" xml:space="preserve">
+    <value>Readme file is missing</value>
+  </data>
+  <data name="ActivationStatusNotRetrievable" xml:space="preserve">
+    <value>activation status not retrievable</value>
+  </data>
+  <data name="ActivationStatusNotRunning" xml:space="preserve">
+    <value>application not running</value>
+  </data>
+  <data name="ActivationStatusPluginActivated" xml:space="preserve">
+    <value>plugin initialized</value>
+  </data>
+  <data name="ActivationStatusPluginActivationFailed" xml:space="preserve">
+    <value>plugin activation failed</value>
+  </data>
+  <data name="ActivationStatusPluginActivationPending" xml:space="preserve">
+    <value>plugin partially initialized, awaiting final initialization...</value>
+  </data>
+  <data name="ActivationStatusPluginLoaded" xml:space="preserve">
+    <value>application running and plugin loaded</value>
+  </data>
+  <data name="ActivationStatusRunning" xml:space="preserve">
+    <value>application running</value>
+  </data>
+  <data name="AddProfile" xml:space="preserve">
+    <value>add profile</value>
+  </data>
+  <data name="Application" xml:space="preserve">
+    <value>application</value>
+  </data>
+  <data name="ApplicationBusy" xml:space="preserve">
+    <value>application is busy...</value>
+  </data>
+  <data name="ApplicationFilePath" xml:space="preserve">
+    <value>application file path</value>
+  </data>
+  <data name="ApplicationFilePathRequired" xml:space="preserve">
+    <value>application file path: required</value>
+  </data>
+  <data name="ApplicationSettings" xml:space="preserve">
+    <value>Application settings</value>
+  </data>
+  <data name="ApplicationStarted" xml:space="preserve">
+    <value>application started</value>
+  </data>
+  <data name="AvailableTextures" xml:space="preserve">
+    <value>textures</value>
+  </data>
+  <data name="BasedOnProfile" xml:space="preserve">
+    <value>based on profile</value>
+  </data>
+  <data name="BokehDoF" xml:space="preserve">
+    <value>Depth of field</value>
+  </data>
+  <data name="BokehDoFLongDescription" xml:space="preserve">
+    <value>Hexagonal depth of field</value>
+  </data>
+  <data name="BokehDoFShortDescription" xml:space="preserve">
+    <value>Hexagonal depth of field</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>CANCEL</value>
+  </data>
+  <data name="CannotClearLogsDirectory" xml:space="preserve">
+    <value>cannot clear logging directory</value>
+  </data>
+  <data name="CannotOpenLogsDirectory" xml:space="preserve">
+    <value>cannot open logging directory</value>
+  </data>
+  <data name="CheckAll" xml:space="preserve">
+    <value>check all</value>
+  </data>
+  <data name="Collapse" xml:space="preserve">
+    <value>collapse</value>
+  </data>
+  <data name="CommunicationError" xml:space="preserve">
+    <value>communication lost/could not be established</value>
+  </data>
+  <data name="CommunicatorMode" xml:space="preserve">
+    <value>iGP11 - COMMUNICATOR MODE</value>
+  </data>
+  <data name="ConfigurationDirectoryPath" xml:space="preserve">
+    <value>configuration directory path</value>
+  </data>
+  <data name="ConversionConfiguration" xml:space="preserve">
+    <value>configuration</value>
+  </data>
+  <data name="ConvertTexture" xml:space="preserve">
+    <value>convert texture</value>
+  </data>
+  <data name="ConvertTextures" xml:space="preserve">
+    <value>convert textures</value>
+  </data>
+  <data name="DepthBuffer" xml:space="preserve">
+    <value>Depth buffer</value>
+  </data>
+  <data name="DepthBufferLongDescription" xml:space="preserve">
+    <value>Adjust depth buffer settings to estimate right values for filters</value>
+  </data>
+  <data name="DepthBufferShortDescription" xml:space="preserve">
+    <value>Depth buffer rendering</value>
+  </data>
+  <data name="Direct3D11" xml:space="preserve">
+    <value>direct3d11</value>
+  </data>
+  <data name="Direct3D11PluginSettingsLongDescription" xml:space="preserve">
+    <value>Adjust plugin settings</value>
+  </data>
+  <data name="Direct3D11PluginSettingsShortDescription" xml:space="preserve">
+    <value>Adjust plugin settings</value>
+  </data>
+  <data name="DisplayLongDescription" xml:space="preserve">
+    <value>Specify screen and render resolutions together with smoothness function to soften the edges</value>
+  </data>
+  <data name="DisplayShortDescription" xml:space="preserve">
+    <value>Render and screen resolution management</value>
+  </data>
+  <data name="EditConfiguration" xml:space="preserve">
+    <value>Edit settings</value>
+  </data>
+  <data name="EditConfigurationDescription" xml:space="preserve">
+    <value>Editing any of those settings will cause an application to reload</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>error</value>
+  </data>
+  <data name="ErrorCount" xml:space="preserve">
+    <value>{0} validation errors</value>
+  </data>
+  <data name="EstablishCommunication" xml:space="preserve">
+    <value>establish communication on application launch</value>
+  </data>
+  <data name="ExitApplication" xml:space="preserve">
+    <value>exit iGP11</value>
+  </data>
+  <data name="Expand" xml:space="preserve">
+    <value>expand</value>
+  </data>
+  <data name="FatalErrorOccured" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Feedback" xml:space="preserve">
+    <value>feedback</value>
+  </data>
+  <data name="Icons" xml:space="preserve">
+    <value>icons by</value>
+  </data>
+  <data name="InjectionCompleted" xml:space="preserve">
+    <value>process started and iGP11 launched</value>
+  </data>
+  <data name="InjectionSettings" xml:space="preserve">
+    <value>Injection settings</value>
+  </data>
+  <data name="InjectionSettingsDescription" xml:space="preserve">
+    <value>Specify profile, plugin type and path to an application</value>
+  </data>
+  <data name="InjectionStarted" xml:space="preserve">
+    <value>launching application and loading plugin</value>
+  </data>
+  <data name="InjectorMode" xml:space="preserve">
+    <value>iGP11 - STANDARD MODE</value>
+  </data>
+  <data name="InsufficientPermissions" xml:space="preserve">
+    <value>insufficient permissions</value>
+  </data>
+  <data name="InvalidConfiguration" xml:space="preserve">
+    <value>invalid configuration</value>
+  </data>
+  <data name="IpAddressError" xml:space="preserve">
+    <value>ip address data error</value>
+  </data>
+  <data name="Launch" xml:space="preserve">
+    <value>LAUNCH</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="LogsDirectoryCleared" xml:space="preserve">
+    <value>logging directory cleared</value>
+  </data>
+  <data name="LogsDirectoryPath" xml:space="preserve">
+    <value>logs directory path</value>
+  </data>
+  <data name="LumaSharpen" xml:space="preserve">
+    <value>Luma sharpening</value>
+  </data>
+  <data name="LumaSharpenLongDescription" xml:space="preserve">
+    <value>Adjust image sharpening</value>
+  </data>
+  <data name="LumaSharpenShortDescription" xml:space="preserve">
+    <value>Adjust image sharpening</value>
+  </data>
+  <data name="NoEndpointListening" xml:space="preserve">
+    <value>There is no endpoint listening at given address...</value>
+  </data>
+  <data name="NoValidationErrors" xml:space="preserve">
+    <value>No validation errors</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="OpenDirectory" xml:space="preserve">
+    <value>open directory in explorer</value>
+  </data>
+  <data name="OpeningSettingsFailed" xml:space="preserve">
+    <value>opening the settings file failed</value>
+  </data>
+  <data name="OperationCancelled" xml:space="preserve">
+    <value>operation cancelled</value>
+  </data>
+  <data name="OperationTimeout" xml:space="preserve">
+    <value>operation timeout</value>
+  </data>
+  <data name="PluginAlreadyLoaded" xml:space="preserve">
+    <value>plugin already loaded</value>
+  </data>
+  <data name="PluginSettings" xml:space="preserve">
+    <value>Plugin settings</value>
+  </data>
+  <data name="PluginType" xml:space="preserve">
+    <value>plugin type</value>
+  </data>
+  <data name="ProcessConfigurationUpdated" xml:space="preserve">
+    <value>plugin configuration updated at {0}</value>
+  </data>
+  <data name="ProcessConfigurationUpdatingFailed" xml:space="preserve">
+    <value>updating plugin configuration failed at {0}</value>
+  </data>
+  <data name="ProfileChanged" xml:space="preserve">
+    <value>profile changed to: {0}</value>
+  </data>
+  <data name="ProfileName" xml:space="preserve">
+    <value>profile name</value>
+  </data>
+  <data name="ProfileRenamed" xml:space="preserve">
+    <value>profile renamed</value>
+  </data>
+  <data name="ProfileType" xml:space="preserve">
+    <value>profile</value>
+  </data>
+  <data name="ReleaseNotesDescription" xml:space="preserve">
+    <value>Make sure to install all prerequisites specified in readme.pdf and run this program with as high privileges as possible.
+
+In case of problems make sure Windows or any other installed program does not cripple iGP11 access to current and chosen game directories.</value>
+  </data>
+  <data name="ReleaseNotesTitle" xml:space="preserve">
+    <value>Release notes</value>
+  </data>
+  <data name="RemoveProfile" xml:space="preserve">
+    <value>Remove profile</value>
+  </data>
+  <data name="RemoveProfileQuestion" xml:space="preserve">
+    <value>Remove profile?
+Profile data will be lost.</value>
+  </data>
+  <data name="RenameProfile" xml:space="preserve">
+    <value>Rename profile</value>
+  </data>
+  <data name="RenderingModeAlpha" xml:space="preserve">
+    <value>alpha</value>
+  </data>
+  <data name="RenderingModeDepthBuffer" xml:space="preserve">
+    <value>depth buffer</value>
+  </data>
+  <data name="RenderingModeEffects" xml:space="preserve">
+    <value>effects</value>
+  </data>
+  <data name="RenderingModeLuminescence" xml:space="preserve">
+    <value>luminescence</value>
+  </data>
+  <data name="RenderingModeNone" xml:space="preserve">
+    <value>none</value>
+  </data>
+  <data name="SavingSettingsFailed" xml:space="preserve">
+    <value>settings saving failed at {0}</value>
+  </data>
+  <data name="SettingsSaved" xml:space="preserve">
+    <value>settings saved at {0}</value>
+  </data>
+  <data name="ShowApplication" xml:space="preserve">
+    <value>show iGP11</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>SUBMIT</value>
+  </data>
+  <data name="SwitchModeToCommunicator" xml:space="preserve">
+    <value>establish communication with already started process</value>
+  </data>
+  <data name="SwitchModeToInjector" xml:space="preserve">
+    <value>return to standard mode</value>
+  </data>
+  <data name="SystemConfiguration" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="TextureConverter" xml:space="preserve">
+    <value>Textures converter</value>
+  </data>
+  <data name="TextureManagement" xml:space="preserve">
+    <value>Texture management</value>
+  </data>
+  <data name="TexturePreview" xml:space="preserve">
+    <value>texture preview</value>
+  </data>
+  <data name="Textures" xml:space="preserve">
+    <value>Textures</value>
+  </data>
+  <data name="TexturesConversionCompleted" xml:space="preserve">
+    <value>textures have been converted</value>
+  </data>
+  <data name="TexturesConversionCompleted1" xml:space="preserve">
+    <value>texture has been converted</value>
+  </data>
+  <data name="TexturesConversionInitialization" xml:space="preserve">
+    <value>{0} textures awaiting to be processed</value>
+  </data>
+  <data name="TexturesConversionProgress" xml:space="preserve">
+    <value>textures conversion progress: {0}/{1}</value>
+  </data>
+  <data name="TexturesLongDescription" xml:space="preserve">
+    <value>Specify dumping or injecting behavior and adjust paths to respective folders</value>
+  </data>
+  <data name="TexturesShortDescription" xml:space="preserve">
+    <value>Dump/replace and adjust texture level of details</value>
+  </data>
+  <data name="Tonemap" xml:space="preserve">
+    <value>Tone mapping</value>
+  </data>
+  <data name="TonemapLongDescription" xml:space="preserve">
+    <value>Reproduce a greater dynamic range of luminosity</value>
+  </data>
+  <data name="TonemapShortDescription" xml:space="preserve">
+    <value>Reproduce a greater dynamic range of luminosity</value>
+  </data>
+  <data name="UncheckAll" xml:space="preserve">
+    <value>uncheck all</value>
+  </data>
+  <data name="UnknownError" xml:space="preserve">
+    <value>unknown error occured</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>UPDATE</value>
+  </data>
+  <data name="ValueEqual" xml:space="preserve">
+    <value>{0} and {1} cannot be equal</value>
+  </data>
+  <data name="ValueLessThan" xml:space="preserve">
+    <value>{0} cannot be less than {1}</value>
+  </data>
+  <data name="ValueOutsideRange" xml:space="preserve">
+    <value>value is outside the range; acceptable &lt;{0}; {1}&gt;</value>
+  </data>
+  <data name="ValueRequired" xml:space="preserve">
+    <value>value is required</value>
+  </data>
+  <data name="ValueTooLong" xml:space="preserve">
+    <value>value too long</value>
+  </data>
+  <data name="Vibrance" xml:space="preserve">
+    <value>Vibrance</value>
+  </data>
+  <data name="VibranceLongDescription" xml:space="preserve">
+    <value>Increases the intensity of the more muted colors</value>
+  </data>
+  <data name="VibranceShortDescription" xml:space="preserve">
+    <value>Increases the intensity of the more muted colors</value>
+  </data>
+</root>

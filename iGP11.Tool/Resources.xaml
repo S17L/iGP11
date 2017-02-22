@@ -1,0 +1,1260 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:userControls="clr-namespace:iGP11.Tool.UserControls"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib"
+                    xmlns:themes="clr-namespace:iGP11.Tool.Themes"
+                    xmlns:framework="clr-namespace:iGP11.Tool.Framework">
+
+    <BitmapImage x:Key="About32X32"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/about_32x32.png" />
+    <BitmapImage x:Key="AboutHover32X32"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/about_hover_32x32.png" />
+    <BitmapImage x:Key="Add16X16" UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/add_16x16.png" />
+    <BitmapImage x:Key="AddHover16X16"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/add_hover_16x16.png" />
+    <BitmapImage x:Key="ArrowDown16X16"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/arrow_down_16x16.png" />
+    <BitmapImage x:Key="ArrowDownHover16X16"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/arrow_down_hover_16x16.png" />
+    <BitmapImage x:Key="ArrowUpHover16X16"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/arrow_up_hover_16x16.png" />
+    <BitmapImage x:Key="Attention16X16"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/attention_16x16.png" />
+    <BitmapImage x:Key="AttentionHover16X16"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/attention_hover_16x16.png" />
+    <BitmapImage x:Key="Check16X16"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/check_16x16.png" />
+    <BitmapImage x:Key="CheckHover16X16"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/check_hover_16x16.png" />
+    <BitmapImage x:Key="Configuration32X32"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/configuration_32x32.png" />
+    <BitmapImage x:Key="ConfigurationHover32X32"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/configuration_hover_32x32.png" />
+    <BitmapImage x:Key="Delete16X16"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/delete_16x16.png" />
+    <BitmapImage x:Key="DeleteHover16X16"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/delete_hover_16x16.png" />
+    <BitmapImage x:Key="Edit16X16"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/edit_16x16.png" />
+    <BitmapImage x:Key="EditHover16X16"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/edit_hover_16x16.png" />
+    <BitmapImage x:Key="Error16X16"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/error_16x16.png" />
+    <BitmapImage x:Key="Info16X16"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/info_16x16.png" />
+    <BitmapImage x:Key="MoveTo16X16"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/move_to_16x16.png" />
+    <BitmapImage x:Key="MoveToHover16X16"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/move_to_hover_16x16.png" />
+    <BitmapImage x:Key="TextureManagement32X32"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/texture_management_32x32.png" />
+    <BitmapImage x:Key="TextureManagementHover32X32"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/texture_management_hover_32x32.png" />
+    <BitmapImage x:Key="Uncheck16X16"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/uncheck_16x16.png" />
+    <BitmapImage x:Key="UncheckHover16X16"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/uncheck_hover_16x16.png" />
+
+    <system:Double x:Key="FontSizeApplication">18</system:Double>
+    <FontWeight x:Key="FontWeightApplication">Regular</FontWeight>
+
+    <FontFamily x:Key="FontFamilyH1">pack://application:,,,/iGP11.Tool;component/Framework/Fonts/#PT Sans</FontFamily>
+    <system:Double x:Key="FontSizeH1">16</system:Double>
+    <FontWeight x:Key="FontWeightH1">Light</FontWeight>
+
+    <FontFamily x:Key="FontFamilyH2">pack://application:,,,/iGP11.Tool;component/Framework/Fonts/#PT Sans</FontFamily>
+    <system:Double x:Key="FontSizeH2">14</system:Double>
+    <FontWeight x:Key="FontWeightH2">Light</FontWeight>
+
+    <FontFamily x:Key="FontFamilyBody">pack://application:,,,/iGP11.Tool;component/Framework/Fonts/#PT Sans Narrow</FontFamily>
+    <system:Double x:Key="FontSizeBody">13</system:Double>
+    <FontWeight x:Key="FontWeightBody">Light</FontWeight>
+
+    <system:Double x:Key="FontSizeInformation">12</system:Double>
+    <system:Double x:Key="OpacityDisabledContent">0.5</system:Double>
+
+    <Color x:Key="ColorDark">Black</Color>
+    <Color x:Key="ColorBrushLightHigh">#0065A8</Color>
+    <Color x:Key="ColorBrushLightMedium">#007ACC</Color>
+    <SolidColorBrush x:Key="SolidColorBrushError" Color="#E74C3C" />
+    <SolidColorBrush x:Key="SolidColorBrushSuccess" Color="#27AE60" />
+    <SolidColorBrush x:Key="SolidColorBrushInformation" Color="#F39C12" />
+    <SolidColorBrush x:Key="SolidColorBrushBlack" Color="{StaticResource ResourceKey=ColorDark}" />
+    <SolidColorBrush x:Key="SolidColorBrushWhite" Color="White" />
+    <SolidColorBrush x:Key="SolidColorBrushInactive" Color="#EEEEEE" />
+    <SolidColorBrush x:Key="SolidColorBrushLoading" Color="#DCDCDC" Opacity="0.5" />
+    <SolidColorBrush x:Key="SolidColorBrushBorder" Color="#798090" />
+    <SolidColorBrush x:Key="SolidColorBrushDarkHigh" Color="#212121" />
+    <SolidColorBrush x:Key="SolidColorBrushDarkMedium" Color="#303030" />
+    <SolidColorBrush x:Key="SolidColorBrushDarkSmall" Color="#4D4D4D" />
+    <SolidColorBrush x:Key="SolidColorBrushLightHigh" Color="{StaticResource ResourceKey=ColorBrushLightHigh}" />
+    <SolidColorBrush x:Key="SolidColorBrushLightMedium" Color="{StaticResource ResourceKey=ColorBrushLightMedium}" />
+    <SolidColorBrush x:Key="SolidColorBrushLightSmall" Color="#0091F0" />
+    <SolidColorBrush x:Key="SolidColorBrushBalancedHigh" Color="#2CAD50" />
+    <SolidColorBrush x:Key="SolidColorBrushBalancedMedium" Color="#33CD5F" />
+    <SolidColorBrush x:Key="SolidColorBrushBalancedSmall" Color="#5ED77E" />
+    <SolidColorBrush x:Key="SolidColorBrushAssertiveHigh" Color="#EC2717" />
+    <SolidColorBrush x:Key="SolidColorBrushAssertiveMedium" Color="#EF473A" />
+    <SolidColorBrush x:Key="SolidColorBrushAssertiveSmall" Color="#F2675B" />
+    <SolidColorBrush x:Key="SolidColorBrushBackgroundHigh" Color="#CCCCCC" />
+    <SolidColorBrush x:Key="SolidColorBrushBackgroundMedium" Color="#DDDDDD" />
+    <SolidColorBrush x:Key="SolidColorBrushBackgroundSmall" Color="#EEEEEE" />
+
+    <Style x:Key="StyleBorder" TargetType="{x:Type Border}">
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=SolidColorBrushBlack}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+    </Style>
+
+    <Style x:Key="StylePopupBorder" TargetType="{x:Type Border}" BasedOn="{StaticResource ResourceKey=StyleBorder}">
+        <Setter Property="MaxHeight" Value="200" />
+        <Setter Property="MaxWidth" Value="400" />
+    </Style>
+
+    <Style x:Key="StyleTileSeparator" TargetType="{x:Type Border}">
+        <Setter Property="Background" Value="{StaticResource ResourceKey=SolidColorBrushInactive}" />
+    </Style>
+
+    <Style x:Key="StyleTextBlock" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontFamily" Value="{StaticResource ResourceKey=FontFamilyBody}" />
+        <Setter Property="FontSize" Value="{StaticResource ResourceKey=FontSizeBody}" />
+        <Setter Property="FontWeight" Value="{StaticResource ResourceKey=FontWeightBody}" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="LineHeight" Value="{StaticResource ResourceKey=FontSizeBody}" />
+        <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="TextWrapping" Value="NoWrap" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Visibility" Value="Visible" />
+    </Style>
+
+    <Style x:Key="StyleH1TextBlock" TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource ResourceKey=StyleTextBlock}">
+        <Setter Property="FontFamily" Value="{StaticResource ResourceKey=FontFamilyH1}" />
+        <Setter Property="FontSize" Value="{StaticResource ResourceKey=FontSizeH1}" />
+        <Setter Property="FontWeight" Value="{StaticResource ResourceKey=FontWeightH1}" />
+    </Style>
+
+    <Style x:Key="StyleH2TextBlock" TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource ResourceKey=StyleTextBlock}">
+        <Setter Property="FontFamily" Value="{StaticResource ResourceKey=FontFamilyH2}" />
+        <Setter Property="FontSize" Value="{StaticResource ResourceKey=FontSizeH2}" />
+        <Setter Property="FontWeight" Value="{StaticResource ResourceKey=FontWeightH2}" />
+    </Style>
+
+    <Style x:Key="StyleTextBlockHeader" TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource ResourceKey=StyleTextBlock}" />
+
+    <Style x:Key="StyleTextBlockPropertyName" TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource ResourceKey=StyleTextBlockHeader}">
+        <Setter Property="FontSize" Value="{StaticResource ResourceKey=FontSizeInformation}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="TextAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+    </Style>
+
+    <Style x:Key="StyleGroupByBorder" TargetType="{x:Type Border}">
+        <Setter Property="Background" Value="{StaticResource ResourceKey=SolidColorBrushInactive}" />
+        <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=SolidColorBrushDarkSmall}" />
+        <Setter Property="BorderThickness" Value="0, 0, 0, 1" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+    </Style>
+
+    <Style x:Key="StyleGroupByTextBlock" TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource ResourceKey=StyleTextBlockPropertyName}">
+        <Setter Property="Padding" Value="10" />
+    </Style>
+
+    <Style x:Key="StyleDialog" TargetType="{x:Type Window}">
+        <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=SolidColorBrushBackgroundMedium}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+    </Style>
+
+    <Style x:Key="StyleWindow" TargetType="{x:Type Window}">
+        <Setter Property="UseLayoutRounding" Value="True" />
+    </Style>
+
+    <Style x:Key="StyleTextBlockWindowTitle" TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource ResourceKey=StyleTextBlock}">
+        <Setter Property="Background" Value="{StaticResource ResourceKey=SolidColorBrushBackgroundMedium}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Padding" Value="10" />
+    </Style>
+
+    <Style x:Key="StyleTextBlockHighlightedHeader" TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource ResourceKey=StyleTextBlockHeader}">
+        <Setter Property="Background" Value="{StaticResource ResourceKey=SolidColorBrushDarkSmall}" />
+        <Setter Property="FontFamily" Value="{StaticResource ResourceKey=FontFamilyH2}" />
+        <Setter Property="FontSize" Value="{StaticResource ResourceKey=FontSizeH2}" />
+        <Setter Property="FontWeight" Value="{StaticResource ResourceKey=FontWeightH2}" />
+        <Setter Property="Foreground" Value="{StaticResource ResourceKey=SolidColorBrushWhite}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="TextAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="StyleImage16X16" TargetType="{x:Type Image}">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Height" Value="16" />
+        <Setter Property="Width" Value="16" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Style.Triggers>
+            <Trigger Property="Source" Value="{x:Null}">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="StyleImage24X24" TargetType="{x:Type Image}" BasedOn="{StaticResource ResourceKey=StyleImage16X16}">
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Width" Value="24" />
+    </Style>
+
+    <Style x:Key="StyleImage32X32" TargetType="{x:Type Image}" BasedOn="{StaticResource ResourceKey=StyleImage16X16}">
+        <Setter Property="Height" Value="32" />
+        <Setter Property="Width" Value="32" />
+    </Style>
+
+    <Style x:Key="StyleImage48X48" TargetType="{x:Type Image}" BasedOn="{StaticResource ResourceKey=StyleImage16X16}">
+        <Setter Property="Height" Value="48" />
+        <Setter Property="Width" Value="48" />
+    </Style>
+
+    <Style x:Key="StyleImageTextBlock16X16" TargetType="{x:Type FrameworkElement}">
+        <Style.Resources>
+            <Style TargetType="{x:Type Image}" BasedOn="{StaticResource ResourceKey=StyleImage16X16}" />
+            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource ResourceKey=StyleTextBlock}" />
+        </Style.Resources>
+        <Setter Property="Control.Padding" Value="5, 0" />
+    </Style>
+
+    <Style x:Key="StyleToolTip" TargetType="{x:Type ToolTip}">
+        <Style.Triggers>
+            <DataTrigger
+                Binding="{Binding Path=(themes:ToolTipService.Title), Mode=TwoWay, RelativeSource={RelativeSource Self}, Converter={framework:IsNullOrEmptyConverter}}"
+                Value="True">
+                <Setter Property="Visibility" Value="Hidden" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="{x:Type ComboBoxItem}">
+        <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=SolidColorBrushDarkSmall}" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBoxItem">
+                    <Border x:Name="Border"
+                            Padding="7, 5"
+                            Background="Transparent"
+                            BorderBrush="Transparent">
+                        <TextBlock TextAlignment="Left">
+                            <ContentPresenter />
+                        </TextBlock>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsHighlighted" Value="True">
+                            <Setter TargetName="Border" Property="Background"
+                                    Value="{StaticResource ResourceKey=SolidColorBrushLightMedium}" />
+                            <Setter TargetName="Border" Property="Cursor" Value="Hand" />
+                            <Setter TargetName="Border" Property="TextBlock.Foreground" Value="White" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="32" />
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="Border"
+                                Grid.ColumnSpan="2"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1" />
+                        <Image x:Name="Arrow"
+                               Grid.Column="1"
+                               Style="{StaticResource ResourceKey=StyleImage16X16}"
+                               Source="{StaticResource ResourceKey=ArrowDown16X16}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="Border" Property="Background"
+                                    Value="{StaticResource ResourceKey=SolidColorBrushLightMedium}" />
+                            <Setter Property="Cursor" Value="Hand" />
+                            <Setter TargetName="Arrow" Property="Source"
+                                    Value="{StaticResource ResourceKey=ArrowDownHover16X16}" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background"
+                                    Value="{StaticResource ResourceKey=SolidColorBrushLightMedium}" />
+                            <Setter Property="Cursor" Value="Hand" />
+                            <Setter TargetName="Arrow" Property="Source"
+                                    Value="{StaticResource ResourceKey=ArrowDownHover16X16}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <ControlTemplate x:Key="ComboBoxTextBox" TargetType="TextBox">
+        <Border x:Name="PART_ContentHost" Focusable="True" Padding="5, 1" />
+    </ControlTemplate>
+
+    <Style x:Key="StyleComboBox" TargetType="{x:Type ComboBox}">
+        <Setter Property="themes:FrameworkService.Placeholder" Value="{x:Null}" />
+        <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=SolidColorBrushDarkMedium}" />
+        <Setter Property="Background" Value="{StaticResource ResourceKey=SolidColorBrushWhite}" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+        <Setter Property="MinWidth" Value="48" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBox">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock
+                            IsHitTestVisible="False"
+                            Text="{Binding Path=(themes:FrameworkService.Placeholder), Mode=OneWay, RelativeSource={RelativeSource Self}}">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}"
+                                       BasedOn="{StaticResource ResourceKey=StyleTextBlock}">
+                                    <Setter Property="FontSize"
+                                            Value="{StaticResource ResourceKey=FontSizeInformation}" />
+                                    <Style.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding Path=Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}, Converter={framework:IsNullOrEmptyConverter}}"
+                                            Value="True">
+                                            <Setter Property="Visibility" Value="Hidden" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <ToggleButton x:Name="ToggleButton"
+                                      Grid.Row="1"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      Background="{TemplateBinding Background}"
+                                      Foreground="{TemplateBinding Foreground}"
+                                      Style="{StaticResource ComboBoxToggleButton}"
+                                      Focusable="False"
+                                      IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                      ClickMode="Press" />
+                        <ContentPresenter x:Name="ContentSite"
+                                          Grid.Row="1"
+                                          IsHitTestVisible="False"
+                                          Content="{TemplateBinding SelectionBoxItem}"
+                                          ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                          ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                          Margin="10, 0, 16, 0"
+                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="Left" />
+                        <TextBox x:Name="PART_EditableTextBox"
+                                 Grid.Row="1"
+                                 Style="{x:Null}"
+                                 FontFamily="{StaticResource ResourceKey=FontFamilyBody}"
+                                 FontSize="{StaticResource ResourceKey=FontSizeBody}"
+                                 Template="{StaticResource ComboBoxTextBox}"
+                                 HorizontalAlignment="Center"
+                                 VerticalAlignment="Center"
+                                 Margin="5, 5, 25, 5"
+                                 Focusable="True"
+                                 Visibility="Hidden"
+                                 IsReadOnly="{TemplateBinding IsReadOnly}" />
+                        <Popup x:Name="Popup"
+                               Grid.Row="1"
+                               Placement="Bottom"
+                               IsOpen="{TemplateBinding IsDropDownOpen}"
+                               AllowsTransparency="True"
+                               Focusable="False"
+                               PopupAnimation="Slide">
+                            <Grid x:Name="DropDown"
+                                  SnapsToDevicePixels="True"
+                                  MinWidth="{TemplateBinding ActualWidth}"
+                                  MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                <Border x:Name="DropDownBorder"
+                                        Background="White"
+                                        BorderThickness="1"
+                                        BorderBrush="{StaticResource ResourceKey=SolidColorBrushDarkMedium}" />
+                                <ScrollViewer Margin="1, 3, 1, 1" SnapsToDevicePixels="True">
+                                    <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained"
+                                                TextElement.Foreground="{StaticResource ResourceKey=SolidColorBrushBlack}" />
+                                </ScrollViewer>
+                            </Grid>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="HasItems" Value="False">
+                            <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="{StaticResource ResourceKey=OpacityDisabledContent}" />
+                        </Trigger>
+                        <Trigger Property="IsGrouping" Value="True">
+                            <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ContentSite" Property="TextBlock.Foreground" Value="White" />
+                        </Trigger>
+                        <Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="True">
+                            <Setter TargetName="DropDownBorder" Property="CornerRadius" Value="0" />
+                            <Setter TargetName="DropDownBorder" Property="Margin" Value="0, 2, 0, 0" />
+                        </Trigger>
+                        <Trigger Property="IsEditable" Value="True">
+                            <Setter Property="IsTabStop" Value="False" />
+                            <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="StyleListBoxItem" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+        <Setter Property="VerticalContentAlignment"
+                Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}"
+                            SnapsToDevicePixels="true">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="true">
+                            <Setter Property="Background" TargetName="Border"
+                                    Value="{StaticResource ResourceKey=SolidColorBrushLightMedium}" />
+                            <Setter Property="Foreground" Value="{StaticResource ResourceKey=SolidColorBrushWhite}" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="true" />
+                                <Condition Property="Selector.IsSelectionActive" Value="false" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" TargetName="Border"
+                                    Value="{StaticResource ResourceKey=SolidColorBrushLightMedium}" />
+                            <Setter Property="Foreground" Value="{StaticResource ResourceKey=SolidColorBrushWhite}" />
+                        </MultiTrigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="Border"
+                                    Value="{StaticResource ResourceKey=SolidColorBrushLightHigh}" />
+                            <Setter Property="BorderBrush" TargetName="Border"
+                                    Value="{StaticResource ResourceKey=SolidColorBrushLightHigh}" />
+                            <Setter Property="Cursor" Value="Hand" />
+                            <Setter Property="TextBlock.Foreground"
+                                    Value="{StaticResource ResourceKey=SolidColorBrushWhite}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="StyleImageButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource ResourceKey=SolidColorBrushWhite}" />
+        <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=SolidColorBrushDarkSmall}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Foreground" Value="{StaticResource ResourceKey=SolidColorBrushBlack}" />
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="themes:FrameworkService.LightColor"
+                Value="{StaticResource ResourceKey=SolidColorBrushLightMedium}" />
+        <Setter Property="themes:FrameworkService.DarkColor"
+                Value="{StaticResource ResourceKey=SolidColorBrushLightHigh}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="Container">
+                        <Border.Style>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="Background"
+                                        Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=Background}" />
+                                <Setter Property="BorderBrush"
+                                        Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=BorderBrush}" />
+                                <Setter Property="BorderThickness"
+                                        Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=BorderThickness}" />
+                                <Setter Property="Cursor" Value="Hand" />
+                                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                <Setter Property="TextBlock.Foreground"
+                                        Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="{StaticResource ResourceKey=OpacityDisabledContent}" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <userControls:ImageTextBlock
+                            x:Name="ImageTextBlock"
+                            Padding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=Padding}"
+                            HorizontalAlignment="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=HorizontalAlignment}"
+                            HorizontalContentAlignment="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=HorizontalContentAlignment}"
+                            Image="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.Image)}"
+                            Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=Content}"
+                            Title="{Binding RelativeSource={RelativeSource Self}, Path=(themes:ToolTipService.Title)}"
+                            Description="{Binding RelativeSource={RelativeSource Self}, Path=(themes:ToolTipService.Description)}"
+                            Background="Transparent" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="Container"
+                                    Value="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.LightColor)}" />
+                            <Setter Property="TextBlock.Foreground" Value="White" TargetName="Container" />
+                        </Trigger>
+                        <Trigger Property="Button.IsPressed" Value="True">
+                            <Setter Property="Background" TargetName="Container"
+                                    Value="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.DarkColor)}" />
+                        </Trigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}"
+                                           Value="True" />
+                                <Condition
+                                    Binding="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.ImageHover), Converter={framework:IsNullConverter}}"
+                                    Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter Property="Image"
+                                        Value="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.ImageHover)}"
+                                        TargetName="ImageTextBlock" />
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <DataTrigger
+                Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Content, Converter={framework:IsNullOrEmptyConverter}}"
+                Value="True">
+                <Setter Property="Padding" Value="0, 5" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="StyleBalancedImageButton" TargetType="{x:Type Button}"
+           BasedOn="{StaticResource ResourceKey=StyleImageButton}">
+        <Setter Property="Background" Value="{StaticResource ResourceKey=SolidColorBrushBalancedMedium}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="{StaticResource ResourceKey=SolidColorBrushWhite}" />
+        <Setter Property="Padding" Value="0, 10" />
+        <Setter Property="themes:FrameworkService.LightColor"
+                Value="{StaticResource ResourceKey=SolidColorBrushBalancedSmall}" />
+        <Setter Property="themes:FrameworkService.DarkColor"
+                Value="{StaticResource ResourceKey=SolidColorBrushBalancedHigh}" />
+    </Style>
+
+    <Style x:Key="StyleAssertiveImageButton" TargetType="{x:Type Button}"
+           BasedOn="{StaticResource ResourceKey=StyleImageButton}">
+        <Setter Property="Background" Value="{StaticResource ResourceKey=SolidColorBrushAssertiveMedium}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="{StaticResource ResourceKey=SolidColorBrushWhite}" />
+        <Setter Property="Padding" Value="0, 10" />
+        <Setter Property="themes:FrameworkService.LightColor"
+                Value="{StaticResource ResourceKey=SolidColorBrushAssertiveSmall}" />
+        <Setter Property="themes:FrameworkService.DarkColor"
+                Value="{StaticResource ResourceKey=SolidColorBrushAssertiveHigh}" />
+    </Style>
+
+    <Style x:Key="StyleFlatImageButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="Container">
+                        <Border.Style>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="BorderThickness"
+                                        Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=BorderThickness}" />
+                                <Setter Property="Cursor" Value="Hand" />
+                                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                <Setter Property="TextBlock.Foreground"
+                                        Value="{StaticResource ResourceKey=SolidColorBrushBlack}" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.25" />
+                                        <Setter Property="TextBlock.Foreground"
+                                                Value="{StaticResource ResourceKey=SolidColorBrushBlack}" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <userControls:ImageTextBlock
+                            x:Name="ImageTextBlock"
+                            Padding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=Padding}"
+                            HorizontalAlignment="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=HorizontalAlignment}"
+                            HorizontalContentAlignment="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=HorizontalContentAlignment}"
+                            Image="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.Image)}"
+                            Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=Content}"
+                            Title="{Binding RelativeSource={RelativeSource Self}, Path=(themes:ToolTipService.Title)}"
+                            Description="{Binding RelativeSource={RelativeSource Self}, Path=(themes:ToolTipService.Description)}"
+                            Background="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=Background}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}"
+                                           Value="True" />
+                                <Condition
+                                    Binding="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.ImageHover), Converter={framework:IsNullConverter}}"
+                                    Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter Property="Image"
+                                        Value="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.ImageHover)}"
+                                        TargetName="ImageTextBlock" />
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="StyleMenuImageButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource ResourceKey=SolidColorBrushWhite}" />
+        <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=SolidColorBrushLightMedium}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="TextBlock.LineHeight" Value="16" />
+        <Setter Property="TextBlock.TextAlignment" Value="Center" />
+        <Setter Property="Width" Value="80" />
+        <Setter Property="themes:FrameworkService.ImageDock" Value="Top" />
+        <Setter Property="themes:FrameworkService.ImageHeight" Value="32" />
+        <Setter Property="themes:FrameworkService.ImageWidth" Value="32" />
+        <Setter Property="themes:FrameworkService.ImageMargin" Value="0, 5" />
+        <Setter Property="themes:FrameworkService.TextMargin" Value="0, 0, 0, 5" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="Container">
+                        <Border.Style>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="Background"
+                                        Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=Background}" />
+                                <Setter Property="BorderBrush"
+                                        Value="{StaticResource ResourceKey=SolidColorBrushWhite}" />
+                                <Setter Property="BorderThickness"
+                                        Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=BorderThickness}" />
+                                <Setter Property="Cursor" Value="Hand" />
+                                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                <Setter Property="TextBlock.Foreground"
+                                        Value="{StaticResource ResourceKey=SolidColorBrushBlack}" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.25" />
+                                        <Setter Property="TextBlock.Foreground"
+                                                Value="{StaticResource ResourceKey=SolidColorBrushBlack}" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <userControls:ImageTextBlock
+                            x:Name="ImageTextBlock"
+                            Padding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=Padding}"
+                            HorizontalAlignment="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=HorizontalAlignment}"
+                            HorizontalContentAlignment="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=HorizontalContentAlignment}"
+                            Image="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.Image)}"
+                            ImageDock="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.ImageDock)}"
+                            ImageWidth="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.ImageWidth)}"
+                            ImageHeight="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.ImageHeight)}"
+                            ImageMargin="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.ImageMargin)}"
+                            Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=Content}"
+                            TextMargin="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.TextMargin)}"
+                            TextWrapping="WrapWithOverflow"
+                            Title="{Binding RelativeSource={RelativeSource Self}, Path=(themes:ToolTipService.Title)}"
+                            Description="{Binding RelativeSource={RelativeSource Self}, Path=(themes:ToolTipService.Description)}"
+                            Background="Transparent" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="Container"
+                                    Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=BorderBrush}" />
+                            <Setter Property="BorderBrush" TargetName="Container"
+                                    Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=BorderBrush}" />
+                            <Setter Property="Foreground" TargetName="ImageTextBlock"
+                                    Value="{StaticResource ResourceKey=SolidColorBrushWhite}" />
+                        </Trigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}"
+                                           Value="True" />
+                                <Condition
+                                    Binding="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.ImageHover), Converter={framework:IsNullConverter}}"
+                                    Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter Property="Image"
+                                        Value="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.ImageHover)}"
+                                        TargetName="ImageTextBlock" />
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <ControlTemplate x:Key="ControlTemplateToolTip" TargetType="{x:Type Control}">
+        <Border x:Name="Container">
+            <Border.Style>
+                <Style TargetType="{x:Type Border}" BasedOn="{StaticResource ResourceKey=StylePopupBorder}">
+                    <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=SolidColorBrushLightMedium}" />
+                    <Style.Triggers>
+                        <DataTrigger
+                            Binding="{Binding RelativeSource={RelativeSource Self}, Path=(themes:ToolTipService.Color), Converter={framework:IsNullConverter}}"
+                            Value="False">
+                            <Setter Property="BorderBrush"
+                                    Value="{Binding RelativeSource={RelativeSource Self}, Path=(themes:ToolTipService.Color)}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <StackPanel>
+                <TextBlock
+                    Text="{Binding RelativeSource={RelativeSource Self}, Path=(themes:ToolTipService.Title), Mode=TwoWay}"
+                    HorizontalAlignment="Stretch">
+                    <TextBlock.Style>
+                        <Style BasedOn="{StaticResource ResourceKey=StyleTextBlock}" TargetType="{x:Type TextBlock}">
+                            <Setter Property="Background"
+                                    Value="{StaticResource ResourceKey=SolidColorBrushLightMedium}" />
+                            <Setter Property="Foreground" Value="{StaticResource ResourceKey=SolidColorBrushWhite}" />
+                            <Setter Property="Padding" Value="5" />
+                            <Style.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding RelativeSource={RelativeSource Self}, Path=(themes:ToolTipService.Color), Converter={framework:IsNullConverter}}"
+                                    Value="False">
+                                    <Setter Property="Background"
+                                            Value="{Binding RelativeSource={RelativeSource Self}, Path=(themes:ToolTipService.Color)}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock
+                    Text="{Binding RelativeSource={RelativeSource Self}, Path=(themes:ToolTipService.Description), Mode=TwoWay}">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Foreground" Value="{StaticResource ResourceKey=SolidColorBrushBlack}" />
+                            <Setter Property="Padding" Value="5" />
+                            <Setter Property="TextWrapping" Value="Wrap" />
+                            <Style.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text, Converter={framework:IsNullOrEmptyConverter}}"
+                                    Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </StackPanel>
+        </Border>
+    </ControlTemplate>
+
+    <Style x:Key="StyleStateIndicatorRectangle" TargetType="{x:Type Rectangle}">
+        <Setter Property="Height" Value="12" />
+        <Setter Property="RenderOptions.EdgeMode" Value="Aliased" />
+        <Setter Property="Width" Value="12" />
+        <Setter Property="themes:FrameworkService.State" Value="False" />
+        <Setter Property="themes:ToolTipService.Title" Value="{x:Null}" />
+        <Setter Property="ToolTip">
+            <Setter.Value>
+                <ToolTip Style="{StaticResource ResourceKey=StyleToolTip}"
+                         Template="{StaticResource ResourceKey=ControlTemplateToolTip}" />
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.State)}"
+                         Value="{x:Null}">
+                <Setter Property="Fill" Value="{StaticResource ResourceKey=SolidColorBrushInformation}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.State)}"
+                         Value="False">
+                <Setter Property="Fill" Value="{StaticResource ResourceKey=SolidColorBrushError}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.State)}"
+                         Value="True">
+                <Setter Property="Fill" Value="{StaticResource ResourceKey=SolidColorBrushSuccess}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="StyleTextBox" TargetType="{x:Type TextBox}">
+        <Setter Property="themes:ToolTipService.Title" Value="{x:Null}" />
+        <Setter Property="themes:ToolTipService.Description" Value="{x:Null}" />
+        <Setter Property="themes:FrameworkService.Placeholder" Value="{x:Null}" />
+        <Setter Property="AllowDrop" Value="True" />
+        <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=SolidColorBrushDarkSmall}" />
+        <Setter Property="BorderThickness" Value="0, 0, 0, 1" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="FontFamily" Value="{StaticResource ResourceKey=FontFamilyBody}" />
+        <Setter Property="FontSize" Value="{StaticResource ResourceKey=FontSizeBody}" />
+        <Setter Property="FontWeight" Value="{StaticResource ResourceKey=FontWeightBody}" />
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="ToolTip">
+            <Setter.Value>
+                <ToolTip
+                    Style="{StaticResource ResourceKey=StyleToolTip}"
+                    Template="{StaticResource ResourceKey=ControlTemplateToolTip}" />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock
+                            Text="{Binding Path=(themes:FrameworkService.Placeholder), Mode=OneWay, RelativeSource={RelativeSource Self}}">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}"
+                                       BasedOn="{StaticResource ResourceKey=StyleTextBlock}">
+                                    <Setter Property="FontSize"
+                                            Value="{StaticResource ResourceKey=FontSizeInformation}" />
+                                    <Style.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding Path=Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}, Converter={framework:IsNullOrEmptyConverter}}"
+                                            Value="True">
+                                            <Setter Property="Visibility" Value="Hidden" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <TextBlock
+                            Grid.Row="1"
+                            Foreground="{StaticResource ResourceKey=SolidColorBrushBorder}"
+                            Margin="10, 0"
+                            Text="{Binding Path=(themes:FrameworkService.Placeholder), Mode=OneWay, RelativeSource={RelativeSource Self}}">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}"
+                                       BasedOn="{StaticResource ResourceKey=StyleTextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding Path=Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}, Converter={framework:IsNullOrEmptyConverter}}"
+                                            Value="False">
+                                            <Setter Property="Visibility" Value="Hidden" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <Border
+                            x:Name="Border"
+                            Grid.Row="1"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="{StaticResource ResourceKey=OpacityDisabledContent}" />
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter Property="BorderBrush" TargetName="Border"
+                                    Value="{StaticResource ResourceKey=SolidColorBrushLightMedium}" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" TargetName="Border"
+                                    Value="{StaticResource ResourceKey=SolidColorBrushLightMedium}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="StyleValidatedTextBox" TargetType="{x:Type TextBox}"
+           BasedOn="{StaticResource ResourceKey=StyleTextBox}">
+        <Setter Property="themes:FrameworkService.ErrorIndicatorOffset" Value="5, 20, 5, 0" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Margin" Value="0, 0, 30, 0" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Validation.ErrorTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <DockPanel LastChildFill="true">
+                        <AdornedElementPlaceholder VerticalAlignment="Center" x:Name="Placeholder" />
+                        <Image DockPanel.Dock="Right"
+                               Margin="{Binding Path=AdornedElement.(themes:FrameworkService.ErrorIndicatorOffset), ElementName=Placeholder, Mode=TwoWay}"
+                               Source="{StaticResource ResourceKey=Error16X16}"
+                               Style="{StaticResource ResourceKey=StyleImage16X16}" />
+                    </DockPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="True">
+                <Setter Property="themes:ToolTipService.Title"
+                        Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors).CurrentItem.ErrorContent}" />
+                <Setter Property="themes:ToolTipService.Color"
+                        Value="{StaticResource ResourceKey=SolidColorBrushError}" />
+                <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=SolidColorBrushError}" />
+            </Trigger>
+            <Trigger Property="Validation.HasError" Value="False">
+                <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=SolidColorBrushSuccess}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="CheckBoxFocusVisualStyte">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle StrokeDashArray="4 4"
+                               RadiusX="5"
+                               RadiusY="5"
+                               Fill="Transparent"
+                               Stroke="{StaticResource ResourceKey=SolidColorBrushDarkHigh}"
+                               StrokeThickness="1" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="StyleCheckBox" TargetType="{x:Type CheckBox}">
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Height" Value="30" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource CheckBoxFocusVisualStyte}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <BulletDecorator>
+                        <BulletDecorator.Bullet>
+                            <Grid Height="{TemplateBinding Height}"
+                                  Width="{Binding RelativeSource={RelativeSource Self}, Path=Height, UpdateSourceTrigger=PropertyChanged}"
+                                  MinHeight="30"
+                                  MinWidth="30">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="4*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="2*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="3*" />
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="4*" />
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="4*" />
+                                </Grid.RowDefinitions>
+                                <Border Name="MainBorder"
+                                        Grid.ColumnSpan="9" Grid.RowSpan="9"
+                                        CornerRadius="4"
+                                        BorderThickness="1"
+                                        Background="Transparent" />
+                                <Border Name="InnerBorder"
+                                        Grid.Column="1" Grid.ColumnSpan="5"
+                                        Grid.Row="2" Grid.RowSpan="5"
+                                        BorderThickness="1"
+                                        BorderBrush="{StaticResource ResourceKey=SolidColorBrushDarkSmall}" />
+                                <Path Name="InnerPath"
+                                      Grid.Column="1" Grid.ColumnSpan="5"
+                                      Grid.Row="2" Grid.RowSpan="5"
+                                      Data="M31,5 L19.5,5 19.5,19.5 34.5,19.5 34.5,11.75"
+                                      Stretch="Fill"
+                                      Stroke="{StaticResource ResourceKey=SolidColorBrushDarkSmall}" />
+                                <Path Name="CheckMark"
+                                      Grid.Column="2" Grid.ColumnSpan="5"
+                                      Grid.Row="1" Grid.RowSpan="5"
+                                      Opacity="0"
+                                      Data="M9.07743946676476E-09,4.31805768640244L4.68740335877841,8.86361158398516C4.68740335877841,8.86361158398516,16.3281249985376,-2.42451336648723,16.3281249985376,-2.42451336648723L14.0622100581796,-4.77304938341948 4.68740335877846,4.31805791992662 2.22656251699567,1.93164208562579z"
+                                      Fill="{StaticResource ResourceKey=SolidColorBrushDarkHigh}"
+                                      Stretch="Fill"
+                                      Stroke="{StaticResource ResourceKey=SolidColorBrushDarkHigh}" />
+                                <Path Name="InderminateMark"
+                                      Grid.Column="3"
+                                      Grid.Row="4"
+                                      Data="M0,4 L1,5 5,1 4,0"
+                                      Opacity="0"
+                                      Stretch="Fill"
+                                      StrokeThickness="0"
+                                      Fill="{StaticResource ResourceKey=SolidColorBrushDarkSmall}" />
+                            </Grid>
+                        </BulletDecorator.Bullet>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CheckStates">
+                                <VisualState x:Name="Checked">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                         Storyboard.TargetName="CheckMark" Duration="0:0:0.1" To="1" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unchecked">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                         Storyboard.TargetName="CheckMark" Duration="0:0:0.1" To="0" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Indeterminate">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                         Storyboard.TargetName="InderminateMark" Duration="0:0:0.1"
+                                                         To="1" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <ContentPresenter Margin="5, 0"
+                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="Left"
+                                          RecognizesAccessKey="True" />
+                    </BulletDecorator>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="InnerBorder" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="MainBorder" Property="Background" Value="Transparent" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Cursor" Value="Arrow" />
+                            <Setter Property="Opacity" Value="{StaticResource ResourceKey=OpacityDisabledContent}" />
+                            <Setter TargetName="CheckMark" Property="Fill"
+                                    Value="{StaticResource ResourceKey=SolidColorBrushDarkSmall}" />
+                            <Setter TargetName="CheckMark" Property="Stroke"
+                                    Value="{StaticResource ResourceKey=SolidColorBrushDarkSmall}" />
+                            <Setter TargetName="InnerPath" Property="Stroke"
+                                    Value="{StaticResource ResourceKey=SolidColorBrushDarkSmall}" />
+                            <Setter TargetName="InderminateMark" Property="Fill"
+                                    Value="{StaticResource ResourceKey=SolidColorBrushDarkSmall}" />
+                            <Setter TargetName="InnerBorder" Property="BorderBrush"
+                                    Value="{StaticResource ResourceKey=SolidColorBrushDarkSmall}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="StyleTabControl" TargetType="{x:Type TabControl}">
+        <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=SolidColorBrushLightMedium}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TabControl}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TabPanel Grid.Row="0"
+                                  Panel.ZIndex="1"
+                                  Background="Transparent"
+                                  IsItemsHost="True"
+                                  Margin="0" />
+                        <Border Grid.Row="1"
+                                BorderBrush="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderBrush}"
+                                BorderThickness="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness}">
+                            <ContentPresenter ContentSource="SelectedContent" />
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="StyleTabItem" TargetType="{x:Type TabItem}">
+        <Setter Property="FontFamily" Value="{StaticResource ResourceKey=FontFamilyH2}" />
+        <Setter Property="FontSize" Value="{StaticResource ResourceKey=FontSizeH2}" />
+        <Setter Property="FontWeight" Value="{StaticResource ResourceKey=FontWeightH2}" />
+        <Setter Property="VerticalAlignment" Value="Bottom" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TabItem}">
+                    <Border Name="Container"
+                            BorderBrush="{StaticResource ResourceKey=SolidColorBrushLightMedium}"
+                            Margin="0, 0, 0, -1">
+                        <ContentPresenter VerticalAlignment="Center"
+                                          HorizontalAlignment="Center"
+                                          ContentSource="Header"
+                                          Margin="10, 5" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Container" Property="Background" Value="White" />
+                            <Setter TargetName="Container" Property="BorderThickness" Value="1, 1, 1, 0" />
+                            <Setter TargetName="Container" Property="Height" Value="40" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="False">
+                            <Setter Property="Cursor" Value="Hand" />
+                            <Setter TargetName="Container" Property="Background"
+                                    Value="{StaticResource ResourceKey=SolidColorBrushLightMedium}" />
+                            <Setter TargetName="Container" Property="Height" Value="36" />
+                            <Setter TargetName="Container" Property="TextBlock.Foreground" Value="White" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled" Value="False" />
+                                <Condition Property="IsSelected" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Opacity" TargetName="Container" Value="0.5" />
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ScrollBarTrackThumb" TargetType="{x:Type Thumb}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Grid x:Name="Grid">
+                        <Rectangle HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Stretch"
+                                   Width="Auto"
+                                   Height="Auto"
+                                   Fill="Transparent" />
+                        <Border x:Name="CornerScrollBarRectangle"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Width="Auto"
+                                Height="Auto"
+                                Margin="5, 0, 0, 0"
+                                Background="{TemplateBinding Background}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Tag" Value="Horizontal">
+                            <Setter TargetName="CornerScrollBarRectangle" Property="Width" Value="Auto" />
+                            <Setter TargetName="CornerScrollBarRectangle" Property="Height" Value="12" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type ScrollBar}">
+        <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
+        <Setter Property="Foreground" Value="{StaticResource ResourceKey=SolidColorBrushDarkSmall}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Width" Value="12" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ScrollBar}">
+                    <Grid x:Name="GridRoot" Width="12" Background="{TemplateBinding Background}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.00001*" />
+                        </Grid.RowDefinitions>
+                        <Track x:Name="PART_Track" Grid.Row="0" IsDirectionReversed="true" Focusable="false">
+                            <Track.Thumb>
+                                <Thumb x:Name="Thumb" Background="{TemplateBinding Foreground}"
+                                       Style="{StaticResource ResourceKey=ScrollBarTrackThumb}" />
+                            </Track.Thumb>
+                            <Track.IncreaseRepeatButton>
+                                <RepeatButton x:Name="PageUp" Command="ScrollBar.PageDownCommand" Opacity="0"
+                                              Focusable="false" />
+                            </Track.IncreaseRepeatButton>
+                            <Track.DecreaseRepeatButton>
+                                <RepeatButton x:Name="PageDown" Command="ScrollBar.PageUpCommand" Opacity="0"
+                                              Focusable="false" />
+                            </Track.DecreaseRepeatButton>
+                        </Track>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="Thumb" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="Orientation" Value="Horizontal">
+                            <Setter TargetName="GridRoot" Property="LayoutTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="-90" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="PART_Track" Property="LayoutTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="-90" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Width" Value="Auto" />
+                            <Setter Property="Height" Value="12" />
+                            <Setter TargetName="Thumb" Property="Tag" Value="Horizontal" />
+                            <Setter TargetName="PageDown" Property="Command" Value="ScrollBar.PageLeftCommand" />
+                            <Setter TargetName="PageUp" Property="Command" Value="ScrollBar.PageRightCommand" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="NavigationItemSeparatorStyle" TargetType="{x:Type Separator}">
+        <Setter Property="Background" Value="{StaticResource ResourceKey=SolidColorBrushDarkSmall}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Separator}">
+                    <Border
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Background="{TemplateBinding Background}"
+                        Height="1"
+                        SnapsToDevicePixels="true" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource ResourceKey=StyleCheckBox}" />
+    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource ResourceKey=StyleTextBlock}" />
+    <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource ResourceKey=StyleTextBox}" />
+</ResourceDictionary>

@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5B33CBA1-CEC4-4358-AE96-8AF61063BB75}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>iGP11.Tool.Bootstrapper</RootNamespace>
+    <AssemblyName>iGP11.Tool.Bootstrapper</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>iGP11.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=4.3.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.3.0\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="AutoMapper, Version=5.2.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.2.0\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AutoMapper\AutoMapperAdapter.cs" />
+    <Compile Include="DependencyResolver.cs" />
+    <Compile Include="Autofac\AutofacResolver.cs" />
+    <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Log4net\Configuration.Designer.cs">
+      <DependentUpon>Configuration.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Log4net\Log4NetAdapter.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\iGP11.Library.Component.DataAnnotations\iGP11.Library.Component.DataAnnotations.csproj">
+      <Project>{833934cf-5080-46da-80a6-37641318a86f}</Project>
+      <Name>iGP11.Library.Component.DataAnnotations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Library.Component\iGP11.Library.Component.csproj">
+      <Project>{3df9a073-e6bb-4c85-8b72-e4fd51b0f23e}</Project>
+      <Name>iGP11.Library.Component</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Library.DDD\iGP11.Library.DDD.csproj">
+      <Project>{e776d5ee-650c-460d-927f-b200e214186c}</Project>
+      <Name>iGP11.Library.DDD</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Library.Hub.Client\iGP11.Library.Hub.Client.csproj">
+      <Project>{d6237064-e9be-4bcb-a1c7-81bdbbda5785}</Project>
+      <Name>iGP11.Library.Hub.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Library.Hub.Shared\iGP11.Library.Hub.Shared.csproj">
+      <Project>{00779bd5-c896-4cd8-8783-977a1e5c15da}</Project>
+      <Name>iGP11.Library.Hub.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Library.Hub.Transport\iGP11.Library.Hub.Transport.csproj">
+      <Project>{58e034c7-8700-4432-9ad2-fd035e7d838a}</Project>
+      <Name>iGP11.Library.Hub.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Library.Hub\iGP11.Library.Hub.csproj">
+      <Project>{3672631f-d4f2-4ce0-985e-d118cc78ce78}</Project>
+      <Name>iGP11.Library.Hub</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Library.Network\iGP11.Library.Network.csproj">
+      <Project>{a53a75fd-46cb-4845-affc-728d87638a0e}</Project>
+      <Name>iGP11.Library.Network</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Library.EventPublisher\iGP11.Library.EventPublisher.csproj">
+      <Project>{50ecdc19-0eec-4769-92f9-76b26cd8783c}</Project>
+      <Name>iGP11.Library.EventPublisher</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Library.File\iGP11.Library.File.csproj">
+      <Project>{6fc85aa9-a372-4663-8b13-95ea6b49a30f}</Project>
+      <Name>iGP11.Library.File</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Library.Scheduler\iGP11.Library.Scheduler.csproj">
+      <Project>{374d579f-fcfd-4355-95b5-985b8ea83242}</Project>
+      <Name>iGP11.Library.Scheduler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Library\iGP11.Library.csproj">
+      <Project>{fedf2fa9-7ca3-4488-9983-3079d9661847}</Project>
+      <Name>iGP11.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Tool.Application.Api\iGP11.Tool.Application.Api.csproj">
+      <Project>{a257bf4e-5c28-48f2-8d9b-1a1090093ef5}</Project>
+      <Name>iGP11.Tool.Application.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Tool.Application\iGP11.Tool.Application.csproj">
+      <Project>{125a88df-56b0-4738-9d43-401178c2fce1}</Project>
+      <Name>iGP11.Tool.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Tool.ReadModel.Api\iGP11.Tool.ReadModel.Api.csproj">
+      <Project>{3092e8ff-3585-4069-979e-c16fc81287a2}</Project>
+      <Name>iGP11.Tool.ReadModel.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Tool.ReadModel\iGP11.Tool.ReadModel.csproj">
+      <Project>{485359ab-9791-4019-9a81-0d20becd0a4f}</Project>
+      <Name>iGP11.Tool.ReadModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Tool.Shared\iGP11.Tool.Shared.csproj">
+      <Project>{33fc4b70-e64e-4f7d-818e-e404362163a9}</Project>
+      <Name>iGP11.Tool.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Tool.Domain\iGP11.Tool.Domain.csproj">
+      <Project>{b279abbb-da91-493f-902b-6a6f9b9f2d16}</Project>
+      <Name>iGP11.Tool.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Tool.Infrastructure.Communication\iGP11.Tool.Infrastructure.Communication.csproj">
+      <Project>{d85602a2-b9aa-4a68-b01b-627cc2a88530}</Project>
+      <Name>iGP11.Tool.Infrastructure.Communication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Tool.Infrastructure.External\iGP11.Tool.Infrastructure.External.csproj">
+      <Project>{6a54911f-fbac-4b7a-b030-e5b175431b08}</Project>
+      <Name>iGP11.Tool.Infrastructure.External</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Tool.Infrastructure.Database\iGP11.Tool.Infrastructure.Database.csproj">
+      <Project>{a88dda32-d985-4c78-a43e-7d6e1317ad75}</Project>
+      <Name>iGP11.Tool.Infrastructure.Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Tool.Localization\iGP11.Tool.Localization.csproj">
+      <Project>{6a47c6cb-a423-40ba-bba2-49678ee148e7}</Project>
+      <Name>iGP11.Tool.Localization</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="iGP11.snk" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Log4net\Configuration.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Configuration.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Log4net\configuration.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

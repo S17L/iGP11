@@ -1,0 +1,43 @@
+﻿{
+  "assemblyInformation": {
+    "version": "2.0.0.0",
+    "productVersion": "2.0.0",
+    "copyright": "Copyright © 2016-2017 S17L All Rights Reserved"
+  },
+  "root": "../../",
+  "assemblies": [
+    "{root}iGP11/iGP11.rc",
+    "{root}iGP11.Direct3D11/iGP11.Direct3D11.rc",
+    "{root}iGP11.External.Imaging/iGP11.External.Imaging.rc",
+    "{root}iGP11.External.Injection/iGP11.External.Injection.rc",
+    "{root}iGP11.Library/Properties/AssemblyInfo.cs",
+    "{root}iGP11.Library.Component/Properties/AssemblyInfo.cs",
+    "{root}iGP11.Library.Component.DataAnnotations/Properties/AssemblyInfo.cs",
+    "{root}iGP11.Library.DDD/Properties/AssemblyInfo.cs",
+    "{root}iGP11.Library.EventPublisher/Properties/AssemblyInfo.cs",
+    "{root}iGP11.Library.File/Properties/AssemblyInfo.cs",
+    "{root}iGP11.Library.Hub/Properties/AssemblyInfo.cs",
+    "{root}iGP11.Library.Hub.Client/Properties/AssemblyInfo.cs",
+    "{root}iGP11.Library.Hub.Shared/Properties/AssemblyInfo.cs",
+    "{root}iGP11.Library.Hub.Transport/Properties/AssemblyInfo.cs",
+    "{root}iGP11.Library.Network/Properties/AssemblyInfo.cs",
+    "{root}iGP11.Library.Scheduler/Properties/AssemblyInfo.cs",
+    "{root}iGP11.Tool/Properties/AssemblyInfo.cs",
+    "{root}iGP11.Tool.Application/Properties/AssemblyInfo.cs",
+    "{root}iGP11.Tool.Application.Api/Properties/AssemblyInfo.cs",
+    "{root}iGP11.Tool.Bootstrapper/Properties/AssemblyInfo.cs",
+    "{root}iGP11.Tool.Domain/Properties/AssemblyInfo.cs",
+    "{root}iGP11.Tool.Infrastructure.Communication/Properties/AssemblyInfo.cs",
+    "{root}iGP11.Tool.Infrastructure.Database/Properties/AssemblyInfo.cs",
+	"{root}iGP11.Tool.Infrastructure.External/Properties/AssemblyInfo.cs",
+    "{root}iGP11.Tool.Localization/Properties/AssemblyInfo.cs",
+    "{root}iGP11.Tool.ReadModel/Properties/AssemblyInfo.cs",
+    "{root}iGP11.Tool.ReadModel.Api/Properties/AssemblyInfo.cs",
+    "{root}iGP11.Tool.Shared/Properties/AssemblyInfo.cs"
+  ],
+  "getCommitId": "{root}build/get_commit_id.bat",
+  "commitId": "{root}build/commit_id.txt",
+  "build": "{root}build/build_release.bat",
+  "makePackage": "{root}build/make_package_release.bat"
+}
+

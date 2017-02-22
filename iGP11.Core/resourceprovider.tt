@@ -1,0 +1,85 @@
+<#@ template debug="false" hostspecific="true" language="c#" #>
+<#@ output extension="cpp" #>
+<#@ assembly name="System" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+/* ----- AUTO-GENERATED FILE ----- */
+
+#include "stdafx.h"
+#include "resourceprovider.h"
+
+<#
+    var encryptionKey = Convert.ToByte(DateTime.Now.Ticks % 255);
+#>
+#define RESOURCE_PROVIDER_ENCRYPTION_KEY <#= encryptionKey #>
+
+std::string getDecrypted(const char* encrypted, unsigned int length) {
+    std::unique_ptr<char[]> decrypted(new char[length + 1]);
+    for (unsigned int i = 0; i < length; i++) {
+        decrypted[i] = encrypted[i] ^ ((RESOURCE_PROVIDER_ENCRYPTION_KEY + i) % 255);
+    }
+
+    decrypted[length] = '\0';
+
+    return std::string(decrypted.get());
+}
+
+<#
+    var entries = GetFileResources();
+    foreach(var entry in entries)
+    {
+#>
+const char _<#= entry.Key #>[<#= entry.Value.Length + 1 #>] = {
+<#
+    for (var i = 0; i < entry.Value.Length; i++)
+    {
+#>
+    (char)0x<#= (Convert.ToByte(entry.Value[i]) ^ ((encryptionKey + i) % 255)).ToString("x2") #>,
+<#
+    }
+#>
+    0x00
+};
+<#
+    }
+#>
+
+std::string core::FileResourceProvider::get(const std::string &key) {
+<#
+    foreach(var entry in entries)
+    {
+#>
+    if (key == ENCRYPT_STRING("<#= entry.Key #>")) {
+        return ::getDecrypted(_<#= entry.Key #>, <#= entry.Value.Length #>);
+    }
+
+<#
+    }
+#>
+    throw core::exception::ResourceNotFoundException(key);
+}
+<#+
+    List<KeyValuePair<string, string>> GetFileResources()
+    {
+        var files = new List<KeyValuePair<string, string>>();
+        var extensions = new List<string> {".hlsl", ".txt"};
+
+        foreach (var filePath in Directory.GetFiles(Host.ResolvePath(string.Empty), "*.*", SearchOption.AllDirectories))
+        {
+            if (!extensions.Contains(Path.GetExtension(filePath).ToLower()))
+            {
+                continue;
+            }
+
+            var entry = new KeyValuePair<string, string>(
+                Path.GetFileName(filePath).Replace(".", "_"),
+                File.ReadAllText(filePath));
+
+            files.Add(entry);
+        }
+
+        return files;
+    }
+#>

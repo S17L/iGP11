@@ -1,0 +1,7 @@
+﻿{
+  "id": {
+    "value": "{2339DF7A-68B2-4313-B983-DA042C7FFD7A}"
+  },
+  "applicationCommunicationPort": 7320,
+  "proxyCommunicationPort": 7321
+}

@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D85602A2-B9AA-4A68-B01B-627CC2A88530}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>iGP11.Tool.Infrastructure.Communication</RootNamespace>
+    <AssemblyName>iGP11.Tool.Infrastructure.Communication</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>iGP11.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CommunicationProxyFactory.cs" />
+    <Compile Include="Communicator.cs" />
+    <Compile Include="CommunicatorFactory.cs" />
+    <Compile Include="Model\Command.cs" />
+    <Compile Include="CommunicationProxy.cs" />
+    <Compile Include="Enums\RequestType.cs" />
+    <Compile Include="ICommunicationProxy.cs" />
+    <Compile Include="ICommunicationProxyFactory.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\iGP11.Library.Component.DataAnnotations\iGP11.Library.Component.DataAnnotations.csproj">
+      <Project>{833934cf-5080-46da-80a6-37641318a86f}</Project>
+      <Name>iGP11.Library.Component.DataAnnotations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Library.Component\iGP11.Library.Component.csproj">
+      <Project>{3df9a073-e6bb-4c85-8b72-e4fd51b0f23e}</Project>
+      <Name>iGP11.Library.Component</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Library.DDD\iGP11.Library.DDD.csproj">
+      <Project>{e776d5ee-650c-460d-927f-b200e214186c}</Project>
+      <Name>iGP11.Library.DDD</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Library\iGP11.Library.csproj">
+      <Project>{fedf2fa9-7ca3-4488-9983-3079d9661847}</Project>
+      <Name>iGP11.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Tool.Application\iGP11.Tool.Application.csproj">
+      <Project>{125a88df-56b0-4738-9d43-401178c2fce1}</Project>
+      <Name>iGP11.Tool.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Tool.Domain\iGP11.Tool.Domain.csproj">
+      <Project>{b279abbb-da91-493f-902b-6a6f9b9f2d16}</Project>
+      <Name>iGP11.Tool.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iGP11.Tool.Shared\iGP11.Tool.Shared.csproj">
+      <Project>{33fc4b70-e64e-4f7d-818e-e404362163a9}</Project>
+      <Name>iGP11.Tool.Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="iGP11.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

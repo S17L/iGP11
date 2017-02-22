@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\effects">
+      <UniqueIdentifier>{abaed237-3792-4c21-b6c8-934a3aa302ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\effects">
+      <UniqueIdentifier>{eed8b2ee-a12c-4a8e-b58c-937d92765d27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\profiles">
+      <UniqueIdentifier>{f68ec50f-bd3f-4301-a678-4bbebb9964f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\profiles">
+      <UniqueIdentifier>{662494b5-36e1-4293-89a6-e41f027f3319}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="textureservice.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="igp11direct3d11.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="render.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="effect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bokehdof.h">
+      <Filter>Header Files\effects</Filter>
+    </ClInclude>
+    <ClInclude Include="lumasharpen.h">
+      <Filter>Header Files\effects</Filter>
+    </ClInclude>
+    <ClInclude Include="profilepicker.h">
+      <Filter>Header Files\profiles</Filter>
+    </ClInclude>
+    <ClInclude Include="darksouls3profile.h">
+      <Filter>Header Files\profiles</Filter>
+    </ClInclude>
+    <ClInclude Include="baseefect.h">
+      <Filter>Header Files\effects</Filter>
+    </ClInclude>
+    <ClInclude Include="vibrance.h">
+      <Filter>Header Files\effects</Filter>
+    </ClInclude>
+    <ClInclude Include="luminescence.h">
+      <Filter>Header Files\effects</Filter>
+    </ClInclude>
+    <ClInclude Include="alpha.h">
+      <Filter>Header Files\effects</Filter>
+    </ClInclude>
+    <ClInclude Include="fallout4profile.h">
+      <Filter>Header Files\profiles</Filter>
+    </ClInclude>
+    <ClInclude Include="state.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="depth.h">
+      <Filter>Header Files\effects</Filter>
+    </ClInclude>
+    <ClInclude Include="horizontalgaussianblur.h">
+      <Filter>Header Files\effects</Filter>
+    </ClInclude>
+    <ClInclude Include="verticalgaussianblur.h">
+      <Filter>Header Files\effects</Filter>
+    </ClInclude>
+    <ClInclude Include="genericprofile.h">
+      <Filter>Header Files\profiles</Filter>
+    </ClInclude>
+    <ClInclude Include="tonemap.h">
+      <Filter>Header Files\effects</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="darksouls2profile.h">
+      <Filter>Header Files\profiles</Filter>
+    </ClInclude>
+    <ClInclude Include="direct3d11plugin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="entrypoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="textureservice.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="render.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="effect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bokehdof.cpp">
+      <Filter>Source Files\effects</Filter>
+    </ClCompile>
+    <ClCompile Include="lumasharpen.cpp">
+      <Filter>Source Files\effects</Filter>
+    </ClCompile>
+    <ClCompile Include="darksouls3profile.cpp">
+      <Filter>Source Files\profiles</Filter>
+    </ClCompile>
+    <ClCompile Include="profilepicker.cpp">
+      <Filter>Source Files\profiles</Filter>
+    </ClCompile>
+    <ClCompile Include="baseefect.cpp">
+      <Filter>Source Files\effects</Filter>
+    </ClCompile>
+    <ClCompile Include="vibrance.cpp">
+      <Filter>Source Files\effects</Filter>
+    </ClCompile>
+    <ClCompile Include="luminescence.cpp">
+      <Filter>Source Files\effects</Filter>
+    </ClCompile>
+    <ClCompile Include="alpha.cpp">
+      <Filter>Source Files\effects</Filter>
+    </ClCompile>
+    <ClCompile Include="fallout4profile.cpp">
+      <Filter>Source Files\profiles</Filter>
+    </ClCompile>
+    <ClCompile Include="igp11direct3d11.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="state.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="depth.cpp">
+      <Filter>Source Files\effects</Filter>
+    </ClCompile>
+    <ClCompile Include="horizontalgaussianblur.cpp">
+      <Filter>Source Files\effects</Filter>
+    </ClCompile>
+    <ClCompile Include="verticalgaussianblur.cpp">
+      <Filter>Source Files\effects</Filter>
+    </ClCompile>
+    <ClCompile Include="genericprofile.cpp">
+      <Filter>Source Files\profiles</Filter>
+    </ClCompile>
+    <ClCompile Include="tonemap.cpp">
+      <Filter>Source Files\effects</Filter>
+    </ClCompile>
+    <ClCompile Include="darksouls2profile.cpp">
+      <Filter>Source Files\profiles</Filter>
+    </ClCompile>
+    <ClCompile Include="direct3d11plugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="iGP11.Direct3D11.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

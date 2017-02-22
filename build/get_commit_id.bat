@@ -1,0 +1,1 @@
+git rev-parse --short HEAD > commit_id.txt

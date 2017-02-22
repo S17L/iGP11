@@ -1,0 +1,8 @@
+[submodule "external/DirectXTex"]
+	path = external/DirectXTex
+	url = https://github.com/Microsoft/DirectXTex.git
+	branch = master
+[submodule "external/DirectXTK"]
+	path = external/DirectXTK
+	url = https://github.com/Microsoft/DirectXTK.git
+	branch = master

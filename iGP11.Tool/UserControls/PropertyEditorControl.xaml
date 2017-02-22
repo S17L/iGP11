@@ -1,0 +1,146 @@
+﻿<UserControl x:Class="iGP11.Tool.UserControls.PropertyEditorControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:framework="clr-namespace:iGP11.Tool.Framework"
+             xmlns:themes="clr-namespace:iGP11.Tool.Themes"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <DockPanel
+        DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, Path=Source, Converter={framework:ComponentConverter}, UpdateSourceTrigger=PropertyChanged}">
+        <ScrollViewer Margin="0, 0, 0, 5" VerticalScrollBarVisibility="Auto">
+            <StackPanel x:Name="Container">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource ResourceKey=StyleCheckBox}">
+                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                    </Style>
+                    <DataTemplate x:Key="EnumDataTemplate">
+                        <Grid
+                            Margin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, Path=PropertyMargin}"
+                            Width="{Binding ElementName=Container, Path=ActualWidth, Converter={framework:PercentageSizeConverter}, ConverterParameter=0.45}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Options" />
+                            </Grid.ColumnDefinitions>
+                            <ComboBox
+                                themes:FrameworkService.Placeholder="{Binding Path=Name, Mode=OneWay}"
+                                ItemsSource="{Binding Path=ObjectProperty, Converter={framework:EnumDataSourceConverter}, Mode=OneTime}"
+                                IsEnabled="{Binding Path=IsEditable}"
+                                SelectedValuePath="Value"
+                                DisplayMemberPath="Description"
+                                SelectedValue="{Binding Path=ObjectProperty}"
+                                Style="{StaticResource ResourceKey=StyleComboBox}" />
+                        </Grid>
+                    </DataTemplate>
+                    <DataTemplate x:Key="BoolDataTemplate">
+                        <Grid
+                            Margin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, Path=PropertyMargin}"
+                            Width="{Binding ElementName=Container, Path=ActualWidth, Converter={framework:PercentageSizeConverter}, ConverterParameter=0.45}">
+                            <CheckBox IsChecked="{Binding Path=Property}"
+                                      IsEnabled="{Binding Path=IsEditable}">
+                                <TextBlock Text="{Binding Path=Name}"
+                                           Style="{StaticResource ResourceKey=StyleTextBlockPropertyName}" />
+                            </CheckBox>
+                        </Grid>
+                    </DataTemplate>
+                    <DataTemplate x:Key="DefaultDataTemplate">
+                        <AdornerDecorator
+                            Margin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, Path=PropertyMargin}"
+                            Width="{Binding ElementName=Container, Path=ActualWidth, Converter={framework:PercentageSizeConverter}, ConverterParameter=0.45}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="Options" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <TextBox
+                                    themes:FrameworkService.Placeholder="{Binding Path=Name, Mode=OneWay}"
+                                    IsEnabled="{Binding Path=IsEditable}"
+                                    Style="{StaticResource ResourceKey=StyleValidatedTextBox}"
+                                    Text="{Binding Path=ObjectProperty, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+                            </Grid>
+                        </AdornerDecorator>
+                    </DataTemplate>
+                    <DataTemplate x:Key="GroupedByDataTemplate">
+                        <Border Style="{StaticResource ResourceKey=StyleGroupByBorder}">
+                            <TextBlock
+                                Style="{StaticResource ResourceKey=StyleGroupByTextBlock}"
+                                Text="{Binding Path=Name}"
+                                Width="{Binding ElementName=Container, Path=ActualWidth, Converter={framework:PercentageSizeConverter}, ConverterParameter=1.0}" />
+                        </Border>
+                    </DataTemplate>
+                    <DataTemplate x:Key="DirectoryPathDataTemplate">
+                        <Grid
+                            Margin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, Path=PropertyMargin}"
+                            Width="{Binding ElementName=Container, Path=ActualWidth, Converter={framework:PercentageSizeConverter}, ConverterParameter=0.9}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Options" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding Path=Name, ValidatesOnNotifyDataErrors=False}"
+                                       Style="{StaticResource ResourceKey=StyleTextBlockPropertyName}" />
+                            <Button
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                IsEnabled="False"
+                                Content="{Binding Path=ObjectProperty, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=False}"
+                                HorizontalAlignment="Stretch"
+                                Style="{StaticResource ResourceKey=StyleImageButton}"
+                                themes:ToolTipService.Title="{Binding Path=FormattedProperty, Mode=OneWay}"
+                                HorizontalContentAlignment="Left"
+                                Validation.ErrorTemplate="{x:Null}" />
+                            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                                <Button
+                                    themes:FrameworkService.Image="{StaticResource ResourceKey=MoveTo16X16}"
+                                    themes:FrameworkService.ImageHover="{StaticResource ResourceKey=MoveToHover16X16}"
+                                    themes:ToolTipService.Title="{Binding Source={StaticResource ResourceKey=LocalizationOpenDirectory}, Mode=OneTime}"
+                                    Style="{StaticResource ResourceKey=StyleImageButton}"
+                                    Command="{Binding Path=MoveToDirectoryPathCommand}"
+                                    Margin="-1, 0, 0, 0"
+                                    Validation.ErrorTemplate="{x:Null}" />
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                    <framework:PropertyDataTemplateSelector
+                        x:Key="PropertyDataTemplateSelector"
+                        GroupedByDataTemplate="{StaticResource ResourceKey=GroupedByDataTemplate}"
+                        BoolDataTemplate="{StaticResource ResourceKey=BoolDataTemplate}"
+                        EnumDataTemplate="{StaticResource ResourceKey=EnumDataTemplate}"
+                        FloatDataTemplate="{StaticResource ResourceKey=DefaultDataTemplate}"
+                        IntDataTemplate="{StaticResource ResourceKey=DefaultDataTemplate}"
+                        UintDataTemplate="{StaticResource ResourceKey=DefaultDataTemplate}"
+                        UshortDataTemplate="{StaticResource ResourceKey=DefaultDataTemplate}"
+                        DirectoryPathDataTemplate="{StaticResource ResourceKey=DirectoryPathDataTemplate}"
+                        StringDataTemplate="{StaticResource ResourceKey=DefaultDataTemplate}" />
+                </StackPanel.Resources>
+                <TextBlock Foreground="{StaticResource ResourceKey=SolidColorBrushError}"
+                           Margin="10, 0, 10, 10"
+                           Text="{Binding Path=ErrorBody}"
+                           Visibility="{Binding Path=HasErrors, Converter={framework:VisibleValueConverter}}" />
+                <ItemsControl Grid.IsSharedSizeScope="True"
+                              ItemsSource="{Binding Path=DataSource}"
+                              ItemTemplateSelector="{StaticResource ResourceKey=PropertyDataTemplateSelector}"
+                              HorizontalContentAlignment="Stretch">
+                    <ItemsControl.ItemContainerStyle>
+                        <Style>
+                            <Setter Property="FrameworkElement.Margin" Value="0, 3" />
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Grid.IsSharedSizeScope="True" Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

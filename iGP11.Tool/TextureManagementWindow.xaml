@@ -1,0 +1,323 @@
+﻿<Window x:Class="iGP11.Tool.TextureManagementWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:themes="clr-namespace:iGP11.Tool.Themes"
+        xmlns:userControls="clr-namespace:iGP11.Tool.UserControls"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:framework="clr-namespace:iGP11.Tool.Framework"
+        xmlns:texture="clr-namespace:iGP11.Tool.ViewModel.Texture"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance texture:TextureManagementWindowViewModel}"
+        ResizeMode="NoResize"
+        Height="736"
+        Width="768"
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource ResourceKey=StyleWindow}">
+    <Grid Margin="5">
+        <DockPanel>
+            <StatusBar DockPanel.Dock="Bottom"
+                       Background="{StaticResource ResourceKey=SolidColorBrushDarkSmall}"
+                       Foreground="{StaticResource ResourceKey=SolidColorBrushWhite}"
+                       Padding="10">
+                <StatusBarItem>
+                    <StatusBarItem.Style>
+                        <Style TargetType="{x:Type StatusBarItem}">
+                            <Style.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding Path=StatusViewModel.Text, Converter={framework:IsNullOrEmptyConverter}}"
+                                    Value="True">
+                                    <Setter Property="Visibility" Value="Hidden" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StatusBarItem.Style>
+                    <StackPanel Orientation="Horizontal">
+                        <Rectangle>
+                            <Rectangle.Style>
+                                <Style TargetType="{x:Type Rectangle}">
+                                    <Setter Property="Height" Value="12" />
+                                    <Setter Property="RenderOptions.EdgeMode" Value="Aliased" />
+                                    <Setter Property="Width" Value="12" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=StatusViewModel.State}" Value="{x:Null}">
+                                            <Setter Property="Fill"
+                                                    Value="{StaticResource ResourceKey=SolidColorBrushInformation}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=StatusViewModel.State}" Value="False">
+                                            <Setter Property="Fill"
+                                                    Value="{StaticResource ResourceKey=SolidColorBrushError}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=StatusViewModel.State}" Value="True">
+                                            <Setter Property="Fill"
+                                                    Value="{StaticResource ResourceKey=SolidColorBrushSuccess}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Rectangle.Style>
+                        </Rectangle>
+                        <TextBlock Text="{Binding Path=StatusViewModel.Text}"
+                                   Margin="10, 0"
+                                   Style="{StaticResource ResourceKey=StyleTextBlock}" />
+                    </StackPanel>
+                </StatusBarItem>
+            </StatusBar>
+            <Grid DockPanel.Dock="Bottom" Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Button Grid.Row="0"
+                        Grid.Column="0"
+                        Command="{Binding Path=ConvertMultiCommand}"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
+                        Content="{Binding Source={StaticResource ResourceKey=LocalizationConvertTextures}, Mode=OneTime, Converter={framework:TextCapitalizeConverter}}"
+                        Style="{StaticResource ResourceKey=StyleBalancedImageButton}"
+                        Visibility="{Binding Path=IsProcessing, Converter={framework:HiddenValueConverter}}" />
+                <Button Grid.Row="0"
+                        Grid.Column="2"
+                        Command="{Binding Path=ConvertSingleCommand}"
+                        Content="{Binding Source={StaticResource ResourceKey=LocalizationConvertTexture}, Mode=OneTime, Converter={framework:TextCapitalizeConverter}}"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Style="{StaticResource ResourceKey=StyleBalancedImageButton}"
+                        Visibility="{Binding Path=IsProcessing, Converter={framework:HiddenValueConverter}}" />
+                <Button Grid.Row="1"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Command="{Binding Path=AbortCommand}"
+                        Content="Abort"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Style="{StaticResource ResourceKey=StyleBalancedImageButton}"
+                        Visibility="{Binding Path=IsProcessing, Converter={framework:VisibleValueConverter}}" />
+            </Grid>
+            <userControls:ProcessingContainer IsProcessing="{Binding Path=IsProcessing}" Margin="10, 10, 10, 0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="source directory"
+                               FontSize="{StaticResource ResourceKey=FontSizeInformation}"
+                               Style="{StaticResource ResourceKey=StyleTextBlockHeader}" />
+                    <DockPanel Grid.Row="1" Grid.Column="0">
+                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                            <Button themes:FrameworkService.Image="{StaticResource ResourceKey=MoveTo16X16}"
+                                    themes:FrameworkService.ImageHover="{StaticResource ResourceKey=MoveToHover16X16}"
+                                    themes:ToolTipService.Title="{Binding Source={StaticResource ResourceKey=LocalizationOpenDirectory}, Mode=OneTime}"
+                                    Style="{StaticResource ResourceKey=StyleImageButton}"
+                                    Command="{Binding Path=MoveToSourceDirectoryCommand}"
+                                    Margin="-1, 0, 0, 0" />
+                        </StackPanel>
+                        <Button Command="{Binding Path=PickSourceDirectoryCommand}"
+                                Content="{Binding Path=SourceDirectory}"
+                                HorizontalAlignment="Stretch"
+                                Style="{StaticResource ResourceKey=StyleImageButton}"
+                                themes:ToolTipService.Title="{Binding Path=SourceDirectory}"
+                                HorizontalContentAlignment="Left" />
+                    </DockPanel>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="destination directory"
+                               FontSize="{StaticResource ResourceKey=FontSizeInformation}"
+                               Style="{StaticResource ResourceKey=StyleTextBlockHeader}" />
+                    <DockPanel Grid.Row="1" Grid.Column="2">
+                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                            <Button themes:FrameworkService.Image="{StaticResource ResourceKey=MoveTo16X16}"
+                                    themes:FrameworkService.ImageHover="{StaticResource ResourceKey=MoveToHover16X16}"
+                                    themes:ToolTipService.Title="{Binding Source={StaticResource ResourceKey=LocalizationOpenDirectory}, Mode=OneTime}"
+                                    Style="{StaticResource ResourceKey=StyleImageButton}"
+                                    Command="{Binding Path=MoveToDestinationDirectoryCommand}"
+                                    Margin="-1, 0, 0, 0" />
+                        </StackPanel>
+                        <Button Command="{Binding Path=PickDestinationDirectoryCommand}"
+                                Content="{Binding Path=DestinationDirectory}"
+                                HorizontalAlignment="Stretch"
+                                Style="{StaticResource ResourceKey=StyleImageButton}"
+                                themes:ToolTipService.Title="{Binding Path=DestinationDirectory}"
+                                HorizontalContentAlignment="Left" />
+                    </DockPanel>
+                    <userControls:TileControl Grid.Row="3" Grid.Column="0"
+                                              Header="{Binding Source={StaticResource ResourceKey=LocalizationAvailableTextures}, Mode=OneTime}"
+                                              IsCollapsed="{x:Null}">
+                        <DockPanel>
+                            <Border DockPanel.Dock="Top" Style="{StaticResource ResourceKey=StyleTileSeparator}">
+                                <WrapPanel Margin="5">
+                                    <Button themes:FrameworkService.Image="{StaticResource ResourceKey=Check16X16}"
+                                            themes:FrameworkService.ImageHover="{StaticResource ResourceKey=CheckHover16X16}"
+                                            Command="{Binding Path=CheckAllCommand}"
+                                            Content="{Binding Source={StaticResource ResourceKey=LocalizationCheckAll}, Mode=OneTime}"
+                                            HorizontalAlignment="Stretch"
+                                            Style="{StaticResource ResourceKey=StyleImageButton}"
+                                            HorizontalContentAlignment="Left" />
+                                    <Button themes:FrameworkService.Image="{StaticResource ResourceKey=Uncheck16X16}"
+                                            themes:FrameworkService.ImageHover="{StaticResource ResourceKey=UncheckHover16X16}"
+                                            Command="{Binding Path=UncheckAllCommand}"
+                                            Content="{Binding Source={StaticResource ResourceKey=LocalizationUncheckAll}, Mode=OneTime}"
+                                            HorizontalAlignment="Stretch"
+                                            Style="{StaticResource ResourceKey=StyleImageButton}"
+                                            HorizontalContentAlignment="Left"
+                                            Margin="5, 0, 0, 0" />
+                                </WrapPanel>
+                            </Border>
+                            <ListBox Margin="5"
+                                     HorizontalContentAlignment="Stretch"
+                                     ItemsSource="{Binding Path=Textures}"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                <ListBox.Style>
+                                    <Style TargetType="{x:Type ListBox}">
+                                        <Setter Property="BorderThickness" Value="0" />
+                                        <Setter Property="AlternationCount" Value="2" />
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="ListBox">
+                                                    <Border BorderBrush="{TemplateBinding Border.BorderBrush}"
+                                                            BorderThickness="0" Name="Bd"
+                                                            Background="{TemplateBinding Panel.Background}"
+                                                            SnapsToDevicePixels="True" Padding="0">
+                                                        <ScrollViewer Focusable="False"
+                                                                      Padding="{TemplateBinding Control.Padding}">
+                                                            <ItemsPresenter
+                                                                SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                                                        </ScrollViewer>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ListBox.Style>
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="{x:Type ListBoxItem}"
+                                           BasedOn="{StaticResource ResourceKey=StyleListBoxItem}">
+                                        <Setter Property="Padding" Value="0, 3" />
+                                        <Setter Property="IsSelected" Value="{Binding Path=IsSelected}" />
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type texture:TextureNodeViewModel}">
+                                        <Border Padding="5">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+                                                <CheckBox Grid.Column="0"
+                                                          Grid.Row="0"
+                                                          IsChecked="{Binding Path=IsPicked}" />
+                                                <userControls:ImageTextBlock Grid.Column="1"
+                                                                             Grid.Row="0"
+                                                                             Background="Transparent"
+                                                                             HorizontalContentAlignment="Left"
+                                                                             Text="{Binding Path=FileName}"
+                                                                             Title="{Binding Path=FileName}" />
+                                                <TextBlock Grid.Column="2" Text="{Binding Path=FileLength}" />
+                                                <Button Grid.Column="3"
+                                                        Grid.Row="0"
+                                                        Padding="0"
+                                                        themes:FrameworkService.Image="{StaticResource ResourceKey=MoveToHover16X16}"
+                                                        themes:ToolTipService.Title="{Binding Source={StaticResource ResourceKey=LocalizationOpenDirectory}, Mode=OneTime}"
+                                                        Command="{Binding Path=MoveToCommand}"
+                                                        Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=IsMouseOver, Converter={framework:VisibleValueConverter IsCollapsing=False}}"
+                                                        HorizontalAlignment="Stretch"
+                                                        Style="{StaticResource ResourceKey=StyleFlatImageButton}"
+                                                        HorizontalContentAlignment="Left" />
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </DockPanel>
+                    </userControls:TileControl>
+                    <userControls:TileControl Grid.Row="3" Grid.Column="2" Header="{Binding Path=TexturePreview.Name}"
+                                              IsCollapsed="{x:Null}">
+                        <DockPanel>
+                            <Border DockPanel.Dock="Bottom" Style="{StaticResource ResourceKey=StyleTileSeparator}">
+                                <Grid Margin="5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="5" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Format:"
+                                               Style="{StaticResource ResourceKey=StyleTextBlockHeader}" />
+                                    <TextBlock Grid.Row="0" Grid.Column="2"
+                                               Text="{Binding Path=TexturePreview.Metadata.Format, Converter={framework:EnumConverter}}"
+                                               Style="{StaticResource ResourceKey=StyleTextBlock}" />
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Resolution:"
+                                               Style="{StaticResource ResourceKey=StyleTextBlockHeader}" />
+                                    <TextBlock Grid.Row="2" Grid.Column="2"
+                                               Style="{StaticResource ResourceKey=StyleTextBlock}">
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0}x{1}">
+                                                <Binding Path="TexturePreview.Metadata.Width" />
+                                                <Binding Path="TexturePreview.Metadata.Height" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </Grid>
+                            </Border>
+                            <userControls:ProcessingContainer IsProcessing="{Binding Path=TexturePreview.IsProcessing}"
+                                                              Padding="5">
+                                <Border MaxHeight="300"
+                                        MaxWidth="300"
+                                        Margin="0"
+                                        Padding="0">
+                                    <Border.Background>
+                                        <ImageBrush
+                                            ImageSource="{Binding Path=TexturePreview.Texture, Converter={framework:TextureToBitmapImageConverter}, UpdateSourceTrigger=PropertyChanged}"
+                                            Stretch="None"
+                                            TileMode="None"
+                                            AlignmentY="Center"
+                                            AlignmentX="Center" />
+                                    </Border.Background>
+                                </Border>
+                            </userControls:ProcessingContainer>
+                        </DockPanel>
+                    </userControls:TileControl>
+                    <userControls:TileControl Grid.Row="5"
+                                              Grid.Column="0"
+                                              Header="{Binding Source={StaticResource ResourceKey=LocalizationConversionConfiguration}, Mode=OneTime}"
+                                              IsCollapsed="{x:Null}">
+                        <userControls:PropertyEditorControl Margin="0, 10"
+                                                            Source="{Binding Path=MultiTextureConversionSettings}"
+                                                            ChangedCommand="{Binding Path=MultiChangedCommand}" />
+                    </userControls:TileControl>
+                    <userControls:TileControl Grid.Row="5"
+                                              Grid.Column="2"
+                                              Header="{Binding Source={StaticResource ResourceKey=LocalizationConversionConfiguration}, Mode=OneTime}"
+                                              IsCollapsed="{x:Null}">
+                        <userControls:PropertyEditorControl Margin="0, 10"
+                                                            Source="{Binding Path=SingleTextureConversionConfiguration}"
+                                                            ChangedCommand="{Binding Path=SingleChangedCommand}" />
+                    </userControls:TileControl>
+                </Grid>
+            </userControls:ProcessingContainer>
+        </DockPanel>
+    </Grid>
+</Window>

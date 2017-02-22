@@ -1,0 +1,42 @@
+﻿<Window x:Class="iGP11.Tool.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:userControls="clr-namespace:iGP11.Tool.UserControls"
+        ResizeMode="NoResize"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        Height="Auto"
+        Width="Auto"
+        MaxWidth="300"
+        Style="{StaticResource ResourceKey=StyleDialog}">
+    <StackPanel Orientation="Vertical">
+        <TextBlock
+            Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Title}"
+            Style="{StaticResource ResourceKey=StyleTextBlockWindowTitle}" />
+        <userControls:AssemblyInformationControl Margin="30, 20" />
+        <StackPanel Margin="30, 0, 30, 20" Orientation="Vertical">
+            <StackPanel Orientation="Vertical">
+                <TextBlock FontSize="{StaticResource ResourceKey=FontSizeInformation}"
+                           Text="{Binding Source={StaticResource ResourceKey=LocalizationFeedback}, Mode=OneTime}" />
+                <TextBlock
+                    Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=FeedbackEmail}"
+                    TextDecorations="Underline" />
+            </StackPanel>
+            <StackPanel Margin="0, 10, 0, 0" Orientation="Vertical">
+                <TextBlock FontSize="{StaticResource ResourceKey=FontSizeInformation}"
+                           Text="{Binding Source={StaticResource ResourceKey=LocalizationIcons}, Mode=OneTime}" />
+                <TextBlock
+                    Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=UsedIconsUri}"
+                    TextDecorations="Underline" />
+            </StackPanel>
+        </StackPanel>
+        <Button
+            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=CloseCommand}"
+            HorizontalAlignment="Stretch"
+            Margin="0"
+            HorizontalContentAlignment="Center"
+            Content="{Binding Source={StaticResource ResourceKey=LocalizationOk}, Mode=OneTime}"
+            Style="{StaticResource ResourceKey=StyleBalancedImageButton}" />
+    </StackPanel>
+</Window>

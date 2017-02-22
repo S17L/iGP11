@@ -1,0 +1,13 @@
+﻿{
+  "applicationCommunicationPort": 7320,
+  "applicationListenerUri": "http://{0}:{1}",
+  "databaseFilePath": "db\\iGP11.db",
+  "databaseEncryptionKey": "tyUid7QsdmoLa31d",
+  "plugins": {
+    "proxy": "iGP11.dll",
+    "direct3D11": "iGP11.Direct3D11.dll"
+  },
+  "proxyCommunicationPort": 7321,
+  "proxySettingsFileName": "settings.igp",
+  "systemIpAddress": "127.0.0.1"
+}

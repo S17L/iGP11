@@ -1,0 +1,37 @@
+﻿<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".xaml" #>
+<#@ assembly name="EnvDTE" #>
+<#@ assembly name="System" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="EnvDTE" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Reflection" #>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:common="clr-namespace:iGP11.Tool.Localization;assembly=iGP11.Tool.Localization"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+<#
+    var dte = (Host as IServiceProvider).GetService(typeof(DTE)) as DTE;
+    var configurationName = dte.Solution.SolutionBuild.ActiveConfiguration.Name; 
+
+    var filePath = string.Format(@"{0}\..\iGP11.Tool.Localization\bin\{1}\iGP11.Tool.Localization.dll", Host.ResolvePath(string.Empty), configurationName);
+    var assembly = Assembly.Load(File.ReadAllBytes(filePath));
+    var type = assembly.GetType("iGP11.Tool.Localization.Resources");
+
+    foreach (var property in type.GetProperties())
+    {
+        if (property.PropertyType == typeof(string))
+        {
+#>
+    <ObjectDataProvider x:Key="Localization<#= property.Name #>" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+        <ObjectDataProvider.MethodParameters>
+            <system:String><#= property.Name #></system:String>
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+<#
+        }
+    }
+#>
+</ResourceDictionary>

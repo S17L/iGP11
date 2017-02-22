@@ -1,0 +1,235 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:userControls="clr-namespace:iGP11.Tool.UserControls"
+    xmlns:themes="clr-namespace:iGP11.Tool.Themes"
+    xmlns:framework="clr-namespace:iGP11.Tool.Framework">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/iGP11.Tool;component/Localization.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/iGP11.Tool;component/Resources.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style TargetType="{x:Type userControls:ProcessingContainer}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type userControls:ProcessingContainer}">
+                    <Border>
+                        <Border.Resources>
+                            <Storyboard x:Key="LoadingStoryboard" RepeatBehavior="Forever">
+                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                                               Storyboard.TargetName="LoadingAnimation"
+                                                               Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
+                                    <SplineDoubleKeyFrame KeyTime="00:00:02" Value="360" />
+                                </DoubleAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </Border.Resources>
+                        <Border.Triggers>
+                            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                <BeginStoryboard Storyboard="{StaticResource ResourceKey=LoadingStoryboard}" />
+                            </EventTrigger>
+                        </Border.Triggers>
+                        <Grid>
+                            <Border>
+                                <Border.Style>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="Opacity" Value="1" />
+                                        <Style.Triggers>
+                                            <DataTrigger
+                                                Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsProcessing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Value="True">
+                                                <Setter Property="Opacity" Value="0.5" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                  RecognizesAccessKey="True" />
+                            </Border>
+                            <Border Background="Transparent"
+                                    Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsProcessing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={framework:VisibleValueConverter}}">
+                                <Ellipse x:Name="LoadingAnimation"
+                                         StrokeThickness="12"
+                                         RenderTransformOrigin="0.5, 0.5"
+                                         Width="48"
+                                         Height="48">
+                                    <Ellipse.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform />
+                                            <SkewTransform />
+                                            <RotateTransform />
+                                        </TransformGroup>
+                                    </Ellipse.RenderTransform>
+                                    <Ellipse.Stroke>
+                                        <LinearGradientBrush EndPoint="0.445, 0.997" StartPoint="0.555, 0.003">
+                                            <GradientStop Color="White" Offset="0" />
+                                            <GradientStop Color="{StaticResource ResourceKey=ColorDark}" Offset="1" />
+                                        </LinearGradientBrush>
+                                    </Ellipse.Stroke>
+                                </Ellipse>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="StyleTileHeader" TargetType="{x:Type Border}">
+        <Setter Property="Background"
+                Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderBrush}" />
+        <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="TextBlock.Foreground" Value="{StaticResource ResourceKey=SolidColorBrushWhite}" />
+        <Setter Property="TextBlock.TextAlignment" Value="Center" />
+        <Setter Property="Padding" Value="10" />
+    </Style>
+
+    <Style x:Key="StyleTileBody" TargetType="{x:Type Border}">
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush"
+                Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderBrush}" />
+        <Setter Property="BorderThickness" Value="1, 0, 1, 1" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+    </Style>
+
+    <Style x:Key="NavigationItemStyle" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource ResourceKey=SolidColorBrushDarkMedium}" />
+        <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=SolidColorBrushDarkMedium}" />
+        <Setter Property="BorderThickness" Value="7, 0, 0, 0" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Padding" Value="10, 10, 15, 10" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Cursor="{TemplateBinding Cursor}"
+                        Padding="{TemplateBinding Padding}">
+                        <ContentPresenter
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="NavigationItemArrowStyle" TargetType="{x:Type Path}">
+        <Setter Property="StrokeThickness" Value="5" />
+        <Setter Property="Stroke" Value="{StaticResource ResourceKey=SolidColorBrushWhite}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style TargetType="{x:Type userControls:TileControl}">
+        <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=SolidColorBrushDarkMedium}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type userControls:TileControl}">
+                    <DockPanel>
+                        <Border DockPanel.Dock="Top" Style="{StaticResource ResourceKey=StyleTileHeader}">
+                            <Grid>
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    FontFamily="{StaticResource ResourceKey=FontFamilyH2}"
+                                    FontSize="{StaticResource ResourceKey=FontSizeH2}"
+                                    FontWeight="{StaticResource ResourceKey=FontWeightH2}"
+                                    Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Header, Converter={framework:TextCapitalizeConverter}}" />
+                                <Button
+                                    Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ChangeVisibilityCommand}"
+                                    Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsCollapsed, Converter={framework:NullVisibilityValueConverter}}"
+                                    HorizontalAlignment="Right"
+                                    Margin="0"
+                                    Padding="0"
+                                    VerticalAlignment="Center">
+                                    <Button.Style>
+                                        <Style TargetType="{x:Type Button}"
+                                               BasedOn="{StaticResource ResourceKey=StyleFlatImageButton}">
+                                            <Style.Triggers>
+                                                <DataTrigger
+                                                    Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsCollapsed}"
+                                                    Value="False">
+                                                    <Setter Property="themes:FrameworkService.Image"
+                                                            Value="{StaticResource ResourceKey=ArrowUpHover16X16}" />
+                                                    <Setter Property="themes:ToolTipService.Title"
+                                                            Value="{Binding Source={StaticResource ResourceKey=LocalizationCollapse}, Mode=OneTime}" />
+                                                </DataTrigger>
+                                                <DataTrigger
+                                                    Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsCollapsed}"
+                                                    Value="True">
+                                                    <Setter Property="themes:FrameworkService.Image"
+                                                            Value="{StaticResource ResourceKey=ArrowDownHover16X16}" />
+                                                    <Setter Property="themes:ToolTipService.Title"
+                                                            Value="{Binding Source={StaticResource ResourceKey=LocalizationExpand}, Mode=OneTime}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </Grid>
+                        </Border>
+                        <Border Style="{StaticResource ResourceKey=StyleTileBody}"
+                                Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsCollapsed, Converter={framework:HiddenValueConverter}}">
+                            <ScrollViewer HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"
+                                          HorizontalScrollBarVisibility="{Binding Converter={framework:ScrollViewerBarVisibilityValueConverter}, RelativeSource={RelativeSource TemplatedParent}, Path=IsScrollViewerEnabled}"
+                                          VerticalScrollBarVisibility="{Binding Converter={framework:ScrollViewerBarVisibilityValueConverter}, RelativeSource={RelativeSource TemplatedParent}, Path=IsScrollViewerEnabled}">
+                                <Border
+                                    Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}">
+                                    <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                      RecognizesAccessKey="True" />
+                                </Border>
+                            </ScrollViewer>
+                        </Border>
+                    </DockPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type userControls:NavigationItemControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type userControls:NavigationItemControl}">
+                    <Button
+                        x:Name="Button"
+                        Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ClickedCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ClickedCommandParameter}"
+                        Style="{StaticResource ResourceKey=NavigationItemStyle}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ContentPresenter
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                RecognizesAccessKey="True"
+                                VerticalAlignment="Center" />
+                            <Path
+                                x:Name="Path"
+                                Grid.Column="1"
+                                Data="M 0,0 L 15,15 0,30"
+                                Style="{StaticResource ResourceKey=NavigationItemArrowStyle}"
+                                Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsArrowVisible, Converter={framework:VisibleValueConverter}}" />
+                        </Grid>
+                    </Button>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="Button" Property="Background"
+                                    Value="{StaticResource ResourceKey=SolidColorBrushDarkHigh}" />
+                            <Setter TargetName="Button" Property="BorderBrush"
+                                    Value="{StaticResource ResourceKey=SolidColorBrushLightMedium}" />
+                            <Setter TargetName="Path" Property="Stroke"
+                                    Value="{StaticResource ResourceKey=SolidColorBrushLightMedium}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

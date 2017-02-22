@@ -1,0 +1,17 @@
+﻿{
+  "id": {
+    "value": "{3F1F7B11-D204-4A15-8766-01C377175D11}"
+  },
+  "sourceDirectory": "",
+  "destinationDirectory": "",
+  "multiConversion": {
+    "colorSpace": 0,
+    "keepMipmaps": true,
+    "outputFormat": 77
+  },
+  "singleConversion": {
+    "colorSpace": 0,
+    "keepMipmaps": true,
+    "outputFormat": 77
+  }
+}
