@@ -17,14 +17,16 @@ namespace iGP11.Tool.Infrastructure.Communication
         private readonly Encoding _encoding = Encoding.UTF8;
         private readonly ushort _port;
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
+        private readonly ILogger _logger;
 
         private bool _hasAccessDenied;
         private TcpClient _tcpClient;
 
-        public CommunicationProxy(string address, ushort port)
+        public CommunicationProxy(string address, ushort port, ILogger logger)
         {
             _address = address;
             _port = port;
+            _logger = logger;
         }
 
         public void Dispose()
@@ -75,6 +77,7 @@ namespace iGP11.Tool.Infrastructure.Communication
         {
             if (request.IsNullOrEmpty() || _hasAccessDenied)
             {
+                _logger.Log(LogLevel.Error, "request is empty or access is denied");
                 return new CommunicationResult<string>(false, null);
             }
 
@@ -100,14 +103,17 @@ namespace iGP11.Tool.Infrastructure.Communication
             }
             catch (ObjectDisposedException)
             {
+                _logger.Log(LogLevel.Error, "communication error due to client being disposed");
                 _tcpClient = null;
             }
             catch (SecurityException)
             {
+                _logger.Log(LogLevel.Error, "communication error due security exception");
                 _hasAccessDenied = true;
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                _logger.Log(LogLevel.Error, $"communication error due to unknown exception; exception: {exception}");
                 Disconnect();
             }
 

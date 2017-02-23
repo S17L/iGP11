@@ -72,9 +72,9 @@ namespace iGP11.Tool.Localization {
         /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
-        public static string About {
+        public static string AboutDialogTitle {
             get {
-                return ResourceManager.GetString("About", resourceCulture);
+                return ResourceManager.GetString("AboutDialogTitle", resourceCulture);
             }
         }
         
@@ -156,6 +156,15 @@ namespace iGP11.Tool.Localization {
         public static string AddProfile {
             get {
                 return ResourceManager.GetString("AddProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add profile.
+        /// </summary>
+        public static string AddProfileDialogTitle {
+            get {
+                return ResourceManager.GetString("AddProfileDialogTitle", resourceCulture);
             }
         }
         
@@ -819,11 +828,20 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remove profile.
+        ///   Looks up a localized string similar to remove profile.
         /// </summary>
         public static string RemoveProfile {
             get {
                 return ResourceManager.GetString("RemoveProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove profile.
+        /// </summary>
+        public static string RemoveProfileDialogTitle {
+            get {
+                return ResourceManager.GetString("RemoveProfileDialogTitle", resourceCulture);
             }
         }
         
@@ -838,11 +856,20 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rename profile.
+        ///   Looks up a localized string similar to rename profile.
         /// </summary>
         public static string RenameProfile {
             get {
                 return ResourceManager.GetString("RenameProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename profile.
+        /// </summary>
+        public static string RenameProfileDialogTitle {
+            get {
+                return ResourceManager.GetString("RenameProfileDialogTitle", resourceCulture);
             }
         }
         
@@ -966,9 +993,9 @@ namespace iGP11.Tool.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Texture management.
         /// </summary>
-        public static string TextureManagement {
+        public static string TextureManagementDialogTitle {
             get {
-                return ResourceManager.GetString("TextureManagement", resourceCulture);
+                return ResourceManager.GetString("TextureManagementDialogTitle", resourceCulture);
             }
         }
         

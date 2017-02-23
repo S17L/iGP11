@@ -777,7 +777,7 @@ namespace iGP11.Tool.ViewModel.Injection
             var id = _settings.Id;
             if (!_navigationService.ShowConfirmationDialog(
                     Target.EntryPoint,
-                    Localization.Localization.Current.Get("RemoveProfile"),
+                    Localization.Localization.Current.Get("RemoveProfileDialogTitle"),
                     Localization.Localization.Current.Get("RemoveProfileQuestion")))
             {
                 return;

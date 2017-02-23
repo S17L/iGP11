@@ -11,11 +11,10 @@
         SizeToContent="Height"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
-        Title="Rename profile"
         Width="250"
         Style="{StaticResource ResourceKey=StyleDialog}">
     <StackPanel Orientation="Vertical">
-        <TextBlock Text="{Binding Source={StaticResource ResourceKey=LocalizationRenameProfile}, Mode=OneTime}"
+        <TextBlock Text="{Binding Source={StaticResource ResourceKey=LocalizationRenameProfileDialogTitle}, Mode=OneTime}"
                    Style="{StaticResource ResourceKey=StyleTextBlockWindowTitle}" />
         <TextBox
             themes:FrameworkService.Placeholder="{Binding Source={StaticResource ResourceKey=LocalizationProfileName}, Mode=OneTime}"

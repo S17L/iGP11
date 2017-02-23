@@ -147,6 +147,8 @@ namespace iGP11.Tool.ViewModel.Texture
                         MipmapsCount = textureMetadata.MipmapsCount,
                         Format = textureMetadata.Format
                     };
+
+                    _viewModel.Rebind();
                 }
             }
             finally
@@ -165,6 +167,7 @@ namespace iGP11.Tool.ViewModel.Texture
             Name = Localization.Localization.Current.Get("TexturePreview");
             Path = null;
             Texture = _emptyImageProvider.Get();
+            _viewModel.Rebind();
         }
 
         private async Task PublishUpdateStatusEventAsync(StatusType type, string key, params object[] arguments)

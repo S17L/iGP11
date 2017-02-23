@@ -120,7 +120,7 @@
   <data name="Abort" xml:space="preserve">
     <value>ABORT</value>
   </data>
-  <data name="About" xml:space="preserve">
+  <data name="AboutDialogTitle" xml:space="preserve">
     <value>About</value>
   </data>
   <data name="AboutFileMissing" xml:space="preserve">
@@ -149,6 +149,9 @@
   </data>
   <data name="AddProfile" xml:space="preserve">
     <value>add profile</value>
+  </data>
+  <data name="AddProfileDialogTitle" xml:space="preserve">
+    <value>Add profile</value>
   </data>
   <data name="Application" xml:space="preserve">
     <value>application</value>
@@ -372,6 +375,9 @@ In case of problems make sure Windows or any other installed program does not cr
     <value>Release notes</value>
   </data>
   <data name="RemoveProfile" xml:space="preserve">
+    <value>remove profile</value>
+  </data>
+  <data name="RemoveProfileDialogTitle" xml:space="preserve">
     <value>Remove profile</value>
   </data>
   <data name="RemoveProfileQuestion" xml:space="preserve">
@@ -379,6 +385,9 @@ In case of problems make sure Windows or any other installed program does not cr
 Profile data will be lost.</value>
   </data>
   <data name="RenameProfile" xml:space="preserve">
+    <value>rename profile</value>
+  </data>
+  <data name="RenameProfileDialogTitle" xml:space="preserve">
     <value>Rename profile</value>
   </data>
   <data name="RenderingModeAlpha" xml:space="preserve">
@@ -420,7 +429,7 @@ Profile data will be lost.</value>
   <data name="TextureConverter" xml:space="preserve">
     <value>Textures converter</value>
   </data>
-  <data name="TextureManagement" xml:space="preserve">
+  <data name="TextureManagementDialogTitle" xml:space="preserve">
     <value>Texture management</value>
   </data>
   <data name="TexturePreview" xml:space="preserve">

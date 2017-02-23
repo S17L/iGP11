@@ -33,7 +33,7 @@ namespace iGP11.Library.Scheduler
             await StartAsync();
         }
 
-        public async Task StartAsync()
+        public async Task StartAsync(bool exitOnEmpty = false)
         {
             if (IsRunning)
             {
@@ -46,7 +46,7 @@ namespace iGP11.Library.Scheduler
                 var tasks = new List<Task>();
                 try
                 {
-                    using (var enumerator = GetScheduledTasks().GetEnumerator())
+                    using (var enumerator = GetScheduledTasksEnumerator())
                     {
                         do
                         {
@@ -77,6 +77,12 @@ namespace iGP11.Library.Scheduler
                     break;
                 }
 
+                if (exitOnEmpty)
+                {
+                    Stop();
+                    break;
+                }
+
                 await Task.Delay(Interval);
             }
         }
@@ -102,7 +108,7 @@ namespace iGP11.Library.Scheduler
             }
         }
 
-        private IEnumerable<IScheduledTask> GetScheduledTasks()
+        private IEnumerator<IScheduledTask> GetScheduledTasksEnumerator()
         {
             var isRunning = true;
             while (isRunning)

@@ -11,8 +11,7 @@ namespace iGP11.Library.Component
         {
             Uri uri;
             return directoryPath.IsNotNullOrEmpty()
-                   && Uri.TryCreate(directoryPath, UriKind.Absolute, out uri)
-                   && Directory.Exists(directoryPath);
+                   && Uri.TryCreate(directoryPath, UriKind.Absolute, out uri);
         }
 
         public bool IsFilePathValid(string filePath)

@@ -27,7 +27,7 @@ namespace iGP11.Tool
             _eventPublisher.PublishAsync(new ChangeViewEnabledEvent(_invoker, false));
 
             DataContext = _viewModel;
-            Title = $"{Assembly.GetEntryAssembly().GetAssemblyInformation().Product} - {Localization.Localization.Current.Get("TextureManagement")}";
+            Title = $"{Assembly.GetEntryAssembly().GetAssemblyInformation().Product} - {Localization.Localization.Current.Get("TextureManagementDialogTitle")}";
         }
 
         protected override async void OnClosed(EventArgs e)

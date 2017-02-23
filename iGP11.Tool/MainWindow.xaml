@@ -69,7 +69,7 @@
                         themes:FrameworkService.Image="{StaticResource ResourceKey=TextureManagement32X32}"
                         themes:FrameworkService.ImageHover="{StaticResource ResourceKey=TextureManagementHover32X32}"
                         Style="{StaticResource ResourceKey=StyleMenuImageButton}"
-                        Content="{Binding Source={StaticResource ResourceKey=LocalizationTextureManagement}, Mode=OneTime}"
+                        Content="{Binding Source={StaticResource ResourceKey=LocalizationTextureManagementDialogTitle}, Mode=OneTime}"
                         Command="{Binding Path=LaunchTextureManagementCommand}" />
                     <Button
                         themes:FrameworkService.Image="{StaticResource ResourceKey=Configuration32X32}"
@@ -81,7 +81,7 @@
                         themes:FrameworkService.Image="{StaticResource ResourceKey=About32X32}"
                         themes:FrameworkService.ImageHover="{StaticResource ResourceKey=AboutHover32X32}"
                         Style="{StaticResource ResourceKey=StyleMenuImageButton}"
-                        Content="{Binding Source={StaticResource ResourceKey=LocalizationAbout}, Mode=OneTime}"
+                        Content="{Binding Source={StaticResource ResourceKey=LocalizationAboutDialogTitle}, Mode=OneTime}"
                         Command="{Binding Path=OpenAboutCommand}" />
                 </WrapPanel>
                 <StatusBar

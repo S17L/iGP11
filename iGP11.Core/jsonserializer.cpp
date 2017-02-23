@@ -281,21 +281,13 @@ core::dto::UpdateProxySettings core::JsonSerializer::deserializeUpdateProxySetti
     rapidjson::Document document;
     document.Parse(value.c_str());
 
-    core::logging::log("qwe_1");
-
     core::dto::UpdateProxySettings settings;
     settings.pluginType = static_cast<core::PluginType>(document[ENCRYPT_STRING("pluginType")].GetInt());
 
-    core::logging::log("qwe_2");
-
     rapidjson::Value &direct3D11Settings = document[ENCRYPT_STRING("direct3D11Settings")];
-    core::logging::log("qwe_3");
     if (!direct3D11Settings.IsNull()) {
-        core::logging::log("qwe_4");
         settings.direct3D11Settings = deserializeDirect3D11Settings(::toString(direct3D11Settings));
     }
-
-    core::logging::log("qwe_5");
 
     return settings;
 }

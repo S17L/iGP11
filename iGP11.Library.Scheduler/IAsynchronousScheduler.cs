@@ -4,7 +4,7 @@ namespace iGP11.Library.Scheduler
 {
     public interface IAsynchronousScheduler : IScheduler
     {
-        Task StartAsync();
+        Task StartAsync(bool exitOnEmpty = false);
 
         void Subscribe(ISchedulerSubscriber subscriber);
 

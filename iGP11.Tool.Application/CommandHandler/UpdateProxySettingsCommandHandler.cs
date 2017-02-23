@@ -7,7 +7,7 @@ using iGP11.Tool.Shared.Model;
 using iGP11.Tool.Shared.Notification;
 
 using ApplicationModel = iGP11.Tool.Application.Model;
-using ProxySettingsLoadedEvent = iGP11.Tool.Shared.Event.ProxySettingsLoadedEvent;
+using SharedEvent = iGP11.Tool.Shared.Event;
 
 namespace iGP11.Tool.Application.CommandHandler
 {
@@ -22,20 +22,35 @@ namespace iGP11.Tool.Application.CommandHandler
 
         public async Task HandleAsync(DomainCommandContext context, UpdateProxySettingsCommand command)
         {
+            if (await UpdateAsync(command.ProxyPluginSettings))
+            {
+                var settings = await GetProxySettingsAsync();
+                if (settings != null)
+                {
+                    await context.PublishAsync(new SharedEvent.ProxySettingsLoadedEvent(settings));
+                    return;
+                }
+            }
+
+            await context.EmitAsync(new ErrorOccuredEvent());
+        }
+
+        private async Task<ProxySettings> GetProxySettingsAsync()
+        {
             using (var communicator = _communicatorFactory.Create())
             {
-                var result = await communicator.UpdateAsync(command.ProxyPluginSettings.Map<ApplicationModel.ProxyPluginSettings>());
-                if (result)
-                {
-                    var communicationResult = await communicator.GetProxySettingsAsync();
-                    if (communicationResult.IsCompleted)
-                    {
-                        await context.PublishAsync(new ProxySettingsLoadedEvent(communicationResult.Response.Map<ProxySettings>()));
-                        return;
-                    }
-                }
+                var communicationResult = await communicator.GetProxySettingsAsync();
+                return communicationResult.IsCompleted
+                           ? communicationResult.Response.Map<ProxySettings>()
+                           : null;
+            }
+        }
 
-                await context.EmitAsync(new ErrorOccuredEvent());
+        private async Task<bool> UpdateAsync(ProxyPluginSettings settings)
+        {
+            using (var communicator = _communicatorFactory.Create())
+            {
+                return await communicator.UpdateAsync(settings.Map<ApplicationModel.ProxyPluginSettings>());
             }
         }
     }

@@ -11,11 +11,10 @@
         SizeToContent="Height"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
-        Title="Add profile"
         Width="300"
         Style="{StaticResource ResourceKey=StyleDialog}">
     <StackPanel Orientation="Vertical">
-        <TextBlock Text="Add profile" Style="{StaticResource ResourceKey=StyleTextBlockWindowTitle}" />
+        <TextBlock Text="{Binding Source={StaticResource ResourceKey=LocalizationAddProfileDialogTitle}, Mode=OneTime}" Style="{StaticResource ResourceKey=StyleTextBlockWindowTitle}" />
         <TextBox
             themes:FrameworkService.Placeholder="{Binding Source={StaticResource ResourceKey=LocalizationProfileName}, Mode=OneTime}"
             Margin="20, 10, 50, 10"

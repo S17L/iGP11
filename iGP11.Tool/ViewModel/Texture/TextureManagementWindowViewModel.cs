@@ -68,7 +68,7 @@ namespace iGP11.Tool.ViewModel.Texture
             MultiChangedCommand = new ActionCommand(() => _queue.QueueTask(OnChangedAsync), () => true);
             PickDestinationDirectoryCommand = new ActionCommand(() => _queue.QueueTask(PickDestinationDirectoryAsync), () => true);
             PickSourceDirectoryCommand = new ActionCommand(() => _queue.QueueTask(PickSourceDirectoryAsync), () => true);
-            SingleChangedCommand = new ActionCommand(() => _queue.QueueTask(OnChangedAsync), () => true);
+            SingleChangedCommand = new ActionCommand(() => _queue.QueueTask(OnSingleChangedAsync), () => true);
             UncheckAllCommand = new ActionCommand(UncheckAll, IsUncheckAllEnabled);
         }
 
@@ -261,19 +261,19 @@ namespace iGP11.Tool.ViewModel.Texture
                             .CompleteFor<ErrorOccuredEvent>()
                             .OnTimeout(async () => await PublishTimeoutEventAsync())
                             .Execute();
-
-                        await PublishUpdateStatusEventAsync(StatusType.Information, "TexturesConversionProgress", count + 1, nodes.Length);
                     }
                     finally
                     {
                         Interlocked.Increment(ref count);
                     }
+
+                    await PublishUpdateStatusEventAsync(StatusType.Information, "TexturesConversionProgress", count, nodes.Length);
                 })).ToArray();
 
                 _scheduler = new AsynchronousScheduler(Logger.Current, Environment.ProcessorCount);
                 _scheduler.Subscribe(new SchedulerTaskCollection(collection));
 
-                await _scheduler.StartAsync();
+                await _scheduler.StartAsync(true);
                 await PublishUpdateStatusEventAsync(StatusType.Ok, "TexturesConversionCompleted");
 
                 TexturePreview.Rebind();
@@ -354,18 +354,20 @@ namespace iGP11.Tool.ViewModel.Texture
             _directoryPicker.Open(SourceDirectory);
         }
 
+        private async Task OnSingleChangedAsync()
+        {
+            TexturePreview.Rebind();
+            await OnChangedAsync();
+        }
+
         private async Task OnChangedAsync()
         {
-            using (new ProcessingScope(this))
-            {
-                await _actionBuilder.Dispatch(new UpdateTextureManagementSettingsCommand(_settings))
-                    .CompleteFor<ActionSucceededEvent>()
-                    .CompleteFor<ErrorOccuredEvent>(async (context, @event) => await PublishUnknownErrorEventAsync())
-                    .OnTimeout(async () => await PublishTimeoutEventAsync())
-                    .Execute();
-            }
-
             Rebind();
+            await _actionBuilder.Dispatch(new UpdateTextureManagementSettingsCommand(_settings))
+                .CompleteFor<ActionSucceededEvent>()
+                .CompleteFor<ErrorOccuredEvent>(async (context, @event) => await PublishUnknownErrorEventAsync())
+                .OnTimeout(async () => await PublishTimeoutEventAsync())
+                .Execute();
         }
 
         private async Task PickDestinationDirectoryAsync()

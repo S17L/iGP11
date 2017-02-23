@@ -143,7 +143,7 @@ namespace iGP11.Tool.Bootstrapper
                 builder.Register(context => Logger.Current).SingleInstance().AsSelf().AsImplementedInterfaces();
                 builder.Register(context => WriteDatabaseInitializer.DatabaseContext).SingleInstance().AsSelf().AsImplementedInterfaces();
                 builder.Register(context => ReadDatabaseInitializer.Database).SingleInstance().AsSelf().AsImplementedInterfaces();
-                builder.Register(context => new CommunicatorFactory(systemIpAddress, proxyCommunicationPort)).AsSelf().AsImplementedInterfaces();
+                builder.Register(context => new CommunicatorFactory(systemIpAddress, proxyCommunicationPort, Logger.Current)).AsSelf().AsImplementedInterfaces();
                 builder.Register(context => eventPublisher).SingleInstance().AsSelf().AsImplementedInterfaces();
                 builder.Register(context => new ApplicationBootstrapper.BootstrapperConfiguration
                 {

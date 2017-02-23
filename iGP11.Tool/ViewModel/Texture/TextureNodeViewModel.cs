@@ -56,10 +56,16 @@ namespace iGP11.Tool.ViewModel.Texture
             get { return _isSelected; }
             set
             {
+                if (_isSelected == value)
+                {
+                    return;
+                }
+
                 _isSelected = value;
                 if (_isSelected)
                 {
                     _previewViewer.Enqueue(FileName, FilePath);
+                    _viewModel.Rebind();
                 }
 
                 OnPropertyChanged();
