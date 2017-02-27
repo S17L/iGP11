@@ -130,7 +130,7 @@
     <value>activation status not retrievable</value>
   </data>
   <data name="ActivationStatusNotRunning" xml:space="preserve">
-    <value>application not running</value>
+    <value>game not running</value>
   </data>
   <data name="ActivationStatusPluginActivated" xml:space="preserve">
     <value>plugin initialized</value>
@@ -142,10 +142,10 @@
     <value>plugin partially initialized, awaiting final initialization...</value>
   </data>
   <data name="ActivationStatusPluginLoaded" xml:space="preserve">
-    <value>application running and plugin loaded</value>
+    <value>game running and plugin loaded</value>
   </data>
   <data name="ActivationStatusRunning" xml:space="preserve">
-    <value>application running</value>
+    <value>game running</value>
   </data>
   <data name="AddProfile" xml:space="preserve">
     <value>add profile</value>
@@ -154,22 +154,19 @@
     <value>Add profile</value>
   </data>
   <data name="Application" xml:space="preserve">
-    <value>application</value>
-  </data>
-  <data name="ApplicationBusy" xml:space="preserve">
-    <value>application is busy...</value>
+    <value>game settings</value>
   </data>
   <data name="ApplicationFilePath" xml:space="preserve">
-    <value>application file path</value>
+    <value>executable file path</value>
   </data>
   <data name="ApplicationFilePathRequired" xml:space="preserve">
-    <value>application file path: required</value>
+    <value>executable file path: required</value>
   </data>
   <data name="ApplicationSettings" xml:space="preserve">
-    <value>Application settings</value>
+    <value>Tool settings</value>
   </data>
   <data name="ApplicationStarted" xml:space="preserve">
-    <value>application started</value>
+    <value>game started</value>
   </data>
   <data name="AvailableTextures" xml:space="preserve">
     <value>textures</value>
@@ -256,10 +253,7 @@
     <value>{0} validation errors</value>
   </data>
   <data name="EstablishCommunication" xml:space="preserve">
-    <value>establish communication on application launch</value>
-  </data>
-  <data name="ExitApplication" xml:space="preserve">
-    <value>exit iGP11</value>
+    <value>establish communication with game on launch</value>
   </data>
   <data name="Expand" xml:space="preserve">
     <value>expand</value>
@@ -280,7 +274,7 @@
     <value>Injection settings</value>
   </data>
   <data name="InjectionSettingsDescription" xml:space="preserve">
-    <value>Specify profile, plugin type and path to an application</value>
+    <value>Specify profile, plugin type and path to the game executable</value>
   </data>
   <data name="InjectionStarted" xml:space="preserve">
     <value>launching application and loading plugin</value>
@@ -411,14 +405,11 @@ Profile data will be lost.</value>
   <data name="SettingsSaved" xml:space="preserve">
     <value>settings saved at {0}</value>
   </data>
-  <data name="ShowApplication" xml:space="preserve">
-    <value>show iGP11</value>
-  </data>
   <data name="Submit" xml:space="preserve">
     <value>SUBMIT</value>
   </data>
   <data name="SwitchModeToCommunicator" xml:space="preserve">
-    <value>establish communication with already started process</value>
+    <value>establish communication with already started game</value>
   </data>
   <data name="SwitchModeToInjector" xml:space="preserve">
     <value>return to standard mode</value>

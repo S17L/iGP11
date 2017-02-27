@@ -24,7 +24,7 @@ namespace iGP11.Tool
             _eventPublisher = DependencyResolver.Current.Resolve<IEventPublisher>();
             _eventPublisher.PublishAsync(new ChangeViewEnabledEvent(_invoker, false));
 
-            Title = Localization.Localization.Current.Get("About");
+            Title = Localization.Localization.Current.Get("AboutDialogTitle");
             CloseCommand = new ActionCommand(Submit, () => true);
         }
 

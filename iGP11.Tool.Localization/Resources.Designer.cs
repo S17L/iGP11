@@ -97,7 +97,7 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to application not running.
+        ///   Looks up a localized string similar to game not running.
         /// </summary>
         public static string ActivationStatusNotRunning {
             get {
@@ -133,7 +133,7 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to application running and plugin loaded.
+        ///   Looks up a localized string similar to game running and plugin loaded.
         /// </summary>
         public static string ActivationStatusPluginLoaded {
             get {
@@ -142,7 +142,7 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to application running.
+        ///   Looks up a localized string similar to game running.
         /// </summary>
         public static string ActivationStatusRunning {
             get {
@@ -169,7 +169,7 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to application.
+        ///   Looks up a localized string similar to game settings.
         /// </summary>
         public static string Application {
             get {
@@ -178,16 +178,7 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to application is busy....
-        /// </summary>
-        public static string ApplicationBusy {
-            get {
-                return ResourceManager.GetString("ApplicationBusy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to application file path.
+        ///   Looks up a localized string similar to executable file path.
         /// </summary>
         public static string ApplicationFilePath {
             get {
@@ -196,7 +187,7 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to application file path: required.
+        ///   Looks up a localized string similar to executable file path: required.
         /// </summary>
         public static string ApplicationFilePathRequired {
             get {
@@ -205,7 +196,7 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Application settings.
+        ///   Looks up a localized string similar to Tool settings.
         /// </summary>
         public static string ApplicationSettings {
             get {
@@ -214,7 +205,7 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to application started.
+        ///   Looks up a localized string similar to game started.
         /// </summary>
         public static string ApplicationStarted {
             get {
@@ -475,20 +466,11 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to establish communication on application launch.
+        ///   Looks up a localized string similar to establish communication with game on launch.
         /// </summary>
         public static string EstablishCommunication {
             get {
                 return ResourceManager.GetString("EstablishCommunication", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to exit iGP11.
-        /// </summary>
-        public static string ExitApplication {
-            get {
-                return ResourceManager.GetString("ExitApplication", resourceCulture);
             }
         }
         
@@ -547,7 +529,7 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Specify profile, plugin type and path to an application.
+        ///   Looks up a localized string similar to Specify profile, plugin type and path to the game executable.
         /// </summary>
         public static string InjectionSettingsDescription {
             get {
@@ -937,15 +919,6 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to show iGP11.
-        /// </summary>
-        public static string ShowApplication {
-            get {
-                return ResourceManager.GetString("ShowApplication", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to SUBMIT.
         /// </summary>
         public static string Submit {
@@ -955,7 +928,7 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to establish communication with already started process.
+        ///   Looks up a localized string similar to establish communication with already started game.
         /// </summary>
         public static string SwitchModeToCommunicator {
             get {

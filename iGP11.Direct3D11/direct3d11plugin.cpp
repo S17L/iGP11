@@ -92,6 +92,14 @@ void Direct3D11Plugin::createProfile() {
     _profile = std::move(_profilePicker->getProfile(_settings.pluginSettings.profileType, configuration));
 }
 
+void Direct3D11Plugin::deinitializeApplicator() {
+    if (_applicator != nullptr) {
+        ThreadLoggerAppenderScope scope(debug, ENCRYPT_STRING("deinitializing applicator"));
+        _applicator->deinitialize();
+        _applicator.reset();
+    }
+}
+
 void Direct3D11Plugin::initialize(IDXGISwapChain *chain) {
     _activationStatus = core::ActivationStatus::pluginactivated;
     _context.reset(new direct3d11::Direct3D11Context(chain));
@@ -120,6 +128,8 @@ HRESULT __stdcall dxgiFactoryCreateSwapChainOverride(IDXGIFactory *dxgiFactory, 
     ThreadLoggerAppenderScope scope(debug, ENCRYPT_STRING("creating swap chain"));
     log(debug, core::stringFormat(ENCRYPT_STRING("[ description: [ %s ]"), direct3d11::stringify::toString(description).c_str()));
 
+    _this.deinitializeApplicator();
+
     auto result = _this._dxgiFactoryCreateSwapChain(dxgiFactory, device, description, swapChain);
     log(debug, ENCRYPT_STRING("call"), result);
 
@@ -135,13 +145,9 @@ HRESULT __stdcall dxgiSwapChainResizeBuffersOverride(IDXGISwapChain *swapChain, 
     Direct3D11Plugin &_this = Direct3D11Plugin::getInstance();
 
     ThreadLoggerAppenderScope scope(debug, ENCRYPT_STRING("resizing swap chain buffers"));
-    log(debug, core::stringFormat(ENCRYPT_STRING("[ count: %u, %ux%u, format: %u, flags: %u"), bufferCount, width, height, newFormat, flags));
+    log(debug, core::stringFormat(ENCRYPT_STRING("[ count: %u, %ux%u, format: %u, flags: %u ]"), bufferCount, width, height, newFormat, flags));
 
-    if (_this._applicator != nullptr) {
-        log(debug, ENCRYPT_STRING("deinitializing applicator"));
-        _this._applicator->deinitialize();
-        _this._applicator.reset();
-    }
+    _this.deinitializeApplicator();
 
     auto result = _this._dxgiSwapChainResizeBuffers(swapChain, bufferCount, width, height, newFormat, flags);
     log(debug, ENCRYPT_STRING("call"), result);
@@ -159,6 +165,8 @@ HRESULT __stdcall dxgiSwapChainResizeTargetOverride(IDXGISwapChain *swapChain, c
 
     ThreadLoggerAppenderScope scope(debug, ENCRYPT_STRING("resizing swap chain target"));
     log(core::stringFormat(ENCRYPT_STRING("call: [ description: %s ]"), direct3d11::stringify::toString(description).c_str()));
+
+    _this.deinitializeApplicator();
 
     auto result = _this._dxgiSwapChainResizeTarget(swapChain, description);
     log(debug, ENCRYPT_STRING("call"), result);
@@ -434,16 +442,16 @@ bool Direct3D11Plugin::initialize(
         }
 
         retryCount++;
-        DXGI_SWAP_CHAIN_DESC swapChainDescription;
-        ZeroMemory(&swapChainDescription, sizeof(swapChainDescription));
-        swapChainDescription.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
-        swapChainDescription.SampleDesc.Count = 1;
-        swapChainDescription.SampleDesc.Quality = 0;
-        swapChainDescription.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-        swapChainDescription.BufferCount = 1;
-        swapChainDescription.OutputWindow = windowHandle;
-        swapChainDescription.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-        swapChainDescription.Windowed = TRUE;
+        DXGI_SWAP_CHAIN_DESC chainDescription;
+        ZeroMemory(&chainDescription, sizeof(chainDescription));
+        chainDescription.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+        chainDescription.SampleDesc.Count = 1;
+        chainDescription.SampleDesc.Quality = 0;
+        chainDescription.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+        chainDescription.BufferCount = 1;
+        chainDescription.OutputWindow = windowHandle;
+        chainDescription.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+        chainDescription.Windowed = TRUE;
 
         ID3D11Device *device = nullptr;
         ID3D11DeviceContext *deviceContext = nullptr;
@@ -458,7 +466,7 @@ bool Direct3D11Plugin::initialize(
             NULL,
             0,
             D3D11_SDK_VERSION,
-            &swapChainDescription,
+            &chainDescription,
             &chain,
             &device,
             NULL,
@@ -468,6 +476,7 @@ bool Direct3D11Plugin::initialize(
             log(core::stringFormat(ENCRYPT_STRING("direct3d11 initialization failed with error code: 0x%08lx, retrying..."), result));
         }
         else {
+            log(ENCRYPT_STRING("components initialized..."));
             deviceComponent.reset(device);
             deviceContextComponent.reset(deviceContext);
             chainComponent.reset(chain);

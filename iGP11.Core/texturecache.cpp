@@ -2,7 +2,7 @@
 #include "texturecache.h"
 
 const std::string delimiter = ENCRYPT_STRING(", ");
-const std::string nullValue = ENCRYPT_STRING("NULL");
+const std::string nullValue = ENCRYPT_STRING("[-]");
 
 const std::string keyMapFrom = ENCRYPT_STRING("map_from");
 const std::string keyForceSrgb = ENCRYPT_STRING("force_srgb");

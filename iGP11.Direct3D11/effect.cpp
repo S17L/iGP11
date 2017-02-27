@@ -24,10 +24,9 @@ void direct3d11::EffectsApplicator::applyProcessing(const direct3d11::dto::PostP
         clear();
 
         if (_resolution.width > 0 && _resolution.height > 0) {
-            ThreadLoggerAppenderScope scope(
-                debug,
-                core::stringFormat(ENCRYPT_STRING("initializing direct3d11::EffectsApplicator: [ width: %u, height: %u, colorTexture: %p, depthTexture: %p ]"), _resolution.width, _resolution.height, configuration.colorTexture, configuration.depthTexture));
+            ThreadLoggerAppenderScope scope(ENCRYPT_STRING("direct3d11::EffectsApplicator"));
 
+            log(core::stringFormat(ENCRYPT_STRING("resolution: [ width: %u, height: %u ]"), _resolution.width, _resolution.height));
             _proxy.reset(new direct3d11::RenderingProxy(_context, _resolution, configuration.colorTexture, configuration.depthTexture));
             _codeBuilderFactory.reset(new direct3d11::ShaderCodeFactory(_resolution));
 
@@ -72,14 +71,14 @@ void direct3d11::EffectsApplicator::applyProcessing(const direct3d11::dto::PostP
         return;
     }
 
-    //ThreadLoggerAppenderScope scope(
-    //    debug,
-    //    core::stringFormat(ENCRYPT_STRING("applying %llu effects"), size));
+    ThreadLoggerAppenderScope scope(
+        debug,
+        core::stringFormat(ENCRYPT_STRING("applying %llu effects"), size));
 
     _proxy->begin();
 
     for (auto effect : _effects) {
-        //log(debug, effect->getName());
+        log(debug, effect->getName());
         _proxy->iterate();
         direct3d11::utility::setNoRenderer(_context);
         effect->begin();
@@ -123,7 +122,7 @@ void direct3d11::EffectsApplicator::apply(const direct3d11::dto::PostProcessingC
     }
     catch (...) {
         _hasError = true;
-        log(error, ENCRYPT_STRING("unknown exception occured while applying effects"));
+        log(error, ENCRYPT_STRING("unknown exception occured"));
     }
 }
 

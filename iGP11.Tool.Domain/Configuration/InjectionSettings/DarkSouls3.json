@@ -31,7 +31,7 @@
       "isChromaticAberrationEnabled": true,
       "chromaticAberrationFringe": 2.5,
       "isPreservingShape": false,
-      "shapeSize": 3,
+      "shapeSize": 7,
       "shapeStrength": 50,
       "shapeRotation": 15,
       "isBlurEnabled": true,
@@ -61,7 +61,7 @@
       "defogBlueChannelLoss": 2.55
     },
     "vibrance": {
-      "isEnabled": true,
+      "isEnabled": false,
       "strength": 0.1,
       "redChannelStrength": 1,
       "greenChannelStrength": 1,

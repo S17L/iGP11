@@ -2,6 +2,7 @@
 #include "darksouls3profile.h"
 
 #define DARKSOULS3_INITIALIZATION_DELAY 24
+#define DARKSOULS3_PROFILE_COLOR_TEXTURE_FORMAT DXGI_FORMAT_R16G16B16A16_FLOAT
 
 direct3d11::DarkSouls3Profile::DarkSouls3Profile(direct3d11::ProfileConfiguration configuration)
     : _configuration(configuration) {
@@ -27,20 +28,21 @@ void direct3d11::DarkSouls3Profile::pixelShaderSetShaderResources(UINT startSlot
 			if (resource != nullptr) {
 				auto texture = reinterpret_cast<ID3D11Texture2D*>(resource);
 				if (texture != nullptr) {
-                    auto depthTexture = direct3d11::utility::getDepthTexture(_depthStencilView);
-                    direct3d11::dto::PostProcessingConfiguration configuration;
-                    configuration.colorTexture = texture;
-                    configuration.depthTexture = depthTexture.get();
-                    auto initializationRequired = _configuration.applicator->initializationRequired(configuration);
-                    if (!initializationRequired || _initializationDelayCount >= DARKSOULS3_INITIALIZATION_DELAY) {
-                        _initializationDelayCount = 0;
-                        _configuration.applicator->applyPostProcessing(configuration);
+                    auto colorDescription = direct3d11::utility::getDescription(texture);
+                    if (colorDescription.Width == _resolution.width && colorDescription.MipLevels == 1 && colorDescription.ArraySize == 1 && colorDescription.Format == DARKSOULS3_PROFILE_COLOR_TEXTURE_FORMAT) {
+                        auto depthTexture = direct3d11::utility::getDepthTexture(_depthStencilView);
+                        direct3d11::dto::PostProcessingConfiguration configuration;
+                        configuration.colorTexture = texture;
+                        configuration.depthTexture = depthTexture.get();
+                        auto initializationRequired = _configuration.applicator->initializationRequired(configuration);
+                        if (!initializationRequired || _initializationDelayCount >= DARKSOULS3_INITIALIZATION_DELAY) {
+                            _initializationDelayCount = 0;
+                            _configuration.applicator->applyPostProcessing(configuration);
+                        }
+                        else if (_initializationDelayCount < DARKSOULS3_INITIALIZATION_DELAY) {
+                            _initializationDelayCount++;
+                        }
                     }
-                    else if (_initializationDelayCount < DARKSOULS3_INITIALIZATION_DELAY) {
-                        _initializationDelayCount++;
-                    }
-
-					_configuration.applicator->applyPostProcessing(configuration);
 				}
 			}
 		}
@@ -51,4 +53,5 @@ void direct3d11::DarkSouls3Profile::pixelShaderSetShaderResources(UINT startSlot
 
 void direct3d11::DarkSouls3Profile::presentFrame() {
     _hasFoundFrame = false;
+    _resolution = direct3d11::utility::getRenderingResolution(_configuration.context->getChain());
 }

@@ -11,6 +11,7 @@ namespace direct3d11 {
 	class DarkSouls3Profile : public IProfile {
 	private:
         direct3d11::ProfileConfiguration _configuration;
+        dto::RenderingResolution _resolution;
 		bool _hasFoundFrame = false;
         unsigned int _initializationDelayCount = 0;
 		ID3D11DepthStencilView *_depthStencilView = nullptr;

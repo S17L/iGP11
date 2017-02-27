@@ -34,6 +34,14 @@ namespace iGP11.Tool
             try
             {
                 await RunAsync(() => Title = $"{Assembly.GetEntryAssembly().GetAssemblyInformation().Product}");
+                if (!WindowsPermissionUtility.IsCurrentUserAdministrator())
+                {
+                    ShowError("application launched without administrator rights");
+                    await RunAsync(Shutdown);
+
+                    return;
+                }
+
                 await Bootstrapper.Bootstrapper.StartAsync();
 
                 if (publishApplicationAction)

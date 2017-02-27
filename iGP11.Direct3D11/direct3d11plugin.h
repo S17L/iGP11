@@ -79,6 +79,7 @@ private:
 	Direct3D11Plugin()
 		: _activationStatus(core::ActivationStatus::pluginloaded) {};
     void createProfile();
+    void deinitializeApplicator();
 	void initialize(IDXGISwapChain *chain);
 	void printPerformanceStatistics();
 public:

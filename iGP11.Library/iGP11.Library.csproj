@@ -90,6 +90,7 @@
     <Compile Include="ExpressionExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecuredText.cs" />
+    <Compile Include="WindowsPermissionUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="iGP11.snk" />
