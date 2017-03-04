@@ -19,16 +19,16 @@ namespace iGP11.Tool.Shared.Model.InjectionSettings.Validation
             {
                 yield return new Localizable(
                     "ValueLessThan",
-                    context.GetName(entity => entity.LinearZFar),
-                    context.GetName(entity => entity.LinearZNear));
+                    context.GetComponentName(entity => entity.LinearZFar),
+                    context.GetComponentName(entity => entity.LinearZNear));
             }
 
             if (depthBuffer.DepthMaximum <= depthBuffer.DepthMinimum)
             {
                 yield return new Localizable(
                     "ValueLessThan",
-                    context.GetName(entity => entity.DepthMaximum),
-                    context.GetName(entity => entity.DepthMinimum));
+                    context.GetComponentName(entity => entity.DepthMaximum),
+                    context.GetComponentName(entity => entity.DepthMinimum));
             }
         }
     }

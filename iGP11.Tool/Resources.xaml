@@ -26,6 +26,10 @@
                  UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/check_16x16.png" />
     <BitmapImage x:Key="CheckHover16X16"
                  UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/check_hover_16x16.png" />
+    <BitmapImage x:Key="Communication32X32"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/communication_32x32.png" />
+    <BitmapImage x:Key="CommunicationHover32X32"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/communication_hover_32x32.png" />
     <BitmapImage x:Key="Configuration32X32"
                  UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/configuration_32x32.png" />
     <BitmapImage x:Key="ConfigurationHover32X32"
@@ -513,7 +517,8 @@
                                 <Setter Property="VerticalAlignment" Value="Center" />
                                 <Style.Triggers>
                                     <Trigger Property="IsEnabled" Value="False">
-                                        <Setter Property="Opacity" Value="{StaticResource ResourceKey=OpacityDisabledContent}" />
+                                        <Setter Property="Opacity"
+                                                Value="{StaticResource ResourceKey=OpacityDisabledContent}" />
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>

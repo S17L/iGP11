@@ -11,10 +11,10 @@ namespace iGP11.Tool.Shared.Model
         [DataMember(Name = "applicationFilePath", IsRequired = true)]
         public string ApplicationFilePath { get; set; }
 
-        [DataMember(Name = "configurationDirectoryPath", IsRequired = true)]
-        public string ConfigurationDirectoryPath { get; set; }
-
         [DataMember(Name = "logsDirectoryPath", IsRequired = true)]
         public string LogsDirectoryPath { get; set; }
+
+        [DataMember(Name = "proxyDirectoryPath", IsRequired = true)]
+        public string ProxyDirectoryPath { get; set; }
     }
 }

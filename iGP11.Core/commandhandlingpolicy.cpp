@@ -26,7 +26,7 @@ std::string core::communication::GetProxySettingsCommandHandlingPolicy::handle(c
 	core::dto::ProxySettings state;
     core::dto::InjectionSettings settings = _repository->load();
     state.applicationFilePath = settings.applicationFilePath;
-    state.configurationDirectoryPath = settings.configurationDirectoryPath;
+    state.proxyDirectoryPath = settings.proxyDirectoryPath;
     state.logsDirectoryPath = settings.logsDirectoryPath;
     state.direct3D11Settings = settings.direct3D11Settings;
 

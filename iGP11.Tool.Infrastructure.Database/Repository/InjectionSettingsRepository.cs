@@ -21,71 +21,85 @@ namespace iGP11.Tool.Infrastructure.Database.Repository
 
         public async Task ChangeDefaultAsync(AggregateId injectionSettingsId)
         {
-            if (_context.InjectionSettings.All(entity => entity.Id != injectionSettingsId))
+            using (await IsolatedDatabaseAccess.Open())
             {
-                throw new AggregateRootNotFoundException("injection settings not found");
+                if (_context.InjectionSettings.All(entity => entity.Id != injectionSettingsId))
+                {
+                    throw new AggregateRootNotFoundException("injection settings not found");
+                }
+
+                _context.LastEditedInjectionSettingsId = injectionSettingsId;
+                _context.Commit();
             }
-
-            _context.LastEditedInjectionSettingsId = injectionSettingsId;
-            _context.Commit();
-
-            await Task.Yield();
         }
 
-        public Task<IEnumerable<InjectionSettings>> LoadAllAsync()
+        public async Task<IEnumerable<InjectionSettings>> LoadAllAsync()
         {
-            return Task.FromResult<IEnumerable<InjectionSettings>>(_context.InjectionSettings.Clone());
-        }
-
-        public Task<InjectionSettings> LoadAsync(AggregateId aggregateId)
-        {
-            var model = _context.InjectionSettings.SingleOrDefault(entity => entity.Id == aggregateId);
-            if (model == null)
+            using (await IsolatedDatabaseAccess.Open())
             {
-                throw new AggregateRootNotFoundException("injection settings not found");
+                return _context.InjectionSettings.Clone();
             }
-
-            return Task.FromResult(model.Clone());
         }
 
-        public Task<InjectionSettings> LoadAsync(string name)
+        public async Task<InjectionSettings> LoadAsync(AggregateId aggregateId)
         {
-            var model = _context.InjectionSettings.SingleOrDefault(entity => entity.Name == name);
-            if (model == null)
+            using (await IsolatedDatabaseAccess.Open())
             {
-                throw new AggregateRootNotFoundException("injection settings not found");
-            }
+                var model = _context.InjectionSettings.SingleOrDefault(entity => entity.Id == aggregateId);
+                if (model == null)
+                {
+                    throw new AggregateRootNotFoundException("injection settings not found");
+                }
 
-            return Task.FromResult(model.Clone());
+                return model.Clone();
+            }
         }
 
-        public Task<AggregateId> LoadDefaultAsync()
+        public async Task<InjectionSettings> LoadAsync(string name)
         {
-            return Task.FromResult(_context.LastEditedInjectionSettingsId);
+            using (await IsolatedDatabaseAccess.Open())
+            {
+                var model = _context.InjectionSettings.SingleOrDefault(entity => entity.Name == name);
+                if (model == null)
+                {
+                    throw new AggregateRootNotFoundException("injection settings not found");
+                }
+
+                return model.Clone();
+            }
+        }
+
+        public async Task<AggregateId> LoadDefaultAsync()
+        {
+            using (await IsolatedDatabaseAccess.Open())
+            {
+                return _context.LastEditedInjectionSettingsId;
+            }
         }
 
         public async Task RemoveAsync(AggregateId injectionSettingsId)
         {
-            _context.InjectionSettings.Remove(entity => entity.Id == injectionSettingsId);
-
-            if (_context.LastEditedInjectionSettingsId == injectionSettingsId)
+            using (await IsolatedDatabaseAccess.Open())
             {
-                _context.LastEditedInjectionSettingsId = _context.InjectionSettings.FirstOrDefault()
-                    ?.Id;
-            }
+                _context.InjectionSettings.Remove(entity => entity.Id == injectionSettingsId);
+                if (_context.LastEditedInjectionSettingsId == injectionSettingsId)
+                {
+                    _context.LastEditedInjectionSettingsId = _context.InjectionSettings.FirstOrDefault()?.Id;
+                }
 
-            _context.Commit();
-            await Task.Yield();
+                _context.Commit();
+            }
         }
 
         public async Task SaveAsync(InjectionSettings injectionSettings)
         {
-            _context.InjectionSettings.Remove(entity => entity.Id == injectionSettings.Id);
-            _context.InjectionSettings.Add(injectionSettings.Clone());
-            _context.LastEditedInjectionSettingsId = injectionSettings.Id;
-            _context.Commit();
-
-            await Task.Yield();
+            using (await IsolatedDatabaseAccess.Open())
+            {
+                _context.InjectionSettings.Remove(entity => entity.Id == injectionSettings.Id);
+                _context.InjectionSettings.Add(injectionSettings.Clone());
+                _context.LastEditedInjectionSettingsId = injectionSettings.Id;
+                _context.Commit();
+            }
         }
     }
 }

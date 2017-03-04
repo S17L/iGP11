@@ -169,7 +169,7 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to game settings.
+        ///   Looks up a localized string similar to proxy settings.
         /// </summary>
         public static string Application {
             get {
@@ -322,15 +322,6 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to configuration directory path.
-        /// </summary>
-        public static string ConfigurationDirectoryPath {
-            get {
-                return ResourceManager.GetString("ConfigurationDirectoryPath", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to configuration.
         /// </summary>
         public static string ConversionConfiguration {
@@ -390,6 +381,15 @@ namespace iGP11.Tool.Localization {
         public static string Direct3D11 {
             get {
                 return ResourceManager.GetString("Direct3D11", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Direct3D11 plugin settings.
+        /// </summary>
+        public static string Direct3D11PluginSettings {
+            get {
+                return ResourceManager.GetString("Direct3D11PluginSettings", resourceCulture);
             }
         }
         
@@ -462,15 +462,6 @@ namespace iGP11.Tool.Localization {
         public static string ErrorCount {
             get {
                 return ResourceManager.GetString("ErrorCount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to establish communication with game on launch.
-        /// </summary>
-        public static string EstablishCommunication {
-            get {
-                return ResourceManager.GetString("EstablishCommunication", resourceCulture);
             }
         }
         
@@ -718,15 +709,6 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Plugin settings.
-        /// </summary>
-        public static string PluginSettings {
-            get {
-                return ResourceManager.GetString("PluginSettings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to plugin type.
         /// </summary>
         public static string PluginType {
@@ -786,6 +768,15 @@ namespace iGP11.Tool.Localization {
         public static string ProfileType {
             get {
                 return ResourceManager.GetString("ProfileType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to directory path.
+        /// </summary>
+        public static string ProxyDirectoryPath {
+            get {
+                return ResourceManager.GetString("ProxyDirectoryPath", resourceCulture);
             }
         }
         
@@ -928,7 +919,7 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to establish communication with already started game.
+        ///   Looks up a localized string similar to Enter communicator mode.
         /// </summary>
         public static string SwitchModeToCommunicator {
             get {
@@ -937,7 +928,7 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to return to standard mode.
+        ///   Looks up a localized string similar to Enter standard mode.
         /// </summary>
         public static string SwitchModeToInjector {
             get {
@@ -1027,7 +1018,7 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Specify dumping or injecting behavior and adjust paths to respective folders.
+        ///   Looks up a localized string similar to Specify dumping or injecting behavior and copy textures to tex_override directory.
         /// </summary>
         public static string TexturesLongDescription {
             get {

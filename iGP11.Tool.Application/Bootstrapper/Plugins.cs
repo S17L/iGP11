@@ -10,5 +10,8 @@ namespace iGP11.Tool.Application.Bootstrapper
 
         [DataMember(Name = "proxy", IsRequired = true)]
         public string Proxy { get; set; }
+
+        [DataMember(Name = "proxySettingsFileName", IsRequired = true)]
+        public string ProxySettingsFileName { get; set; }
     }
 }

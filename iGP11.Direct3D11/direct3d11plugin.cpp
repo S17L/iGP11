@@ -239,24 +239,29 @@ HRESULT __stdcall d3d11DeviceCreateTexture2DOverride(ID3D11Device *device, const
                     if (FAILED(result)) {
                         log(error, core::stringFormat(ENCRYPT_STRING("texture2d creation failed [ path: %s, result: 0x%08lx ]"), filePath.c_str(), result));
                     }
-                    else {
-                        if (!core::file::fileExists(filePath)) {
-                            std::lock_guard<std::mutex> lock(_this._mutex);
-                            auto dumpingResult = _this._textureService->saveTextureToFile(
+                    else if (!core::file::fileExists(filePath)) {
+                        std::lock_guard<std::mutex> lock(_this._mutex);
+                        
+                        HRESULT dumpingResult = S_FALSE;
+                        log(core::stringFormat(ENCRYPT_STRING("attempting to dump texture2d: [ path: %s ]"), filePath.c_str()));
+
+                        {
+                            DisabledHookingScope scope;
+                            dumpingResult = _this._textureService->saveTextureToFile(
                                 _this._context.get(),
                                 reinterpret_cast<ID3D11Resource*>(*texture2D),
                                 filePath);
-
-                            if (SUCCEEDED(dumpingResult)) {
-                                log(core::stringFormat(ENCRYPT_STRING("texture2d dumped: [ path: %s ]"), filePath.c_str()));
-                            }
-                            else {
-                                log(error, core::stringFormat(ENCRYPT_STRING("texture2d dumping failed: [ path: %s, result: 0x%08lx ]"), filePath.c_str(), dumpingResult));
-                            }
                         }
 
-                        return result;
+                        if (SUCCEEDED(dumpingResult)) {
+                            log(core::stringFormat(ENCRYPT_STRING("texture2d dumped: [ path: %s ]"), filePath.c_str()));
+                        }
+                        else {
+                            log(error, core::stringFormat(ENCRYPT_STRING("texture2d dumping failed: [ path: %s, result: 0x%08lx ]"), filePath.c_str(), dumpingResult));
+                        }
                     }
+
+                    return result;
                 }
                 else if (textureOverrideMode == core::TextureOverrideMode::override && _this._textureCache->has(textureId)) {
                     core::TextureProfile profile;
@@ -265,6 +270,7 @@ HRESULT __stdcall d3d11DeviceCreateTexture2DOverride(ID3D11Device *device, const
                     _this._textureCache->merge(profile);
 
                     HRESULT result = S_FALSE;
+                    ID3D11Texture2D *oldValue = *texture2D;
                     ID3D11ShaderResourceView *textureView;
                     auto filePath = core::file::combine(_this._settings.textures.overridePath, core::stringFormat(ENCRYPT_STRING("%s.dds"), profile.mapTo.get().c_str()));
 
@@ -280,6 +286,7 @@ HRESULT __stdcall d3d11DeviceCreateTexture2DOverride(ID3D11Device *device, const
 
                     if (FAILED(result)) {
                         log(error, core::stringFormat(ENCRYPT_STRING("texture2d creation failed [ path: %s, result: 0x%08lx ]"), filePath.c_str(), result));
+                        *texture2D = oldValue;
                     }
                     else if (textureView != nullptr) {
                         auto textureViewComponent = core::disposing::makeUnknown<ID3D11ShaderResourceView>(textureView);
@@ -433,7 +440,7 @@ bool Direct3D11Plugin::initialize(
     const int maxRetryCount = 32;
     const int retryDelay = 250;
     int retryCount = 0;
-    HRESULT result = -1;
+    HRESULT result = S_FALSE;
 
     do {
         if (retryCount > 0) {

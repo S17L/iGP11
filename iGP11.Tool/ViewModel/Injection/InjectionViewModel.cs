@@ -34,22 +34,8 @@ namespace iGP11.Tool.ViewModel.Injection
             }
         }
 
-        public string ConfigurationDirectoryPath
-        {
-            get { return _settings?.ConfigurationDirectoryPath ?? string.Empty; }
-            set
-            {
-                if ((_settings == null) || (_settings.ConfigurationDirectoryPath == value))
-                {
-                    return;
-                }
-
-                _settings.ConfigurationDirectoryPath = value;
-            }
-        }
-
         public string FormattedConfigurationDirectoryPath => _settings != null
-                                                                 ? _tokenReplacer.Replace(_settings.ConfigurationDirectoryPath)
+                                                                 ? _tokenReplacer.Replace(_settings.ProxyDirectoryPath)
                                                                  : string.Empty;
 
         public string FormattedLogsDirectoryPath => _settings != null
@@ -81,6 +67,20 @@ namespace iGP11.Tool.ViewModel.Injection
                 }
 
                 _settings.PluginType = value;
+            }
+        }
+
+        public string ProxyDirectoryPath
+        {
+            get { return _settings?.ProxyDirectoryPath ?? string.Empty; }
+            set
+            {
+                if ((_settings == null) || (_settings.ProxyDirectoryPath == value))
+                {
+                    return;
+                }
+
+                _settings.ProxyDirectoryPath = value;
             }
         }
     }

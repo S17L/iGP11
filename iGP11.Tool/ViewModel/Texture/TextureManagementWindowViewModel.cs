@@ -354,12 +354,6 @@ namespace iGP11.Tool.ViewModel.Texture
             _directoryPicker.Open(SourceDirectory);
         }
 
-        private async Task OnSingleChangedAsync()
-        {
-            TexturePreview.Rebind();
-            await OnChangedAsync();
-        }
-
         private async Task OnChangedAsync()
         {
             Rebind();
@@ -368,6 +362,12 @@ namespace iGP11.Tool.ViewModel.Texture
                 .CompleteFor<ErrorOccuredEvent>(async (context, @event) => await PublishUnknownErrorEventAsync())
                 .OnTimeout(async () => await PublishTimeoutEventAsync())
                 .Execute();
+        }
+
+        private async Task OnSingleChangedAsync()
+        {
+            TexturePreview.Rebind();
+            await OnChangedAsync();
         }
 
         private async Task PickDestinationDirectoryAsync()

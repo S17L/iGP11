@@ -168,7 +168,7 @@ core::dto::InjectionSettings core::JsonSerializer::deserializeSettings(const std
     core::dto::InjectionSettings settings;
     rapidjson::Value &injectionSettingsJson = document[ENCRYPT_STRING("injectionSettings")];
     settings.applicationFilePath = injectionSettingsJson[ENCRYPT_STRING("applicationFilePath")].GetString();
-    settings.configurationDirectoryPath = injectionSettingsJson[ENCRYPT_STRING("configurationDirectoryPath")].GetString();
+    settings.proxyDirectoryPath = injectionSettingsJson[ENCRYPT_STRING("proxyDirectoryPath")].GetString();
     settings.logsDirectoryPath = injectionSettingsJson[ENCRYPT_STRING("logsDirectoryPath")].GetString();
     settings.pluginType = static_cast<core::PluginType>(injectionSettingsJson[ENCRYPT_STRING("pluginType")].GetInt());
     settings.communicationAddress = document[ENCRYPT_STRING("communicationAddress")].GetString();
@@ -300,8 +300,8 @@ std::string core::JsonSerializer::serialize(core::dto::ProxySettings data) {
     {
         writer.String(ENCRYPT_STRING("applicationFilePath"));
         writer.String(data.applicationFilePath.c_str());
-        writer.String(ENCRYPT_STRING("configurationDirectoryPath"));
-        writer.String(data.configurationDirectoryPath.c_str());
+        writer.String(ENCRYPT_STRING("proxyDirectoryPath"));
+        writer.String(data.proxyDirectoryPath.c_str());
         writer.String(ENCRYPT_STRING("logsDirectoryPath"));
         writer.String(data.logsDirectoryPath.c_str());
         writer.String(ENCRYPT_STRING("pluginType"));

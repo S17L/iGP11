@@ -23,9 +23,6 @@ namespace iGP11.Tool.Application.Bootstrapper
         [DataMember(Name = "proxyCommunicationPort", EmitDefaultValue = true)]
         public ushort ProxyCommunicationPort { get; set; }
 
-        [DataMember(Name = "proxySettingsFileName", IsRequired = true)]
-        public string ProxySettingsFileName { get; set; }
-
         [DataMember(Name = "systemIpAddress", IsRequired = true)]
         public string SystemIpAddress { get; set; }
     }

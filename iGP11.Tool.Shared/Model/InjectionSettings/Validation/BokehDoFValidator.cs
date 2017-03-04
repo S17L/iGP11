@@ -19,8 +19,8 @@ namespace iGP11.Tool.Shared.Model.InjectionSettings.Validation
             {
                 yield return new Localizable(
                     "ValueLessThan",
-                    context.GetName(entity => entity.DepthMaximum),
-                    context.GetName(entity => entity.DepthMinimum));
+                    context.GetComponentName(entity => entity.DepthMaximum),
+                    context.GetComponentName(entity => entity.DepthMinimum));
             }
         }
     }

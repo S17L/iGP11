@@ -6,8 +6,8 @@ namespace iGP11.Tool.Infrastructure.Communication
     public class CommunicatorFactory : ICommunicatorFactory
     {
         private readonly string _address;
-        private readonly ushort _port;
         private readonly ILogger _logger;
+        private readonly ushort _port;
 
         public CommunicatorFactory(string address, ushort port, ILogger logger)
         {

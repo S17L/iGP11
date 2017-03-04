@@ -10,9 +10,9 @@ using iGP11.Tool.Domain.Model.TextureManagementSettings;
 using iGP11.Tool.Domain.Model.UsageStatistics;
 using iGP11.Tool.Shared.Event;
 
-using ApplicationModel = iGP11.Tool.Shared.Model;
 using ApplicationSettings = iGP11.Tool.Shared.Model.ApplicationSettings.ApplicationSettings;
 using InjectionSettings = iGP11.Tool.Shared.Model.InjectionSettings.InjectionSettings;
+using SharedModel = iGP11.Tool.Shared.Model;
 using TextureManagementSettings = iGP11.Tool.Shared.Model.TextureManagementSettings.TextureManagementSettings;
 
 namespace iGP11.Tool.Application.CommandHandler
@@ -21,6 +21,7 @@ namespace iGP11.Tool.Application.CommandHandler
     {
         private readonly IApplicationSettingsRepository _applicationSettingsRepository;
         private readonly IInjectionSettingsRepository _injectionSettingsRepository;
+        private readonly InjectionSettingsProcessWatcher _processWatcher;
         private readonly ITextureManagementSettingsRepository _textureManagementSettingsRepository;
         private readonly IUsageStatisticsRepository _usageStatisticsRepository;
 
@@ -28,12 +29,14 @@ namespace iGP11.Tool.Application.CommandHandler
             IApplicationSettingsRepository applicationSettingsRepository,
             IInjectionSettingsRepository injectionSettingsRepository,
             ITextureManagementSettingsRepository textureManagementSettingsRepository,
-            IUsageStatisticsRepository usageStatisticsRepository)
+            IUsageStatisticsRepository usageStatisticsRepository,
+            InjectionSettingsProcessWatcher processWatcher)
         {
             _applicationSettingsRepository = applicationSettingsRepository;
             _injectionSettingsRepository = injectionSettingsRepository;
             _textureManagementSettingsRepository = textureManagementSettingsRepository;
             _usageStatisticsRepository = usageStatisticsRepository;
+            _processWatcher = processWatcher;
         }
 
         public async Task HandleAsync(DomainCommandContext context, InitializeCommand command)
@@ -49,7 +52,12 @@ namespace iGP11.Tool.Application.CommandHandler
                 injectionSettings.Map<IEnumerable<InjectionSettings>>(),
                 defaultId?.Value,
                 textureManagementSettings.Map<TextureManagementSettings>(),
-                usageStatistics.Map<ApplicationModel.UsageStatistics>());
+                usageStatistics.Map<SharedModel.UsageStatistics>());
+
+            foreach (var settings in injectionSettings)
+            {
+                await _processWatcher.WatchAsync(settings.Id);
+            }
 
             await context.PublishAsync(@event);
         }

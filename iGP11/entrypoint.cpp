@@ -79,11 +79,20 @@ void startListener() {
     _requestHandler->addPolicy(std::shared_ptr<core::communication::ICommandHandlingPolicy>(new core::communication::UpdateProxySettingsCommandHandlingPolicy(_direct3D11PluginLoader, _repository.get(), _serializer.get())));
     _listener.reset(new core::communication::TcpListener(settings.communicationAddress, settings.communicationPort, _requestHandler.get()));
 
-    if (_listener->start()) {
-        log(ENCRYPT_STRING("listener has been started"));
-    }
-    else {
-        log(error, ENCRYPT_STRING("listener has not been started"));
+    const int maxRetryCount = 16;
+    const int retryDelay = 1000;
+    int retryCount = 0;
+
+    while (retryCount < maxRetryCount) {
+        if (_listener->start()) {
+            log(ENCRYPT_STRING("listener has been started"));
+            break;
+        }
+        else {
+            retryCount++;
+            log(error, ::core::stringFormat(ENCRYPT_STRING("listener has not been started, retry: %d/%d"), retryCount, maxRetryCount));
+            ::Sleep(retryDelay);
+        }
     }
 }
 

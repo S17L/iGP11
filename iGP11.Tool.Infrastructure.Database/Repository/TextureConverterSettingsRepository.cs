@@ -16,23 +16,27 @@ namespace iGP11.Tool.Infrastructure.Database.Repository
             _context = context;
         }
 
-        public Task<TextureManagementSettings> LoadAsync()
+        public async Task<TextureManagementSettings> LoadAsync()
         {
-            var model = _context.TextureConverterSettings;
-            if (model == null)
+            using (await IsolatedDatabaseAccess.Open())
             {
-                throw new AggregateRootNotFoundException("texture management settings not found");
-            }
+                var model = _context.TextureConverterSettings;
+                if (model == null)
+                {
+                    throw new AggregateRootNotFoundException("texture management settings not found");
+                }
 
-            return Task.FromResult(model.Clone());
+                return model.Clone();
+            }
         }
 
         public async Task SaveAsync(TextureManagementSettings textureManagementSettings)
         {
-            _context.TextureConverterSettings = textureManagementSettings.Clone();
-            _context.Commit();
-
-            await Task.Yield();
+            using (await IsolatedDatabaseAccess.Open())
+            {
+                _context.TextureConverterSettings = textureManagementSettings.Clone();
+                _context.Commit();
+            }
         }
     }
 }

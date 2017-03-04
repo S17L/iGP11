@@ -154,7 +154,7 @@
     <value>Add profile</value>
   </data>
   <data name="Application" xml:space="preserve">
-    <value>game settings</value>
+    <value>proxy settings</value>
   </data>
   <data name="ApplicationFilePath" xml:space="preserve">
     <value>executable file path</value>
@@ -204,9 +204,6 @@
   <data name="CommunicatorMode" xml:space="preserve">
     <value>iGP11 - COMMUNICATOR MODE</value>
   </data>
-  <data name="ConfigurationDirectoryPath" xml:space="preserve">
-    <value>configuration directory path</value>
-  </data>
   <data name="ConversionConfiguration" xml:space="preserve">
     <value>configuration</value>
   </data>
@@ -227,6 +224,9 @@
   </data>
   <data name="Direct3D11" xml:space="preserve">
     <value>direct3d11</value>
+  </data>
+  <data name="Direct3D11PluginSettings" xml:space="preserve">
+    <value>Direct3D11 plugin settings</value>
   </data>
   <data name="Direct3D11PluginSettingsLongDescription" xml:space="preserve">
     <value>Adjust plugin settings</value>
@@ -251,9 +251,6 @@
   </data>
   <data name="ErrorCount" xml:space="preserve">
     <value>{0} validation errors</value>
-  </data>
-  <data name="EstablishCommunication" xml:space="preserve">
-    <value>establish communication with game on launch</value>
   </data>
   <data name="Expand" xml:space="preserve">
     <value>expand</value>
@@ -336,9 +333,6 @@
   <data name="PluginAlreadyLoaded" xml:space="preserve">
     <value>plugin already loaded</value>
   </data>
-  <data name="PluginSettings" xml:space="preserve">
-    <value>Plugin settings</value>
-  </data>
   <data name="PluginType" xml:space="preserve">
     <value>plugin type</value>
   </data>
@@ -359,6 +353,9 @@
   </data>
   <data name="ProfileType" xml:space="preserve">
     <value>profile</value>
+  </data>
+  <data name="ProxyDirectoryPath" xml:space="preserve">
+    <value>directory path</value>
   </data>
   <data name="ReleaseNotesDescription" xml:space="preserve">
     <value>Make sure to install all prerequisites specified in readme.pdf and run this program with as high privileges as possible.
@@ -409,10 +406,10 @@ Profile data will be lost.</value>
     <value>SUBMIT</value>
   </data>
   <data name="SwitchModeToCommunicator" xml:space="preserve">
-    <value>establish communication with already started game</value>
+    <value>Enter communicator mode</value>
   </data>
   <data name="SwitchModeToInjector" xml:space="preserve">
-    <value>return to standard mode</value>
+    <value>Enter standard mode</value>
   </data>
   <data name="SystemConfiguration" xml:space="preserve">
     <value>Settings</value>
@@ -442,7 +439,7 @@ Profile data will be lost.</value>
     <value>textures conversion progress: {0}/{1}</value>
   </data>
   <data name="TexturesLongDescription" xml:space="preserve">
-    <value>Specify dumping or injecting behavior and adjust paths to respective folders</value>
+    <value>Specify dumping or injecting behavior and copy textures to tex_override directory</value>
   </data>
   <data name="TexturesShortDescription" xml:space="preserve">
     <value>Dump/replace and adjust texture level of details</value>

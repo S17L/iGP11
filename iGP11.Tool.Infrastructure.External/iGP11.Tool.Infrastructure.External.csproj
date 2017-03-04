@@ -41,6 +41,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -55,6 +56,7 @@
     <Compile Include="ImagingDriver.cs" />
     <Compile Include="InjectionService.cs" />
     <Compile Include="InjectionDriver.cs" />
+    <Compile Include="ProcessWatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextureService.cs" />
   </ItemGroup>

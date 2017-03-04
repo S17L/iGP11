@@ -19,8 +19,8 @@ namespace iGP11.Tool.Shared.Model.ApplicationSettings.Validation
             {
                 yield return new Localizable(
                     "ValueEqual",
-                    context.GetName(entity => entity.ApplicationCommunicationPort),
-                    context.GetName(entity => entity.ProxyCommunicationPort));
+                    context.GetComponentName(entity => entity.ApplicationCommunicationPort),
+                    context.GetComponentName(entity => entity.ProxyCommunicationPort));
             }
         }
     }

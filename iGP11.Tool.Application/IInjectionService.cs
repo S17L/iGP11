@@ -9,5 +9,7 @@ namespace iGP11.Tool.Application
         bool IsProcessRunning(string applicationFilePath);
 
         bool IsProxyLoaded(string applicationFilePath, string proxyFilePath);
+
+        bool Start(string applicationFilePath);
     }
 }

@@ -20,7 +20,6 @@ using iGP11.Library.Hub.Transport;
 using iGP11.Library.Network;
 using iGP11.Library.Scheduler;
 using iGP11.Tool.Application;
-using iGP11.Tool.Application.CommandHandler;
 using iGP11.Tool.Bootstrapper.Autofac;
 using iGP11.Tool.Bootstrapper.AutoMapper;
 using iGP11.Tool.Bootstrapper.Log4net;
@@ -130,10 +129,7 @@ namespace iGP11.Tool.Bootstrapper
                     .AsSelf()
                     .AsImplementedInterfaces();
 
-                var direct3D11PluginPath = constantSettings.Plugins.Direct3D11;
                 var proxyCommunicationPort = applicationSettings.ProxyCommunicationPort;
-                var proxyFilePath = constantSettings.Plugins.Proxy;
-                var proxySettingsFileName = constantSettings.ProxySettingsFileName;
                 var systemIpAddress = constantSettings.SystemIpAddress;
 
                 var eventPublisher = new EventPublisher();
@@ -145,23 +141,20 @@ namespace iGP11.Tool.Bootstrapper
                 builder.Register(context => ReadDatabaseInitializer.Database).SingleInstance().AsSelf().AsImplementedInterfaces();
                 builder.Register(context => new CommunicatorFactory(systemIpAddress, proxyCommunicationPort, Logger.Current)).AsSelf().AsImplementedInterfaces();
                 builder.Register(context => eventPublisher).SingleInstance().AsSelf().AsImplementedInterfaces();
-                builder.Register(context => new ApplicationBootstrapper.BootstrapperConfiguration
-                {
-                    ProxyFilePath = proxyFilePath
-                }).AsSelf().AsImplementedInterfaces();
+                builder.Register(context => constantSettings.Plugins).AsSelf().AsImplementedInterfaces();
                 builder.Register(context => new NetworkPublisher(applicationListenerUri)).AsSelf().AsImplementedInterfaces();
 
-                builder.Register(
-                        context => new StartApplicationCommandHandler(
-                            proxyFilePath,
-                            proxySettingsFileName,
-                            systemIpAddress,
-                            proxyCommunicationPort,
-                            direct3D11PluginPath,
-                            context.Resolve<ComponentAssembler>(),
-                            context.Resolve<IDirectoryRepository>(),
-                            context.Resolve<IInjectionService>(),
-                            context.Resolve<IInjectionSettingsRepository>()))
+                builder.Register(context => new InjectionSettingsProcessWatcher(
+                        constantSettings.Plugins,
+                        systemIpAddress,
+                        proxyCommunicationPort,
+                        context.Resolve<ComponentAssembler>(),
+                        context.Resolve<IDirectoryRepository>(),
+                        context.Resolve<IInjectionService>(),
+                        context.Resolve<IInjectionSettingsRepository>(),
+                        Logger.Current,
+                        context.Resolve<IProcessWatcher>()))
+                    .SingleInstance()
                     .AsSelf()
                     .AsImplementedInterfaces();
 

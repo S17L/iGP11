@@ -9,9 +9,9 @@ namespace iGP11.Library.Component
 {
     public class Property<TValue> : IGenericProperty<TValue>
     {
+        private readonly Expression _expression;
         private readonly Func<TValue> _getter;
         private readonly TValue _initial;
-        private readonly Expression _expression;
         private readonly Action<TValue> _setter;
         private readonly IValidationContext _validationContext;
         private readonly IEnumerable<IValidator<TValue>> _validators;

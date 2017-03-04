@@ -16,23 +16,27 @@ namespace iGP11.Tool.Infrastructure.Database.Repository
             _context = context;
         }
 
-        public Task<ApplicationSettings> LoadAsync()
+        public async Task<ApplicationSettings> LoadAsync()
         {
-            var model = _context.ApplicationSettings;
-            if (model == null)
+            using (await IsolatedDatabaseAccess.Open())
             {
-                throw new AggregateRootNotFoundException("application settings not found");
-            }
+                var model = _context.ApplicationSettings;
+                if (model == null)
+                {
+                    throw new AggregateRootNotFoundException("application settings not found");
+                }
 
-            return Task.FromResult(model.Clone());
+                return model.Clone();
+            }
         }
 
         public async Task SaveAsync(ApplicationSettings applicationSettings)
         {
-            _context.ApplicationSettings = applicationSettings.Clone();
-            _context.Commit();
-
-            await Task.Yield();
+            using (await IsolatedDatabaseAccess.Open())
+            {
+                _context.ApplicationSettings = applicationSettings.Clone();
+                _context.Commit();
+            }
         }
     }
 }

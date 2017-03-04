@@ -9,7 +9,7 @@ namespace iGP11.Tool.Domain.Model.InjectionSettings
     public class Textures
     {
         [DataMember(Name = "detailLevel", EmitDefaultValue = true)]
-        [Editable]
+        [Editable(FormType.New)]
         public TextureDetailLevel DetailLevel { get; set; }
 
         [DataMember(Name = "dumpingPath", EmitDefaultValue = true)]
@@ -19,7 +19,7 @@ namespace iGP11.Tool.Domain.Model.InjectionSettings
         public string DumpingPath { get; set; }
 
         [DataMember(Name = "overrideMode", EmitDefaultValue = true)]
-        [Editable]
+        [Editable(FormType.New)]
         public TextureOverrideMode OverrideMode { get; set; }
 
         [DataMember(Name = "overridePath", EmitDefaultValue = true)]

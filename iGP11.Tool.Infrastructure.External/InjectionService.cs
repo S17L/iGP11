@@ -3,7 +3,6 @@ using System.IO;
 
 using iGP11.Library;
 using iGP11.Tool.Application;
-using iGP11.Tool.Domain.Exceptions;
 using iGP11.Tool.Shared.Model;
 
 namespace iGP11.Tool.Infrastructure.External
@@ -12,12 +11,6 @@ namespace iGP11.Tool.Infrastructure.External
     {
         public InjectionResult Inject(string applicationFilePath, string proxyFilePath)
         {
-            var result = StartProcess(applicationFilePath);
-            if (result.HasValue && !result.Value)
-            {
-                throw new DomainOperationException("application not started");
-            }
-
             return new InjectionResult(InjectionDriver.Inject(applicationFilePath, proxyFilePath));
         }
 
@@ -29,6 +22,11 @@ namespace iGP11.Tool.Infrastructure.External
         public bool IsProxyLoaded(string applicationFilePath, string proxyFilePath)
         {
             return InjectionDriver.IsProxyLoaded(applicationFilePath, proxyFilePath);
+        }
+
+        public bool Start(string applicationFilePath)
+        {
+            return StartProcess(applicationFilePath).GetValueOrDefault();
         }
 
         private static Process CreateProcess(string applicationFilePath)

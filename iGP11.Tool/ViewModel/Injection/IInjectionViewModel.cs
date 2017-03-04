@@ -6,8 +6,6 @@ namespace iGP11.Tool.ViewModel.Injection
     {
         string ApplicationFilePath { get; set; }
 
-        string ConfigurationDirectoryPath { get; set; }
-
         string FormattedConfigurationDirectoryPath { get; }
 
         string FormattedLogsDirectoryPath { get; }
@@ -15,5 +13,7 @@ namespace iGP11.Tool.ViewModel.Injection
         string LogsDirectoryPath { get; set; }
 
         PluginType PluginType { get; set; }
+
+        string ProxyDirectoryPath { get; set; }
     }
 }

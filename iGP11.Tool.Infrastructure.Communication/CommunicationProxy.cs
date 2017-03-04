@@ -15,9 +15,9 @@ namespace iGP11.Tool.Infrastructure.Communication
         private const int InitialChunkLength = 10;
         private readonly string _address;
         private readonly Encoding _encoding = Encoding.UTF8;
+        private readonly ILogger _logger;
         private readonly ushort _port;
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
-        private readonly ILogger _logger;
 
         private bool _hasAccessDenied;
         private TcpClient _tcpClient;

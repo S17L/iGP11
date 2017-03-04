@@ -5,6 +5,6 @@ namespace iGP11.Library.Component.DataAnnotations
 {
     public interface IComponentContext<TComponent>
     {
-        Localizable GetName<TMember>(Expression<Func<TComponent, TMember>> expression);
+        Localizable GetComponentName<TMember>(Expression<Func<TComponent, TMember>> expression);
     }
 }

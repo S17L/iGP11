@@ -66,6 +66,27 @@
                     Orientation="Vertical"
                     DataContext="{Binding Path=MenuViewModel}">
                     <Button
+                        DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.InjectionConfigurationViewModel}"
+                        themes:FrameworkService.Image="{StaticResource ResourceKey=Communication32X32}"
+                        themes:FrameworkService.ImageHover="{StaticResource ResourceKey=CommunicationHover32X32}"
+                        Command="{Binding Path=SwitchModeCommand}">
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}"
+                                   BasedOn="{StaticResource ResourceKey=StyleMenuImageButton}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=IsStandardMode}" Value="False">
+                                        <Setter Property="Content"
+                                                Value="{Binding Source={StaticResource ResourceKey=LocalizationSwitchModeToInjector}, Mode=OneTime}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Path=IsStandardMode}" Value="True">
+                                        <Setter Property="Content"
+                                                Value="{Binding Source={StaticResource ResourceKey=LocalizationSwitchModeToCommunicator}, Mode=OneTime}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <Button
                         themes:FrameworkService.Image="{StaticResource ResourceKey=TextureManagement32X32}"
                         themes:FrameworkService.ImageHover="{StaticResource ResourceKey=TextureManagementHover32X32}"
                         Style="{StaticResource ResourceKey=StyleMenuImageButton}"
@@ -134,27 +155,6 @@
                                 <Setter Property="Foreground" Value="{StaticResource ResourceKey=SolidColorBrushWhite}" />
                             </Style>
                         </StackPanel.Resources>
-                        <userControls:NavigationItemControl ClickedCommand="{Binding Path=SwitchModeCommand}"
-                                                            IsArrowVisible="False">
-                            <TextBlock>
-                                <TextBlock.Style>
-                                    <Style TargetType="{x:Type TextBlock}"
-                                           BasedOn="{StaticResource ResourceKey=StyleDescriptionTextBlock}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Path=IsStandardMode}" Value="False">
-                                                <Setter Property="Text"
-                                                        Value="{Binding Source={StaticResource ResourceKey=LocalizationSwitchModeToInjector}, Mode=OneTime}" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding Path=IsStandardMode}" Value="True">
-                                                <Setter Property="Text"
-                                                        Value="{Binding Source={StaticResource ResourceKey=LocalizationSwitchModeToCommunicator}, Mode=OneTime}" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </userControls:NavigationItemControl>
-                        <Separator Style="{StaticResource ResourceKey=NavigationItemSeparatorStyle}" />
                         <userControls:NavigationItemControl
                             ClickedCommand="{Binding Path=EditInjectionSettingsCommand}">
                             <StackPanel Orientation="Vertical">
@@ -365,8 +365,6 @@
                                             <RowDefinition Height="10" />
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="10" />
-                                            <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
@@ -420,16 +418,16 @@
                                             Grid.Column="0"
                                             Grid.ColumnSpan="2"
                                             FontSize="{StaticResource ResourceKey=FontSizeInformation}"
-                                            Text="{Binding Source={StaticResource ResourceKey=LocalizationConfigurationDirectoryPath}, Mode=OneTime}"
+                                            Text="{Binding Source={StaticResource ResourceKey=LocalizationProxyDirectoryPath}, Mode=OneTime}"
                                             Style="{StaticResource ResourceKey=StyleTextBlockHeader}" />
                                         <Button
                                             Grid.Row="6"
                                             Grid.Column="0"
-                                            Content="{Binding Path=ConfigurationDirectoryPath}"
+                                            Content="{Binding Path=ProxyDirectoryPath}"
                                             IsEnabled="False"
                                             HorizontalAlignment="Stretch"
                                             Style="{StaticResource ResourceKey=StyleImageButton}"
-                                            themes:ToolTipService.Title="{Binding Path=FormattedConfigurationDirectoryPath, Mode=OneWay}"
+                                            themes:ToolTipService.Title="{Binding Path=FormattedProxyDirectoryPath, Mode=OneWay}"
                                             HorizontalContentAlignment="Left" />
                                         <StackPanel
                                             Grid.Row="6"
@@ -471,17 +469,6 @@
                                                 Command="{Binding Path=MoveToLogsDirectoryPathCommand}"
                                                 Margin="-1, 0, 0, 0" />
                                         </StackPanel>
-                                        <CheckBox
-                                            Grid.Row="11"
-                                            Grid.Column="0"
-                                            IsChecked="{Binding Path=EstablishCommunication}"
-                                            Visibility="{Binding Path=IsStandardMode, Converter={framework:VisibleValueConverter}}">
-                                            <TextBlock
-                                                FontSize="{StaticResource ResourceKey=FontSizeInformation}"
-                                                Text="{Binding Source={StaticResource ResourceKey=LocalizationEstablishCommunication}, Mode=OneTime}"
-                                                Style="{StaticResource ResourceKey=StyleTextBlockHeader}"
-                                                Visibility="{Binding Path=IsStandardMode, Converter={framework:VisibleValueConverter}}" />
-                                        </CheckBox>
                                     </Grid>
                                 </StackPanel>
                             </Border>

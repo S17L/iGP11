@@ -29,7 +29,7 @@ namespace iGP11.Tool.Shared.Model.InjectionSettings
         public LumaSharpen LumaSharpen { get; set; }
 
         [Complex]
-        [ComponentName("PluginSettings")]
+        [ComponentName("Direct3D11PluginSettings")]
         [DataMember(Name = "pluginSettings", IsRequired = true, EmitDefaultValue = true)]
         [Editable]
         [NoValidation]

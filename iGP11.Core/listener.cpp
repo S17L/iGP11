@@ -46,6 +46,7 @@ bool core::communication::TcpServer::start() {
 
     _socket = ::socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
     if (_socket == INVALID_SOCKET) {
+        ::WSACleanup();
         return false;
     }
 
@@ -57,17 +58,20 @@ bool core::communication::TcpServer::start() {
 
     if (::bind(_socket, (sockaddr *)&address, sizeof(address)) == SOCKET_ERROR) {
         ::closesocket(_socket);
+        ::WSACleanup();
         return false;
     }
 
     if (::listen(_socket, 1) == SOCKET_ERROR) {
         ::closesocket(_socket);
+        ::WSACleanup();
         return false;
     }
 
     auto nonBlockingMode = SocketNonBlockingMode;
     if (::ioctlsocket(_socket, FIONBIO, &nonBlockingMode) != NO_ERROR) {
         ::closesocket(_socket);
+        ::WSACleanup();
         return false;
     };
 

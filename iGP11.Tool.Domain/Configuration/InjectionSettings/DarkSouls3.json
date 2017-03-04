@@ -4,7 +4,7 @@
   },
   "name": "dark souls 3 [dev]",
   "applicationFilePath": "",
-  "configurationDirectoryPath": "<# app_dir #>\\iGP11",
+  "proxyDirectoryPath": "<# app_dir #>\\iGP11",
   "logsDirectoryPath": "<# app_dir #>\\iGP11\\logs",
   "pluginType": 0,
   "establishCommunication": true,

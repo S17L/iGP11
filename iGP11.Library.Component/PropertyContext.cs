@@ -14,7 +14,7 @@ namespace iGP11.Library.Component
             _property = property;
         }
 
-        public Localizable GetName<TMember>(Expression<Func<TComponent, TMember>> expression)
+        public Localizable GetComponentName<TMember>(Expression<Func<TComponent, TMember>> expression)
         {
             if (!_property.IsApplicable(expression))
             {

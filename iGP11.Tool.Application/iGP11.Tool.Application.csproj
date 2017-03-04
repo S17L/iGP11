@@ -76,10 +76,12 @@
     <Compile Include="CommandHandler\UpdateLastEditedInjectionSettingsCommandHandler.cs" />
     <Compile Include="CommandHandler\UpdateProxySettingsCommandHandler.cs" />
     <Compile Include="CommandHandler\UpdateTextureManagementSettingsCommandHandler.cs" />
-    <Compile Include="Bootstrapper\BootstrapperConfiguration.cs" />
+    <Compile Include="InjectionSettingsProcessWatcher.cs" />
     <Compile Include="FileContentLoadingPolicy.cs" />
     <Compile Include="ICommunicator.cs" />
     <Compile Include="ICommunicatorFactory.cs" />
+    <Compile Include="IProcessWatcher.cs" />
+    <Compile Include="IWatchableProcess.cs" />
     <Compile Include="Mapper.cs" />
     <Compile Include="MapperExtensions.cs" />
     <Compile Include="IInjectionService.cs" />
@@ -88,6 +90,7 @@
     <Compile Include="ITextureService.cs" />
     <Compile Include="Model\ProxyPluginSettings.cs" />
     <Compile Include="Model\ProxySettings.cs" />
+    <Compile Include="InjectionSettingsWatchableProcess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +141,7 @@
       <LastGenOutput>Configuration.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

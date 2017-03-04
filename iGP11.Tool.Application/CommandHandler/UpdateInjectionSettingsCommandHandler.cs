@@ -11,10 +11,14 @@ namespace iGP11.Tool.Application.CommandHandler
     public class UpdateInjectionSettingsCommandHandler : IDomainCommandHandler<UpdateInjectionSettingsCommand>
     {
         private readonly IInjectionSettingsRepository _injectionSettingsRepository;
+        private readonly InjectionSettingsProcessWatcher _processWatcher;
 
-        public UpdateInjectionSettingsCommandHandler(IInjectionSettingsRepository injectionSettingsRepository)
+        public UpdateInjectionSettingsCommandHandler(
+            IInjectionSettingsRepository injectionSettingsRepository,
+            InjectionSettingsProcessWatcher processWatcher)
         {
             _injectionSettingsRepository = injectionSettingsRepository;
+            _processWatcher = processWatcher;
         }
 
         public async Task HandleAsync(DomainCommandContext context, UpdateInjectionSettingsCommand command)
@@ -22,6 +26,8 @@ namespace iGP11.Tool.Application.CommandHandler
             var injectionSettings = command.InjectionSettings.Map<InjectionSettings>();
             await _injectionSettingsRepository.LoadAsync(injectionSettings.Id);
             await _injectionSettingsRepository.SaveAsync(injectionSettings);
+            await _processWatcher.WatchAsync(injectionSettings.Id);
+
             await context.PublishAsync(new InjectionSettingsUpdatedEvent(command.InjectionSettings));
         }
     }

@@ -303,7 +303,7 @@ namespace core {
 
         struct InjectionSettings {
             std::string applicationFilePath;
-            std::string configurationDirectoryPath;
+            std::string proxyDirectoryPath;
             std::string logsDirectoryPath;
             core::PluginType pluginType;
             std::string communicationAddress;
@@ -314,7 +314,7 @@ namespace core {
 
         struct ProxySettings {
             std::string applicationFilePath;
-            std::string configurationDirectoryPath;
+            std::string proxyDirectoryPath;
             std::string logsDirectoryPath;
             PluginType pluginType;
             ActivationStatus activationStatus;

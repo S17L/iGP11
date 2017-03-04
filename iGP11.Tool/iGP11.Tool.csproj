@@ -462,6 +462,8 @@
     <Resource Include="Framework\Icons\arrow_up_16x16.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Framework\Icons\communication_32x32.png" />
+    <Resource Include="Framework\Icons\communication_hover_32x32.png" />
     <Content Include="Localization.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Localization.xaml</LastGenOutput>

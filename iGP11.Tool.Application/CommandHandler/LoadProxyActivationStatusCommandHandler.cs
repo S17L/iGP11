@@ -12,14 +12,14 @@ namespace iGP11.Tool.Application.CommandHandler
 {
     public class LoadProxyActivationStatusCommandHandler : IDomainCommandHandler<LoadProxyActivationStatusCommand>
     {
-        private readonly BootstrapperConfiguration _configuration;
         private readonly IInjectionService _injectionService;
+        private readonly Plugins _plugins;
 
         public LoadProxyActivationStatusCommandHandler(
-            BootstrapperConfiguration configuration,
+            Plugins plugins,
             IInjectionService injectionService)
         {
-            _configuration = configuration;
+            _plugins = plugins;
             _injectionService = injectionService;
         }
 
@@ -36,7 +36,7 @@ namespace iGP11.Tool.Application.CommandHandler
                 return ActivationStatus.NotRunning;
             }
 
-            return !_injectionService.IsProxyLoaded(applicationFilePath, _configuration.ProxyFilePath)
+            return !_injectionService.IsProxyLoaded(applicationFilePath, _plugins.Proxy)
                        ? ActivationStatus.Running
                        : ActivationStatus.PluginLoaded;
         }

@@ -13,19 +13,10 @@ namespace iGP11.Tool.Shared.Model.InjectionSettings
         [FilePath]
         public string ApplicationFilePath { get; set; }
 
-        [DataMember(Name = "configurationDirectoryPath", EmitDefaultValue = true)]
-        [Editable]
-        [Tokenizable]
-        public string ConfigurationDirectoryPath { get; set; }
-
         [Complex]
         [DataMember(Name = "direct3D11Settings")]
         [Editable]
         public Direct3D11Settings Direct3D11Settings { get; set; }
-
-        [DataMember(Name = "establishCommunication")]
-        [Editable]
-        public bool EstablishCommunication { get; set; }
 
         [DataMember(Name = "id", EmitDefaultValue = true)]
         public Guid Id { get; set; }
@@ -42,5 +33,10 @@ namespace iGP11.Tool.Shared.Model.InjectionSettings
         [DataMember(Name = "pluginType", EmitDefaultValue = true)]
         [Editable]
         public PluginType PluginType { get; set; }
+
+        [DataMember(Name = "proxyDirectoryPath", EmitDefaultValue = true)]
+        [Editable]
+        [Tokenizable]
+        public string ProxyDirectoryPath { get; set; }
     }
 }

@@ -25,11 +25,10 @@ namespace iGP11.Tool.ViewModel.Injection
     public sealed class InjectionConfigurationViewModel : ViewModel,
                                                           IDisposable,
                                                           IEventHandler<ApplicationMinimizedEvent>,
-                                                          IEventHandler<ApplicationRestoredEvent>,
                                                           IEventHandler<ApplicationActionEvent>,
+                                                          IEventHandler<ApplicationRestoredEvent>,
                                                           IInjectionConfigurationViewModel
     {
-        private const int SwitchModeDelay = 1000;
         private const int TaskInterval = 5000;
 
         private readonly DomainActionBuilder _actionBuilder;
@@ -105,7 +104,7 @@ namespace iGP11.Tool.ViewModel.Injection
             MoveToApplicationPathCommand = new ActionCommand(MoveToApplicationPath, () => !ApplicationFilePath.IsNullOrEmpty());
             MoveToConfigurationDirectoryPathCommand = new ActionCommand(MoveToConfigurationDirectoryPath, () => !ApplicationFilePath.IsNullOrEmpty());
             MoveToLogsDirectoryPathCommand = new ActionCommand(MoveToLogsDirectoryPath, () => !ApplicationFilePath.IsNullOrEmpty());
-            SwitchModeCommand = new ActionCommand(() => _queue.QueueTask(SwapModeAsync), () => true);
+            SwitchModeCommand = new ActionCommand(async () => await SwapModeAsync(), () => true);
             PickApplicationPathCommand = new ActionCommand(async () => await PickApplicationFilePathAsync(), () => true);
             PickPluginSettingsEditViewCommand = new GenericActionCommand<IComponentViewModel>(PickPluginSettingsEditView, () => true);
             RemoveProfileCommand = new ActionCommand(async () => await RemoveProfileAsync(), () => _profiles.Count > 1);
@@ -132,7 +131,7 @@ namespace iGP11.Tool.ViewModel.Injection
                 _injectionViewModel.ApplicationFilePath = value;
 
                 OnPropertyChanged();
-                OnPropertyChanged(() => FormattedConfigurationDirectoryPath);
+                OnPropertyChanged(() => FormattedProxyDirectoryPath);
             }
         }
 
@@ -140,38 +139,11 @@ namespace iGP11.Tool.ViewModel.Injection
 
         public IActionCommand ClearApplicationPathCommand { get; }
 
-        public string ConfigurationDirectoryPath
-        {
-            get { return _injectionViewModel.ConfigurationDirectoryPath; }
-            set
-            {
-                _injectionViewModel.ConfigurationDirectoryPath = value;
-
-                OnPropertyChanged();
-                OnPropertyChanged(() => FormattedConfigurationDirectoryPath);
-            }
-        }
-
         public IActionCommand EditInjectionSettingsCommand { get; }
 
-        public bool EstablishCommunication
-        {
-            get { return (_settings != null) && _settings.EstablishCommunication; }
-            set
-            {
-                if (_settings == null)
-                {
-                    return;
-                }
-
-                _settings.EstablishCommunication = value;
-                QueueUpdateInjectionSettings();
-            }
-        }
-
-        public string FormattedConfigurationDirectoryPath => _injectionViewModel.FormattedConfigurationDirectoryPath;
-
         public string FormattedLogsDirectoryPath => _injectionViewModel.FormattedLogsDirectoryPath;
+
+        public string FormattedProxyDirectoryPath => _injectionViewModel.FormattedConfigurationDirectoryPath;
 
         public bool HasApplicationFilePath => _injectionViewModel.ApplicationFilePath.IsNotNullOrEmpty();
 
@@ -261,6 +233,18 @@ namespace iGP11.Tool.ViewModel.Injection
 
         public IEnumerable<ProfileViewModel> Profiles => _profiles;
 
+        public string ProxyDirectoryPath
+        {
+            get { return _injectionViewModel.ProxyDirectoryPath; }
+            set
+            {
+                _injectionViewModel.ProxyDirectoryPath = value;
+
+                OnPropertyChanged();
+                OnPropertyChanged(() => FormattedProxyDirectoryPath);
+            }
+        }
+
         public IActionCommand RemoveProfileCommand { get; }
 
         public IActionCommand RenameProfileCommand { get; }
@@ -326,6 +310,7 @@ namespace iGP11.Tool.ViewModel.Injection
         {
             _applicationActive = true;
             _scheduler?.Start();
+            _runner.Run(async () => await EstimateState());
 
             await Task.Yield();
         }
@@ -394,75 +379,7 @@ namespace iGP11.Tool.ViewModel.Injection
             await UpdateInjectionSettingsAsync();
         }
 
-        private async Task EstimateCommunicatorStateAsync(bool lockingEnabled = false)
-        {
-            ProxySettings proxySettings = null;
-            await _actionBuilder.Dispatch(new LoadProxySettingsCommand())
-                .CompleteFor<ProxySettingsLoadedEvent>((context, @event) => proxySettings = @event.ProxySettings)
-                .CompleteFor<ErrorOccuredEvent>(async (context, @event) => await PublishUpdateStatusEventAsync(StatusType.Failed, "CommunicationError"))
-                .OnTimeout(async () => await PublishTimeoutEventAsync())
-                .Execute();
-
-            using (await GetBlockingScope(lockingEnabled))
-            {
-                if (proxySettings == null)
-                {
-                    await InitializeInjectorModeAsync();
-                    return;
-                }
-
-                if (_stateEqualityComparer.Equals(_proxySettings, proxySettings))
-                {
-                    EvaluateCommunicatorActivationState(proxySettings.ActivationStatus);
-                    return;
-                }
-
-                _status = null;
-                _proxySettings = proxySettings;
-                _plugin.Clear();
-                _plugin.AddRange(_componentViewModelFactory.CreateEditable(_pluginComponentFactory.Create(proxySettings)));
-
-                ApplicationFilePath = proxySettings.ApplicationFilePath;
-                ConfigurationDirectoryPath = proxySettings.ConfigurationDirectoryPath;
-                LogsDirectoryPath = proxySettings.LogsDirectoryPath;
-                PluginType = proxySettings.PluginType;
-
-                ShowMainForm();
-                EvaluateCommunicatorActivationState(proxySettings.ActivationStatus);
-                Rebind();
-            }
-        }
-
-        private async Task EstimateInjectorStateAsync(bool lockingEnabled = false)
-        {
-            var status = ActivationStatus.NotRetrievable;
-            var applicationFilePath = ApplicationFilePath;
-
-            if (applicationFilePath.IsNotNullOrEmpty())
-            {
-                await _actionBuilder.Dispatch(new LoadProxyActivationStatusCommand(applicationFilePath))
-                    .CompleteFor<ProxyActivationStatusLoadedEvent>((context, @event) => status = @event.Status)
-                    .CompleteFor<ErrorOccuredEvent>(async (context, @event) => await PublishUnknownErrorEventAsync())
-                    .OnTimeout(async () => await PublishTimeoutEventAsync())
-                    .Execute();
-            }
-
-            using (await GetBlockingScope(lockingEnabled))
-            {
-                if (_status == status)
-                {
-                    return;
-                }
-
-                _status = status;
-                _proxySettings = null;
-
-                EvaluateInjectorActivationState(status);
-                Rebind();
-            }
-        }
-
-        private void EvaluateCommunicatorActivationState(ActivationStatus status)
+        private void EstimateCommunicatorActivationState(ActivationStatus status)
         {
             switch (status)
             {
@@ -492,7 +409,46 @@ namespace iGP11.Tool.ViewModel.Injection
             }
         }
 
-        private void EvaluateInjectorActivationState(ActivationStatus status)
+        private async Task EstimateCommunicatorStateAsync(bool lockingEnabled = false)
+        {
+            ProxySettings proxySettings = null;
+            await _actionBuilder.Dispatch(new LoadProxySettingsCommand())
+                .CompleteFor<ProxySettingsLoadedEvent>((context, @event) => proxySettings = @event.ProxySettings)
+                .CompleteFor<ErrorOccuredEvent>(async (context, @event) => await PublishUpdateStatusEventAsync(StatusType.Failed, "CommunicationError"))
+                .OnTimeout(async () => await PublishTimeoutEventAsync())
+                .Execute();
+
+            using (await GetBlockingScope(lockingEnabled))
+            {
+                if ((_mode == ModeType.Injector) || (proxySettings == null))
+                {
+                    await InitializeInjectorModeAsync();
+                    return;
+                }
+
+                if (_stateEqualityComparer.Equals(_proxySettings, proxySettings))
+                {
+                    EstimateCommunicatorActivationState(proxySettings.ActivationStatus);
+                    return;
+                }
+
+                _status = null;
+                _proxySettings = proxySettings;
+                _plugin.Clear();
+                _plugin.AddRange(_componentViewModelFactory.CreateEditable(_pluginComponentFactory.Create(proxySettings)));
+
+                ApplicationFilePath = proxySettings.ApplicationFilePath;
+                ProxyDirectoryPath = proxySettings.ProxyDirectoryPath;
+                LogsDirectoryPath = proxySettings.LogsDirectoryPath;
+                PluginType = proxySettings.PluginType;
+
+                ShowMainForm();
+                EstimateCommunicatorActivationState(proxySettings.ActivationStatus);
+                Rebind();
+            }
+        }
+
+        private void EstimateInjectorActivationState(ActivationStatus status)
         {
             switch (status)
             {
@@ -514,6 +470,50 @@ namespace iGP11.Tool.ViewModel.Injection
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(status), status, null);
+            }
+        }
+
+        private async Task EstimateInjectorStateAsync(bool lockingEnabled = false)
+        {
+            var status = ActivationStatus.NotRetrievable;
+            var applicationFilePath = ApplicationFilePath;
+
+            if (applicationFilePath.IsNotNullOrEmpty())
+            {
+                await _actionBuilder.Dispatch(new LoadProxyActivationStatusCommand(applicationFilePath))
+                    .CompleteFor<ProxyActivationStatusLoadedEvent>((context, @event) => status = @event.Status)
+                    .CompleteFor<ErrorOccuredEvent>(async (context, @event) => await PublishUnknownErrorEventAsync())
+                    .OnTimeout(async () => await PublishTimeoutEventAsync())
+                    .Execute();
+            }
+
+            using (await GetBlockingScope(lockingEnabled))
+            {
+                if ((_mode == ModeType.Communicator) || (_status == status))
+                {
+                    return;
+                }
+
+                _status = status;
+                _proxySettings = null;
+
+                EstimateInjectorActivationState(status);
+                Rebind();
+            }
+        }
+
+        private async Task EstimateState()
+        {
+            switch (_mode)
+            {
+                case ModeType.Injector:
+                    await EstimateInjectorStateAsync(true);
+                    break;
+                case ModeType.Communicator:
+                    await EstimateCommunicatorStateAsync(true);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -628,12 +628,6 @@ namespace iGP11.Tool.ViewModel.Injection
                             await _eventPublisher.PublishAsync(new HideApplicationToTrayEvent());
                         }
 
-                        if (_settings.EstablishCommunication)
-                        {
-                            await Task.Delay(SwitchModeDelay);
-                            await SwapModeAsync();
-                        }
-
                         break;
                     case InjectionStatus.PluginAlreadyLoaded:
                         await PublishUpdateStatusEventAsync(StatusType.Information, "PluginAlreadyLoaded");
@@ -670,7 +664,7 @@ namespace iGP11.Tool.ViewModel.Injection
 
         private void MoveToConfigurationDirectoryPath()
         {
-            _directoryPicker.Open(FormattedConfigurationDirectoryPath);
+            _directoryPicker.Open(FormattedProxyDirectoryPath);
         }
 
         private void MoveToLogsDirectoryPath()
@@ -695,6 +689,11 @@ namespace iGP11.Tool.ViewModel.Injection
             PluginEditForm = viewModel;
         }
 
+        private async Task PublishErrorEventAsync(Localizable error)
+        {
+            await _eventPublisher.PublishAsync(new UpdateStatusEvent(Target.EntryPoint, StatusType.Failed, error.Localize()));
+        }
+
         private async Task PublishProcessConfigurationUpdatedEventAsync()
         {
             await PublishUpdateStatusEventAsync(StatusType.Ok, "ProcessConfigurationUpdated", DateTime.Now);
@@ -710,11 +709,6 @@ namespace iGP11.Tool.ViewModel.Injection
             await PublishUpdateStatusEventAsync(StatusType.Failed, "UnknownError");
         }
 
-        private async Task PublishErrorEventAsync(Localizable error)
-        {
-            await _eventPublisher.PublishAsync(new UpdateStatusEvent(Target.EntryPoint, StatusType.Failed, error.Localize()));
-        }
-
         private async Task PublishUpdateStatusEventAsync(StatusType type, string key, params object[] arguments)
         {
             await _eventPublisher.PublishAsync(
@@ -724,18 +718,11 @@ namespace iGP11.Tool.ViewModel.Injection
                     string.Format(Localization.Localization.Current.Get(key), arguments)));
         }
 
-        private async void QueueUpdateInjectionSettings()
-        {
-            await UpdateInjectionSettingsAsync();
-        }
-
         private void Rebind()
         {
             OnPropertyChanged(() => ApplicationFilePath);
-            OnPropertyChanged(() => ConfigurationDirectoryPath);
-            OnPropertyChanged(() => EstablishCommunication);
-            OnPropertyChanged(() => FormattedConfigurationDirectoryPath);
             OnPropertyChanged(() => FormattedLogsDirectoryPath);
+            OnPropertyChanged(() => FormattedProxyDirectoryPath);
             OnPropertyChanged(() => HasApplicationFilePath);
             OnPropertyChanged(() => HasEditableSettings);
             OnPropertyChanged(() => IsStandardMode);
@@ -746,6 +733,7 @@ namespace iGP11.Tool.ViewModel.Injection
             OnPropertyChanged(() => PluginType);
             OnPropertyChanged(() => ProfileId);
             OnPropertyChanged(() => ProfileName);
+            OnPropertyChanged(() => ProxyDirectoryPath);
 
             ActionCommand.Rebind();
             AddProfileCommand.Rebind();
@@ -844,7 +832,10 @@ namespace iGP11.Tool.ViewModel.Injection
                            ? ModeType.Communicator
                            : ModeType.Injector;
 
-            await SwitchModeAsync(mode);
+            using (await _queue.GetBlockingScope())
+            {
+                await SwitchModeAsync(mode);
+            }
         }
 
         private async Task SwitchModeAsync(ModeType mode, ApplicationAction? action = null)

@@ -8,13 +8,13 @@ namespace iGP11.Tool.Domain.Model.InjectionSettings
     {
         public InjectionSettings Create(Direct3D11ProfileType profileType)
         {
-            var jsonTemplate = Configurations.ResourceManager.GetString(profileType.GetResourceKey());
-            if (jsonTemplate == null)
+            var template = Configurations.ResourceManager.GetString(profileType.GetResourceKey());
+            if (template == null)
             {
                 throw new ProfileTemplateNotFoundException("profile template not found");
             }
 
-            return jsonTemplate.Deserialize<InjectionSettings>();
+            return template.Deserialize<InjectionSettings>();
         }
     }
 }

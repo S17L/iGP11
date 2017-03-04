@@ -54,6 +54,7 @@
     <Compile Include="Bootstrapper\WriteDatabaseInitializer.cs" />
     <Compile Include="Model\FileDatabase.cs" />
     <Compile Include="Model\FileDatabaseContext.cs" />
+    <Compile Include="Model\IsolatedDatabaseAccess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\DirectoryRepository.cs" />
     <Compile Include="Repository\TextureConverterSettingsRepository.cs" />

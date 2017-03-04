@@ -9,7 +9,6 @@ namespace iGP11.Library.File
     {
         private readonly DirectoryContext _directoryContext;
         private readonly string _fileName;
-        private readonly object _lock = new object();
         private TDatabase _database;
 
         private IDatabaseEncryption _databaseEncryption;
@@ -34,12 +33,9 @@ namespace iGP11.Library.File
 
         public void Commit()
         {
-            lock (_lock)
-            {
-                _directoryContext.CreateFile(
-                    _fileName,
-                    _databaseEncryption.Encrypt(_databaseSerializer.Serialize(_database)));
-            }
+            _directoryContext.CreateFile(
+                _fileName,
+                _databaseEncryption.Encrypt(_databaseSerializer.Serialize(_database)));
         }
 
         public void Initialize()
