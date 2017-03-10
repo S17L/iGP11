@@ -26,7 +26,7 @@ namespace iGP11.Tool.Application.CommandHandler
             var game = await _gameRepository.LoadAsync(command.Id);
             game.ChangeName(command.Name);
             game.ChangeFilePath(command.FilePath);
-            
+
             await _gameRepository.SaveAsync(game);
             await _processWatcher.WatchAsync(game.Id);
 

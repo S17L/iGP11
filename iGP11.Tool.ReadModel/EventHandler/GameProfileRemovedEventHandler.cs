@@ -23,15 +23,18 @@ namespace iGP11.Tool.ReadModel.EventHandler
 
         public async Task HandleAsync(DomainEventContext context, GameProfileRemovedEvent @event)
         {
-            var game = FindGameByProfileId(@event.RemovedGameProfileId);
-            if (game == null)
+            using (await IsolatedDatabaseAccess.Open())
             {
-                throw new EntityNotFoundException($"game with game profile id: {@event.RemovedGameProfileId} could not be found");
-            }
+                var game = FindGameByProfileId(@event.RemovedGameProfileId);
+                if (game == null)
+                {
+                    throw new EntityNotFoundException($"game with game profile id: {@event.RemovedGameProfileId} could not be found");
+                }
 
-            _database.LastEditedGameProfileId = @event.LastEditedGameProfileId;
-            game.ProfileId = @event.LastEditedGameProfileId;
-            game.Profiles.Remove(gameProfile => gameProfile.Id == @event.RemovedGameProfileId);
+                _database.LastEditedGameProfileId = @event.LastEditedGameProfileId;
+                game.ProfileId = @event.LastEditedGameProfileId;
+                game.Profiles.Remove(gameProfile => gameProfile.Id == @event.RemovedGameProfileId);
+            }
 
             await context.EmitAsync(new ActionSucceededNotification());
         }

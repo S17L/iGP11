@@ -11,7 +11,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [DataMember(Name = "bokehDoF", IsRequired = true)]
         [ComponentName("BokehDoF")]
         [Editable]
-        [Order(7)]
+        [Order(3)]
         public BokehDoF BokehDoF { get; set; }
 
         [Complex]

@@ -3,10 +3,9 @@ using System.Threading.Tasks;
 using iGP11.Library.DDD;
 using iGP11.Library.DDD.Action;
 using iGP11.Tool.Application.Api;
+using iGP11.Tool.Shared.Event;
 using iGP11.Tool.Shared.Model;
 using iGP11.Tool.Shared.Notification;
-
-using ProxySettingsLoadedEvent = iGP11.Tool.Shared.Event.ProxySettingsLoadedEvent;
 
 namespace iGP11.Tool.Application.CommandHandler
 {

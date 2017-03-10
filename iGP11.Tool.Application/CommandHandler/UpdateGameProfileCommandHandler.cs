@@ -25,7 +25,7 @@ namespace iGP11.Tool.Application.CommandHandler
         {
             var gameProfile = command.GameProfile.Map<GameProfile>();
             var game = await _gameRepository.LoadByGameProfileId(gameProfile.Id);
-            
+
             var profile = game.AddGameProfile(
                 command.GameProfile.Id,
                 command.GameProfile.Name,

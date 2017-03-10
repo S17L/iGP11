@@ -27,14 +27,14 @@ namespace iGP11.Tool.Domain.Model.GameSettings
             _profiles = profiles?.ToList() ?? new List<GameProfile>();
         }
 
-        [DataMember(Name = "name", IsRequired = true)]
-        [Editable]
-        public string Name { get; private set; }
-
         [DataMember(Name = "filePath")]
         [Editable]
         [FilePath]
         public string FilePath { get; private set; }
+
+        [DataMember(Name = "name", IsRequired = true)]
+        [Editable]
+        public string Name { get; private set; }
 
         [DataMember(Name = "profileId")]
         [Editable]
@@ -46,16 +46,6 @@ namespace iGP11.Tool.Domain.Model.GameSettings
         {
             get { return _profiles; }
             private set { _profiles = value?.ToList() ?? new List<GameProfile>(); }
-        }
-
-        public void ChangeFilePath(string filePath)
-        {
-            FilePath = filePath;
-        }
-
-        public void ChangeName(string name)
-        {
-            Name = name;
         }
 
         public GameProfile AddGameProfile(
@@ -80,6 +70,16 @@ namespace iGP11.Tool.Domain.Model.GameSettings
             ProfileId = profile.Id;
 
             return profile.Clone();
+        }
+
+        public void ChangeFilePath(string filePath)
+        {
+            FilePath = filePath;
+        }
+
+        public void ChangeName(string name)
+        {
+            Name = name;
         }
 
         public void RemoveGameProfile(AggregateId gameProfileId)

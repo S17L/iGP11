@@ -9,17 +9,17 @@ namespace iGP11.Tool.Shared.Model.GameSettings
     [DataContract]
     public class Game
     {
+        [DataMember(Name = "filePath", EmitDefaultValue = true)]
+        [Editable]
+        [FilePath]
+        public string FilePath { get; set; }
+
         [DataMember(Name = "id", IsRequired = true)]
         public Guid Id { get; set; }
 
         [DataMember(Name = "name", IsRequired = true)]
         [Editable]
         public string Name { get; set; }
-
-        [DataMember(Name = "filePath", EmitDefaultValue = true)]
-        [Editable]
-        [FilePath]
-        public string FilePath { get; set; }
 
         [DataMember(Name = "profileId")]
         [Editable]

@@ -18,10 +18,10 @@ namespace iGP11.Tool.Shared.Event
         [DataMember(Name = "gameId", IsRequired = true)]
         public Guid GameId { get; private set; }
 
-        [DataMember(Name = "gameProfileId", IsRequired = true)]
-        public Guid GameProfileId { get; private set; }
-
         [DataMember(Name = "gameProfile", IsRequired = true)]
         public GameProfile GameProfile { get; private set; }
+
+        [DataMember(Name = "gameProfileId", IsRequired = true)]
+        public Guid GameProfileId { get; private set; }
     }
 }

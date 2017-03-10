@@ -14,9 +14,12 @@ namespace iGP11.Tool.ReadModel.Query
             _database = database;
         }
 
-        public Task<ProxySettings> FindPluginStateAsync()
+        public async Task<ProxySettings> FindPluginStateAsync()
         {
-            return Task.FromResult(_database.PluginState);
+            using (await IsolatedDatabaseAccess.Open())
+            {
+                return _database.PluginState;
+            }
         }
     }
 }

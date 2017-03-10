@@ -22,14 +22,17 @@ namespace iGP11.Tool.ReadModel.EventHandler
 
         public async Task HandleAsync(DomainEventContext context, GameUpdatedEvent @event)
         {
-            var game = FindGameById(@event.Id);
-            if (game == null)
+            using (await IsolatedDatabaseAccess.Open())
             {
-                throw new EntityNotFoundException($"game with id: {@event.Id} could not be found");
-            }
+                var game = FindGameById(@event.Id);
+                if (game == null)
+                {
+                    throw new EntityNotFoundException($"game with id: {@event.Id} could not be found");
+                }
 
-            game.Name = @event.Name;
-            game.FilePath = @event.FilePath;
+                game.Name = @event.Name;
+                game.FilePath = @event.FilePath;
+            }
 
             await context.EmitAsync(new ActionSucceededNotification());
         }

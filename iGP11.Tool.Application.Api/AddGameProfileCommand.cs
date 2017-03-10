@@ -13,11 +13,11 @@ namespace iGP11.Tool.Application.Api
             BasedOnProfileId = basedOnProfileId;
         }
 
-        [DataMember(Name = "gameId", IsRequired = true)]
-        public Guid GameId { get; private set; }
-
         [DataMember(Name = "basedOnProfileId", IsRequired = true)]
         public Guid BasedOnProfileId { get; private set; }
+
+        [DataMember(Name = "gameId", IsRequired = true)]
+        public Guid GameId { get; private set; }
 
         [DataMember(Name = "name", IsRequired = true)]
         public string Name { get; private set; }

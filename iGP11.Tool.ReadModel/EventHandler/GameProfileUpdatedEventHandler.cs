@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using iGP11.Library;
 using iGP11.Library.DDD;
 using iGP11.Library.DDD.Action;
+using iGP11.Tool.ReadModel.Api.Exception;
 using iGP11.Tool.Shared.Event;
 using iGP11.Tool.Shared.Model.GameSettings;
 using iGP11.Tool.Shared.Notification;
@@ -22,9 +23,17 @@ namespace iGP11.Tool.ReadModel.EventHandler
 
         public async Task HandleAsync(DomainEventContext context, GameProfileUpdatedEvent @event)
         {
-            var game = FindGameByProfileId(@event.GameProfile.Id);
-            game?.Profiles.Remove(gameProfile => gameProfile.Id == @event.GameProfile.Id);
-            game?.Profiles.Add(@event.GameProfile);
+            using (await IsolatedDatabaseAccess.Open())
+            {
+                var game = FindGameByProfileId(@event.GameProfile.Id);
+                if (game == null)
+                {
+                    throw new EntityNotFoundException($"game with game profile id: {@event.GameProfile.Id} could not be found");
+                }
+
+                game.Profiles.Remove(gameProfile => gameProfile.Id == @event.GameProfile.Id);
+                game.Profiles.Add(@event.GameProfile);
+            }
 
             await context.EmitAsync(new ActionSucceededNotification());
         }

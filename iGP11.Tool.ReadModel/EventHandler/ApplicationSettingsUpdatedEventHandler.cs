@@ -18,8 +18,11 @@ namespace iGP11.Tool.ReadModel.EventHandler
 
         public async Task HandleAsync(DomainEventContext context, ApplicationSettingsUpdatedEvent @event)
         {
-            _database.ConstantSettings.ApplicationCommunicationPort = @event.ApplicationCommunicationPort;
-            _database.ConstantSettings.ProxyCommunicationPort = @event.ProxyCommunicationPort;
+            using (await IsolatedDatabaseAccess.Open())
+            {
+                _database.ConstantSettings.ApplicationCommunicationPort = @event.ApplicationCommunicationPort;
+                _database.ConstantSettings.ProxyCommunicationPort = @event.ProxyCommunicationPort;
+            }
 
             await context.EmitAsync(new ActionSucceededNotification());
         }

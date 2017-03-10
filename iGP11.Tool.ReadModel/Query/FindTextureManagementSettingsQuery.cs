@@ -15,9 +15,12 @@ namespace iGP11.Tool.ReadModel.Query
             _database = database;
         }
 
-        public Task<TextureManagementSettings> FindAsync()
+        public async Task<TextureManagementSettings> FindAsync()
         {
-            return Task.FromResult(_database.TextureManagementSettings.Clone());
+            using (await IsolatedDatabaseAccess.Open())
+            {
+                return _database.TextureManagementSettings.Clone();
+            }
         }
     }
 }

@@ -13,8 +13,8 @@ namespace iGP11.Tool.Application.CommandHandler
 {
     public class StartGameCommandHandler : IDomainCommandHandler<StarGameCommand>
     {
-        private readonly IInjectionService _injectionService;
         private readonly IGameRepository _gameRepository;
+        private readonly IInjectionService _injectionService;
         private readonly Plugins _plugins;
 
         public StartGameCommandHandler(

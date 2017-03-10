@@ -14,14 +14,17 @@ namespace iGP11.Tool.ReadModel.Query
             _database = database;
         }
 
-        public Task<ActivationStatus> FindActivationStatusAsync(string applicationFilePath)
+        public async Task<ActivationStatus> FindActivationStatusAsync(string applicationFilePath)
         {
-            ActivationStatus status;
-            status = _database.ProxyActivationStatuses.TryGetValue(applicationFilePath, out status)
-                         ? status
-                         : ActivationStatus.NotRetrievable;
+            using (await IsolatedDatabaseAccess.Open())
+            {
+                ActivationStatus status;
+                status = _database.ProxyActivationStatuses.TryGetValue(applicationFilePath, out status)
+                             ? status
+                             : ActivationStatus.NotRetrievable;
 
-            return Task.FromResult(status);
+                return status;
+            }
         }
     }
 }

@@ -13,11 +13,11 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [Editable]
         public Direct3D11Settings Direct3D11Settings { get; set; }
 
-        [DataMember(Name = "id", EmitDefaultValue = true)]
-        public Guid Id { get; set; }
-
         [DataMember(Name = "gameId", EmitDefaultValue = true)]
         public Guid GameId { get; set; }
+
+        [DataMember(Name = "id", EmitDefaultValue = true)]
+        public Guid Id { get; set; }
 
         [DataMember(Name = "logsDirectoryPath", IsRequired = true)]
         [Editable]

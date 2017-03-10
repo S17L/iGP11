@@ -16,9 +16,12 @@ namespace iGP11.Tool.ReadModel.Query
             _database = database;
         }
 
-        public Task<IEnumerable<Game>> FindAllAsync()
+        public async Task<IEnumerable<Game>> FindAllAsync()
         {
-            return Task.FromResult((IEnumerable<Game>)_database.Games.Clone());
+            using (await IsolatedDatabaseAccess.Open())
+            {
+                return _database.Games.Clone();
+            }
         }
     }
 }

@@ -4,11 +4,11 @@ namespace iGP11.Tool.ViewModel.Injection
 {
     public interface IInjectionViewModel
     {
-        string GameFilePath { get; set; }
-
         string FormattedConfigurationDirectoryPath { get; }
 
         string FormattedLogsDirectoryPath { get; }
+
+        string GameFilePath { get; set; }
 
         string LogsDirectoryPath { get; set; }
 

@@ -19,6 +19,14 @@ namespace iGP11.Tool.ViewModel.Injection
             _tokenReplacer = new TokenReplacer(new ApplicationFilePathTokenReplacingPolicy(() => _package.Game?.FilePath ?? string.Empty));
         }
 
+        public string FormattedConfigurationDirectoryPath => _package.GameProfile != null
+                                                                 ? _tokenReplacer.Replace(_package.GameProfile.ProxyDirectoryPath)
+                                                                 : string.Empty;
+
+        public string FormattedLogsDirectoryPath => _package.GameProfile != null
+                                                        ? _tokenReplacer.Replace(_package.GameProfile.LogsDirectoryPath)
+                                                        : string.Empty;
+
         public string GameFilePath
         {
             get { return _package.Game?.FilePath ?? string.Empty; }
@@ -33,14 +41,6 @@ namespace iGP11.Tool.ViewModel.Injection
                 _injectionConfigurationViewModel.RebindPlugin();
             }
         }
-
-        public string FormattedConfigurationDirectoryPath => _package.GameProfile != null
-                                                                 ? _tokenReplacer.Replace(_package.GameProfile.ProxyDirectoryPath)
-                                                                 : string.Empty;
-
-        public string FormattedLogsDirectoryPath => _package.GameProfile != null
-                                                        ? _tokenReplacer.Replace(_package.GameProfile.LogsDirectoryPath)
-                                                        : string.Empty;
 
         public string LogsDirectoryPath
         {

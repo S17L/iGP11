@@ -27,23 +27,23 @@ namespace iGP11.Tool.Domain.Model.GameSettings
             Direct3D11Settings = direct3D11Settings;
         }
 
-        [DataMember(Name = "gameId", IsRequired = true)]
-        public AggregateId GameId { get; private set; }
-
-        [DataMember(Name = "name", IsRequired = true)]
-        [Editable]
-        public string Name { get; set; }
-
         [Complex]
         [DataMember(Name = "direct3D11Settings", IsRequired = true)]
         [Editable]
         public Direct3D11Settings Direct3D11Settings { get; set; }
+
+        [DataMember(Name = "gameId", IsRequired = true)]
+        public AggregateId GameId { get; private set; }
 
         [DataMember(Name = "logsDirectoryPath", IsRequired = true)]
         [DirectoryPath]
         [Editable]
         [Tokenizable]
         public string LogsDirectoryPath { get; set; }
+
+        [DataMember(Name = "name", IsRequired = true)]
+        [Editable]
+        public string Name { get; set; }
 
         [DataMember(Name = "pluginType", IsRequired = true)]
         [Editable]

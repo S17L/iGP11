@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
 using iGP11.Library.DDD;
 using iGP11.Library.DDD.Action;
@@ -18,7 +18,11 @@ namespace iGP11.Tool.ReadModel.EventHandler
 
         public async Task HandleAsync(DomainEventContext context, LastEditedGameProfileUpdatedEvent @event)
         {
-            _database.LastEditedGameProfileId = @event.Id;
+            using (await IsolatedDatabaseAccess.Open())
+            {
+                _database.LastEditedGameProfileId = @event.Id;
+            }
+
             await context.EmitAsync(new ActionSucceededNotification());
         }
     }

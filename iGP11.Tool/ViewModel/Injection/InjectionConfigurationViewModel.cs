@@ -41,25 +41,25 @@ namespace iGP11.Tool.ViewModel.Injection
         private readonly IFindGamePackageByIdQuery _findGamePackageByIdQuery;
         private readonly IFindGamesQuery _findGamesQuery;
         private readonly IFindLastEditedGamePackageQuery _findLastEditedGamePackageQuery;
+        private readonly ObservableRangeCollection<LookupViewModel> _gameProfiles = new ObservableRangeCollection<LookupViewModel>();
+        private readonly ObservableRangeCollection<LookupViewModel> _games = new ObservableRangeCollection<LookupViewModel>();
         private readonly INavigationService _navigationService;
         private readonly ObservableRangeCollection<IComponentViewModel> _plugin = new ObservableRangeCollection<IComponentViewModel>();
         private readonly IPluginComponentFactory _pluginComponentFactory;
         private readonly IProcessable _processable;
-        private readonly ObservableRangeCollection<LookupViewModel> _games = new ObservableRangeCollection<LookupViewModel>();
-        private readonly ObservableRangeCollection<LookupViewModel> _gameProfiles = new ObservableRangeCollection<LookupViewModel>();
         private readonly BlockingTaskQueue _queue = new BlockingTaskQueue();
         private readonly ITaskRunner _runner;
         private readonly IEqualityComparer<ProxySettings> _stateEqualityComparer;
         private bool _applicationActive = true;
+        private IEnumerable<Game> _gamePackages;
         private IInjectionViewModel _injectionViewModel = new CollectDataViewModel();
         private bool _isValid;
         private ModeType _mode = ModeType.Injector;
+        private GamePackage _package;
         private IComponentViewModel _pluginEditForm;
 
         private ProxySettings _proxySettings;
         private IScheduler _scheduler;
-        private IEnumerable<Game> _gamePackages;
-        private GamePackage _package;
         private ActivationStatus? _status;
 
         public InjectionConfigurationViewModel(
@@ -125,6 +125,16 @@ namespace iGP11.Tool.ViewModel.Injection
 
         public IActionCommand AddGameProfileCommand { get; }
 
+        public IActionCommand ChangedCommand { get; }
+
+        public IActionCommand ClearGameFilePathCommand { get; }
+
+        public IActionCommand EditGameProfileCommand { get; }
+
+        public string FormattedLogsDirectoryPath => _injectionViewModel.FormattedLogsDirectoryPath;
+
+        public string FormattedProxyDirectoryPath => _injectionViewModel.FormattedConfigurationDirectoryPath;
+
         public string GameFilePath
         {
             get { return _injectionViewModel.GameFilePath; }
@@ -137,19 +147,45 @@ namespace iGP11.Tool.ViewModel.Injection
             }
         }
 
-        public IActionCommand ChangedCommand { get; }
+        public Guid GameId
+        {
+            get { return _package?.Game.Id ?? Guid.Empty; }
+            set
+            {
+                if ((_package == null) || (_package.Game.Id == value))
+                {
+                    return;
+                }
 
-        public IActionCommand ClearGameFilePathCommand { get; }
+                _queue.QueueTask(() => ChangeGameAsync(value));
+            }
+        }
 
-        public IActionCommand EditGameProfileCommand { get; }
+        public string GameName => _package?.Game.Name ?? string.Empty;
 
-        public string FormattedLogsDirectoryPath => _injectionViewModel.FormattedLogsDirectoryPath;
+        public Guid GameProfileId
+        {
+            get { return _package?.GameProfile.Id ?? Guid.Empty; }
+            set
+            {
+                if ((_package == null) || (_package.GameProfile.Id == value))
+                {
+                    return;
+                }
 
-        public string FormattedProxyDirectoryPath => _injectionViewModel.FormattedConfigurationDirectoryPath;
+                _queue.QueueTask(() => ChangeGameProfileAsync(value));
+            }
+        }
 
-        public bool HasGameFilePath => _injectionViewModel.GameFilePath.IsNotNullOrEmpty();
+        public string GameProfileName => _package?.GameProfile.Name ?? string.Empty;
+
+        public IEnumerable<LookupViewModel> GameProfiles => _gameProfiles;
+
+        public IEnumerable<LookupViewModel> Games => _games;
 
         public bool HasEditableSettings => !_plugin.IsNullOrEmpty();
+
+        public bool HasGameFilePath => _injectionViewModel.GameFilePath.IsNotNullOrEmpty();
 
         public bool IsStandardMode => _mode == ModeType.Injector;
 
@@ -182,9 +218,9 @@ namespace iGP11.Tool.ViewModel.Injection
             }
         }
 
-        public IActionCommand MoveToGameFilePathCommand { get; }
-
         public IActionCommand MoveToConfigurationDirectoryPathCommand { get; }
+
+        public IActionCommand MoveToGameFilePathCommand { get; }
 
         public IActionCommand MoveToLogsDirectoryPathCommand { get; }
 
@@ -214,42 +250,6 @@ namespace iGP11.Tool.ViewModel.Injection
                 OnPropertyChanged();
             }
         }
-
-        public Guid GameId
-        {
-            get { return _package?.Game.Id ?? Guid.Empty; }
-            set
-            {
-                if (_package == null || _package.Game.Id == value)
-                {
-                    return;
-                }
-
-                _queue.QueueTask(() => ChangeGameAsync(value));
-            }
-        }
-
-        public Guid GameProfileId
-        {
-            get { return _package?.GameProfile.Id ?? Guid.Empty; }
-            set
-            {
-                if (_package == null || _package.GameProfile.Id == value)
-                {
-                    return;
-                }
-
-                _queue.QueueTask(() => ChangeGameProfileAsync(value));
-            }
-        }
-
-        public string GameName => _package?.Game.Name ?? string.Empty;
-
-        public string GameProfileName => _package?.GameProfile.Name ?? string.Empty;
-
-        public IEnumerable<LookupViewModel> Games => _games;
-
-        public IEnumerable<LookupViewModel> GameProfiles => _gameProfiles;
 
         public string ProxyDirectoryPath
         {
@@ -796,12 +796,6 @@ namespace iGP11.Tool.ViewModel.Injection
             ValidationTriggeredCommand.Rebind();
         }
 
-        private void RebindGames()
-        {
-            _games.Clear();
-            _games.AddRange(_gamePackages.Select(game => new LookupViewModel(game.Id, game.Name)));
-        }
-
         private void RebindGameProfiles()
         {
             _gameProfiles.Clear();
@@ -809,6 +803,12 @@ namespace iGP11.Tool.ViewModel.Injection
             {
                 _gameProfiles.AddRange(_package.Game.Profiles.Select(profile => new LookupViewModel(profile.Id, profile.Name)));
             }
+        }
+
+        private void RebindGames()
+        {
+            _games.Clear();
+            _games.AddRange(_gamePackages.Select(game => new LookupViewModel(game.Id, game.Name)));
         }
 
         private async Task RemoveGameProfileAsync()

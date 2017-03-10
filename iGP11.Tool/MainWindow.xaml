@@ -73,14 +73,18 @@
                                    BasedOn="{StaticResource ResourceKey=StyleMenuImageButton}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Path=IsStandardMode}" Value="False">
-                                        <Setter Property="themes:FrameworkService.Image" Value="{StaticResource ResourceKey=Connected32X32}" />
-                                        <Setter Property="themes:FrameworkService.ImageHover" Value="{StaticResource ResourceKey=ConnectedHover32X32}" />
+                                        <Setter Property="themes:FrameworkService.Image"
+                                                Value="{StaticResource ResourceKey=Connected32X32}" />
+                                        <Setter Property="themes:FrameworkService.ImageHover"
+                                                Value="{StaticResource ResourceKey=ConnectedHover32X32}" />
                                         <Setter Property="Content"
                                                 Value="{Binding Source={StaticResource ResourceKey=LocalizationDisconnectFromGame}, Mode=OneTime}" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Path=IsStandardMode}" Value="True">
-                                        <Setter Property="themes:FrameworkService.Image" Value="{StaticResource ResourceKey=Disconnected32X32}" />
-                                        <Setter Property="themes:FrameworkService.ImageHover" Value="{StaticResource ResourceKey=DisconnectedHover32X32}" />
+                                        <Setter Property="themes:FrameworkService.Image"
+                                                Value="{StaticResource ResourceKey=Disconnected32X32}" />
+                                        <Setter Property="themes:FrameworkService.ImageHover"
+                                                Value="{StaticResource ResourceKey=DisconnectedHover32X32}" />
                                         <Setter Property="Content"
                                                 Value="{Binding Source={StaticResource ResourceKey=LocalizationConnectToGame}, Mode=OneTime}" />
                                     </DataTrigger>
@@ -189,17 +193,20 @@
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
-                                    <TextBlock Text="{Binding Source={StaticResource ResourceKey=LocalizationGameHeader}, Mode=OneTime}"
-                                               Style="{StaticResource ResourceKey=StyleDescriptionTextBlock}" />
+                                    <TextBlock
+                                        Text="{Binding Source={StaticResource ResourceKey=LocalizationGameHeader}, Mode=OneTime}"
+                                        Style="{StaticResource ResourceKey=StyleDescriptionTextBlock}" />
                                     <TextBlock Grid.Column="1" Grid.Row="0" Padding="10, 0, 0, 0"
                                                Text="{Binding Path=GameName}"
                                                Style="{StaticResource ResourceKey=StyleDescriptionTextBlock}" />
-                                    <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding Source={StaticResource ResourceKey=LocalizationProfileHeader}, Mode=OneTime}"
+                                    <TextBlock Grid.Column="0" Grid.Row="1"
+                                               Text="{Binding Source={StaticResource ResourceKey=LocalizationProfileHeader}, Mode=OneTime}"
                                                Style="{StaticResource ResourceKey=StyleDescriptionTextBlock}" />
                                     <TextBlock Grid.Column="1" Grid.Row="1" Padding="10, 0, 0, 0"
                                                Text="{Binding Path=GameProfileName}"
                                                Style="{StaticResource ResourceKey=StyleDescriptionTextBlock}" />
-                                    <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding Source={StaticResource ResourceKey=LocalizationPluginHeader}, Mode=OneTime}"
+                                    <TextBlock Grid.Column="0" Grid.Row="2"
+                                               Text="{Binding Source={StaticResource ResourceKey=LocalizationPluginHeader}, Mode=OneTime}"
                                                Style="{StaticResource ResourceKey=StyleDescriptionTextBlock}" />
                                     <TextBlock Grid.Column="1" Grid.Row="2" Padding="10, 0, 0, 0"
                                                Text="{Binding Path=PluginType, Converter={framework:EnumConverter}}"

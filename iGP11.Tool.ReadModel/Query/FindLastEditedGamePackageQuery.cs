@@ -16,12 +16,15 @@ namespace iGP11.Tool.ReadModel.Query
             _query = query;
         }
 
-        public Task<GamePackage> FindAsync()
+        public async Task<GamePackage> FindAsync()
         {
-            var id = _database.LastEditedGameProfileId;
-            return id.HasValue
-                       ? _query.FindByGameProfileIdAsync(id.Value)
-                       : Task.FromResult<GamePackage>(null);
+            using (await IsolatedDatabaseAccess.Open())
+            {
+                var id = _database.LastEditedGameProfileId;
+                return id.HasValue
+                           ? await _query.FindByGameProfileIdAsync(id.Value)
+                           : null;
+            }
         }
     }
 }

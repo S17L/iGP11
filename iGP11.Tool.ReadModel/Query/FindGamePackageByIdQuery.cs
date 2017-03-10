@@ -19,21 +19,24 @@ namespace iGP11.Tool.ReadModel.Query
             _database = database;
         }
 
-        public Task<GamePackage> FindByGameIdAsync(Guid gameId)
+        public async Task<GamePackage> FindByGameIdAsync(Guid gameId)
         {
-            var game = FindGameById(gameId);
-            if (game == null)
+            using (await IsolatedDatabaseAccess.Open())
             {
-                throw new EntityNotFoundException($"game with id: {gameId} could not be found");
-            }
+                var game = FindGameById(gameId);
+                if (game == null)
+                {
+                    throw new EntityNotFoundException($"game with id: {gameId} could not be found");
+                }
 
-            var gameProfile = FindGameProfileById(game, game.ProfileId);
-            if (gameProfile == null)
-            {
-                throw new EntityNotFoundException($"game profile with id: {game.ProfileId} could not be found");
-            }
+                var gameProfile = FindGameProfileById(game, game.ProfileId);
+                if (gameProfile == null)
+                {
+                    throw new EntityNotFoundException($"game profile with id: {game.ProfileId} could not be found");
+                }
 
-            return Task.FromResult(new GamePackage(game, gameProfile).Clone());
+                return new GamePackage(game, gameProfile).Clone();
+            }
         }
 
         public Task<GamePackage> FindByGameProfileIdAsync(Guid gameProfileId)

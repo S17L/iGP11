@@ -49,7 +49,9 @@ namespace iGP11.Tool.Infrastructure.External
             var pid = (uint)@object.Properties["ProcessID"].Value;
 
             var builder = new StringBuilder(MaxPathLength + 1);
-            var filePath = InjectionDriver.GetProcessFilePath(pid, builder, builder.Capacity) ? builder.ToString() : null;
+            var filePath = InjectionDriver.GetProcessFilePath(pid, builder, builder.Capacity)
+                               ? builder.ToString()
+                               : null;
 
             _logger.Log(LogLevel.Debug, $"wmi event received, file path: {filePath}, pid: {pid}");
 

@@ -11,9 +11,9 @@ namespace iGP11.Tool.Domain.Model.GameSettings
 
         Task<IEnumerable<Game>> LoadAllAsync();
 
-        Task<AggregateId> LoadGameProfileIdAsync();
-
         Task<Game> LoadByGameProfileId(AggregateId profileId);
+
+        Task<AggregateId> LoadGameProfileIdAsync();
 
         Task RemoveGameAsync(AggregateId gameId);
     }

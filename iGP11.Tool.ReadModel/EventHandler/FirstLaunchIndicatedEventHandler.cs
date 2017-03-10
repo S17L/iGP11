@@ -18,7 +18,11 @@ namespace iGP11.Tool.ReadModel.EventHandler
 
         public async Task HandleAsync(DomainEventContext context, FirstLaunchIndicatedEvent @event)
         {
-            _database.UsageStatistics.FirstLaunchTime = @event.Time;
+            using (await IsolatedDatabaseAccess.Open())
+            {
+                _database.UsageStatistics.FirstLaunchTime = @event.Time;
+            }
+
             await context.EmitAsync(new ActionSucceededNotification());
         }
     }

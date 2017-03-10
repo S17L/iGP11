@@ -69,6 +69,7 @@
     <Compile Include="EventHandler\LastEditedGameProfileUpdatedEventHandler.cs" />
     <Compile Include="EventHandler\TextureManagementSettingsUpdatedEventHandler.cs" />
     <Compile Include="InMemoryDatabase.cs" />
+    <Compile Include="IsolatedDatabaseAccess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Query\FindConstantSettingsQuery.cs" />
     <Compile Include="Query\FindFirstLaunchTimeQuery.cs" />

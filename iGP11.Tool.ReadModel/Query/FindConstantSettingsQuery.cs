@@ -15,9 +15,12 @@ namespace iGP11.Tool.ReadModel.Query
             _database = database;
         }
 
-        public Task<ConstantSettings> FindAsync()
+        public async Task<ConstantSettings> FindAsync()
         {
-            return Task.FromResult(_database.ConstantSettings.Clone());
+            using (await IsolatedDatabaseAccess.Open())
+            {
+                return _database.ConstantSettings.Clone();
+            }
         }
     }
 }

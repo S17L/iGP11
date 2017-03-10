@@ -14,9 +14,12 @@ namespace iGP11.Tool.ReadModel.Query
             _database = database;
         }
 
-        public Task<DateTime?> IsFirstRunAsync()
+        public async Task<DateTime?> IsFirstRunAsync()
         {
-            return Task.FromResult(_database.UsageStatistics.FirstLaunchTime);
+            using (await IsolatedDatabaseAccess.Open())
+            {
+                return _database.UsageStatistics.FirstLaunchTime;
+            }
         }
     }
 }

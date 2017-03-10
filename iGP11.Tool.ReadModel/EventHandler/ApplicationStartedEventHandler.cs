@@ -3,6 +3,7 @@
 using iGP11.Library.DDD;
 using iGP11.Library.DDD.Action;
 using iGP11.Tool.Shared.Event;
+using iGP11.Tool.Shared.Notification;
 
 namespace iGP11.Tool.ReadModel.EventHandler
 {
@@ -17,8 +18,12 @@ namespace iGP11.Tool.ReadModel.EventHandler
 
         public async Task HandleAsync(DomainEventContext context, GameStartedEvent @event)
         {
-            _database.InjectionStatuses[@event.FilePath] = @event.Status;
-            await context.EmitAsync(new Shared.Notification.ApplicationStartedNotification(@event.Status));
+            using (await IsolatedDatabaseAccess.Open())
+            {
+                _database.InjectionStatuses[@event.FilePath] = @event.Status;
+            }
+
+            await context.EmitAsync(new ApplicationStartedNotification(@event.Status));
         }
     }
 }

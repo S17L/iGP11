@@ -5,6 +5,7 @@ using iGP11.Library.DDD;
 using iGP11.Library.DDD.Action;
 using iGP11.Tool.Application.Api;
 using iGP11.Tool.Domain.Model.GameSettings;
+using iGP11.Tool.Shared.Event;
 using iGP11.Tool.Shared.Notification;
 
 using GameProfile = iGP11.Tool.Shared.Model.GameSettings.GameProfile;
@@ -51,7 +52,7 @@ namespace iGP11.Tool.Application.CommandHandler
             await _gameRepository.SaveAsync(game);
             await _processWatcher.WatchAsync(game.Id);
 
-            var @event = new Shared.Event.GameProfileAddedEvent(
+            var @event = new GameProfileAddedEvent(
                 game.Id,
                 game.ProfileId,
                 gameProfile.Map<GameProfile>());

@@ -2,362 +2,434 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:common="clr-namespace:iGP11.Tool.Localization;assembly=iGP11.Tool.Localization"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
-    <ObjectDataProvider x:Key="LocalizationAbort" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationAbort" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>Abort</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationAboutDialogTitle" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationAboutDialogTitle" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>AboutDialogTitle</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationAboutFileMissing" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationAboutFileMissing" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>AboutFileMissing</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationActivationStatusNotRetrievable" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationActivationStatusNotRetrievable"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ActivationStatusNotRetrievable</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationActivationStatusNotRunning" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationActivationStatusNotRunning"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ActivationStatusNotRunning</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationActivationStatusPluginActivated" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationActivationStatusPluginActivated"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ActivationStatusPluginActivated</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationActivationStatusPluginActivationFailed" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationActivationStatusPluginActivationFailed"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ActivationStatusPluginActivationFailed</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationActivationStatusPluginActivationPending" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationActivationStatusPluginActivationPending"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ActivationStatusPluginActivationPending</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationActivationStatusPluginLoaded" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationActivationStatusPluginLoaded"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ActivationStatusPluginLoaded</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationActivationStatusRunning" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationActivationStatusRunning"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ActivationStatusRunning</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationAddProfile" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationAddProfile" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>AddProfile</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationAddProfileDialogTitle" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationAddProfileDialogTitle"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>AddProfileDialogTitle</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationApplicationFilePath" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationApplicationFilePath" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ApplicationFilePath</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationApplicationFilePathRequired" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationApplicationFilePathRequired"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ApplicationFilePathRequired</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationApplicationSettings" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationApplicationSettings" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ApplicationSettings</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationApplicationStarted" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationApplicationStarted" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ApplicationStarted</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationAvailableTextures" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationAvailableTextures" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>AvailableTextures</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationBasedOnProfile" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationBasedOnProfile" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>BasedOnProfile</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationBokehDoF" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationBokehDoF" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>BokehDoF</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationBokehDoFLongDescription" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationBokehDoFLongDescription"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>BokehDoFLongDescription</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationBokehDoFShortDescription" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationBokehDoFShortDescription"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>BokehDoFShortDescription</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationCancel" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationCancel" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>Cancel</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationCannotClearLogsDirectory" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationCannotClearLogsDirectory"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>CannotClearLogsDirectory</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationCannotOpenLogsDirectory" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationCannotOpenLogsDirectory"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>CannotOpenLogsDirectory</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationCheckAll" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationCheckAll" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>CheckAll</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationCollapse" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationCollapse" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>Collapse</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationCommunicationError" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationCommunicationError" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>CommunicationError</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationCommunicatorMode" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationCommunicatorMode" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>CommunicatorMode</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationConnectToGame" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationConnectToGame" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ConnectToGame</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationConversionConfiguration" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationConversionConfiguration"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ConversionConfiguration</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationConvertTexture" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationConvertTexture" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ConvertTexture</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationConvertTextures" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationConvertTextures" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ConvertTextures</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationDepthBuffer" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationDepthBuffer" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>DepthBuffer</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationDepthBufferLongDescription" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationDepthBufferLongDescription"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>DepthBufferLongDescription</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationDepthBufferShortDescription" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationDepthBufferShortDescription"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>DepthBufferShortDescription</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationDirect3D11" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationDirect3D11" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>Direct3D11</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationDirect3D11PluginSettings" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationDirect3D11PluginSettings"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>Direct3D11PluginSettings</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationDirect3D11PluginSettingsLongDescription" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationDirect3D11PluginSettingsLongDescription"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>Direct3D11PluginSettingsLongDescription</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationDirect3D11PluginSettingsShortDescription" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationDirect3D11PluginSettingsShortDescription"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>Direct3D11PluginSettingsShortDescription</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationDisconnectFromGame" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationDisconnectFromGame" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>DisconnectFromGame</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationDisplayLongDescription" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationDisplayLongDescription"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>DisplayLongDescription</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationDisplayShortDescription" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationDisplayShortDescription"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>DisplayShortDescription</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationEditConfiguration" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationEditConfiguration" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>EditConfiguration</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationEditConfigurationDescription" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationEditConfigurationDescription"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>EditConfigurationDescription</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationError" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationError" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>Error</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationErrorCount" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationErrorCount" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ErrorCount</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationExpand" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationExpand" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>Expand</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationFatalErrorOccured" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationFatalErrorOccured" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>FatalErrorOccured</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationFeedback" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationFeedback" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>Feedback</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationGame" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationGame" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>Game</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationGameHeader" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationGameHeader" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>GameHeader</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationGameName" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationGameName" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>GameName</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationGameProfile" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationGameProfile" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>GameProfile</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationGameProfileName" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationGameProfileName" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>GameProfileName</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationGameSettings" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationGameSettings" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>GameSettings</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationGameSettingsDescription" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationGameSettingsDescription"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>GameSettingsDescription</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationIcons" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationIcons" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>Icons</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationInjectionCompleted" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationInjectionCompleted" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>InjectionCompleted</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationInjectionStarted" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationInjectionStarted" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>InjectionStarted</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationInjectorMode" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationInjectorMode" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>InjectorMode</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationInsufficientPermissions" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationInsufficientPermissions"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>InsufficientPermissions</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationInvalidConfiguration" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationInvalidConfiguration"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>InvalidConfiguration</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationIpAddressError" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationIpAddressError" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>IpAddressError</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationLaunch" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationLaunch" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>Launch</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationLoading" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationLoading" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>Loading</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationLogsDirectoryCleared" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationLogsDirectoryCleared"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>LogsDirectoryCleared</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationLogsDirectoryPath" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationLogsDirectoryPath" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>LogsDirectoryPath</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationLumaSharpen" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationLumaSharpen" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>LumaSharpen</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationLumaSharpenLongDescription" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationLumaSharpenLongDescription"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>LumaSharpenLongDescription</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationLumaSharpenShortDescription" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationLumaSharpenShortDescription"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>LumaSharpenShortDescription</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationNoEndpointListening" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationNoEndpointListening" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>NoEndpointListening</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationNoValidationErrors" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationNoValidationErrors" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>NoValidationErrors</system:String>
         </ObjectDataProvider.MethodParameters>
@@ -367,272 +439,326 @@
             <system:String>Ok</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationOpenDirectory" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationOpenDirectory" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>OpenDirectory</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationOpeningSettingsFailed" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationOpeningSettingsFailed"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>OpeningSettingsFailed</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationOperationCancelled" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationOperationCancelled" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>OperationCancelled</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationOperationTimeout" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationOperationTimeout" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>OperationTimeout</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationPluginAlreadyLoaded" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationPluginAlreadyLoaded" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>PluginAlreadyLoaded</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationPluginHeader" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationPluginHeader" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>PluginHeader</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationPluginType" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationPluginType" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>PluginType</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationProcessConfigurationUpdated" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationProcessConfigurationUpdated"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ProcessConfigurationUpdated</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationProcessConfigurationUpdatingFailed" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationProcessConfigurationUpdatingFailed"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ProcessConfigurationUpdatingFailed</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationProfileChanged" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationProfileChanged" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ProfileChanged</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationProfileHeader" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationProfileHeader" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ProfileHeader</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationProfileRenamed" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationProfileRenamed" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ProfileRenamed</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationProfileType" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationProfileType" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ProfileType</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationProxyDirectoryPath" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationProxyDirectoryPath" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ProxyDirectoryPath</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationReleaseNotesDescription" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationReleaseNotesDescription"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ReleaseNotesDescription</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationReleaseNotesTitle" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationReleaseNotesTitle" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ReleaseNotesTitle</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationRemoveProfile" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationRemoveProfile" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>RemoveProfile</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationRemoveProfileDialogTitle" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationRemoveProfileDialogTitle"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>RemoveProfileDialogTitle</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationRemoveProfileQuestion" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationRemoveProfileQuestion"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>RemoveProfileQuestion</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationRenameProfile" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationRenameProfile" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>RenameProfile</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationRenameProfileDialogTitle" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationRenameProfileDialogTitle"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>RenameProfileDialogTitle</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationRenderingModeAlpha" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationRenderingModeAlpha" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>RenderingModeAlpha</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationRenderingModeDepthBuffer" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationRenderingModeDepthBuffer"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>RenderingModeDepthBuffer</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationRenderingModeEffects" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationRenderingModeEffects"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>RenderingModeEffects</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationRenderingModeLuminescence" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationRenderingModeLuminescence"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>RenderingModeLuminescence</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationRenderingModeNone" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationRenderingModeNone" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>RenderingModeNone</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationSavingSettingsFailed" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationSavingSettingsFailed"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>SavingSettingsFailed</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationSettingsSaved" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationSettingsSaved" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>SettingsSaved</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationSubmit" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationSubmit" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>Submit</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationSystemConfiguration" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationSystemConfiguration" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>SystemConfiguration</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationTextureConverter" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationTextureConverter" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>TextureConverter</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationTextureManagementDialogTitle" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationTextureManagementDialogTitle"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>TextureManagementDialogTitle</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationTexturePreview" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationTexturePreview" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>TexturePreview</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationTextures" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationTextures" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>Textures</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationTexturesConversionCompleted" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationTexturesConversionCompleted"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>TexturesConversionCompleted</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationTexturesConversionCompleted1" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationTexturesConversionCompleted1"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>TexturesConversionCompleted1</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationTexturesConversionInitialization" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationTexturesConversionInitialization"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>TexturesConversionInitialization</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationTexturesConversionProgress" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationTexturesConversionProgress"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>TexturesConversionProgress</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationTexturesLongDescription" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationTexturesLongDescription"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>TexturesLongDescription</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationTexturesShortDescription" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationTexturesShortDescription"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>TexturesShortDescription</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationTonemap" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationTonemap" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>Tonemap</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationTonemapLongDescription" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationTonemapLongDescription"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>TonemapLongDescription</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationTonemapShortDescription" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationTonemapShortDescription"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>TonemapShortDescription</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationUncheckAll" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationUncheckAll" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>UncheckAll</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationUnknownError" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationUnknownError" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>UnknownError</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationUpdate" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationUpdate" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>Update</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationValueEqual" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationValueEqual" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ValueEqual</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationValueLessThan" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationValueLessThan" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ValueLessThan</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationValueOutsideRange" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationValueOutsideRange" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ValueOutsideRange</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationValueRequired" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationValueRequired" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ValueRequired</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationValueTooLong" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationValueTooLong" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>ValueTooLong</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationVibrance" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationVibrance" ObjectInstance="{x:Static common:Localization.Current}"
+                        MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>Vibrance</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationVibranceLongDescription" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationVibranceLongDescription"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>VibranceLongDescription</system:String>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <ObjectDataProvider x:Key="LocalizationVibranceShortDescription" ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
+    <ObjectDataProvider x:Key="LocalizationVibranceShortDescription"
+                        ObjectInstance="{x:Static common:Localization.Current}" MethodName="Get">
         <ObjectDataProvider.MethodParameters>
             <system:String>VibranceShortDescription</system:String>
         </ObjectDataProvider.MethodParameters>

@@ -13,13 +13,13 @@ namespace iGP11.Tool.Application.Api
             FilePath = filePath;
         }
 
+        [DataMember(Name = "filePath", EmitDefaultValue = true)]
+        public string FilePath { get; private set; }
+
         [DataMember(Name = "id", IsRequired = true)]
         public Guid Id { get; private set; }
 
         [DataMember(Name = "name", IsRequired = true)]
         public string Name { get; private set; }
-
-        [DataMember(Name = "filePath", EmitDefaultValue = true)]
-        public string FilePath { get; private set; }
     }
 }
