@@ -4,21 +4,22 @@ using System.Collections.Generic;
 using iGP11.Library.Component;
 using iGP11.Library.Component.DataAnnotations;
 using iGP11.Tool.Application.Api.Model;
+using iGP11.Tool.ReadModel.Api.Model;
 using iGP11.Tool.Shared.Model;
-using iGP11.Tool.Shared.Model.InjectionSettings;
+using iGP11.Tool.Shared.Model.GameSettings;
 
 namespace iGP11.Tool.Model
 {
     public class PluginComponentFactory : IPluginComponentFactory
     {
-        private readonly IDictionary<PluginType, Func<InjectionSettings, IComponent>> _injectionSettingsFactory;
+        private readonly IDictionary<PluginType, Func<GamePackage, IComponent>> _gameProfileFactory;
         private readonly IDictionary<PluginType, Func<ProxyPluginSettings, IComponent>> _proxyPluginSettingsFactory;
 
         public PluginComponentFactory(ComponentAssembler assembler)
         {
-            _injectionSettingsFactory = new Dictionary<PluginType, Func<InjectionSettings, IComponent>>
+            _gameProfileFactory = new Dictionary<PluginType, Func<GamePackage, IComponent>>
             {
-                [PluginType.Direct3D11] = settings => GetAssembler(settings, assembler).Assemble(settings.Direct3D11Settings)
+                [PluginType.Direct3D11] = package => GetAssembler(package.Game, assembler).Assemble(package.GameProfile.Direct3D11Settings)
             };
 
             _proxyPluginSettingsFactory = new Dictionary<PluginType, Func<ProxyPluginSettings, IComponent>>
@@ -27,14 +28,14 @@ namespace iGP11.Tool.Model
             };
         }
 
-        public IComponent Create(InjectionSettings settings)
+        public IComponent Create(GamePackage package)
         {
-            if (!_injectionSettingsFactory.ContainsKey(settings.PluginType))
+            if (!_gameProfileFactory.ContainsKey(package.GameProfile.PluginType))
             {
-                throw new ArgumentException($@"plugin component policy for {settings.PluginType} could not be resolved", nameof(settings));
+                throw new ArgumentException($@"plugin component policy for {package.GameProfile.PluginType} could not be resolved", nameof(package));
             }
 
-            return _injectionSettingsFactory[settings.PluginType](settings);
+            return _gameProfileFactory[package.GameProfile.PluginType](package);
         }
 
         public IComponent Create(ProxyPluginSettings settings)
@@ -47,9 +48,9 @@ namespace iGP11.Tool.Model
             return _proxyPluginSettingsFactory[settings.PluginType](settings);
         }
 
-        private static ConcreteComponentAssembler GetAssembler(InjectionSettings settings, ComponentAssembler assembler)
+        private static ConcreteComponentAssembler GetAssembler(Game game, ComponentAssembler assembler)
         {
-            var tokenReplacer = new TokenReplacer(new ApplicationFilePathTokenReplacingPolicy(() => settings.ApplicationFilePath));
+            var tokenReplacer = new TokenReplacer(new ApplicationFilePathTokenReplacingPolicy(() => game.FilePath));
             var assemblingContext = new AssemblingContext(FormType.New, tokenReplacer);
 
             return new ConcreteComponentAssembler(assembler, assemblingContext);

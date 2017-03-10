@@ -18,7 +18,7 @@ namespace iGP11.Tool.ViewModel
         private Guid _profileId;
         private string _profileName;
 
-        public AddProfileViewModel(IEnumerable<ProfileViewModel> profiles)
+        public AddProfileViewModel(IEnumerable<LookupViewModel> profiles)
         {
             Profiles = profiles.ToCollection();
             ProfileId = Profiles.First().Id;
@@ -68,7 +68,7 @@ namespace iGP11.Tool.ViewModel
             }
         }
 
-        public IEnumerable<ProfileViewModel> Profiles { get; }
+        public IEnumerable<LookupViewModel> Profiles { get; }
 
         public IActionCommand SubmitCommand { get; }
 

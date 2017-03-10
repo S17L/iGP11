@@ -16,7 +16,7 @@ namespace iGP11.Tool
         private readonly Target _invoker;
         private readonly AddProfileViewModel _viewModel;
 
-        public AddProfileWindow(Target invoker, IEnumerable<ProfileViewModel> profiles)
+        public AddProfileWindow(Target invoker, IEnumerable<LookupViewModel> profiles)
         {
             InitializeComponent();
 

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-using iGP11.Tool.Domain.Model.InjectionSettings;
+using iGP11.Tool.Domain.Model.GameSettings;
 using iGP11.Tool.Shared.Model;
 
 namespace iGP11.Tool.Application.Model

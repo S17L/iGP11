@@ -71,27 +71,29 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Configurations.resx</DependentUpon>
     </Compile>
-    <Compile Include="Exceptions\ProfileTemplateNotFoundException.cs" />
+    <Compile Include="Exceptions\GameTemplateNotFoundException.cs" />
     <Compile Include="Exceptions\AggregateRootNotFoundException.cs" />
     <Compile Include="Exceptions\DomainOperationException.cs" />
+    <Compile Include="GameType.cs" />
     <Compile Include="Model\ApplicationSettings\IApplicationSettingsRepository.cs" />
     <Compile Include="Model\ApplicationSettings\ApplicationSettingsFactory.cs" />
     <Compile Include="Model\Directory\Directory.cs" />
     <Compile Include="Model\Directory\File.cs" />
     <Compile Include="Model\Directory\IFileContentLoadingPolicy.cs" />
     <Compile Include="Model\Directory\IDirectoryRepository.cs" />
-    <Compile Include="Model\InjectionSettings\DepthBuffer.cs" />
-    <Compile Include="Model\InjectionSettings\Direct3D11PluginSettings.cs" />
-    <Compile Include="Model\InjectionSettings\Direct3D11Settings.cs" />
-    <Compile Include="Model\InjectionSettings\IInjectionSettingsRepository.cs" />
-    <Compile Include="Model\InjectionSettings\InjectionSettings.cs" />
-    <Compile Include="Model\InjectionSettings\InjectionSettingsFactory.cs" />
+    <Compile Include="Model\GameSettings\DepthBuffer.cs" />
+    <Compile Include="Model\GameSettings\Direct3D11PluginSettings.cs" />
+    <Compile Include="Model\GameSettings\Direct3D11Settings.cs" />
+    <Compile Include="Model\GameSettings\Game.cs" />
+    <Compile Include="Model\GameSettings\IGameRepository.cs" />
+    <Compile Include="Model\GameSettings\GameProfile.cs" />
+    <Compile Include="Model\GameSettings\GameFactory.cs" />
     <Compile Include="Model\ApplicationSettings\ApplicationSettings.cs" />
-    <Compile Include="Model\InjectionSettings\Tonemap.cs" />
-    <Compile Include="Model\InjectionSettings\Vibrance.cs" />
-    <Compile Include="Model\InjectionSettings\LumaSharpen.cs" />
-    <Compile Include="Model\InjectionSettings\Textures.cs" />
-    <Compile Include="Model\InjectionSettings\BokehDoF.cs" />
+    <Compile Include="Model\GameSettings\Tonemap.cs" />
+    <Compile Include="Model\GameSettings\Vibrance.cs" />
+    <Compile Include="Model\GameSettings\LumaSharpen.cs" />
+    <Compile Include="Model\GameSettings\Textures.cs" />
+    <Compile Include="Model\GameSettings\BokehDoF.cs" />
     <Compile Include="Model\TextureManagementSettings\ITextureManagementSettingsRepository.cs" />
     <Compile Include="Model\TextureManagementSettings\TextureManagementSettingsFactory.cs" />
     <Compile Include="Model\TextureManagementSettings\TextureManagementSettings.cs" />
@@ -104,9 +106,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Configuration\ApplicationSettings.json" />
-    <None Include="Configuration\InjectionSettings\DarkSouls2.json" />
-    <None Include="Configuration\InjectionSettings\Fallout4.json" />
-    <None Include="Configuration\InjectionSettings\DarkSouls3.json" />
+    <None Include="Configuration\GameSettings\DarkSouls2.json" />
+    <None Include="Configuration\GameSettings\Fallout4.json" />
+    <None Include="Configuration\GameSettings\DarkSouls3.json" />
     <None Include="Configuration\TextureManagementSettings.json" />
     <None Include="iGP11.snk" />
   </ItemGroup>

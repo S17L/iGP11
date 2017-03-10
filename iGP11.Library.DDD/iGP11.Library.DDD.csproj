@@ -57,6 +57,7 @@
     <Compile Include="Action\DomainCommandHubHost.cs" />
     <Compile Include="Action\DomainEventHandlerAdapter.cs" />
     <Compile Include="AggregateIdAttribute.cs" />
+    <Compile Include="Entity.cs" />
     <Compile Include="AttributeExtensions.cs" />
     <Compile Include="Action\DomainEventContext.cs" />
     <Compile Include="IDomainCommandHandler.cs" />

@@ -30,7 +30,7 @@ namespace iGP11.Tool.Application.CommandHandler
                     return;
                 }
 
-                await context.EmitAsync(new ErrorOccuredEvent());
+                await context.EmitAsync(new ErrorOccuredNotification());
             }
         }
     }

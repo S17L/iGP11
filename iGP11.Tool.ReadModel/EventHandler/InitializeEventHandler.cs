@@ -20,13 +20,13 @@ namespace iGP11.Tool.ReadModel.EventHandler
         {
             _database.ConstantSettings.ApplicationCommunicationPort = @event.ApplicationSettings.ApplicationCommunicationPort;
             _database.ConstantSettings.ProxyCommunicationPort = @event.ApplicationSettings.ProxyCommunicationPort;
-            _database.InjectionSettings.Clear();
-            _database.InjectionSettings.AddRange(@event.InjectionSettings);
-            _database.LastEditedInjectionSettingsId = @event.LastEditedInjectionSettingsId;
+            _database.Games.Clear();
+            _database.Games.AddRange(@event.Games);
+            _database.LastEditedGameProfileId = @event.LastEditedGameProfileId;
             _database.TextureManagementSettings = @event.TextureManagementSettings;
             _database.UsageStatistics = @event.UsageStatistics;
 
-            await context.EmitAsync(new ActionSucceededEvent());
+            await context.EmitAsync(new ActionSucceededNotification());
         }
     }
 }

@@ -79,23 +79,24 @@ namespace iGP11.Tool.Domain.Configuration {
         /// <summary>
         ///   Looks up a localized string similar to {
         ///  &quot;id&quot;: {
-        ///    &quot;value&quot;: &quot;{3B694522-C333-447A-B080-28F6DFDE9CD0}&quot;
+        ///    &quot;value&quot;: &quot;{6F3197DA-23A0-42E4-8B6E-2DD2AE86558D}&quot;
         ///  },
-        ///  &quot;name&quot;: &quot;dark souls 3 - development profile&quot;,
-        ///  &quot;applicationFilePath&quot;: &quot;&quot;,
-        ///  &quot;configurationDirectoryPath&quot;: &quot;&lt;# app_dir #&gt;\\iGP11&quot;,
-        ///  &quot;logsDirectoryPath&quot;: &quot;&lt;# app_dir #&gt;\\iGP11\\logs&quot;,
-        ///  &quot;pluginType&quot;: 0,
-        ///  &quot;establishCommunication&quot;: true,
-        ///  &quot;direct3D11Settings&quot;: {
-        ///    &quot;pluginSettings&quot;: {
-        ///      &quot;profileType&quot;: 1,
-        ///      &quot;renderingMode&quot;: 2
-        ///    },
-        ///    &quot;textures&quot;: {
-        ///      &quot;detailLevel&quot;: 0,
-        ///      &quot;overrideMode&quot;: 2,
-        ///      &quot;over [rest of string was truncated]&quot;;.
+        ///  &quot;profileId&quot;: {
+        ///    &quot;value&quot;: &quot;{ED4C83BD-5B83-45CA-9886-33A35CD05A42}&quot;
+        ///  },
+        ///  &quot;name&quot;: &quot;dark souls 2 scholar of the first sin&quot;,
+        ///  &quot;filePath&quot;: &quot;&quot;,
+        ///  &quot;profiles&quot;: [
+        ///    {
+        ///      &quot;id&quot;: {
+        ///        &quot;value&quot;: &quot;{ED4C83BD-5B83-45CA-9886-33A35CD05A42}&quot;
+        ///      },
+        ///      &quot;gameId&quot;: {
+        ///        &quot;value&quot;: &quot;{6F3197DA-23A0-42E4-8B6E-2DD2AE86558D}&quot;
+        ///      },
+        ///      &quot;name&quot;: &quot;development&quot;,
+        ///      &quot;logsDirectoryPath&quot;: &quot;&lt;# app_dir #&gt;\\iGP11\\logs&quot;,
+        ///    [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string DarkSouls2 {
             get {
@@ -108,21 +109,22 @@ namespace iGP11.Tool.Domain.Configuration {
         ///  &quot;id&quot;: {
         ///    &quot;value&quot;: &quot;{3B694522-C333-447A-B080-28F6DFDE9CD0}&quot;
         ///  },
-        ///  &quot;name&quot;: &quot;dark souls 3 - development profile&quot;,
-        ///  &quot;applicationFilePath&quot;: &quot;&quot;,
-        ///  &quot;configurationDirectoryPath&quot;: &quot;&lt;# app_dir #&gt;\\iGP11&quot;,
-        ///  &quot;logsDirectoryPath&quot;: &quot;&lt;# app_dir #&gt;\\iGP11\\logs&quot;,
-        ///  &quot;pluginType&quot;: 0,
-        ///  &quot;establishCommunication&quot;: true,
-        ///  &quot;direct3D11Settings&quot;: {
-        ///    &quot;pluginSettings&quot;: {
-        ///      &quot;profileType&quot;: 1,
-        ///      &quot;renderingMode&quot;: 2
-        ///    },
-        ///    &quot;textures&quot;: {
-        ///      &quot;detailLevel&quot;: 0,
-        ///      &quot;overrideMode&quot;: 2,
-        ///      &quot;over [rest of string was truncated]&quot;;.
+        ///  &quot;profileId&quot;: {
+        ///    &quot;value&quot;: &quot;{AAACDEC7-3AD2-46C5-82AF-E8E9DDFFB4AA}&quot;
+        ///  },
+        ///  &quot;name&quot;: &quot;dark souls 3&quot;,
+        ///  &quot;filePath&quot;: &quot;&quot;,
+        ///  &quot;profiles&quot;: [
+        ///    {
+        ///      &quot;id&quot;: {
+        ///        &quot;value&quot;: &quot;{AAACDEC7-3AD2-46C5-82AF-E8E9DDFFB4AA}&quot;
+        ///      },
+        ///      &quot;gameId&quot;: {
+        ///        &quot;value&quot;: &quot;{3B694522-C333-447A-B080-28F6DFDE9CD0}&quot;
+        ///      },
+        ///      &quot;name&quot;: &quot;development&quot;,
+        ///      &quot;logsDirectoryPath&quot;: &quot;&lt;# app_dir #&gt;\\iGP11\\logs&quot;,
+        ///      &quot;proxyDirectoryPath&quot;:  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string DarkSouls3 {
             get {
@@ -135,21 +137,22 @@ namespace iGP11.Tool.Domain.Configuration {
         ///  &quot;id&quot;: {
         ///    &quot;value&quot;: &quot;{26E40BAF-4574-44CA-99C3-508F45928D6C}&quot;
         ///  },
-        ///  &quot;name&quot;: &quot;fallout 4 - development profile&quot;,
-        ///  &quot;applicationFilePath&quot;: &quot;&quot;,
-        ///  &quot;configurationDirectoryPath&quot;: &quot;&lt;# app_dir #&gt;\\iGP11&quot;,
-        ///  &quot;logsDirectoryPath&quot;: &quot;&lt;# app_dir #&gt;\\iGP11\\logs&quot;,
-        ///  &quot;pluginType&quot;: 0,
-        ///  &quot;establishCommunication&quot;: true,
-        ///  &quot;direct3D11Settings&quot;: {
-        ///    &quot;pluginSettings&quot;: {
-        ///      &quot;profileType&quot;: 2,
-        ///      &quot;renderingMode&quot;: 2
-        ///    },
-        ///    &quot;textures&quot;: {
-        ///      &quot;detailLevel&quot;: 0,
-        ///      &quot;overrideMode&quot;: 2,
-        ///      &quot;overrid [rest of string was truncated]&quot;;.
+        ///  &quot;profileId&quot;: {
+        ///    &quot;value&quot;: &quot;{E3B7BFB4-1CB6-4026-B82B-B53BA56823ED}&quot;
+        ///  },
+        ///  &quot;name&quot;: &quot;fallout 4&quot;,
+        ///  &quot;filePath&quot;: &quot;&quot;,
+        ///  &quot;profiles&quot;: [
+        ///    {
+        ///      &quot;id&quot;: {
+        ///        &quot;value&quot;: &quot;{E3B7BFB4-1CB6-4026-B82B-B53BA56823ED}&quot;
+        ///      },
+        ///      &quot;gameId&quot;: {
+        ///        &quot;value&quot;: &quot;{26E40BAF-4574-44CA-99C3-508F45928D6C}&quot;
+        ///      },
+        ///      &quot;name&quot;: &quot;development&quot;,
+        ///      &quot;proxyDirectoryPath&quot;: &quot;&lt;# app_dir #&gt;\\iGP11&quot;,
+        ///      &quot;logsDirectoryPath&quot;: &quot;&lt;# app_d [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Fallout4 {
             get {

@@ -13,8 +13,8 @@
         d:DataContext="{d:DesignInstance viewModel:MainWindowViewModel}"
         ResizeMode="CanResize"
         WindowStartupLocation="CenterScreen"
-        Height="672"
-        MinHeight="672"
+        Height="736"
+        MinHeight="736"
         Width="1024"
         MinWidth="1024"
         MaxWidth="1024">
@@ -67,20 +67,22 @@
                     DataContext="{Binding Path=MenuViewModel}">
                     <Button
                         DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.InjectionConfigurationViewModel}"
-                        themes:FrameworkService.Image="{StaticResource ResourceKey=Communication32X32}"
-                        themes:FrameworkService.ImageHover="{StaticResource ResourceKey=CommunicationHover32X32}"
                         Command="{Binding Path=SwitchModeCommand}">
                         <Button.Style>
                             <Style TargetType="{x:Type Button}"
                                    BasedOn="{StaticResource ResourceKey=StyleMenuImageButton}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Path=IsStandardMode}" Value="False">
+                                        <Setter Property="themes:FrameworkService.Image" Value="{StaticResource ResourceKey=Connected32X32}" />
+                                        <Setter Property="themes:FrameworkService.ImageHover" Value="{StaticResource ResourceKey=ConnectedHover32X32}" />
                                         <Setter Property="Content"
-                                                Value="{Binding Source={StaticResource ResourceKey=LocalizationSwitchModeToInjector}, Mode=OneTime}" />
+                                                Value="{Binding Source={StaticResource ResourceKey=LocalizationDisconnectFromGame}, Mode=OneTime}" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Path=IsStandardMode}" Value="True">
+                                        <Setter Property="themes:FrameworkService.Image" Value="{StaticResource ResourceKey=Disconnected32X32}" />
+                                        <Setter Property="themes:FrameworkService.ImageHover" Value="{StaticResource ResourceKey=DisconnectedHover32X32}" />
                                         <Setter Property="Content"
-                                                Value="{Binding Source={StaticResource ResourceKey=LocalizationSwitchModeToCommunicator}, Mode=OneTime}" />
+                                                Value="{Binding Source={StaticResource ResourceKey=LocalizationConnectToGame}, Mode=OneTime}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -156,7 +158,7 @@
                             </Style>
                         </StackPanel.Resources>
                         <userControls:NavigationItemControl
-                            ClickedCommand="{Binding Path=EditInjectionSettingsCommand}">
+                            ClickedCommand="{Binding Path=EditGameProfileCommand}">
                             <StackPanel Orientation="Vertical">
                                 <TextBlock FontSize="{StaticResource ResourceKey=FontSizeApplication}"
                                            FontWeight="{StaticResource ResourceKey=FontWeightApplication}">
@@ -185,20 +187,26 @@
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
-                                    <TextBlock Text="Profile:"
+                                    <TextBlock Text="{Binding Source={StaticResource ResourceKey=LocalizationGameHeader}, Mode=OneTime}"
                                                Style="{StaticResource ResourceKey=StyleDescriptionTextBlock}" />
                                     <TextBlock Grid.Column="1" Grid.Row="0" Padding="10, 0, 0, 0"
-                                               Text="{Binding Path=ProfileName}"
+                                               Text="{Binding Path=GameName}"
                                                Style="{StaticResource ResourceKey=StyleDescriptionTextBlock}" />
-                                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Plugin:"
+                                    <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding Source={StaticResource ResourceKey=LocalizationProfileHeader}, Mode=OneTime}"
                                                Style="{StaticResource ResourceKey=StyleDescriptionTextBlock}" />
                                     <TextBlock Grid.Column="1" Grid.Row="1" Padding="10, 0, 0, 0"
+                                               Text="{Binding Path=GameProfileName}"
+                                               Style="{StaticResource ResourceKey=StyleDescriptionTextBlock}" />
+                                    <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding Source={StaticResource ResourceKey=LocalizationPluginHeader}, Mode=OneTime}"
+                                               Style="{StaticResource ResourceKey=StyleDescriptionTextBlock}" />
+                                    <TextBlock Grid.Column="1" Grid.Row="2" Padding="10, 0, 0, 0"
                                                Text="{Binding Path=PluginType, Converter={framework:EnumConverter}}"
                                                Style="{StaticResource ResourceKey=StyleDescriptionTextBlock}" />
                                     <StackPanel Grid.Column="0"
                                                 Grid.ColumnSpan="2"
-                                                Grid.Row="2"
+                                                Grid.Row="3"
                                                 Orientation="Horizontal"
                                                 Margin="0, 10, 0, 0">
                                         <Rectangle Margin="0"
@@ -270,8 +278,8 @@
                             <userControls:SectionHeaderUserControl
                                 Grid.Row="0"
                                 Background="{StaticResource ResourceKey=SolidColorBrushWhite}"
-                                Header="{Binding Source={StaticResource ResourceKey=LocalizationInjectionSettings}, Mode=OneTime}"
-                                Description="{Binding Source={StaticResource ResourceKey=LocalizationInjectionSettingsDescription}, Mode=OneTime}"
+                                Header="{Binding Source={StaticResource ResourceKey=LocalizationGameSettings}, Mode=OneTime}"
+                                Description="{Binding Source={StaticResource ResourceKey=LocalizationGameSettingsDescription}, Mode=OneTime}"
                                 FillBackground="{StaticResource ResourceKey=SolidColorBrushDarkMedium}"
                                 Visibility="{Binding Path=PluginEditForm, Converter={framework:NullVisibilityValueConverter IsCollapsingOnNull=False}}" />
                             <Border
@@ -291,70 +299,11 @@
                                     <TextBlock Foreground="{StaticResource ResourceKey=SolidColorBrushError}"
                                                Margin="0, 0, 10, 10"
                                                Text="{Binding Source={StaticResource ResourceKey=LocalizationApplicationFilePathRequired}, Mode=OneTime}"
-                                               Visibility="{Binding Path=HasApplicationFilePath, Converter={framework:HiddenValueConverter}}" />
+                                               Visibility="{Binding Path=HasGameFilePath, Converter={framework:HiddenValueConverter}}" />
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="10" />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" SharedSizeGroup="A" />
-                                        </Grid.ColumnDefinitions>
-                                        <ComboBox
-                                            themes:FrameworkService.Placeholder="{Binding Source={StaticResource ResourceKey=LocalizationProfileName}, Mode=OneTime}"
-                                            Grid.Row="0"
-                                            Grid.Column="0"
-                                            IsEnabled="{Binding Path=IsStandardMode}"
-                                            ItemsSource="{Binding Path=Profiles, Mode=OneWay}"
-                                            SelectedValuePath="Id"
-                                            DisplayMemberPath="Name"
-                                            SelectedValue="{Binding Path=ProfileId}"
-                                            Style="{StaticResource ResourceKey=StyleComboBox}" />
-                                        <StackPanel
-                                            Grid.Row="0"
-                                            Grid.Column="1"
-                                            Orientation="Horizontal"
-                                            VerticalAlignment="Bottom">
-                                            <Button
-                                                themes:FrameworkService.Image="{StaticResource ResourceKey=Add16X16}"
-                                                themes:FrameworkService.ImageHover="{StaticResource ResourceKey=AddHover16X16}"
-                                                themes:ToolTipService.Title="{Binding Source={StaticResource ResourceKey=LocalizationAddProfile}, Mode=OneTime}"
-                                                IsEnabled="{Binding Path=IsStandardMode}"
-                                                Style="{StaticResource ResourceKey=StyleImageButton}"
-                                                Command="{Binding Path=AddProfileCommand}"
-                                                Margin="-1, 0, 0, 0" />
-                                            <Button
-                                                themes:FrameworkService.Image="{StaticResource ResourceKey=Edit16X16}"
-                                                themes:FrameworkService.ImageHover="{StaticResource ResourceKey=EditHover16X16}"
-                                                themes:ToolTipService.Title="{Binding Source={StaticResource ResourceKey=LocalizationRenameProfile}, Mode=OneTime}"
-                                                IsEnabled="{Binding Path=IsStandardMode}"
-                                                Style="{StaticResource ResourceKey=StyleImageButton}"
-                                                Command="{Binding Path=RenameProfileCommand}"
-                                                Margin="-1, 0, 0, 0" />
-                                            <Button
-                                                themes:FrameworkService.Image="{StaticResource ResourceKey=Delete16X16}"
-                                                themes:FrameworkService.ImageHover="{StaticResource ResourceKey=DeleteHover16X16}"
-                                                themes:ToolTipService.Title="{Binding Source={StaticResource ResourceKey=LocalizationRemoveProfile}, Mode=OneTime}"
-                                                IsEnabled="{Binding Path=IsStandardMode}"
-                                                Style="{StaticResource ResourceKey=StyleImageButton}"
-                                                Command="{Binding Path=RemoveProfileCommand}"
-                                                Margin="-1, 0, 0, 0" />
-                                        </StackPanel>
-                                        <ComboBox
-                                            themes:FrameworkService.Placeholder="{Binding Source={StaticResource ResourceKey=LocalizationPluginType}, Mode=OneTime}"
-                                            Grid.Row="2"
-                                            Grid.Column="0"
-                                            IsEnabled="{Binding Path=IsStandardMode}"
-                                            ItemsSource="{Binding Path=PluginType, Converter={framework:EnumDataSourceConverter}, Mode=OneTime}"
-                                            SelectedValuePath="Value"
-                                            DisplayMemberPath="Description"
-                                            SelectedValue="{Binding Path=PluginType}"
-                                            Style="{StaticResource ResourceKey=StyleComboBox}" />
-                                    </Grid>
-                                    <Grid Margin="0, 10, 0, 0">
-                                        <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="10" />
                                             <RowDefinition Height="Auto" />
@@ -374,27 +323,37 @@
                                                 Style="{StaticResource ResourceKey=StyleGroupByBorder}">
                                             <TextBlock
                                                 Style="{StaticResource ResourceKey=StyleGroupByTextBlock}"
-                                                Text="{Binding Source={StaticResource ResourceKey=LocalizationApplication}, Mode=OneTime}" />
+                                                Text="{Binding Source={StaticResource ResourceKey=LocalizationGame}, Mode=OneTime}" />
                                         </Border>
-                                        <TextBlock
+                                        <ComboBox
+                                            themes:FrameworkService.Placeholder="{Binding Source={StaticResource ResourceKey=LocalizationGameName}, Mode=OneTime}"
                                             Grid.Row="2"
+                                            Grid.Column="0"
+                                            IsEnabled="{Binding Path=IsStandardMode}"
+                                            ItemsSource="{Binding Path=Games, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                            SelectedValuePath="Id"
+                                            DisplayMemberPath="Name"
+                                            SelectedValue="{Binding Path=GameId}"
+                                            Style="{StaticResource ResourceKey=StyleComboBox}" />
+                                        <TextBlock
+                                            Grid.Row="4"
                                             Grid.Column="0"
                                             Grid.ColumnSpan="2"
                                             FontSize="{StaticResource ResourceKey=FontSizeInformation}"
                                             Text="{Binding Source={StaticResource ResourceKey=LocalizationApplicationFilePath}, Mode=OneTime}"
                                             Style="{StaticResource ResourceKey=StyleTextBlockHeader}" />
                                         <Button
-                                            Grid.Row="3"
+                                            Grid.Row="5"
                                             Grid.Column="0"
-                                            Command="{Binding Path=PickApplicationPathCommand}"
-                                            Content="{Binding Path=ApplicationFilePath}"
+                                            Command="{Binding Path=PickGameFilePathCommand}"
+                                            Content="{Binding Path=GameFilePath}"
                                             IsEnabled="{Binding Path=IsStandardMode}"
                                             HorizontalAlignment="Stretch"
                                             Style="{StaticResource ResourceKey=StyleImageButton}"
-                                            themes:ToolTipService.Title="{Binding Path=ApplicationFilePath}"
+                                            themes:ToolTipService.Title="{Binding Path=GameFilePath}"
                                             HorizontalContentAlignment="Left" />
                                         <StackPanel
-                                            Grid.Row="3"
+                                            Grid.Row="5"
                                             Grid.Column="1"
                                             Orientation="Horizontal">
                                             <Button
@@ -403,25 +362,25 @@
                                                 themes:ToolTipService.Title="clear"
                                                 IsEnabled="{Binding Path=IsStandardMode}"
                                                 Style="{StaticResource ResourceKey=StyleImageButton}"
-                                                Command="{Binding Path=ClearApplicationPathCommand}"
+                                                Command="{Binding Path=ClearGameFilePathCommand}"
                                                 Margin="-1, 0, 0, 0" />
                                             <Button
                                                 themes:FrameworkService.Image="{StaticResource ResourceKey=MoveTo16X16}"
                                                 themes:FrameworkService.ImageHover="{StaticResource ResourceKey=MoveToHover16X16}"
                                                 themes:ToolTipService.Title="{Binding Source={StaticResource ResourceKey=LocalizationOpenDirectory}, Mode=OneTime}"
                                                 Style="{StaticResource ResourceKey=StyleImageButton}"
-                                                Command="{Binding Path=MoveToApplicationPathCommand}"
+                                                Command="{Binding Path=MoveToGameFilePathCommand}"
                                                 Margin="-1, 0, 0, 0" />
                                         </StackPanel>
                                         <TextBlock
-                                            Grid.Row="5"
+                                            Grid.Row="7"
                                             Grid.Column="0"
                                             Grid.ColumnSpan="2"
                                             FontSize="{StaticResource ResourceKey=FontSizeInformation}"
                                             Text="{Binding Source={StaticResource ResourceKey=LocalizationProxyDirectoryPath}, Mode=OneTime}"
                                             Style="{StaticResource ResourceKey=StyleTextBlockHeader}" />
                                         <Button
-                                            Grid.Row="6"
+                                            Grid.Row="8"
                                             Grid.Column="0"
                                             Content="{Binding Path=ProxyDirectoryPath}"
                                             IsEnabled="False"
@@ -430,7 +389,7 @@
                                             themes:ToolTipService.Title="{Binding Path=FormattedProxyDirectoryPath, Mode=OneWay}"
                                             HorizontalContentAlignment="Left" />
                                         <StackPanel
-                                            Grid.Row="6"
+                                            Grid.Row="8"
                                             Grid.Column="1"
                                             Orientation="Horizontal">
                                             <Button
@@ -442,14 +401,14 @@
                                                 Margin="-1, 0, 0, 0" />
                                         </StackPanel>
                                         <TextBlock
-                                            Grid.Row="8"
+                                            Grid.Row="10"
                                             Grid.Column="0"
                                             Grid.ColumnSpan="2"
                                             FontSize="{StaticResource ResourceKey=FontSizeInformation}"
                                             Text="{Binding Source={StaticResource ResourceKey=LocalizationLogsDirectoryPath}, Mode=OneTime}"
                                             Style="{StaticResource ResourceKey=StyleTextBlockHeader}" />
                                         <Button
-                                            Grid.Row="9"
+                                            Grid.Row="11"
                                             Grid.Column="0"
                                             Content="{Binding Path=LogsDirectoryPath}"
                                             IsEnabled="False"
@@ -458,7 +417,7 @@
                                             themes:ToolTipService.Title="{Binding Path=FormattedLogsDirectoryPath, Mode=OneWay}"
                                             HorizontalContentAlignment="Left" />
                                         <StackPanel
-                                            Grid.Row="9"
+                                            Grid.Row="11"
                                             Grid.Column="1"
                                             Orientation="Horizontal">
                                             <Button
@@ -469,6 +428,75 @@
                                                 Command="{Binding Path=MoveToLogsDirectoryPathCommand}"
                                                 Margin="-1, 0, 0, 0" />
                                         </StackPanel>
+                                    </Grid>
+                                    <Grid Margin="0, 10, 0, 0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="10" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="10" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="A" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border Grid.ColumnSpan="2" Margin="-10, 0"
+                                                Style="{StaticResource ResourceKey=StyleGroupByBorder}">
+                                            <TextBlock
+                                                Style="{StaticResource ResourceKey=StyleGroupByTextBlock}"
+                                                Text="{Binding Source={StaticResource ResourceKey=LocalizationGameProfile}, Mode=OneTime}" />
+                                        </Border>
+                                        <ComboBox
+                                            themes:FrameworkService.Placeholder="{Binding Source={StaticResource ResourceKey=LocalizationGameProfileName}, Mode=OneTime}"
+                                            Grid.Row="2"
+                                            Grid.Column="0"
+                                            IsEnabled="{Binding Path=IsStandardMode}"
+                                            ItemsSource="{Binding Path=GameProfiles, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                            SelectedValuePath="Id"
+                                            DisplayMemberPath="Name"
+                                            SelectedValue="{Binding Path=GameProfileId}"
+                                            Style="{StaticResource ResourceKey=StyleComboBox}" />
+                                        <StackPanel
+                                            Grid.Row="2"
+                                            Grid.Column="1"
+                                            Orientation="Horizontal"
+                                            VerticalAlignment="Bottom">
+                                            <Button
+                                                themes:FrameworkService.Image="{StaticResource ResourceKey=Add16X16}"
+                                                themes:FrameworkService.ImageHover="{StaticResource ResourceKey=AddHover16X16}"
+                                                themes:ToolTipService.Title="{Binding Source={StaticResource ResourceKey=LocalizationAddProfile}, Mode=OneTime}"
+                                                IsEnabled="{Binding Path=IsStandardMode}"
+                                                Style="{StaticResource ResourceKey=StyleImageButton}"
+                                                Command="{Binding Path=AddGameProfileCommand}"
+                                                Margin="-1, 0, 0, 0" />
+                                            <Button
+                                                themes:FrameworkService.Image="{StaticResource ResourceKey=Edit16X16}"
+                                                themes:FrameworkService.ImageHover="{StaticResource ResourceKey=EditHover16X16}"
+                                                themes:ToolTipService.Title="{Binding Source={StaticResource ResourceKey=LocalizationRenameProfile}, Mode=OneTime}"
+                                                IsEnabled="{Binding Path=IsStandardMode}"
+                                                Style="{StaticResource ResourceKey=StyleImageButton}"
+                                                Command="{Binding Path=RenameGameProfileCommand}"
+                                                Margin="-1, 0, 0, 0" />
+                                            <Button
+                                                themes:FrameworkService.Image="{StaticResource ResourceKey=Delete16X16}"
+                                                themes:FrameworkService.ImageHover="{StaticResource ResourceKey=DeleteHover16X16}"
+                                                themes:ToolTipService.Title="{Binding Source={StaticResource ResourceKey=LocalizationRemoveProfile}, Mode=OneTime}"
+                                                IsEnabled="{Binding Path=IsStandardMode}"
+                                                Style="{StaticResource ResourceKey=StyleImageButton}"
+                                                Command="{Binding Path=RemoveGameProfileCommand}"
+                                                Margin="-1, 0, 0, 0" />
+                                        </StackPanel>
+                                        <ComboBox
+                                            themes:FrameworkService.Placeholder="{Binding Source={StaticResource ResourceKey=LocalizationPluginType}, Mode=OneTime}"
+                                            Grid.Row="4"
+                                            Grid.Column="0"
+                                            IsEnabled="{Binding Path=IsStandardMode}"
+                                            ItemsSource="{Binding Path=PluginType, Converter={framework:EnumDataSourceConverter}, Mode=OneTime}"
+                                            SelectedValuePath="Value"
+                                            DisplayMemberPath="Description"
+                                            SelectedValue="{Binding Path=PluginType}"
+                                            Style="{StaticResource ResourceKey=StyleComboBox}" />
                                     </Grid>
                                 </StackPanel>
                             </Border>

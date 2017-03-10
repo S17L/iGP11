@@ -24,7 +24,7 @@ using iGP11.Tool.Bootstrapper.Autofac;
 using iGP11.Tool.Bootstrapper.AutoMapper;
 using iGP11.Tool.Bootstrapper.Log4net;
 using iGP11.Tool.Domain.Model.Directory;
-using iGP11.Tool.Domain.Model.InjectionSettings;
+using iGP11.Tool.Domain.Model.GameSettings;
 using iGP11.Tool.Infrastructure.Communication;
 using iGP11.Tool.Infrastructure.Database.Bootstrapper;
 using iGP11.Tool.Infrastructure.Database.Repository;
@@ -144,14 +144,14 @@ namespace iGP11.Tool.Bootstrapper
                 builder.Register(context => constantSettings.Plugins).AsSelf().AsImplementedInterfaces();
                 builder.Register(context => new NetworkPublisher(applicationListenerUri)).AsSelf().AsImplementedInterfaces();
 
-                builder.Register(context => new InjectionSettingsProcessWatcher(
+                builder.Register(context => new GameSettingsProcessWatcher(
                         constantSettings.Plugins,
                         systemIpAddress,
                         proxyCommunicationPort,
                         context.Resolve<ComponentAssembler>(),
                         context.Resolve<IDirectoryRepository>(),
+                        context.Resolve<IGameRepository>(),
                         context.Resolve<IInjectionService>(),
-                        context.Resolve<IInjectionSettingsRepository>(),
                         Logger.Current,
                         context.Resolve<IProcessWatcher>()))
                     .SingleInstance()

@@ -176,7 +176,7 @@ namespace direct3d11 {
         ShaderCode createVibranceCode(ID3D11ShaderResourceView *colorTextureView, core::dto::Vibrance vibrance);
         ShaderCode createBokehDoFCoCCode(ID3D11ShaderResourceView *colorTextureView, ID3D11ShaderResourceView *depthTextureView, core::dto::BokehDoF bokehDoF, core::dto::DepthBuffer depthBuffer);
         ShaderCode createBokehDoFCode(ID3D11ShaderResourceView *colorTextureView, ID3D11ShaderResourceView *depthTextureView, ID3D11ShaderResourceView *previousPassTextureView, core::BokehDoFPassType passType, core::dto::BokehDoF bokehDoF, core::dto::DepthBuffer depthBuffer);
-        ShaderCode createBokehDoFChromaticAberrationCode(ID3D11ShaderResourceView *colorTextureView, ID3D11ShaderResourceView *previousPassTextureView, core::dto::BokehDoF bokehDoF);
+        ShaderCode createBokehDoFChromaticAberrationCode(ID3D11ShaderResourceView *previousPassTextureView, core::dto::BokehDoF bokehDoF);
         ShaderCode createBokehDoFBlendingCode(ID3D11ShaderResourceView *colorTextureView, ID3D11ShaderResourceView *depthTextureView, ID3D11ShaderResourceView *previousPassTextureView, core::dto::BokehDoF bokehDoF, core::dto::DepthBuffer depthBuffer);
         ShaderCode createDepthRenderingCode(ID3D11ShaderResourceView *colorTextureView, ID3D11ShaderResourceView *depthTextureView, core::dto::DepthBuffer depthBuffer);
         ShaderCode createHorizontalGaussianBlurCode(ID3D11ShaderResourceView *colorTextureView, unsigned int size, float sigma);

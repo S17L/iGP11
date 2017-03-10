@@ -153,9 +153,6 @@
   <data name="AddProfileDialogTitle" xml:space="preserve">
     <value>Add profile</value>
   </data>
-  <data name="Application" xml:space="preserve">
-    <value>proxy settings</value>
-  </data>
   <data name="ApplicationFilePath" xml:space="preserve">
     <value>executable file path</value>
   </data>
@@ -204,6 +201,9 @@
   <data name="CommunicatorMode" xml:space="preserve">
     <value>iGP11 - COMMUNICATOR MODE</value>
   </data>
+  <data name="ConnectToGame" xml:space="preserve">
+    <value>Connect</value>
+  </data>
   <data name="ConversionConfiguration" xml:space="preserve">
     <value>configuration</value>
   </data>
@@ -234,6 +234,9 @@
   <data name="Direct3D11PluginSettingsShortDescription" xml:space="preserve">
     <value>Adjust plugin settings</value>
   </data>
+  <data name="DisconnectFromGame" xml:space="preserve">
+    <value>Disconnect</value>
+  </data>
   <data name="DisplayLongDescription" xml:space="preserve">
     <value>Specify screen and render resolutions together with smoothness function to soften the edges</value>
   </data>
@@ -261,17 +264,32 @@
   <data name="Feedback" xml:space="preserve">
     <value>feedback</value>
   </data>
+  <data name="Game" xml:space="preserve">
+    <value>game</value>
+  </data>
+  <data name="GameHeader" xml:space="preserve">
+    <value>Game:</value>
+  </data>
+  <data name="GameName" xml:space="preserve">
+    <value>game name</value>
+  </data>
+  <data name="GameProfile" xml:space="preserve">
+    <value>game profile</value>
+  </data>
+  <data name="GameProfileName" xml:space="preserve">
+    <value>game profile name</value>
+  </data>
+  <data name="GameSettings" xml:space="preserve">
+    <value>Game settings</value>
+  </data>
+  <data name="GameSettingsDescription" xml:space="preserve">
+    <value>Configure game settings and manage game profiles</value>
+  </data>
   <data name="Icons" xml:space="preserve">
     <value>icons by</value>
   </data>
   <data name="InjectionCompleted" xml:space="preserve">
     <value>process started and iGP11 launched</value>
-  </data>
-  <data name="InjectionSettings" xml:space="preserve">
-    <value>Injection settings</value>
-  </data>
-  <data name="InjectionSettingsDescription" xml:space="preserve">
-    <value>Specify profile, plugin type and path to the game executable</value>
   </data>
   <data name="InjectionStarted" xml:space="preserve">
     <value>launching application and loading plugin</value>
@@ -289,7 +307,7 @@
     <value>ip address data error</value>
   </data>
   <data name="Launch" xml:space="preserve">
-    <value>LAUNCH</value>
+    <value>LAUNCH GAME</value>
   </data>
   <data name="Loading" xml:space="preserve">
     <value>Loading...</value>
@@ -298,7 +316,7 @@
     <value>logging directory cleared</value>
   </data>
   <data name="LogsDirectoryPath" xml:space="preserve">
-    <value>logs directory path</value>
+    <value>iGP11 game logs directory path</value>
   </data>
   <data name="LumaSharpen" xml:space="preserve">
     <value>Luma sharpening</value>
@@ -333,6 +351,9 @@
   <data name="PluginAlreadyLoaded" xml:space="preserve">
     <value>plugin already loaded</value>
   </data>
+  <data name="PluginHeader" xml:space="preserve">
+    <value>Plugin:</value>
+  </data>
   <data name="PluginType" xml:space="preserve">
     <value>plugin type</value>
   </data>
@@ -343,10 +364,10 @@
     <value>updating plugin configuration failed at {0}</value>
   </data>
   <data name="ProfileChanged" xml:space="preserve">
-    <value>profile changed to: {0}</value>
+    <value>loaded profile: {0} {1}</value>
   </data>
-  <data name="ProfileName" xml:space="preserve">
-    <value>profile name</value>
+  <data name="ProfileHeader" xml:space="preserve">
+    <value>Profile:</value>
   </data>
   <data name="ProfileRenamed" xml:space="preserve">
     <value>profile renamed</value>
@@ -355,7 +376,7 @@
     <value>profile</value>
   </data>
   <data name="ProxyDirectoryPath" xml:space="preserve">
-    <value>directory path</value>
+    <value>iGP11 game directory path</value>
   </data>
   <data name="ReleaseNotesDescription" xml:space="preserve">
     <value>Make sure to install all prerequisites specified in readme.pdf and run this program with as high privileges as possible.
@@ -405,12 +426,6 @@ Profile data will be lost.</value>
   <data name="Submit" xml:space="preserve">
     <value>SUBMIT</value>
   </data>
-  <data name="SwitchModeToCommunicator" xml:space="preserve">
-    <value>Enter communicator mode</value>
-  </data>
-  <data name="SwitchModeToInjector" xml:space="preserve">
-    <value>Enter standard mode</value>
-  </data>
   <data name="SystemConfiguration" xml:space="preserve">
     <value>Settings</value>
   </data>
@@ -439,7 +454,9 @@ Profile data will be lost.</value>
     <value>textures conversion progress: {0}/{1}</value>
   </data>
   <data name="TexturesLongDescription" xml:space="preserve">
-    <value>Specify dumping or injecting behavior and copy textures to tex_override directory</value>
+    <value>Configure dumping or injecting behavior
+Copy textures to tex_override directory
+Retrieve dumped textures from tex_dump directory</value>
   </data>
   <data name="TexturesShortDescription" xml:space="preserve">
     <value>Dump/replace and adjust texture level of details</value>
@@ -460,7 +477,7 @@ Profile data will be lost.</value>
     <value>unknown error occured</value>
   </data>
   <data name="Update" xml:space="preserve">
-    <value>UPDATE</value>
+    <value>UPDATE GAME</value>
   </data>
   <data name="ValueEqual" xml:space="preserve">
     <value>{0} and {1} cannot be equal</value>

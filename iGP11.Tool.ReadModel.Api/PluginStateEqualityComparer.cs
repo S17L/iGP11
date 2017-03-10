@@ -25,7 +25,7 @@ namespace iGP11.Tool.ReadModel.Api
                 return false;
             }
 
-            return (first.ApplicationFilePath == second.ApplicationFilePath) && (first.ProxyDirectoryPath == second.ProxyDirectoryPath) && (first.PluginType == second.PluginType) && (!_isCheckingActivationStatus || (first.ActivationStatus != second.ActivationStatus));
+            return (first.GameFilePath == second.GameFilePath) && (first.ProxyDirectoryPath == second.ProxyDirectoryPath) && (first.PluginType == second.PluginType) && (!_isCheckingActivationStatus || (first.ActivationStatus != second.ActivationStatus));
         }
 
         public int GetHashCode(ProxySettings state)

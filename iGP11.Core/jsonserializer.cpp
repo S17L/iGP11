@@ -161,21 +161,21 @@ core::dto::Command core::JsonSerializer::deserializeCommand(const std::string &v
     return command;
 }
 
-core::dto::InjectionSettings core::JsonSerializer::deserializeSettings(const std::string &value) {
+core::dto::GameSettings core::JsonSerializer::deserializeSettings(const std::string &value) {
     rapidjson::Document document;
     document.Parse(value.c_str());
 
-    core::dto::InjectionSettings settings;
-    rapidjson::Value &injectionSettingsJson = document[ENCRYPT_STRING("injectionSettings")];
-    settings.applicationFilePath = injectionSettingsJson[ENCRYPT_STRING("applicationFilePath")].GetString();
-    settings.proxyDirectoryPath = injectionSettingsJson[ENCRYPT_STRING("proxyDirectoryPath")].GetString();
-    settings.logsDirectoryPath = injectionSettingsJson[ENCRYPT_STRING("logsDirectoryPath")].GetString();
-    settings.pluginType = static_cast<core::PluginType>(injectionSettingsJson[ENCRYPT_STRING("pluginType")].GetInt());
+    core::dto::GameSettings settings;
+    rapidjson::Value &gameProfileJson = document[ENCRYPT_STRING("gameProfile")];
+    settings.proxyDirectoryPath = gameProfileJson[ENCRYPT_STRING("proxyDirectoryPath")].GetString();
+    settings.logsDirectoryPath = gameProfileJson[ENCRYPT_STRING("logsDirectoryPath")].GetString();
+    settings.pluginType = static_cast<core::PluginType>(gameProfileJson[ENCRYPT_STRING("pluginType")].GetInt());
     settings.communicationAddress = document[ENCRYPT_STRING("communicationAddress")].GetString();
     settings.communicationPort = (unsigned short)document[ENCRYPT_STRING("communicationPort")].GetUint();
     settings.direct3D11PluginPath = document[ENCRYPT_STRING("direct3D11PluginPath")].GetString();
+    settings.gameFilePath = document[ENCRYPT_STRING("gameFilePath")].GetString();
 
-    rapidjson::Value &direct3D11Settings = injectionSettingsJson[ENCRYPT_STRING("direct3D11Settings")];
+    rapidjson::Value &direct3D11Settings = gameProfileJson[ENCRYPT_STRING("direct3D11Settings")];
     if (!direct3D11Settings.IsNull()) {
         settings.direct3D11Settings = deserializeDirect3D11Settings(::toString(direct3D11Settings));
     }
@@ -298,8 +298,8 @@ std::string core::JsonSerializer::serialize(core::dto::ProxySettings data) {
 
     writer.StartObject();
     {
-        writer.String(ENCRYPT_STRING("applicationFilePath"));
-        writer.String(data.applicationFilePath.c_str());
+        writer.String(ENCRYPT_STRING("gameFilePath"));
+        writer.String(data.gameFilePath.c_str());
         writer.String(ENCRYPT_STRING("proxyDirectoryPath"));
         writer.String(data.proxyDirectoryPath.c_str());
         writer.String(ENCRYPT_STRING("logsDirectoryPath"));

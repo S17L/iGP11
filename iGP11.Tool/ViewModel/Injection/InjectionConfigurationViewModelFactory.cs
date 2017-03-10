@@ -18,9 +18,9 @@ namespace iGP11.Tool.ViewModel.Injection
         private readonly IEventPublisher _eventPublisher;
         private readonly IFilePicker _filePicker;
         private readonly IFindFirstLaunchTimeQuery _findFirstLaunchTimeQuery;
-        private readonly IFindInjectionProfilesQuery _findInjectionProfilesQuery;
-        private readonly IFindInjectionSettingsByIdQuery _findInjectionSettingsByIdQuery;
-        private readonly IFindLastEditedInjectionSettingsQuery _findLastEditedInjectionSettingsQuery;
+        private readonly IFindGamePackageByIdQuery _findGamePackageByIdQuery;
+        private readonly IFindGamesQuery _findGamesQuery;
+        private readonly IFindLastEditedGamePackageQuery _findLastEditedGamePackageQuery;
         private readonly INavigationService _navigationService;
         private readonly IPluginComponentFactory _pluginComponentFactory;
         private readonly ITaskRunner _runner;
@@ -29,10 +29,10 @@ namespace iGP11.Tool.ViewModel.Injection
         public InjectionConfigurationViewModelFactory(
             DomainActionBuilder actionBuilder,
             ComponentViewModelFactory componentViewModelFactory,
-            IFindInjectionProfilesQuery findInjectionProfilesQuery,
             IFindFirstLaunchTimeQuery findFirstLaunchTimeQuery,
-            IFindInjectionSettingsByIdQuery findInjectionSettingsByIdQuery,
-            IFindLastEditedInjectionSettingsQuery findLastEditedInjectionSettingsQuery,
+            IFindGamePackageByIdQuery findGamePackageByIdQuery,
+            IFindGamesQuery findGamesQuery,
+            IFindLastEditedGamePackageQuery findLastEditedGamePackageQuery,
             IDirectoryPicker directoryPicker,
             IEqualityComparer<ProxySettings> stateEqualityComparer,
             IEventPublisher eventPublisher,
@@ -43,11 +43,10 @@ namespace iGP11.Tool.ViewModel.Injection
         {
             _actionBuilder = actionBuilder;
             _componentViewModelFactory = componentViewModelFactory;
-            _findInjectionProfilesQuery = findInjectionProfilesQuery;
             _findFirstLaunchTimeQuery = findFirstLaunchTimeQuery;
-            _findInjectionProfilesQuery = findInjectionProfilesQuery;
-            _findInjectionSettingsByIdQuery = findInjectionSettingsByIdQuery;
-            _findLastEditedInjectionSettingsQuery = findLastEditedInjectionSettingsQuery;
+            _findGamePackageByIdQuery = findGamePackageByIdQuery;
+            _findGamesQuery = findGamesQuery;
+            _findLastEditedGamePackageQuery = findLastEditedGamePackageQuery;
             _directoryPicker = directoryPicker;
             _stateEqualityComparer = stateEqualityComparer;
             _eventPublisher = eventPublisher;
@@ -62,10 +61,10 @@ namespace iGP11.Tool.ViewModel.Injection
             return new InjectionConfigurationViewModel(
                 _actionBuilder,
                 _componentViewModelFactory,
-                _findInjectionProfilesQuery,
                 _findFirstLaunchTimeQuery,
-                _findInjectionSettingsByIdQuery,
-                _findLastEditedInjectionSettingsQuery,
+                _findGamePackageByIdQuery,
+                _findGamesQuery,
+                _findLastEditedGamePackageQuery,
                 _directoryPicker,
                 _stateEqualityComparer,
                 _eventPublisher,

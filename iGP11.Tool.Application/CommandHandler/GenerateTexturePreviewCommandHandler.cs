@@ -32,16 +32,16 @@ namespace iGP11.Tool.Application.CommandHandler
             var metadata = _textureService.GetMetadata(command.FilePath);
             if (metadata == null)
             {
-                await context.EmitAsync(new ErrorOccuredEvent());
+                await context.EmitAsync(new ErrorOccuredNotification());
             }
 
             var texture = _textureService.Convert(command.FilePath, settings);
             if (texture?.Metadata == null)
             {
-                await context.EmitAsync(new ErrorOccuredEvent());
+                await context.EmitAsync(new ErrorOccuredNotification());
             }
 
-            await context.EmitAsync(new GeneratedTexturePreviewEvent(texture, metadata));
+            await context.EmitAsync(new GeneratedTexturePreviewNotification(texture, metadata));
         }
     }
 }

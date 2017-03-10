@@ -124,8 +124,8 @@ namespace iGP11.Tool.ViewModel
             }
 
             await _actionBuilder.Dispatch(new UpdateApplicationSettingsCommand(_settings.ApplicationCommunicationPort, _settings.ProxyCommunicationPort))
-                .ListenFor<ActionSucceededEvent>(async (context, @event) => await context.CompleteAsync())
-                .CompleteFor<ErrorOccuredEvent>()
+                .ListenFor<ActionSucceededNotification>(async (context, @event) => await context.CompleteAsync())
+                .CompleteFor<ErrorOccuredNotification>()
                 .Execute();
 
             await PublishUpdateStatusEvent(StatusType.Ok, "SettingsSaved", DateTime.Now);

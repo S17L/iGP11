@@ -1,0 +1,84 @@
+﻿{
+  "id": {
+    "value": "{26E40BAF-4574-44CA-99C3-508F45928D6C}"
+  },
+  "profileId": {
+    "value": "{E3B7BFB4-1CB6-4026-B82B-B53BA56823ED}"
+  },
+  "name": "fallout 4",
+  "filePath": "",
+  "profiles": [
+    {
+      "id": {
+        "value": "{E3B7BFB4-1CB6-4026-B82B-B53BA56823ED}"
+      },
+      "gameId": {
+        "value": "{26E40BAF-4574-44CA-99C3-508F45928D6C}"
+      },
+      "name": "development",
+      "logsDirectoryPath": "<# app_dir #>\\iGP11\\logs",
+      "proxyDirectoryPath": "<# app_dir #>\\iGP11",
+      "pluginType": 0,
+      "direct3D11Settings": {
+        "pluginSettings": {
+          "profileType": 3,
+          "renderingMode": 2
+        },
+        "textures": {
+          "detailLevel": 0,
+          "overrideMode": 2,
+          "overridePath": "<# app_dir #>\\iGP11\\tex_override",
+          "dumpingPath": "<# app_dir #>\\iGP11\\tex_dump"
+        },
+        "depthBuffer": {
+          "linearZNear": 0.01,
+          "linearZFar": 20,
+          "isLimitEnabled": true,
+          "depthMinimum": 0.007,
+          "depthMaximum": 0.4
+        },
+        "bokehDoF": {
+          "isEnabled": true,
+          "isChromaticAberrationEnabled": true,
+          "chromaticAberrationFringe": 5,
+          "isPreservingShape": false,
+          "shapeSize": 3,
+          "shapeStrength": 50,
+          "shapeRotation": 15,
+          "isBlurEnabled": true,
+          "blurStrength": 0.3,
+          "depthMinimum": 0,
+          "depthMaximum": 1,
+          "depthRateGain": 1,
+          "luminescenceMinimum": 0.01,
+          "luminescenceMaximum": 5,
+          "luminescenceRateGain": 2
+        },
+        "lumaSharpen": {
+          "isEnabled": true,
+          "sharpeningStrength": 1.75,
+          "sharpeningClamp": 0.035,
+          "offsetBias": 1
+        },
+        "tonemap": {
+          "isEnabled": true,
+          "gamma": 1,
+          "exposure": 0,
+          "saturation": 0.25,
+          "bleach": 0,
+          "defog": 0,
+          "defogRedChannelLoss": 0,
+          "defogGreenChannelLoss": 0,
+          "defogBlueChannelLoss": 2.55
+        },
+        "vibrance": {
+          "isEnabled": true,
+          "strength": 0.3,
+          "redChannelStrength": 1,
+          "greenChannelStrength": 1,
+          "blueChannelStrength": 1
+        }
+      }
+    }
+  ]
+}

@@ -10,6 +10,6 @@ namespace core {
 	public:
 		SettingsService(core::ISerializer *serializer)
 			: _serializer(serializer) {}
-		virtual core::dto::InjectionSettings getSettings() override;
+		virtual core::dto::GameSettings getSettings() override;
 	};
 }

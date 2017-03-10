@@ -148,7 +148,7 @@
     <ClInclude Include="encryption.h" />
     <ClInclude Include="hookservice.h" />
     <ClInclude Include="igp11core.h" />
-    <ClInclude Include="injectionsettingsrepository.h" />
+    <ClInclude Include="gamesettingsrepository.h" />
     <ClInclude Include="jsonserializer.h" />
     <ClInclude Include="listener.h" />
     <ClInclude Include="logger.h" />
@@ -167,7 +167,7 @@
     <ClCompile Include="igp11core.cpp" />
     <ClCompile Include="counters.cpp" />
     <ClCompile Include="hookservice.cpp" />
-    <ClCompile Include="injectionsettingsrepository.cpp" />
+    <ClCompile Include="gamesettingsrepository.cpp" />
     <ClCompile Include="jsonserializer.cpp" />
     <ClCompile Include="listener.cpp" />
     <ClCompile Include="logger.cpp" />

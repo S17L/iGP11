@@ -1,7 +1,7 @@
 ﻿using iGP11.Library.Component;
 using iGP11.Tool.Application.Api.Model;
+using iGP11.Tool.ReadModel.Api.Model;
 using iGP11.Tool.Shared.Model;
-using iGP11.Tool.Shared.Model.InjectionSettings;
 
 namespace iGP11.Tool.ViewModel.Injection
 {
@@ -9,78 +9,78 @@ namespace iGP11.Tool.ViewModel.Injection
                                       IInjectionViewModel
     {
         private readonly IInjectionConfigurationViewModel _injectionConfigurationViewModel;
-        private readonly InjectionSettings _settings;
+        private readonly GamePackage _package;
         private readonly ITokenReplacer _tokenReplacer;
 
-        public InjectionViewModel(IInjectionConfigurationViewModel injectionConfigurationViewModel, InjectionSettings settings)
+        public InjectionViewModel(IInjectionConfigurationViewModel injectionConfigurationViewModel, GamePackage package)
         {
             _injectionConfigurationViewModel = injectionConfigurationViewModel;
-            _settings = settings;
-            _tokenReplacer = new TokenReplacer(new ApplicationFilePathTokenReplacingPolicy(() => _settings?.ApplicationFilePath ?? string.Empty));
+            _package = package;
+            _tokenReplacer = new TokenReplacer(new ApplicationFilePathTokenReplacingPolicy(() => _package.Game?.FilePath ?? string.Empty));
         }
 
-        public string ApplicationFilePath
+        public string GameFilePath
         {
-            get { return _settings?.ApplicationFilePath ?? string.Empty; }
+            get { return _package.Game?.FilePath ?? string.Empty; }
             set
             {
-                if ((_settings == null) || (_settings.ApplicationFilePath == value))
+                if ((_package.Game == null) || (_package.Game.FilePath == value))
                 {
                     return;
                 }
 
-                _settings.ApplicationFilePath = value;
+                _package.Game.FilePath = value;
                 _injectionConfigurationViewModel.RebindPlugin();
             }
         }
 
-        public string FormattedConfigurationDirectoryPath => _settings != null
-                                                                 ? _tokenReplacer.Replace(_settings.ProxyDirectoryPath)
+        public string FormattedConfigurationDirectoryPath => _package.GameProfile != null
+                                                                 ? _tokenReplacer.Replace(_package.GameProfile.ProxyDirectoryPath)
                                                                  : string.Empty;
 
-        public string FormattedLogsDirectoryPath => _settings != null
-                                                        ? _tokenReplacer.Replace(_settings.LogsDirectoryPath)
+        public string FormattedLogsDirectoryPath => _package.GameProfile != null
+                                                        ? _tokenReplacer.Replace(_package.GameProfile.LogsDirectoryPath)
                                                         : string.Empty;
 
         public string LogsDirectoryPath
         {
-            get { return _settings?.LogsDirectoryPath ?? string.Empty; }
+            get { return _package.GameProfile?.LogsDirectoryPath ?? string.Empty; }
             set
             {
-                if ((_settings == null) || (_settings.LogsDirectoryPath == value))
+                if ((_package.GameProfile == null) || (_package.GameProfile.LogsDirectoryPath == value))
                 {
                     return;
                 }
 
-                _settings.LogsDirectoryPath = value;
+                _package.GameProfile.LogsDirectoryPath = value;
             }
         }
 
         public PluginType PluginType
         {
-            get { return _settings?.PluginType ?? PluginType.Direct3D11; }
+            get { return _package.GameProfile?.PluginType ?? PluginType.Direct3D11; }
             set
             {
-                if ((_settings == null) || (_settings.PluginType == value))
+                if ((_package.GameProfile == null) || (_package.GameProfile.PluginType == value))
                 {
                     return;
                 }
 
-                _settings.PluginType = value;
+                _package.GameProfile.PluginType = value;
             }
         }
 
         public string ProxyDirectoryPath
         {
-            get { return _settings?.ProxyDirectoryPath ?? string.Empty; }
+            get { return _package.GameProfile?.ProxyDirectoryPath ?? string.Empty; }
             set
             {
-                if ((_settings == null) || (_settings.ProxyDirectoryPath == value))
+                if ((_package.GameProfile == null) || (_package.GameProfile.ProxyDirectoryPath == value))
                 {
                     return;
                 }
 
-                _settings.ProxyDirectoryPath = value;
+                _package.GameProfile.ProxyDirectoryPath = value;
             }
         }
     }

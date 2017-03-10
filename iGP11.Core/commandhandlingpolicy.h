@@ -19,12 +19,12 @@ namespace core {
 		class GetProxySettingsCommandHandlingPolicy : public ICommandHandlingPolicy {
 		private:
             std::shared_ptr<IPluginLoader> _pluginLoader;
-            IInjectionSettingsRepository *_repository;
+            IGameSettingsRepository *_repository;
 			ISerializer *_serializer;
 		public:
 			GetProxySettingsCommandHandlingPolicy(
                 std::shared_ptr<IPluginLoader> pluginLoader,
-				IInjectionSettingsRepository *repository,
+				IGameSettingsRepository *repository,
 				ISerializer *serializer)
 				:
                 _pluginLoader(pluginLoader),
@@ -38,12 +38,12 @@ namespace core {
 		class UpdateProxySettingsCommandHandlingPolicy : public ICommandHandlingPolicy {
 		private:
 			std::shared_ptr<IDirect3D11PluginLoader> _direct3D11PluginLoader;
-            IInjectionSettingsRepository *_repository;
+            IGameSettingsRepository *_repository;
 			ISerializer *_serializer;
 		public:
 			UpdateProxySettingsCommandHandlingPolicy(
 				std::shared_ptr<IDirect3D11PluginLoader> direct3D11PluginLoader,
-                IInjectionSettingsRepository *repository,
+                IGameSettingsRepository *repository,
 				ISerializer *serializer)
 				:
 				_direct3D11PluginLoader(direct3D11PluginLoader),

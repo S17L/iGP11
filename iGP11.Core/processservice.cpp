@@ -1,22 +1,6 @@
 #include "stdafx.h"
 #include "processservice.h"
 
-core::dto::ProcessDetail getProcessDetail(unsigned long id) {
-	core::dto::ProcessDetail detail;
-	detail.id = id;
-
-	TCHAR path[MAX_PATH];
-	core::disposing::unique_ptr<void> process = core::disposing::makeHandle(::OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, id));
-
-	if (process.get()) {
-		if (GetModuleFileNameEx(process.get(), NULL, path, MAX_PATH) != 0) {
-			detail.path = core::toString(path);
-		}
-	}
-
-	return detail;
-}
-
 int core::ProcessService::adjustPrivileges() {
 	HANDLE token;
 	TOKEN_PRIVILEGES tokenPrivileges;
@@ -35,7 +19,23 @@ int core::ProcessService::adjustPrivileges() {
 }
 
 core::dto::ProcessDetail core::ProcessService::getCurrentProcessDetail() {
-	return ::getProcessDetail(::GetCurrentProcessId());
+	return getProcessDetail(::GetCurrentProcessId());
+}
+
+core::dto::ProcessDetail core::ProcessService::getProcessDetail(unsigned long id) {
+    core::dto::ProcessDetail detail;
+    detail.id = id;
+
+    TCHAR path[MAX_PATH];
+    core::disposing::unique_ptr<void> process = core::disposing::makeHandle(::OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, id));
+
+    if (process.get()) {
+        if (GetModuleFileNameEx(process.get(), NULL, path, MAX_PATH) != 0) {
+            detail.path = core::toString(path);
+        }
+    }
+
+    return detail;
 }
 
 unsigned long core::ProcessService::getProcessByName(const std::string &applicationFilePath) {

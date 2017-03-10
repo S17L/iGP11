@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -9,7 +10,7 @@ using iGP11.Library.DDD;
 using iGP11.Tool.Domain;
 using iGP11.Tool.Domain.Exceptions;
 using iGP11.Tool.Domain.Model.ApplicationSettings;
-using iGP11.Tool.Domain.Model.InjectionSettings;
+using iGP11.Tool.Domain.Model.GameSettings;
 using iGP11.Tool.Domain.Model.TextureManagementSettings;
 using iGP11.Tool.Domain.Model.UsageStatistics;
 using iGP11.Tool.Infrastructure.Database.Model;
@@ -41,21 +42,28 @@ namespace iGP11.Tool.Infrastructure.Database.Bootstrapper
                     await AddTextureConverterSettings(databaseContext);
                     await AddUsageStatistics(databaseContext);
 
-                    if (databaseContext.InjectionSettings.IsNullOrEmpty())
+                    if (databaseContext.Games.IsNullOrEmpty())
                     {
-                        foreach (Direct3D11ProfileType profileType in Enum.GetValues(typeof(Direct3D11ProfileType)))
+                        var gameRepository = new GameRepository(databaseContext);
+                        foreach (GameType gameType in Enum.GetValues(typeof(GameType)))
                         {
                             try
                             {
-                                await AddInjectionSettings(profileType, databaseContext);
+                                await AddGame(gameType, gameRepository);
                             }
-                            catch (ProfileTemplateNotFoundException)
+                            catch (GameTemplateNotFoundException)
                             {
                             }
                         }
 
-                        var profile = (Direct3D11ProfileType)typeof(Direct3D11ProfileType).GetDefaultValue().GetValueOrDefault();
-                        await new InjectionSettingsRepository(databaseContext).ChangeDefaultAsync(profile.GetAggregateId());
+                        var gameId = ((GameType)typeof(GameType).GetDefaultValue().GetValueOrDefault()).GetAggregateId();
+                        var game = databaseContext.Games.SingleOrDefault(entity => entity.Id == gameId);
+                        if (game == null)
+                        {
+                            throw new AggregateRootNotFoundException($"game with id: {gameId} could not be found");
+                        }
+
+                        await gameRepository.ChangeGameProfileAsync(game.Profiles.First().Id);
                     }
 
                     transaction.Complete();
@@ -82,22 +90,22 @@ namespace iGP11.Tool.Infrastructure.Database.Bootstrapper
             }
         }
 
-        private static async Task AddInjectionSettings(Direct3D11ProfileType profileType, FileDatabaseContext context)
+        private static async Task AddGame(GameType gameType, GameRepository gameRepository)
         {
-            var aggregateId = profileType.GetAggregateId();
-            if (aggregateId == null)
+            var gameId = gameType.GetAggregateId();
+            if (gameId == null)
             {
                 return;
             }
 
-            var repository = new InjectionSettingsRepository(context);
+            var gameFactory = new GameFactory();
             try
             {
-                await repository.LoadAsync(aggregateId);
+                await gameRepository.LoadAsync(gameId);
             }
             catch (AggregateRootNotFoundException)
             {
-                await repository.SaveAsync(new InjectionSettingsFactory().Create(profileType));
+                await gameRepository.SaveAsync(gameFactory.Create(gameType));
             }
         }
 

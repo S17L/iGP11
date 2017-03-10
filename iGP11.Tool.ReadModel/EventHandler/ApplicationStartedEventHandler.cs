@@ -6,7 +6,7 @@ using iGP11.Tool.Shared.Event;
 
 namespace iGP11.Tool.ReadModel.EventHandler
 {
-    public class ApplicationStartedEventHandler : IDomainEventHandler<ApplicationStartedEvent>
+    public class ApplicationStartedEventHandler : IDomainEventHandler<GameStartedEvent>
     {
         private readonly InMemoryDatabase _database;
 
@@ -15,10 +15,10 @@ namespace iGP11.Tool.ReadModel.EventHandler
             _database = database;
         }
 
-        public async Task HandleAsync(DomainEventContext context, ApplicationStartedEvent @event)
+        public async Task HandleAsync(DomainEventContext context, GameStartedEvent @event)
         {
-            _database.InjectionStatuses[@event.ApplicationFilePath] = @event.Status;
-            await context.EmitAsync(new Shared.Notification.ApplicationStartedEvent(@event.Status));
+            _database.InjectionStatuses[@event.FilePath] = @event.Status;
+            await context.EmitAsync(new Shared.Notification.ApplicationStartedNotification(@event.Status));
         }
     }
 }

@@ -30,12 +30,12 @@ void direct3d11::BokehDoFEffect::begin() {
         _renderTarget.reset(new direct3d11::SquareRenderTarget(_context, _resolution));
 
         _cocShaderApplicator.reset(shaderApplicatorFactory(_codeFactory->createBokehDoFCoCCode(_colorTexture->getShaderView(), _depthTextureView, _bokehDoF, _depthBuffer)));
+        _horizontalGaussianBlurShaderApplicator.reset(shaderApplicatorFactory(_codeFactory->createHorizontalGaussianBlurCode(_firstTexture->getShaderView(), gaussianBlurConfiguration.size, gaussianBlurConfiguration.sigma)));
+        _verticalGaussianBlurShaderApplicator.reset(shaderApplicatorFactory(_codeFactory->createVerticalGaussianBlurCode(_secondTexture->getShaderView(), gaussianBlurConfiguration.size, gaussianBlurConfiguration.sigma)));
         _blurPassFirstShaderApplicator.reset(shaderApplicatorFactory(_codeFactory->createBokehDoFCode(_colorTexture->getShaderView(), _depthTextureView, _firstTexture->getShaderView(), core::BokehDoFPassType::first, _bokehDoF, _depthBuffer)));
         _blurPassSecondShaderApplicator.reset(shaderApplicatorFactory(_codeFactory->createBokehDoFCode(_colorTexture->getShaderView(), _depthTextureView, _secondTexture->getShaderView(), core::BokehDoFPassType::second, _bokehDoF, _depthBuffer)));
         _blurPassThirdShaderApplicator.reset(shaderApplicatorFactory(_codeFactory->createBokehDoFCode(_colorTexture->getShaderView(), _depthTextureView, _firstTexture->getShaderView(), core::BokehDoFPassType::third, _bokehDoF, _depthBuffer)));
-        _chromaticAberrationShaderApplicator.reset(shaderApplicatorFactory(_codeFactory->createBokehDoFChromaticAberrationCode(_colorTexture->getShaderView(), _secondTexture->getShaderView(), _bokehDoF)));
-        _horizontalGaussianBlurShaderApplicator.reset(shaderApplicatorFactory(_codeFactory->createHorizontalGaussianBlurCode(_firstTexture->getShaderView(), gaussianBlurConfiguration.size, gaussianBlurConfiguration.sigma)));
-        _verticalGaussianBlurShaderApplicator.reset(shaderApplicatorFactory(_codeFactory->createVerticalGaussianBlurCode(_secondTexture->getShaderView(), gaussianBlurConfiguration.size, gaussianBlurConfiguration.sigma)));
+        _chromaticAberrationShaderApplicator.reset(shaderApplicatorFactory(_codeFactory->createBokehDoFChromaticAberrationCode(_secondTexture->getShaderView(), _bokehDoF)));
 
         _blendingShaderApplicator.reset(shaderApplicatorFactory(_codeFactory->createBokehDoFBlendingCode(_colorTexture->getShaderView(), _depthTextureView, _firstTexture->getShaderView(), _bokehDoF, _depthBuffer)));
         _init = true;
@@ -45,6 +45,18 @@ void direct3d11::BokehDoFEffect::begin() {
     _cocShaderApplicator->begin();
     _firstTexture->setAsRenderer();
     _renderTarget->render();
+
+    if (_bokehDoF.isBlurEnabled) {
+        direct3d11::utility::setNoRenderer(_context);
+        _horizontalGaussianBlurShaderApplicator->begin();
+        _secondTexture->setAsRenderer();
+        _renderTarget->render();
+        direct3d11::utility::setNoRenderer(_context);
+        _verticalGaussianBlurShaderApplicator->begin();
+        _firstTexture->setAsRenderer();
+        _renderTarget->render();
+    }
+
     direct3d11::utility::setNoRenderer(_context);
     _blurPassFirstShaderApplicator->begin();
     _secondTexture->setAsRenderer();
@@ -62,17 +74,6 @@ void direct3d11::BokehDoFEffect::begin() {
     _firstTexture->setAsRenderer();
     _renderTarget->render();
 
-    if (_bokehDoF.isBlurEnabled) {
-        direct3d11::utility::setNoRenderer(_context);
-        _horizontalGaussianBlurShaderApplicator->begin();
-        _secondTexture->setAsRenderer();
-        _renderTarget->render();
-        direct3d11::utility::setNoRenderer(_context);
-        _verticalGaussianBlurShaderApplicator->begin();
-        _firstTexture->setAsRenderer();
-        _renderTarget->render();
-    }
-
     direct3d11::utility::setNoRenderer(_context);
     _blendingShaderApplicator->begin();
 }
@@ -83,15 +84,17 @@ void direct3d11::BokehDoFEffect::render() {
 
 void direct3d11::BokehDoFEffect::end() {
     _blendingShaderApplicator->end();
+    _chromaticAberrationShaderApplicator->end();
+
+    _blurPassThirdShaderApplicator->end();
+    _blurPassSecondShaderApplicator->end();
+    _blurPassFirstShaderApplicator->end();
 
     if (_bokehDoF.isBlurEnabled) {
         _verticalGaussianBlurShaderApplicator->end();
         _horizontalGaussianBlurShaderApplicator->end();
     }
 
-    _blurPassThirdShaderApplicator->end();
-    _blurPassSecondShaderApplicator->end();
-    _blurPassFirstShaderApplicator->end();
     _cocShaderApplicator->end();
     _renderTarget->end();
 }

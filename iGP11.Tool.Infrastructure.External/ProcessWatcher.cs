@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Management;
+using System.Text;
 
 using iGP11.Library;
 using iGP11.Tool.Application;
@@ -10,6 +11,7 @@ namespace iGP11.Tool.Infrastructure.External
 {
     public sealed class ProcessWatcher : IProcessWatcher
     {
+        private const int MaxPathLength = 260;
         private const string Query = "SELECT * FROM __InstanceOperationEvent WITHIN 1 WHERE TargetInstance ISA 'Win32_Process'";
         private const string Scope = @"\\.\root\CIMV2";
 
@@ -44,7 +46,12 @@ namespace iGP11.Tool.Infrastructure.External
         private IWatchableProcess GetWatchableProcess(EventArrivedEventArgs eventArgs)
         {
             var @object = (ManagementBaseObject)eventArgs.NewEvent.Properties["TargetInstance"].Value;
-            var filePath = (string)@object.Properties["ExecutablePath"].Value;
+            var pid = (uint)@object.Properties["ProcessID"].Value;
+
+            var builder = new StringBuilder(MaxPathLength + 1);
+            var filePath = InjectionDriver.GetProcessFilePath(pid, builder, builder.Capacity) ? builder.ToString() : null;
+
+            _logger.Log(LogLevel.Debug, $"wmi event received, file path: {filePath}, pid: {pid}");
 
             lock (_lock)
             {

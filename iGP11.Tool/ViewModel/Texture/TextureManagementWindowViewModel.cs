@@ -179,8 +179,8 @@ namespace iGP11.Tool.ViewModel.Texture
 
                 IEnumerable<TextureFile> files = null;
                 await _actionBuilder.Dispatch(new LoadTextureFilesCommand(_settings.SourceDirectory))
-                    .CompleteFor<TextureFilesLoadedEvent>((context, @event) => files = @event.Files)
-                    .CompleteFor<ErrorOccuredEvent>(async (context, @event) => await PublishUnknownErrorEventAsync())
+                    .CompleteFor<TextureFilesLoadedNotification>((context, @event) => files = @event.Files)
+                    .CompleteFor<ErrorOccuredNotification>(async (context, @event) => await PublishUnknownErrorEventAsync())
                     .OnTimeout(async () => await PublishTimeoutEventAsync())
                     .Execute();
 
@@ -257,8 +257,8 @@ namespace iGP11.Tool.ViewModel.Texture
                     try
                     {
                         await _actionBuilder.Dispatch(CreateConvertTextureCommand(node.FileName, settings))
-                            .CompleteFor<ActionSucceededEvent>()
-                            .CompleteFor<ErrorOccuredEvent>()
+                            .CompleteFor<ActionSucceededNotification>()
+                            .CompleteFor<ErrorOccuredNotification>()
                             .OnTimeout(async () => await PublishTimeoutEventAsync())
                             .Execute();
                     }
@@ -290,8 +290,8 @@ namespace iGP11.Tool.ViewModel.Texture
             using (new ProcessingScope(this))
             {
                 await _actionBuilder.Dispatch(CreateConvertTextureCommand(TexturePreview.Name, _settings.SingleConversion))
-                    .CompleteFor<ActionSucceededEvent>(async (context, @event) => await PublishUpdateStatusEventAsync(StatusType.Ok, "TextureConversionCompleted"))
-                    .CompleteFor<ErrorOccuredEvent>(async (context, @event) => await PublishUnknownErrorEventAsync())
+                    .CompleteFor<ActionSucceededNotification>(async (context, @event) => await PublishUpdateStatusEventAsync(StatusType.Ok, "TextureConversionCompleted"))
+                    .CompleteFor<ErrorOccuredNotification>(async (context, @event) => await PublishUnknownErrorEventAsync())
                     .OnTimeout(async () => await PublishTimeoutEventAsync())
                     .Execute();
 
@@ -358,8 +358,8 @@ namespace iGP11.Tool.ViewModel.Texture
         {
             Rebind();
             await _actionBuilder.Dispatch(new UpdateTextureManagementSettingsCommand(_settings))
-                .CompleteFor<ActionSucceededEvent>()
-                .CompleteFor<ErrorOccuredEvent>(async (context, @event) => await PublishUnknownErrorEventAsync())
+                .CompleteFor<ActionSucceededNotification>()
+                .CompleteFor<ErrorOccuredNotification>(async (context, @event) => await PublishUnknownErrorEventAsync())
                 .OnTimeout(async () => await PublishTimeoutEventAsync())
                 .Execute();
         }

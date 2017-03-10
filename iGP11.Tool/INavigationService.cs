@@ -9,7 +9,7 @@ namespace iGP11.Tool
     {
         void ShowAboutDialog(Target target);
 
-        AddedProfile ShowAddProfileDialog(Target invoker, IEnumerable<ProfileViewModel> profiles);
+        AddedProfile ShowAddProfileDialog(Target invoker, IEnumerable<LookupViewModel> profiles);
 
         void ShowConfigurationDialog(Target invoker);
 

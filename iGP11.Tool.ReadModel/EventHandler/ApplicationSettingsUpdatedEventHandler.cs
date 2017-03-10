@@ -21,7 +21,7 @@ namespace iGP11.Tool.ReadModel.EventHandler
             _database.ConstantSettings.ApplicationCommunicationPort = @event.ApplicationCommunicationPort;
             _database.ConstantSettings.ProxyCommunicationPort = @event.ProxyCommunicationPort;
 
-            await context.EmitAsync(new ActionSucceededEvent());
+            await context.EmitAsync(new ActionSucceededNotification());
         }
     }
 }

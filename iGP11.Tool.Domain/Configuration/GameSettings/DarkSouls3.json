@@ -1,0 +1,84 @@
+﻿{
+  "id": {
+    "value": "{3B694522-C333-447A-B080-28F6DFDE9CD0}"
+  },
+  "profileId": {
+    "value": "{AAACDEC7-3AD2-46C5-82AF-E8E9DDFFB4AA}"
+  },
+  "name": "dark souls 3",
+  "filePath": "",
+  "profiles": [
+    {
+      "id": {
+        "value": "{AAACDEC7-3AD2-46C5-82AF-E8E9DDFFB4AA}"
+      },
+      "gameId": {
+        "value": "{3B694522-C333-447A-B080-28F6DFDE9CD0}"
+      },
+      "name": "development",
+      "logsDirectoryPath": "<# app_dir #>\\iGP11\\logs",
+      "proxyDirectoryPath": "<# app_dir #>\\iGP11",
+      "pluginType": 0,
+      "direct3D11Settings": {
+        "pluginSettings": {
+          "profileType": 2,
+          "renderingMode": 2
+        },
+        "textures": {
+          "detailLevel": 0,
+          "overrideMode": 2,
+          "overridePath": "<# app_dir #>\\iGP11\\tex_override",
+          "dumpingPath": "<# app_dir #>\\iGP11\\tex_dump"
+        },
+        "depthBuffer": {
+          "linearZNear": 0.01,
+          "linearZFar": 50,
+          "isLimitEnabled": true,
+          "depthMinimum": 0.02,
+          "depthMaximum": 0.4
+        },
+        "bokehDoF": {
+          "isEnabled": true,
+          "isChromaticAberrationEnabled": true,
+          "chromaticAberrationFringe": 15,
+          "isPreservingShape": false,
+          "shapeSize": 3,
+          "shapeStrength": 100,
+          "shapeRotation": 15,
+          "isBlurEnabled": true,
+          "blurStrength": 0.3,
+          "depthMinimum": 0,
+          "depthMaximum": 1,
+          "depthRateGain": 1,
+          "luminescenceMinimum": 0.01,
+          "luminescenceMaximum": 10,
+          "luminescenceRateGain": 2
+        },
+        "lumaSharpen": {
+          "isEnabled": true,
+          "sharpeningStrength": 1,
+          "sharpeningClamp": 0.035,
+          "offsetBias": 1
+        },
+        "tonemap": {
+          "isEnabled": false,
+          "gamma": 1,
+          "exposure": 0,
+          "saturation": 0.5,
+          "bleach": 0,
+          "defog": 0,
+          "defogRedChannelLoss": 0,
+          "defogGreenChannelLoss": 0,
+          "defogBlueChannelLoss": 2.55
+        },
+        "vibrance": {
+          "isEnabled": false,
+          "strength": 0.1,
+          "redChannelStrength": 1,
+          "greenChannelStrength": 1,
+          "blueChannelStrength": 1
+        }
+      }
+    }
+  ]
+}

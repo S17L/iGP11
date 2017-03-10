@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using System.Text;
 
 namespace iGP11.Tool.Infrastructure.External
 {
@@ -6,6 +7,9 @@ namespace iGP11.Tool.Infrastructure.External
     {
         private const CallingConvention Convention = CallingConvention.Cdecl;
         private const string InjectionLibrary = "iGP11.External.Injection.dll";
+
+        [DllImport(InjectionLibrary, CallingConvention = Convention, EntryPoint = "getProcessFilePath")]
+        internal static extern bool GetProcessFilePath(ulong id, StringBuilder builder, int maxLength);
 
         [DllImport(InjectionLibrary, CallingConvention = Convention, EntryPoint = "inject")]
         internal static extern ulong Inject(string applicationFilePath, string proxyFilePath);

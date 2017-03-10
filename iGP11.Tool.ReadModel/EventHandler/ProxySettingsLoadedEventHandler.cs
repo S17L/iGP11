@@ -18,7 +18,7 @@ namespace iGP11.Tool.ReadModel.EventHandler
         public async Task HandleAsync(DomainEventContext context, ProxySettingsLoadedEvent @event)
         {
             _database.ProxySettings = @event.ProxySettings;
-            await context.EmitAsync(new Shared.Notification.ProxySettingsLoadedEvent(@event.ProxySettings));
+            await context.EmitAsync(new Shared.Notification.ProxySettingsLoadedNotification(@event.ProxySettings));
         }
     }
 }

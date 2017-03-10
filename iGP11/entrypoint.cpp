@@ -4,8 +4,8 @@
 #include "commandhandlingpolicy.h"
 #include "counters.h"
 #include "direct3d11pluginloader.h"
+#include "gamesettingsrepository.h"
 #include "hookservice.h"
-#include "injectionsettingsrepository.h"
 #include "listener.h"
 #include "logger.h"
 #include "jsonserializer.h"
@@ -19,7 +19,7 @@ using namespace core::logging;
 core::PluginType _pluginType;
 std::list<std::shared_ptr<core::IPluginLoader>> _pluginLoaders;
 std::shared_ptr<core::IDirect3D11PluginLoader> _direct3D11PluginLoader;
-std::unique_ptr<core::IInjectionSettingsRepository> _repository;
+std::unique_ptr<core::IGameSettingsRepository> _repository;
 std::unique_ptr<core::ISerializer> _serializer;
 std::unique_ptr<core::communication::IListener> _listener;
 std::unique_ptr<core::communication::RequestHandler> _requestHandler;
@@ -123,7 +123,7 @@ DWORD __stdcall initialize(LPVOID) {
     _serializer.reset(new core::JsonSerializer());
     auto settings = core::SettingsService(_serializer.get()).getSettings();
 
-    _repository.reset(new core::InjectionSettingsRepository(settings));
+    _repository.reset(new core::GameSettingsRepository(settings));
     _timeProvider.reset(new core::time::CurrentTimeProvider());
     _fileLoggingTarget.reset(new core::logging::FileLoggingTarget(
         core::file::combine(

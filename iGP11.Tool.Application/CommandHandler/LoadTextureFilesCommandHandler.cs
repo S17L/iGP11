@@ -30,26 +30,26 @@ namespace iGP11.Tool.Application.CommandHandler
             }
             catch (DirectoryNotFoundException)
             {
-                await context.EmitAsync(new ErrorOccuredEvent());
+                await context.EmitAsync(new ErrorOccuredNotification());
                 return;
             }
             catch (PathTooLongException)
             {
-                await context.EmitAsync(new ErrorOccuredEvent());
+                await context.EmitAsync(new ErrorOccuredNotification());
                 return;
             }
             catch (SecurityException)
             {
-                await context.EmitAsync(new ErrorOccuredEvent());
+                await context.EmitAsync(new ErrorOccuredNotification());
                 return;
             }
             catch (UnauthorizedAccessException)
             {
-                await context.EmitAsync(new ErrorOccuredEvent());
+                await context.EmitAsync(new ErrorOccuredNotification());
                 return;
             }
 
-            await context.EmitAsync(new TextureFilesLoadedEvent(files));
+            await context.EmitAsync(new TextureFilesLoadedNotification(files));
         }
     }
 }

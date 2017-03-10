@@ -19,7 +19,7 @@ namespace iGP11.Tool.ReadModel.EventHandler
         public async Task HandleAsync(DomainEventContext context, TextureManagementSettingsUpdatedEvent @event)
         {
             _database.TextureManagementSettings = @event.Settings;
-            await context.EmitAsync(new ActionSucceededEvent());
+            await context.EmitAsync(new ActionSucceededNotification());
         }
     }
 }

@@ -12,7 +12,7 @@ namespace iGP11.Tool
             new AboutWindow(target).ShowDialog();
         }
 
-        public AddedProfile ShowAddProfileDialog(Target invoker, IEnumerable<ProfileViewModel> profiles)
+        public AddedProfile ShowAddProfileDialog(Target invoker, IEnumerable<LookupViewModel> profiles)
         {
             var window = new AddProfileWindow(invoker, profiles);
             return window.ShowDialog().GetValueOrDefault()

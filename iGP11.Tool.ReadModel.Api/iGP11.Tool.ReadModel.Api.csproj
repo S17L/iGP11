@@ -51,15 +51,15 @@
   <ItemGroup>
     <Compile Include="Exception\EntityNotFoundException.cs" />
     <Compile Include="IFindConstantSettingsQuery.cs" />
-    <Compile Include="IFindInjectionProfilesQuery.cs" />
     <Compile Include="IFindFirstLaunchTimeQuery.cs" />
-    <Compile Include="IFindInjectionSettingsByIdQuery.cs" />
-    <Compile Include="IFindLastEditedInjectionSettingsQuery.cs" />
+    <Compile Include="IFindGamesQuery.cs" />
+    <Compile Include="IFindGamePackageByIdQuery.cs" />
+    <Compile Include="IFindLastEditedGamePackageQuery.cs" />
     <Compile Include="IFindPluginStateQuery.cs" />
     <Compile Include="IFindProxyActivationStatusQuery.cs" />
     <Compile Include="IFindTextureManagementSettingsQuery.cs" />
     <Compile Include="Model\ConstantSettings.cs" />
-    <Compile Include="Model\InjectionProfile.cs" />
+    <Compile Include="Model\GamePackage.cs" />
     <Compile Include="PluginStateEqualityComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -17,7 +17,7 @@
         <TextBlock Text="{Binding Source={StaticResource ResourceKey=LocalizationAddProfileDialogTitle}, Mode=OneTime}"
                    Style="{StaticResource ResourceKey=StyleTextBlockWindowTitle}" />
         <TextBox
-            themes:FrameworkService.Placeholder="{Binding Source={StaticResource ResourceKey=LocalizationProfileName}, Mode=OneTime}"
+            themes:FrameworkService.Placeholder="{Binding Source={StaticResource ResourceKey=LocalizationGameProfileName}, Mode=OneTime}"
             Margin="20, 10, 50, 10"
             Style="{StaticResource ResourceKey=StyleValidatedTextBox}"
             Text="{Binding Path=ProfileName, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />

@@ -15,6 +15,6 @@ std::string getFileContent(const std::string &filePath) {
 	return content;
 }
 
-core::dto::InjectionSettings core::SettingsService::getSettings() {
+core::dto::GameSettings core::SettingsService::getSettings() {
 	return _serializer->deserializeSettings(::getFileContent(::_filePath));
 }

@@ -18,7 +18,7 @@ namespace iGP11.Tool.ReadModel.EventHandler
         public async Task HandleAsync(DomainEventContext context, ProxyActivationStatusLoadedEvent @event)
         {
             _database.ProxyActivationStatuses[@event.ApplicationFilePath] = @event.ActivationStatus;
-            await context.EmitAsync(new Shared.Notification.ProxyActivationStatusLoadedEvent(@event.ActivationStatus));
+            await context.EmitAsync(new Shared.Notification.ProxyActivationStatusLoadedNotification(@event.ActivationStatus));
         }
     }
 }

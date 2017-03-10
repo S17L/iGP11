@@ -5,7 +5,7 @@ namespace iGP11.Tool.ViewModel.Injection
     public class CollectDataViewModel : ViewModel,
                                         IInjectionViewModel
     {
-        public string ApplicationFilePath { get; set; }
+        public string GameFilePath { get; set; }
 
         public string FormattedConfigurationDirectoryPath => ProxyDirectoryPath;
 

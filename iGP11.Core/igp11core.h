@@ -301,8 +301,8 @@ namespace core {
             Vibrance vibrance;
         };
 
-        struct InjectionSettings {
-            std::string applicationFilePath;
+        struct GameSettings {
+            std::string gameFilePath;
             std::string proxyDirectoryPath;
             std::string logsDirectoryPath;
             core::PluginType pluginType;
@@ -313,7 +313,7 @@ namespace core {
         };
 
         struct ProxySettings {
-            std::string applicationFilePath;
+            std::string gameFilePath;
             std::string proxyDirectoryPath;
             std::string logsDirectoryPath;
             PluginType pluginType;
@@ -332,10 +332,10 @@ namespace core {
         };
     }
 
-    class IInjectionSettingsRepository {
+    class IGameSettingsRepository {
     public:
-        ~IInjectionSettingsRepository() {}
-        virtual dto::InjectionSettings load() = 0;
+        ~IGameSettingsRepository() {}
+        virtual dto::GameSettings load() = 0;
         virtual void update(dto::Direct3D11Settings settings) = 0;
     };
 
@@ -344,6 +344,7 @@ namespace core {
         ~IProcessService() {}
         virtual int adjustPrivileges() = 0;
         virtual dto::ProcessDetail getCurrentProcessDetail() = 0;
+        virtual dto::ProcessDetail getProcessDetail(unsigned long id) = 0;
         virtual unsigned long getProcessByName(const std::string &applicationFilePath) = 0;
         virtual bool hasLoadedLibrary(const std::string &applicationFilePath, const std::string &libraryFilePath) = 0;
         virtual unsigned long inject(const std::string &applicationFilePath, const std::string &libraryFilePath) = 0;
@@ -352,7 +353,7 @@ namespace core {
     class ISettingsService {
     public:
         ~ISettingsService() {}
-        virtual core::dto::InjectionSettings getSettings() = 0;
+        virtual core::dto::GameSettings getSettings() = 0;
     };
 
     class IPlugin {
@@ -437,7 +438,7 @@ namespace core {
     public:
         virtual ~ISerializer() {}
         virtual core::dto::Command deserializeCommand(const std::string &value) = 0;
-        virtual core::dto::InjectionSettings deserializeSettings(const std::string &value) = 0;
+        virtual core::dto::GameSettings deserializeSettings(const std::string &value) = 0;
         virtual core::dto::Direct3D11Settings deserializeDirect3D11Settings(const std::string &value) = 0;
         virtual core::dto::UpdateProxySettings deserializeUpdateProxySettings(const std::string &value) = 0;
         virtual std::string serialize(core::dto::ProxySettings data) = 0;

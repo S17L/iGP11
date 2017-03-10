@@ -59,7 +59,7 @@
     <Compile Include="Repository\DirectoryRepository.cs" />
     <Compile Include="Repository\TextureConverterSettingsRepository.cs" />
     <Compile Include="Repository\ApplicationSettingsRepository.cs" />
-    <Compile Include="Repository\InjectionSettingsRepository.cs" />
+    <Compile Include="Repository\GameRepository.cs" />
     <Compile Include="Repository\UsageStatisticsRepository.cs" />
   </ItemGroup>
   <ItemGroup>

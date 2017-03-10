@@ -4,7 +4,7 @@ using iGP11.Library;
 using iGP11.Library.DDD;
 using iGP11.Library.File;
 using iGP11.Tool.Domain.Model.ApplicationSettings;
-using iGP11.Tool.Domain.Model.InjectionSettings;
+using iGP11.Tool.Domain.Model.GameSettings;
 using iGP11.Tool.Domain.Model.TextureManagementSettings;
 using iGP11.Tool.Domain.Model.UsageStatistics;
 
@@ -26,12 +26,12 @@ namespace iGP11.Tool.Infrastructure.Database.Model
             set { Database.ApplicationSettings = value; }
         }
 
-        public ICollection<InjectionSettings> InjectionSettings => Database.InjectionSettings;
+        public ICollection<Game> Games => Database.Games;
 
-        public AggregateId LastEditedInjectionSettingsId
+        public AggregateId LastEditedProfileId
         {
-            get { return Database.LastEditedInjectionSettingsId; }
-            set { Database.LastEditedInjectionSettingsId = value; }
+            get { return Database.LastEditedProfileId; }
+            set { Database.LastEditedProfileId = value; }
         }
 
         public TextureManagementSettings TextureConverterSettings

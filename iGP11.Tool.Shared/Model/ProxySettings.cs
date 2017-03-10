@@ -8,8 +8,8 @@ namespace iGP11.Tool.Shared.Model
         [DataMember(Name = "activationStatus", IsRequired = true)]
         public ActivationStatus ActivationStatus { get; set; }
 
-        [DataMember(Name = "applicationFilePath", IsRequired = true)]
-        public string ApplicationFilePath { get; set; }
+        [DataMember(Name = "gameFilePath", IsRequired = true)]
+        public string GameFilePath { get; set; }
 
         [DataMember(Name = "logsDirectoryPath", IsRequired = true)]
         public string LogsDirectoryPath { get; set; }

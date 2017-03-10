@@ -183,9 +183,13 @@ float4 renderBokehDoFBlending(PixelInputType input) : SV_TARGET
     float4 bokehDoFColor = _pass_0_texture.Sample(_point_sampler, input.texcoord);
     float weight = BOKEH_DOF_BLUR_STRENGTH * getDepth(input.texcoord);
 
-    bokehDoFColor /= bokehDoFColor.w;
-    bokehDoFColor = saturate(bokehDoFColor);
-    color = (color + weight * bokehDoFColor) / (1 + weight);
+#if BOKEH_DOF_PRESERVE_SHAPE == 0
+    color = (color + weight * bokehDoFColor / bokehDoFColor.w) / (1 + weight);
+#else
+    color = (color + weight * bokehDoFColor) / (1 + weight * bokehDoFColor.w);
+#endif
+    
+    color = saturate(color);
     color.w = 0;
 
     return color;

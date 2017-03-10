@@ -166,7 +166,7 @@ direct3d11::dto::RenderingResolution direct3d11::utility::getRenderingResolution
 
 core::disposing::unique_ptr<ID3D11Texture2D> direct3d11::utility::getBackBuffer(IDXGISwapChain *chain) {
     ID3D11Texture2D *texture = nullptr;
-    HRESULT result = chain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&texture);
+    auto result = chain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&texture);
     if (FAILED(result)) {
         throw core::exception::OperationException(ENCRYPT_STRING("direct3d11::utility::getBackBuffer"), ENCRYPT_STRING("back buffer could not be obtained"));
     }

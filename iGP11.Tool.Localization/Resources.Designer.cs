@@ -169,15 +169,6 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to proxy settings.
-        /// </summary>
-        public static string Application {
-            get {
-                return ResourceManager.GetString("Application", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to executable file path.
         /// </summary>
         public static string ApplicationFilePath {
@@ -322,6 +313,15 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connect.
+        /// </summary>
+        public static string ConnectToGame {
+            get {
+                return ResourceManager.GetString("ConnectToGame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to configuration.
         /// </summary>
         public static string ConversionConfiguration {
@@ -412,6 +412,15 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Disconnect.
+        /// </summary>
+        public static string DisconnectFromGame {
+            get {
+                return ResourceManager.GetString("DisconnectFromGame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Specify screen and render resolutions together with smoothness function to soften the edges.
         /// </summary>
         public static string DisplayLongDescription {
@@ -493,6 +502,69 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to game.
+        /// </summary>
+        public static string Game {
+            get {
+                return ResourceManager.GetString("Game", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game:.
+        /// </summary>
+        public static string GameHeader {
+            get {
+                return ResourceManager.GetString("GameHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to game name.
+        /// </summary>
+        public static string GameName {
+            get {
+                return ResourceManager.GetString("GameName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to game profile.
+        /// </summary>
+        public static string GameProfile {
+            get {
+                return ResourceManager.GetString("GameProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to game profile name.
+        /// </summary>
+        public static string GameProfileName {
+            get {
+                return ResourceManager.GetString("GameProfileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game settings.
+        /// </summary>
+        public static string GameSettings {
+            get {
+                return ResourceManager.GetString("GameSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configure game settings and manage game profiles.
+        /// </summary>
+        public static string GameSettingsDescription {
+            get {
+                return ResourceManager.GetString("GameSettingsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to icons by.
         /// </summary>
         public static string Icons {
@@ -507,24 +579,6 @@ namespace iGP11.Tool.Localization {
         public static string InjectionCompleted {
             get {
                 return ResourceManager.GetString("InjectionCompleted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Injection settings.
-        /// </summary>
-        public static string InjectionSettings {
-            get {
-                return ResourceManager.GetString("InjectionSettings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Specify profile, plugin type and path to the game executable.
-        /// </summary>
-        public static string InjectionSettingsDescription {
-            get {
-                return ResourceManager.GetString("InjectionSettingsDescription", resourceCulture);
             }
         }
         
@@ -574,7 +628,7 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LAUNCH.
+        ///   Looks up a localized string similar to LAUNCH GAME.
         /// </summary>
         public static string Launch {
             get {
@@ -601,7 +655,7 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to logs directory path.
+        ///   Looks up a localized string similar to iGP11 game logs directory path.
         /// </summary>
         public static string LogsDirectoryPath {
             get {
@@ -709,6 +763,15 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Plugin:.
+        /// </summary>
+        public static string PluginHeader {
+            get {
+                return ResourceManager.GetString("PluginHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to plugin type.
         /// </summary>
         public static string PluginType {
@@ -736,7 +799,7 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to profile changed to: {0}.
+        ///   Looks up a localized string similar to loaded profile: {0} {1}.
         /// </summary>
         public static string ProfileChanged {
             get {
@@ -745,11 +808,11 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to profile name.
+        ///   Looks up a localized string similar to Profile:.
         /// </summary>
-        public static string ProfileName {
+        public static string ProfileHeader {
             get {
-                return ResourceManager.GetString("ProfileName", resourceCulture);
+                return ResourceManager.GetString("ProfileHeader", resourceCulture);
             }
         }
         
@@ -772,7 +835,7 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to directory path.
+        ///   Looks up a localized string similar to iGP11 game directory path.
         /// </summary>
         public static string ProxyDirectoryPath {
             get {
@@ -919,24 +982,6 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter communicator mode.
-        /// </summary>
-        public static string SwitchModeToCommunicator {
-            get {
-                return ResourceManager.GetString("SwitchModeToCommunicator", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enter standard mode.
-        /// </summary>
-        public static string SwitchModeToInjector {
-            get {
-                return ResourceManager.GetString("SwitchModeToInjector", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string SystemConfiguration {
@@ -1018,7 +1063,9 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Specify dumping or injecting behavior and copy textures to tex_override directory.
+        ///   Looks up a localized string similar to Configure dumping or injecting behavior
+        ///Copy textures to tex_override directory
+        ///Retrieve dumped textures from tex_dump directory.
         /// </summary>
         public static string TexturesLongDescription {
             get {
@@ -1081,7 +1128,7 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UPDATE.
+        ///   Looks up a localized string similar to UPDATE GAME.
         /// </summary>
         public static string Update {
             get {

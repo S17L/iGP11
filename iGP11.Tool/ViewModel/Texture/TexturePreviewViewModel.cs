@@ -121,12 +121,12 @@ namespace iGP11.Tool.ViewModel.Texture
                     Texture = null;
 
                     await _actionBuilder.Dispatch(command)
-                        .CompleteFor<GeneratedTexturePreviewEvent>((context, @event) =>
+                        .CompleteFor<GeneratedTexturePreviewNotification>((context, @event) =>
                         {
                             texture = @event.Texture;
                             textureMetadata = @event.TextureMetadata;
                         })
-                        .CompleteFor<ErrorOccuredEvent>()
+                        .CompleteFor<ErrorOccuredNotification>()
                         .OnTimeout(async () => await PublishUpdateStatusEventAsync(StatusType.Failed, "OperationTimeout"))
                         .Execute();
 

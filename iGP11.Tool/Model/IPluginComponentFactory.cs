@@ -1,12 +1,12 @@
 using iGP11.Library.Component;
+using iGP11.Tool.ReadModel.Api.Model;
 using iGP11.Tool.Shared.Model;
-using iGP11.Tool.Shared.Model.InjectionSettings;
 
 namespace iGP11.Tool.Model
 {
     public interface IPluginComponentFactory
     {
-        IComponent Create(InjectionSettings settings);
+        IComponent Create(GamePackage package);
 
         IComponent Create(ProxyPluginSettings settings);
     }

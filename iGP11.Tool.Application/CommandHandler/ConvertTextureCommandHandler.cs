@@ -44,7 +44,7 @@ namespace iGP11.Tool.Application.CommandHandler
 
             if (texture?.Metadata == null)
             {
-                await context.EmitAsync(new ErrorOccuredEvent());
+                await context.EmitAsync(new ErrorOccuredNotification());
                 return;
             }
 
@@ -52,7 +52,7 @@ namespace iGP11.Tool.Application.CommandHandler
             directory.AddFile(command.FileName, texture.Buffer);
 
             await _directoryRepository.SaveAsync(directory);
-            await context.EmitAsync(new ActionSucceededEvent());
+            await context.EmitAsync(new ActionSucceededNotification());
         }
     }
 }

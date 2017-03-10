@@ -49,7 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddInjectionSettingsCommand.cs" />
+    <Compile Include="AddGameProfileCommand.cs" />
     <Compile Include="ConvertTextureCommand.cs" />
     <Compile Include="GenerateTexturePreviewCommand.cs" />
     <Compile Include="IndicateFirstLaunchCommand.cs" />
@@ -60,11 +60,12 @@
     <Compile Include="Model\ApplicationFilePathTokenReplacingPolicy.cs" />
     <Compile Include="Model\FileType.cs" />
     <Compile Include="Model\TextureConversionSettings.cs" />
-    <Compile Include="RemoveInjectionSettingsCommand.cs" />
-    <Compile Include="StartApplicationCommand.cs" />
+    <Compile Include="RemoveGameProfileCommand.cs" />
+    <Compile Include="StarGameCommand.cs" />
     <Compile Include="UpdateApplicationSettingsCommand.cs" />
-    <Compile Include="UpdateInjectionSettingsCommand.cs" />
-    <Compile Include="UpdateLastEditedInjectionSettingsCommand.cs" />
+    <Compile Include="UpdateGameCommand.cs" />
+    <Compile Include="UpdateGameProfileCommand.cs" />
+    <Compile Include="UpdateLastEditedGameProfileCommand.cs" />
     <Compile Include="UpdateProxySettingsCommand.cs" />
     <Compile Include="UpdateTextureManagementSettingsCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

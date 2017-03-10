@@ -7,7 +7,7 @@ IDXGISwapChain* direct3d11::Direct3D11Context::getChain() {
 
 core::disposing::unique_ptr<ID3D11Device> direct3d11::Direct3D11Context::getDevice() {
     ID3D11Device *device = nullptr;
-    HRESULT result = _chain->GetDevice(__uuidof(ID3D11Device), (LPVOID*)&device);
+    auto result = _chain->GetDevice(__uuidof(ID3D11Device), (LPVOID*)&device);
     if (FAILED(result) || device == nullptr) {
         throw core::exception::OperationException(ENCRYPT_STRING("direct3d11::direct3d11context"), ENCRYPT_STRING("device could not be obtained"));
     }
@@ -17,7 +17,7 @@ core::disposing::unique_ptr<ID3D11Device> direct3d11::Direct3D11Context::getDevi
 
 core::disposing::unique_ptr<ID3D11DeviceContext> direct3d11::Direct3D11Context::getDeviceContext() {
     ID3D11DeviceContext *deviceContext = nullptr;
-    core::disposing::unique_ptr<ID3D11Device> device = getDevice();
+    auto device = getDevice();
     device->GetImmediateContext(&deviceContext);
     if (deviceContext == nullptr) {
         throw core::exception::OperationException(ENCRYPT_STRING("direct3d11::direct3d11context"), ENCRYPT_STRING("device context could not be obtained"));

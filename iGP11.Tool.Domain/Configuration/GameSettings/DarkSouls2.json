@@ -1,0 +1,84 @@
+﻿{
+  "id": {
+    "value": "{6F3197DA-23A0-42E4-8B6E-2DD2AE86558D}"
+  },
+  "profileId": {
+    "value": "{ED4C83BD-5B83-45CA-9886-33A35CD05A42}"
+  },
+  "name": "dark souls 2 scholar of the first sin",
+  "filePath": "",
+  "profiles": [
+    {
+      "id": {
+        "value": "{ED4C83BD-5B83-45CA-9886-33A35CD05A42}"
+      },
+      "gameId": {
+        "value": "{6F3197DA-23A0-42E4-8B6E-2DD2AE86558D}"
+      },
+      "name": "development",
+      "logsDirectoryPath": "<# app_dir #>\\iGP11\\logs",
+      "proxyDirectoryPath": "<# app_dir #>\\iGP11",
+      "pluginType": 0,
+      "direct3D11Settings": {
+        "pluginSettings": {
+          "profileType": 1,
+          "renderingMode": 2
+        },
+        "textures": {
+          "detailLevel": 0,
+          "overrideMode": 2,
+          "overridePath": "<# app_dir #>\\iGP11\\tex_override",
+          "dumpingPath": "<# app_dir #>\\iGP11\\tex_dump"
+        },
+        "depthBuffer": {
+          "linearZNear": 0.01,
+          "linearZFar": 200,
+          "isLimitEnabled": true,
+          "depthMinimum": 0.007,
+          "depthMaximum": 0.4
+        },
+        "bokehDoF": {
+          "isEnabled": true,
+          "isChromaticAberrationEnabled": true,
+          "chromaticAberrationFringe": 10,
+          "isPreservingShape": false,
+          "shapeSize": 3,
+          "shapeStrength": 50,
+          "shapeRotation": 15,
+          "isBlurEnabled": true,
+          "blurStrength": 0.3,
+          "depthMinimum": 0,
+          "depthMaximum": 1,
+          "depthRateGain": 1,
+          "luminescenceMinimum": 0.01,
+          "luminescenceMaximum": 5,
+          "luminescenceRateGain": 2
+        },
+        "lumaSharpen": {
+          "isEnabled": true,
+          "sharpeningStrength": 1,
+          "sharpeningClamp": 0.035,
+          "offsetBias": 1
+        },
+        "tonemap": {
+          "isEnabled": false,
+          "gamma": 1,
+          "exposure": 0,
+          "saturation": 0.5,
+          "bleach": 0,
+          "defog": 0,
+          "defogRedChannelLoss": 0,
+          "defogGreenChannelLoss": 0,
+          "defogBlueChannelLoss": 2.55
+        },
+        "vibrance": {
+          "isEnabled": true,
+          "strength": 0.1,
+          "redChannelStrength": 3,
+          "greenChannelStrength": 1,
+          "blueChannelStrength": 1
+        }
+      }
+    }
+  ]
+}

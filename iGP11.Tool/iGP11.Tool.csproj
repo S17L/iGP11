@@ -137,7 +137,7 @@
     <Compile Include="ViewModel\Injection\IInjectionViewModel.cs" />
     <Compile Include="ViewModel\Injection\CollectDataViewModel.cs" />
     <Compile Include="ViewModel\Injection\InjectionViewModel.cs" />
-    <Compile Include="ViewModel\ProfileViewModel.cs" />
+    <Compile Include="ViewModel\LookupViewModel.cs" />
     <Compile Include="Model\ModeType.cs" />
     <Compile Include="InformationWindow.xaml.cs">
       <DependentUpon>InformationWindow.xaml</DependentUpon>
@@ -462,8 +462,10 @@
     <Resource Include="Framework\Icons\arrow_up_16x16.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Framework\Icons\communication_32x32.png" />
-    <Resource Include="Framework\Icons\communication_hover_32x32.png" />
+    <Resource Include="Framework\Icons\connected_32x32.png" />
+    <Resource Include="Framework\Icons\connected_hover_32x32.png" />
+    <Resource Include="Framework\Icons\disconnected_32x32.png" />
+    <Resource Include="Framework\Icons\disconnected_hover_32x32.png" />
     <Content Include="Localization.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Localization.xaml</LastGenOutput>

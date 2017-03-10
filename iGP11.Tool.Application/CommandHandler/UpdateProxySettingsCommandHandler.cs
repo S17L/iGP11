@@ -32,7 +32,7 @@ namespace iGP11.Tool.Application.CommandHandler
                 }
             }
 
-            await context.EmitAsync(new ErrorOccuredEvent());
+            await context.EmitAsync(new ErrorOccuredNotification());
         }
 
         private async Task<ProxySettings> GetProxySettingsAsync()

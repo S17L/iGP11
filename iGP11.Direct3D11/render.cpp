@@ -469,7 +469,7 @@ direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createBokehDoFCode(ID3D11S
     return code;
 }
 
-direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createBokehDoFChromaticAberrationCode(ID3D11ShaderResourceView *colorTextureView, ID3D11ShaderResourceView *previousPassTextureView, core::dto::BokehDoF bokehDoF) {
+direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createBokehDoFChromaticAberrationCode(ID3D11ShaderResourceView *previousPassTextureView, core::dto::BokehDoF bokehDoF) {
     auto codeBuilder = getCodeBuilder();
 
     auto bokehDoFCodeBuilder = codeBuilder->setBokehDoF(bokehDoF.depthMinimum, bokehDoF.depthMaximum, bokehDoF.depthRateGain, bokehDoF.luminescenceMinimum, bokehDoF.luminescenceMaximum, bokehDoF.luminescenceRateGain);
@@ -481,7 +481,6 @@ direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createBokehDoFChromaticAbe
     }
 
     direct3d11::ShaderCode code;
-    code.setColorTextureView(colorTextureView);
     code.setTextureView(previousPassTextureView, 2);
     code.setVertexShaderCode(codeBuilder->buildVertexShaderCode(), ENCRYPT_STRING("vsmain"));
     code.setPixelShaderCode(codeBuilder->buildPixelShaderCode(), ENCRYPT_STRING("renderBokehDoFChromaticAberration"));
@@ -588,7 +587,6 @@ direct3d11::ShaderApplicator::ShaderApplicator(
         }
 
         SAFE_RELEASE(error);
-        log(vertexShaderCode);
         throw core::exception::InitializationException(ENCRYPT_STRING("direct3d11::ShaderApplicator"), core::stringFormat(ENCRYPT_STRING("vertex shader compilation failed: %s"), compilationError.c_str()));
     }
 
@@ -603,7 +601,6 @@ direct3d11::ShaderApplicator::ShaderApplicator(
         }
 
         SAFE_RELEASE(error);
-        log(pixelShaderCode);
         throw core::exception::InitializationException(ENCRYPT_STRING("direct3d11::ShaderApplicator"), core::stringFormat(ENCRYPT_STRING("pixel shader compilation failed: %s"), compilationError.c_str()));
     }
 

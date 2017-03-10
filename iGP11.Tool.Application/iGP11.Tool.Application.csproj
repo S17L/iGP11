@@ -61,7 +61,7 @@
     <Compile Include="Bootstrapper\ConstantSettings.cs" />
     <Compile Include="Bootstrapper\ConstantSettingsProvider.cs" />
     <Compile Include="Bootstrapper\Plugins.cs" />
-    <Compile Include="CommandHandler\AddInjectionSettingsCommandHandler.cs" />
+    <Compile Include="CommandHandler\AddGameProfileCommandHandler.cs" />
     <Compile Include="CommandHandler\GenerateTexturePreviewCommandHandler.cs" />
     <Compile Include="CommandHandler\ConvertTextureCommandHandler.cs" />
     <Compile Include="CommandHandler\IndicateFirstLaunchCommandHandler.cs" />
@@ -69,14 +69,15 @@
     <Compile Include="CommandHandler\LoadProxySettingsCommandHandler.cs" />
     <Compile Include="CommandHandler\LoadProxyActivationStatusCommandHandler.cs" />
     <Compile Include="CommandHandler\LoadTextureFilesCommandHandler.cs" />
-    <Compile Include="CommandHandler\RemoveInjectionSettingsCommandHandler.cs" />
-    <Compile Include="CommandHandler\StartApplicationCommandHandler.cs" />
+    <Compile Include="CommandHandler\RemoveGameProfileCommandHandler.cs" />
+    <Compile Include="CommandHandler\StartGameCommandHandler.cs" />
     <Compile Include="CommandHandler\UpdateApplicationSettingsCommandHandler.cs" />
-    <Compile Include="CommandHandler\UpdateInjectionSettingsCommandHandler.cs" />
-    <Compile Include="CommandHandler\UpdateLastEditedInjectionSettingsCommandHandler.cs" />
+    <Compile Include="CommandHandler\UpdateGameCommandHandler.cs" />
+    <Compile Include="CommandHandler\UpdateGameProfileCommandHandler.cs" />
+    <Compile Include="CommandHandler\UpdateLastEditedGameProfileCommandHandler.cs" />
     <Compile Include="CommandHandler\UpdateProxySettingsCommandHandler.cs" />
     <Compile Include="CommandHandler\UpdateTextureManagementSettingsCommandHandler.cs" />
-    <Compile Include="InjectionSettingsProcessWatcher.cs" />
+    <Compile Include="GameSettingsProcessWatcher.cs" />
     <Compile Include="FileContentLoadingPolicy.cs" />
     <Compile Include="ICommunicator.cs" />
     <Compile Include="ICommunicatorFactory.cs" />
@@ -86,11 +87,11 @@
     <Compile Include="MapperExtensions.cs" />
     <Compile Include="IInjectionService.cs" />
     <Compile Include="Model\CommunicationResult.cs" />
-    <Compile Include="Model\InjectProxySettings.cs" />
+    <Compile Include="Model\InjectableProxySettings.cs" />
     <Compile Include="ITextureService.cs" />
     <Compile Include="Model\ProxyPluginSettings.cs" />
     <Compile Include="Model\ProxySettings.cs" />
-    <Compile Include="InjectionSettingsWatchableProcess.cs" />
+    <Compile Include="GameSettingsWatchableProcess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
