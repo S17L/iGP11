@@ -137,7 +137,7 @@ namespace core {
         }
         void setTexel(dto::Texel texel, unsigned int index) {
             if (index >= TexelCacheSize) {
-                throw core::exception::OperationException("core::texelcache", "index is out of range");
+                throw core::exception::OperationException(ENCRYPT_STRING("core::texelcache"), ENCRYPT_STRING("index is out of range"));
             }
 
             _lastTexelIndex = index;
@@ -248,11 +248,14 @@ namespace core {
     class ShaderCodeBuilder final {
         friend class BokehDoFCodeBuilder;
     private:
-        std::unique_ptr<IResourceProvider> _resourceProvider;
+        std::unique_ptr<IResourceProvider> _cachedResourceProvider;
+        std::unique_ptr<IResourceProvider> _realResourceProvider;
         std::list<std::shared_ptr<IAlterationElement>> _elements;
         void add(IAlterationElement *element);
+        std::string getResource(const std::string &key);
     public:
         ShaderCodeBuilder();
+        ShaderCodeBuilder(std::string directoryPath);
         void setLinearDepthTextureAccessibility(float distanceNear, float distanceFar);
         void setDepthTextureLimit(float depthMin, float depthMax);
         BokehDoFCodeBuilder setBokehDoF(float depthMinimum, float depthMaximum, float depthRateGain, float luminescenceMinimum, float luminescenceMaximum, float luminescenceRateGain);

@@ -31,13 +31,13 @@ void direct3d11::DarkSouls3Profile::pixelShaderSetShaderResources(UINT startSlot
                     auto colorDescription = direct3d11::utility::getDescription(texture);
                     if (colorDescription.Width == _resolution.width && colorDescription.MipLevels == 1 && colorDescription.ArraySize == 1 && colorDescription.Format == DARKSOULS3_PROFILE_COLOR_TEXTURE_FORMAT) {
                         auto depthTexture = direct3d11::utility::getDepthTexture(_depthStencilView);
-                        direct3d11::dto::PostProcessingConfiguration configuration;
-                        configuration.colorTexture = texture;
-                        configuration.depthTexture = depthTexture.get();
-                        auto initializationRequired = _configuration.applicator->initializationRequired(configuration);
+                        direct3d11::dto::PostProcessingSettings postProcessingSettings;
+                        postProcessingSettings.colorTexture = texture;
+                        postProcessingSettings.depthTexture = depthTexture.get();
+                        auto initializationRequired = _configuration.applicator->initializationRequired(postProcessingSettings);
                         if (!initializationRequired || _initializationDelayCount >= DARKSOULS3_INITIALIZATION_DELAY) {
                             _initializationDelayCount = 0;
-                            _configuration.applicator->applyPostProcessing(configuration);
+                            _configuration.applicator->applyPostProcessing(postProcessingSettings);
                         }
                         else if (_initializationDelayCount < DARKSOULS3_INITIALIZATION_DELAY) {
                             _initializationDelayCount++;

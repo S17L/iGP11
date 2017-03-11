@@ -22,7 +22,8 @@ using namespace core::logging;
 
 namespace direct3d11 {
     namespace dto {
-        struct FilterConfiguration {
+        struct FilterSettings {
+            std::string codeDirectoryPath;
             core::dto::BokehDoF bokehDoF;
             core::dto::DepthBuffer depthBuffer;
             core::dto::Direct3D11PluginSettings pluginSettings;
@@ -38,8 +39,8 @@ namespace direct3d11 {
 	private:
 		bool _hasError = false;
 		bool _initRequested = false;
-		dto::FilterConfiguration _configuration;
-		dto::FilterConfiguration _requestedConfiguration;
+		dto::FilterSettings _filterSettings;
+		dto::FilterSettings _requestedFilterSettings;
 		Direct3D11Context *_context;
 		std::unique_ptr<ShaderCodeFactory> _codeBuilderFactory;
 		std::unique_ptr<RenderingProxy> _proxy;
@@ -48,15 +49,15 @@ namespace direct3d11 {
 		ID3D11Texture2D *_currentColorTexture = nullptr;
         ID3D11Texture2D *_currentDepthTexture = nullptr;
 		void addEffect(IEffect *effect);
-		void applyProcessing(const dto::PostProcessingConfiguration &configuration);
+		void applyProcessing(const dto::PostProcessingSettings &postProcessingSettings);
         void clear();
 	public:
 		EffectsApplicator(
-			dto::FilterConfiguration configuration,
+			dto::FilterSettings filterSettings,
 			Direct3D11Context *context);
-		void apply(const dto::PostProcessingConfiguration &configuration);
+		void apply(const dto::PostProcessingSettings &postProcessingSettings);
         void deinitialize();
-        bool initializationRequired(const dto::PostProcessingConfiguration &configuration);
-		void update(dto::FilterConfiguration configuration);
+        bool initializationRequired(const dto::PostProcessingSettings &postProcessingSettings);
+		void update(dto::FilterSettings filterSettings);
 	};
 }

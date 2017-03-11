@@ -65,16 +65,17 @@ D3D11_SHADER_RESOURCE_VIEW_DESC applyTextureDetailLevel(D3D11_SHADER_RESOURCE_VI
     return description;
 }
 
-direct3d11::dto::FilterConfiguration getFilterConfiguration(core::dto::Direct3D11Settings settings) {
-    direct3d11::dto::FilterConfiguration configuration;
-    configuration.bokehDoF = settings.bokehDoF;
-    configuration.depthBuffer = settings.depthBuffer;
-    configuration.pluginSettings = settings.pluginSettings;
-    configuration.lumaSharpen = settings.lumaSharpen;
-    configuration.tonemap = settings.tonemap;
-    configuration.vibrance = settings.vibrance;
+direct3d11::dto::FilterSettings Direct3D11Plugin::getFilterConfiguration() {
+    direct3d11::dto::FilterSettings filterSettings;
+    filterSettings.codeDirectoryPath = _pluginSettings.proxyDirectoryPath;
+    filterSettings.bokehDoF = _settings.bokehDoF;
+    filterSettings.depthBuffer = _settings.depthBuffer;
+    filterSettings.pluginSettings = _settings.pluginSettings;
+    filterSettings.lumaSharpen = _settings.lumaSharpen;
+    filterSettings.tonemap = _settings.tonemap;
+    filterSettings.vibrance = _settings.vibrance;
 
-    return configuration;
+    return filterSettings;
 }
 
 LRESULT CALLBACK windowProcedure(HWND handle, UINT message, WPARAM handles, LPARAM pointers) {
@@ -194,7 +195,7 @@ HRESULT __stdcall dxgiSwapChainPresentOverride(IDXGISwapChain *chain, UINT inter
 
         if (_this._activationStatus == core::ActivationStatus::pluginactivated) {
             if (_this._applicator == nullptr) {
-                _this._applicator.reset(new direct3d11::EffectsApplicator(::getFilterConfiguration(_this._settings), _this._context.get()));
+                _this._applicator.reset(new direct3d11::EffectsApplicator(_this.getFilterConfiguration(), _this._context.get()));
             }
 
             if (_this._frameCounter->nextFrame()) {
@@ -374,6 +375,7 @@ bool Direct3D11Plugin::initialize(
     core::IHookService *hookService,
     core::IProcessService *processService,
     core::ITextureCacheFactory *textureCacheFactory,
+    core::dto::PluginSettings pluginSettings,
     core::dto::Direct3D11Settings settings,
     direct3d11::IProfilePicker *profilePicker,
     direct3d11::ITextureService *textureService) {
@@ -390,6 +392,7 @@ bool Direct3D11Plugin::initialize(
     _textureService = textureService;
     _hookService = hookService;
     _processService = processService;
+    _pluginSettings = pluginSettings;
     _settings = settings;
     _profilePicker = profilePicker;
 
@@ -644,7 +647,7 @@ bool Direct3D11Plugin::stop() {
 bool Direct3D11Plugin::update(core::dto::Direct3D11Settings settings) {
     if (_applicator != nullptr) {
         _settings = settings;
-        _applicator->update(::getFilterConfiguration(_settings));
+        _applicator->update(getFilterConfiguration());
 
         return true;
     }
@@ -652,13 +655,13 @@ bool Direct3D11Plugin::update(core::dto::Direct3D11Settings settings) {
     return false;
 }
 
-void Direct3D11Plugin::applyPostProcessing(const direct3d11::dto::PostProcessingConfiguration &configuration) {
+void Direct3D11Plugin::applyPostProcessing(const direct3d11::dto::PostProcessingSettings &postProcessingSettings) {
     if (_applicator != nullptr) {
         DisabledHookingScope scope;
-        _applicator->apply(configuration);
+        _applicator->apply(postProcessingSettings);
     }
 }
 
-bool Direct3D11Plugin::initializationRequired(const direct3d11::dto::PostProcessingConfiguration &configuration) {
-    return _applicator != nullptr && _applicator->initializationRequired(configuration);
+bool Direct3D11Plugin::initializationRequired(const direct3d11::dto::PostProcessingSettings &postProcessingSettings) {
+    return _applicator != nullptr && _applicator->initializationRequired(postProcessingSettings);
 }

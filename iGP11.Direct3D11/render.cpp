@@ -373,7 +373,11 @@ void direct3d11::SquareRenderTarget::end() {
 }
 
 std::unique_ptr<core::ShaderCodeBuilder> direct3d11::ShaderCodeFactory::getCodeBuilder() {
+#if NDEBUG
     auto codeBuilder = new core::ShaderCodeBuilder();
+#else
+    auto codeBuilder = new core::ShaderCodeBuilder(_codeDirectoryPath);
+#endif
     codeBuilder->setResolution(_resolution.width, _resolution.height);
 
     return std::unique_ptr<core::ShaderCodeBuilder>(codeBuilder);

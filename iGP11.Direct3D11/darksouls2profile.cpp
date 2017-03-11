@@ -37,13 +37,13 @@ void direct3d11::DarkSouls2Profile::pixelShaderSetShaderResources(UINT startSlot
                         _frameIndex++;
                         if (_frameIndex == DARKSOULS2_PROFILE_COLOR_TEXTURE_INDEX) {
                             auto depthTexture = direct3d11::utility::getDepthTexture(_depthStencilView);
-                            direct3d11::dto::PostProcessingConfiguration configuration;
-                            configuration.colorTexture = texture;
-                            configuration.depthTexture = depthTexture.get();
-                            auto initializationRequired = _configuration.applicator->initializationRequired(configuration);
+                            direct3d11::dto::PostProcessingSettings postProcessingSettings;
+                            postProcessingSettings.colorTexture = texture;
+                            postProcessingSettings.depthTexture = depthTexture.get();
+                            auto initializationRequired = _configuration.applicator->initializationRequired(postProcessingSettings);
                             if (!initializationRequired || _initializationDelayCount >= DARKSOULS2_INITIALIZATION_DELAY) {
                                 _initializationDelayCount = 0;
-                                _configuration.applicator->applyPostProcessing(configuration);
+                                _configuration.applicator->applyPostProcessing(postProcessingSettings);
                             }
                             else if (_initializationDelayCount < DARKSOULS2_INITIALIZATION_DELAY) {
                                 _initializationDelayCount++;

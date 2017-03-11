@@ -165,22 +165,25 @@ core::dto::GameSettings core::JsonSerializer::deserializeSettings(const std::str
     rapidjson::Document document;
     document.Parse(value.c_str());
 
-    core::dto::GameSettings settings;
+    core::dto::GameSettings gameSettings;
     rapidjson::Value &gameProfileJson = document[ENCRYPT_STRING("gameProfile")];
-    settings.proxyDirectoryPath = gameProfileJson[ENCRYPT_STRING("proxyDirectoryPath")].GetString();
-    settings.logsDirectoryPath = gameProfileJson[ENCRYPT_STRING("logsDirectoryPath")].GetString();
-    settings.pluginType = static_cast<core::PluginType>(gameProfileJson[ENCRYPT_STRING("pluginType")].GetInt());
-    settings.communicationAddress = document[ENCRYPT_STRING("communicationAddress")].GetString();
-    settings.communicationPort = (unsigned short)document[ENCRYPT_STRING("communicationPort")].GetUint();
-    settings.direct3D11PluginPath = document[ENCRYPT_STRING("direct3D11PluginPath")].GetString();
-    settings.gameFilePath = document[ENCRYPT_STRING("gameFilePath")].GetString();
+    gameSettings.pluginType = static_cast<core::PluginType>(gameProfileJson[ENCRYPT_STRING("pluginType")].GetInt());
+    gameSettings.communicationAddress = document[ENCRYPT_STRING("communicationAddress")].GetString();
+    gameSettings.communicationPort = (unsigned short)document[ENCRYPT_STRING("communicationPort")].GetUint();
+    gameSettings.direct3D11PluginPath = document[ENCRYPT_STRING("direct3D11PluginPath")].GetString();
+
+    core::dto::PluginSettings pluginSettings;
+    pluginSettings.gameFilePath = document[ENCRYPT_STRING("gameFilePath")].GetString();
+    pluginSettings.logsDirectoryPath = gameProfileJson[ENCRYPT_STRING("logsDirectoryPath")].GetString();
+    pluginSettings.proxyDirectoryPath = gameProfileJson[ENCRYPT_STRING("proxyDirectoryPath")].GetString();
+    gameSettings.pluginSettings = pluginSettings;
 
     rapidjson::Value &direct3D11Settings = gameProfileJson[ENCRYPT_STRING("direct3D11Settings")];
     if (!direct3D11Settings.IsNull()) {
-        settings.direct3D11Settings = deserializeDirect3D11Settings(::toString(direct3D11Settings));
+        gameSettings.direct3D11Settings = deserializeDirect3D11Settings(::toString(direct3D11Settings));
     }
 
-    return settings;
+    return gameSettings;
 }
 
 core::dto::Direct3D11Settings core::JsonSerializer::deserializeDirect3D11Settings(const std::string &value) {

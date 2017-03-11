@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 
 using iGP11.Library;
@@ -50,7 +51,14 @@ namespace iGP11.Tool.Infrastructure.External
 
             using (var process = CreateProcess(applicationFilePath))
             {
-                return process.Start();
+                try
+                {
+                    return process.Start();
+                }
+                catch (Win32Exception)
+                {
+                    return false;
+                }
             }
         }
     }

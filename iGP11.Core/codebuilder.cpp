@@ -2,6 +2,8 @@
 #include "codebuilder.h"
 #include "resourceprovider.h"
 
+using namespace core::logging;
+
 void calculateGaussianBlur(unsigned int size, float sigma, float minWeight, int &length, float **offsets, float **weights) {
     size *= 2;
     std::unique_ptr<float[]> initial(new float[size + 1]);
@@ -456,11 +458,29 @@ void core::BokehDoFCodeBuilder::enable() {
 }
 
 core::ShaderCodeBuilder::ShaderCodeBuilder() {
-    _resourceProvider.reset(new core::FileResourceProvider());
+    _cachedResourceProvider.reset(new core::CachedCodeResourceProvider());
+    _realResourceProvider.reset(new core::NoCodeFileResourceProvider());
+}
+
+core::ShaderCodeBuilder::ShaderCodeBuilder(std::string directoryPath) {
+    _cachedResourceProvider.reset(new core::CachedCodeResourceProvider());
+    _realResourceProvider.reset(new core::RealCodeFileResourceProvider(directoryPath));
 }
 
 void core::ShaderCodeBuilder::add(core::IAlterationElement *element) {
     _elements.push_back(std::shared_ptr<IAlterationElement>(element));
+}
+
+std::string core::ShaderCodeBuilder::getResource(const std::string &key) {
+    try {
+        log(debug, core::stringFormat(ENCRYPT_STRING("getting file: %s..."), key.c_str()));
+        return _realResourceProvider->get(key);
+    }
+    catch (core::exception::ResourceNotFoundException const &exception) {
+        log(debug, core::stringFormat(ENCRYPT_STRING("file not found exception occured: %s"), exception.what()));
+        log(debug, core::stringFormat(ENCRYPT_STRING("getting: %s resource from cache..."), key.c_str()));
+        return _cachedResourceProvider->get(key);
+    }
 }
 
 void core::ShaderCodeBuilder::setLinearDepthTextureAccessibility(float distanceNear, float distanceFar) {
@@ -528,7 +548,7 @@ void core::ShaderCodeBuilder::setGaussianBlur(unsigned int size, float sigma, fl
 }
 
 std::string core::ShaderCodeBuilder::buildPixelShaderCode() {
-    core::CodeVisitor codeVisitor(_resourceProvider->get(ENCRYPT_STRING("pixelshader_hlsl")));
+    core::CodeVisitor codeVisitor(getResource(ENCRYPT_STRING("pixelshader.hlsl")));
     for (auto element : _elements) {
         element->accept(codeVisitor);
     }
@@ -537,7 +557,7 @@ std::string core::ShaderCodeBuilder::buildPixelShaderCode() {
 }
 
 std::string core::ShaderCodeBuilder::buildVertexShaderCode() {
-    core::CodeVisitor codeVisitor(_resourceProvider->get(ENCRYPT_STRING("vertexshader_hlsl")));
+    core::CodeVisitor codeVisitor(getResource(ENCRYPT_STRING("vertexshader.hlsl")));
     for (auto element : _elements) {
         element->accept(codeVisitor);
     }

@@ -57,6 +57,7 @@ private:
 	core::ActivationStatus _activationStatus;
 	core::IHookService *_hookService;
 	core::IProcessService *_processService;
+    core::dto::PluginSettings _pluginSettings;
 	core::dto::Direct3D11Settings _settings;
 	direct3d11::IProfilePicker *_profilePicker;
 	direct3d11::ITextureService *_textureService;
@@ -82,6 +83,7 @@ private:
     void deinitializeApplicator();
 	void initialize(IDXGISwapChain *chain);
 	void printPerformanceStatistics();
+    direct3d11::dto::FilterSettings getFilterConfiguration();
 public:
 	static Direct3D11Plugin& getInstance() {
 		static Direct3D11Plugin instance;
@@ -95,6 +97,7 @@ public:
 		core::IHookService *hookService,
 		core::IProcessService *processService,
 		core::ITextureCacheFactory *textureCacheFactory,
+        core::dto::PluginSettings pluginSettings,
 		core::dto::Direct3D11Settings settings,
 		direct3d11::IProfilePicker *profilePicker,
 		direct3d11::ITextureService *textureService);
@@ -108,6 +111,6 @@ public:
         return _settings;
     }
 	virtual bool update(core::dto::Direct3D11Settings settings) override;
-	virtual void applyPostProcessing(const direct3d11::dto::PostProcessingConfiguration &configuration) override;
-    virtual bool initializationRequired(const direct3d11::dto::PostProcessingConfiguration &configuration) override;
+	virtual void applyPostProcessing(const direct3d11::dto::PostProcessingSettings &postProcessingSettings) override;
+    virtual bool initializationRequired(const direct3d11::dto::PostProcessingSettings &postProcessingSettings) override;
 };

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "direct3d11pluginloader.h"
 
-typedef bool(__stdcall *startPluginDefinition)(core::dto::Direct3D11Settings settings, core::logging::ILoggerFactory *loggerFactory);
+typedef bool(__stdcall *startPluginDefinition)(core::dto::PluginSettings pluginSettings, core::dto::Direct3D11Settings settings, core::logging::ILoggerFactory *loggerFactory);
 typedef bool(__stdcall *stopPluginDefinition)();
 typedef bool(__stdcall *getPluginDefinition)(core::IDirect3D11Plugin **plugin);
 
@@ -12,7 +12,7 @@ Direct3D11PluginLoader::~Direct3D11PluginLoader() {
 }
 
 void Direct3D11PluginLoader::loadLibrary() {
-	_library = LoadLibrary(core::toWString(_pluginPath).c_str());
+	_library = LoadLibrary(core::toWString(_pluginFilePath).c_str());
 }
 
 std::string Direct3D11PluginLoader::getName() {
@@ -43,7 +43,7 @@ bool Direct3D11PluginLoader::start() {
 	if (_library) {
 		auto function = (startPluginDefinition)::GetProcAddress(_library, ENCRYPT_STRING("start"));
 		if (function) {
-			return function(_settings, _loggerFactory);
+			return function(_pluginSettings, _settings, _loggerFactory);
 		}
 	}
 

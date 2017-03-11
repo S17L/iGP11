@@ -24,7 +24,7 @@ namespace direct3d11 {
             }
         };
 
-        struct PostProcessingConfiguration {
+        struct PostProcessingSettings {
             ID3D11Texture2D *colorTexture;
             ID3D11Texture2D *depthTexture;
         };
@@ -56,8 +56,8 @@ namespace direct3d11 {
     class IApplicator {
     public:
         virtual ~IApplicator() {}
-        virtual void applyPostProcessing(const dto::PostProcessingConfiguration &configuration) = 0;
-        virtual bool initializationRequired(const dto::PostProcessingConfiguration &configuration) = 0;
+        virtual void applyPostProcessing(const dto::PostProcessingSettings &postProcessingSettings) = 0;
+        virtual bool initializationRequired(const dto::PostProcessingSettings &postProcessingSettings) = 0;
     };
 
     class IEffect {

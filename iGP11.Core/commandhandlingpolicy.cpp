@@ -25,9 +25,9 @@ bool core::communication::GetProxySettingsCommandHandlingPolicy::isAppliciable(c
 std::string core::communication::GetProxySettingsCommandHandlingPolicy::handle(const std::string &data) {
 	core::dto::ProxySettings state;
     core::dto::GameSettings settings = _repository->load();
-    state.gameFilePath = settings.gameFilePath;
-    state.proxyDirectoryPath = settings.proxyDirectoryPath;
-    state.logsDirectoryPath = settings.logsDirectoryPath;
+    state.gameFilePath = settings.pluginSettings.gameFilePath;
+    state.proxyDirectoryPath = settings.pluginSettings.proxyDirectoryPath;
+    state.logsDirectoryPath = settings.pluginSettings.logsDirectoryPath;
     state.direct3D11Settings = settings.direct3D11Settings;
 
     auto plugin = _pluginLoader->getPlugin();

@@ -31,7 +31,7 @@ std::string getDecrypted(const char* encrypted, unsigned int length) {
     foreach(var entry in entries)
     {
 #>
-const char _<#= entry.Key #>[<#= entry.Value.Length + 1 #>] = {
+const char _<#= GetKey(entry.Key) #>[<#= entry.Value.Length + 1 #>] = {
 <#
     for (var i = 0; i < entry.Value.Length; i++)
     {
@@ -46,13 +46,13 @@ const char _<#= entry.Key #>[<#= entry.Value.Length + 1 #>] = {
     }
 #>
 
-std::string core::FileResourceProvider::get(const std::string &key) {
+std::string core::CachedCodeResourceProvider::get(const std::string &key) {
 <#
     foreach(var entry in entries)
     {
 #>
     if (key == ENCRYPT_STRING("<#= entry.Key #>")) {
-        return ::getDecrypted(_<#= entry.Key #>, <#= entry.Value.Length #>);
+        return ::getDecrypted(_<#= GetKey(entry.Key) #>, <#= entry.Value.Length #>);
     }
 
 <#
@@ -74,12 +74,17 @@ std::string core::FileResourceProvider::get(const std::string &key) {
             }
 
             var entry = new KeyValuePair<string, string>(
-                Path.GetFileName(filePath).Replace(".", "_"),
+                Path.GetFileName(filePath),
                 File.ReadAllText(filePath));
 
             files.Add(entry);
         }
 
         return files;
+    }
+
+    string GetKey(string key)
+    {
+        return key.Replace(".", "_");
     }
 #>

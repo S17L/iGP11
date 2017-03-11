@@ -291,6 +291,12 @@ namespace core {
             float blueChannelStrength = 0;
         };
 
+        struct PluginSettings {
+            std::string gameFilePath;
+            std::string logsDirectoryPath;
+            std::string proxyDirectoryPath;
+        };
+
         struct Direct3D11Settings {
             BokehDoF bokehDoF;
             DepthBuffer depthBuffer;
@@ -302,9 +308,7 @@ namespace core {
         };
 
         struct GameSettings {
-            std::string gameFilePath;
-            std::string proxyDirectoryPath;
-            std::string logsDirectoryPath;
+            PluginSettings pluginSettings;
             core::PluginType pluginType;
             std::string communicationAddress;
             unsigned short communicationPort;
@@ -534,7 +538,7 @@ namespace core {
             std::string _message;
         public:
             InitializationException(std::string type, std::string reason) {
-                _message = core::stringFormat("%s initialization failed, due to %s", type.c_str(), reason.c_str());
+                _message = core::stringFormat(ENCRYPT_STRING("%s initialization failed, due to %s"), type.c_str(), reason.c_str());
             }
             virtual ~InitializationException() {}
             virtual const char* what() const throw() {
@@ -547,7 +551,7 @@ namespace core {
             std::string _message;
         public:
             OperationException(std::string type, std::string reason) {
-                _message = core::stringFormat("%s operation failed, due to %s", type.c_str(), reason.c_str());
+                _message = core::stringFormat(ENCRYPT_STRING("%s operation failed, due to %s"), type.c_str(), reason.c_str());
             }
             virtual ~OperationException() {}
             virtual const char* what() const throw() {
@@ -560,7 +564,7 @@ namespace core {
             std::string _message;
         public:
             ResourceNotFoundException(std::string key) {
-                _message = core::stringFormat("resource '%s' not found", key.c_str());
+                _message = core::stringFormat(ENCRYPT_STRING("resource '%s' not found or not accessible"), key.c_str());
             }
             virtual ~ResourceNotFoundException() {}
             virtual const char* what() const throw() {
@@ -753,11 +757,11 @@ namespace core {
             ThreadLoggerAppenderScope(ILogger *logger, LogLevel logLevel, std::string prefix) {
                 _logger = logger;
                 _logLevel = logLevel;
-                _scope = _logger->runInScope(std::unique_ptr<ILogTextAppender>(new ThreadLogTextAppender(core::stringFormat("> %s: ", prefix.c_str()))));
-                _logger->log(_logLevel, "start");
+                _scope = _logger->runInScope(std::unique_ptr<ILogTextAppender>(new ThreadLogTextAppender(core::stringFormat(ENCRYPT_STRING("> %s: "), prefix.c_str()))));
+                _logger->log(_logLevel, ENCRYPT_STRING("start"));
             }
             ~ThreadLoggerAppenderScope() {
-                _logger->log(_logLevel, "done");
+                _logger->log(_logLevel, ENCRYPT_STRING("done"));
                 _scope->dispose();
             }
         };
@@ -772,10 +776,10 @@ namespace core {
 
         static void log(LogLevel logLevel, std::string text, HRESULT result) {
             if (SUCCEEDED(result)) {
-                Logger::current->log(logLevel, core::stringFormat("%s completed", text.c_str()));
+                Logger::current->log(logLevel, core::stringFormat(ENCRYPT_STRING("%s completed"), text.c_str()));
             }
             else {
-                Logger::current->log(error, core::stringFormat("%s failed with error code: 0x%08lx", text.c_str(), result));
+                Logger::current->log(error, core::stringFormat(ENCRYPT_STRING("%s failed with error code: 0x%08lx"), text.c_str(), result));
             }
         }
     }

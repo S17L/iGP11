@@ -6,13 +6,14 @@ class Direct3D11PluginLoader : public core::IDirect3D11PluginLoader {
 private:
 	bool _hasError;
 	HINSTANCE _library;
-    std::string _pluginPath;
+    std::string _pluginFilePath;
+    core::dto::PluginSettings _pluginSettings;
 	core::dto::Direct3D11Settings _settings;
 	core::logging::ILoggerFactory *_loggerFactory;
 	void loadLibrary();
 public:
-	Direct3D11PluginLoader(std::string pluginPath, core::dto::Direct3D11Settings settings, core::logging::ILoggerFactory *loggerFactory)
-        : _pluginPath(pluginPath), _hasError(false), _settings(settings), _loggerFactory(loggerFactory) {}
+	Direct3D11PluginLoader(std::string pluginFilePath, core::dto::PluginSettings pluginSettings, core::dto::Direct3D11Settings settings, core::logging::ILoggerFactory *loggerFactory)
+        : _pluginFilePath(pluginFilePath), _hasError(false), _pluginSettings(pluginSettings), _settings(settings), _loggerFactory(loggerFactory) {}
 	virtual ~Direct3D11PluginLoader();
 	virtual std::string getName() override;
 	virtual core::PluginType getType() override;

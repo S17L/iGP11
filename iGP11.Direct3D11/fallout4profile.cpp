@@ -34,13 +34,13 @@ void direct3d11::Fallout4Profile::pixelShaderSetShaderResources(UINT startSlot, 
                         _hasFoundFrame++;
                         if (_hasFoundFrame == FALLOUT4_DUMPING_ALL_RESOURCES_BUFFER_INDEX) {
                             auto depthTexture = direct3d11::utility::getDepthTexture(_depthStencilView);
-                            direct3d11::dto::PostProcessingConfiguration configuration;
-                            configuration.colorTexture = texture;
-                            configuration.depthTexture = depthTexture.get();
-                            auto initializationRequired = _configuration.applicator->initializationRequired(configuration);
+                            direct3d11::dto::PostProcessingSettings postProcessingSettings;
+                            postProcessingSettings.colorTexture = texture;
+                            postProcessingSettings.depthTexture = depthTexture.get();
+                            auto initializationRequired = _configuration.applicator->initializationRequired(postProcessingSettings);
                             if (!initializationRequired || _initializationDelayCount >= FALLOUT4_INITIALIZATION_DELAY) {
                                 _initializationDelayCount = 0;
-                                _configuration.applicator->applyPostProcessing(configuration);
+                                _configuration.applicator->applyPostProcessing(postProcessingSettings);
                             }
                             else if (_initializationDelayCount < FALLOUT4_INITIALIZATION_DELAY) {
                                 _initializationDelayCount++;

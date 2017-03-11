@@ -164,11 +164,12 @@ namespace direct3d11 {
 
     class ShaderCodeFactory {
     private:
+        std::string _codeDirectoryPath;
         dto::RenderingResolution _resolution;
         std::unique_ptr<core::ShaderCodeBuilder> getCodeBuilder();
     public:
-        ShaderCodeFactory(dto::RenderingResolution resolution)
-            : _resolution(resolution) { }
+        ShaderCodeFactory(std::string codeDirectoryPath, dto::RenderingResolution resolution)
+            : _codeDirectoryPath(codeDirectoryPath), _resolution(resolution) { }
         ShaderCode createAlphaCode(ID3D11ShaderResourceView *colorTextureView);
         ShaderCode createLumaSharpenCode(ID3D11ShaderResourceView *colorTextureView, core::dto::LumaSharpen lumaSharpen);
         ShaderCode createLuminescenceCode(ID3D11ShaderResourceView *colorTextureView);

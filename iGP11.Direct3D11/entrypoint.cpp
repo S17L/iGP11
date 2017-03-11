@@ -22,7 +22,7 @@ extern "C"
 {
 #endif
 
-    DLL bool start(core::dto::Direct3D11Settings settings, core::logging::ILoggerFactory *loggerFactory) {
+    DLL bool start(core::dto::PluginSettings pluginSettings, core::dto::Direct3D11Settings settings, core::logging::ILoggerFactory *loggerFactory) {
         Direct3D11Plugin &plugin = Direct3D11Plugin::getInstance();
         if (plugin.isInitialized()) {
             return false;
@@ -34,6 +34,7 @@ extern "C"
             &core::MinHookService::getInstance(),
             _processService.get(),
             _textureCacheFactory.get(),
+            pluginSettings,
             settings,
             _profilePicker.get(),
             _textureService.get());

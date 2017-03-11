@@ -43,6 +43,17 @@ std::shared_ptr<core::IPluginLoader> getPluginLoader() {
     return pluginLoader;
 }
 
+bool getGameSettings(core::ISerializer *serializer, core::dto::GameSettings &settings) {
+    try {
+        settings = core::SettingsService(serializer).getSettings();
+        return true;
+    }
+    catch (core::exception::ResourceNotFoundException const &exception) {
+        log(error, core::stringFormat(ENCRYPT_STRING("file not found exception occured: %s"), exception.what()));
+        return false;
+    }
+}
+
 bool loadPlugin(core::IPluginLoader *pluginLoader) {
     __try {
         return pluginLoader->load();
@@ -121,20 +132,23 @@ void deinitializeServer() {
 
 DWORD __stdcall initialize(LPVOID) {
     _serializer.reset(new core::JsonSerializer());
-    auto settings = core::SettingsService(_serializer.get()).getSettings();
+    core::dto::GameSettings settings;
+    if (!::getGameSettings(_serializer.get(), settings)) {
+        return NULL;
+    }
 
     _repository.reset(new core::GameSettingsRepository(settings));
     _timeProvider.reset(new core::time::CurrentTimeProvider());
     _fileLoggingTarget.reset(new core::logging::FileLoggingTarget(
         core::file::combine(
-            settings.logsDirectoryPath,
+            settings.pluginSettings.logsDirectoryPath,
             core::stringFormat(ENCRYPT_STRING("log_%lld.txt"), _timeProvider->getTime().totalMiliseconds))));
 
     _loggerFactory.reset(new core::logging::LoggerFactory(_timeProvider.get(), _fileLoggingTarget.get()));
     Logger::current = std::move(_loggerFactory->create(ENCRYPT_STRING("iGP11")));
     log(ENCRYPT_STRING("iGP11 started"));
 
-    _direct3D11PluginLoader = std::shared_ptr<core::IDirect3D11PluginLoader>(new Direct3D11PluginLoader(settings.direct3D11PluginPath, settings.direct3D11Settings, _loggerFactory.get()));
+    _direct3D11PluginLoader = std::shared_ptr<core::IDirect3D11PluginLoader>(new Direct3D11PluginLoader(settings.direct3D11PluginPath, settings.pluginSettings, settings.direct3D11Settings, _loggerFactory.get()));
     _pluginLoaders.push_back(_direct3D11PluginLoader);
 
     auto pluginLoader = getPluginLoader();

@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "effect.h"
 
-direct3d11::EffectsApplicator::EffectsApplicator(dto::FilterConfiguration configuration, direct3d11::Direct3D11Context *context) {
-    _configuration = configuration;
-    _requestedConfiguration = configuration;
+direct3d11::EffectsApplicator::EffectsApplicator(dto::FilterSettings filterSettings, direct3d11::Direct3D11Context *context) {
+    _filterSettings = filterSettings;
+    _requestedFilterSettings = filterSettings;
     _context = context;
 }
 
@@ -11,14 +11,14 @@ void direct3d11::EffectsApplicator::addEffect(direct3d11::IEffect *effect) {
     _effects.push_back(std::shared_ptr<direct3d11::IEffect>(effect));
 }
 
-void direct3d11::EffectsApplicator::applyProcessing(const direct3d11::dto::PostProcessingConfiguration &configuration) {
-    if (configuration.colorTexture == nullptr) {
+void direct3d11::EffectsApplicator::applyProcessing(const direct3d11::dto::PostProcessingSettings &postProcessingSettings) {
+    if (postProcessingSettings.colorTexture == nullptr) {
         return;
     }
 
-    if (initializationRequired(configuration)) {
-        auto resolution = direct3d11::utility::getRenderingResolution(configuration.colorTexture);
-        _configuration = _requestedConfiguration;
+    if (initializationRequired(postProcessingSettings)) {
+        auto resolution = direct3d11::utility::getRenderingResolution(postProcessingSettings.colorTexture);
+        _filterSettings = _requestedFilterSettings;
         _resolution = resolution;
 
         clear();
@@ -27,40 +27,40 @@ void direct3d11::EffectsApplicator::applyProcessing(const direct3d11::dto::PostP
             ThreadLoggerAppenderScope scope(ENCRYPT_STRING("direct3d11::EffectsApplicator"));
 
             log(core::stringFormat(ENCRYPT_STRING("resolution: [ width: %u, height: %u ]"), _resolution.width, _resolution.height));
-            _proxy.reset(new direct3d11::RenderingProxy(_context, _resolution, configuration.colorTexture, configuration.depthTexture));
-            _codeBuilderFactory.reset(new direct3d11::ShaderCodeFactory(_resolution));
+            _proxy.reset(new direct3d11::RenderingProxy(_context, _resolution, postProcessingSettings.colorTexture, postProcessingSettings.depthTexture));
+            _codeBuilderFactory.reset(new direct3d11::ShaderCodeFactory(_filterSettings.codeDirectoryPath, _resolution));
 
-            if (_configuration.pluginSettings.renderingMode == core::RenderingMode::alpha) {
+            if (_filterSettings.pluginSettings.renderingMode == core::RenderingMode::alpha) {
                 addEffect(new direct3d11::AlphaEffect(_context, _proxy->nextColorTexture(), _resolution, _codeBuilderFactory.get()));
             }
-            else if (_configuration.pluginSettings.renderingMode == core::RenderingMode::depthbuffer) {
-                if (configuration.depthTexture != nullptr) {
-                    addEffect(new direct3d11::DepthEffect(_context, _proxy->nextColorTexture(), _proxy->getDepthTextureView(), _resolution, _configuration.depthBuffer, _codeBuilderFactory.get()));
+            else if (_filterSettings.pluginSettings.renderingMode == core::RenderingMode::depthbuffer) {
+                if (postProcessingSettings.depthTexture != nullptr) {
+                    addEffect(new direct3d11::DepthEffect(_context, _proxy->nextColorTexture(), _proxy->getDepthTextureView(), _resolution, _filterSettings.depthBuffer, _codeBuilderFactory.get()));
                 }
             }
-            else if (_configuration.pluginSettings.renderingMode == core::RenderingMode::luminescence) {
+            else if (_filterSettings.pluginSettings.renderingMode == core::RenderingMode::luminescence) {
                 addEffect(new direct3d11::LuminescenceEffect(_context, _proxy->nextColorTexture(), _resolution, _codeBuilderFactory.get()));
             }
-            else if (_configuration.pluginSettings.renderingMode == core::RenderingMode::effects) {
-                if (_configuration.tonemap.isEnabled) {
-                    addEffect(new direct3d11::TonemapEffect(_context, _proxy->nextColorTexture(), _resolution, _configuration.tonemap, _codeBuilderFactory.get()));
+            else if (_filterSettings.pluginSettings.renderingMode == core::RenderingMode::effects) {
+                if (_filterSettings.tonemap.isEnabled) {
+                    addEffect(new direct3d11::TonemapEffect(_context, _proxy->nextColorTexture(), _resolution, _filterSettings.tonemap, _codeBuilderFactory.get()));
                 }
 
-                if (_configuration.vibrance.isEnabled) {
-                    addEffect(new direct3d11::VibranceEffect(_context, _proxy->nextColorTexture(), _resolution, _configuration.vibrance, _codeBuilderFactory.get()));
+                if (_filterSettings.vibrance.isEnabled) {
+                    addEffect(new direct3d11::VibranceEffect(_context, _proxy->nextColorTexture(), _resolution, _filterSettings.vibrance, _codeBuilderFactory.get()));
                 }
 
-                if (_configuration.lumaSharpen.isEnabled) {
-                    addEffect(new direct3d11::LumasharpenEffect(_context, _proxy->nextColorTexture(), _resolution, _configuration.lumaSharpen, _codeBuilderFactory.get()));
+                if (_filterSettings.lumaSharpen.isEnabled) {
+                    addEffect(new direct3d11::LumasharpenEffect(_context, _proxy->nextColorTexture(), _resolution, _filterSettings.lumaSharpen, _codeBuilderFactory.get()));
                 }
 
-                if (_configuration.bokehDoF.isEnabled) {
-                    addEffect(new direct3d11::BokehDoFEffect(_context, _proxy->nextColorTexture(), _proxy->getDepthTextureView(), _resolution, _configuration.bokehDoF, _configuration.depthBuffer, _codeBuilderFactory.get()));
+                if (_filterSettings.bokehDoF.isEnabled) {
+                    addEffect(new direct3d11::BokehDoFEffect(_context, _proxy->nextColorTexture(), _proxy->getDepthTextureView(), _resolution, _filterSettings.bokehDoF, _filterSettings.depthBuffer, _codeBuilderFactory.get()));
                 }
             }
 
-            _currentColorTexture = configuration.colorTexture;
-            _currentDepthTexture = configuration.depthTexture;
+            _currentColorTexture = postProcessingSettings.colorTexture;
+            _currentDepthTexture = postProcessingSettings.depthTexture;
         }
 
         _initRequested = false;
@@ -96,13 +96,13 @@ void direct3d11::EffectsApplicator::clear() {
     _codeBuilderFactory.reset();
 }
 
-void direct3d11::EffectsApplicator::apply(const direct3d11::dto::PostProcessingConfiguration &configuration) {
+void direct3d11::EffectsApplicator::apply(const direct3d11::dto::PostProcessingSettings &postProcessingSettings) {
     if (_hasError) {
         return;
     }
 
     try {
-        applyProcessing(configuration);
+        applyProcessing(postProcessingSettings);
     }
     catch (core::exception::InitializationException const &exception) {
         _hasError = true;
@@ -137,21 +137,21 @@ void direct3d11::EffectsApplicator::deinitialize() {
     clear();
 }
 
-bool direct3d11::EffectsApplicator::initializationRequired(const direct3d11::dto::PostProcessingConfiguration &configuration) {
-    if (configuration.colorTexture == nullptr) {
+bool direct3d11::EffectsApplicator::initializationRequired(const direct3d11::dto::PostProcessingSettings &postProcessingSettings) {
+    if (postProcessingSettings.colorTexture == nullptr) {
         return false;
     }
 
-    auto resolution = direct3d11::utility::getRenderingResolution(configuration.colorTexture);
+    auto resolution = direct3d11::utility::getRenderingResolution(postProcessingSettings.colorTexture);
     return _resolution.width != resolution.width
         || _resolution.height != resolution.height
-        || _currentColorTexture != configuration.colorTexture
-        || _currentDepthTexture != configuration.depthTexture
+        || _currentColorTexture != postProcessingSettings.colorTexture
+        || _currentDepthTexture != postProcessingSettings.depthTexture
         || _initRequested;
 }
 
-void direct3d11::EffectsApplicator::update(dto::FilterConfiguration configuration) {
-    _requestedConfiguration = configuration;
+void direct3d11::EffectsApplicator::update(dto::FilterSettings filterSettings) {
+    _requestedFilterSettings = filterSettings;
     _hasError = false;
     _initRequested = true;
 }

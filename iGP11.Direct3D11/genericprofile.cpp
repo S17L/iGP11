@@ -22,8 +22,8 @@ void direct3d11::GenericProfile::presentFrame() {
     auto colorTexture = direct3d11::utility::getBackBuffer(_configuration.context->getChain());
     auto depthTexture = direct3d11::utility::getDepthTexture(_depthStencilView);
 
-    direct3d11::dto::PostProcessingConfiguration configuration;
-    configuration.colorTexture = colorTexture.get();
-    configuration.depthTexture = depthTexture.get();
-    _configuration.applicator->applyPostProcessing(configuration);
+    direct3d11::dto::PostProcessingSettings postProcessingSettings;
+    postProcessingSettings.colorTexture = colorTexture.get();
+    postProcessingSettings.depthTexture = depthTexture.get();
+    _configuration.applicator->applyPostProcessing(postProcessingSettings);
 }
