@@ -304,6 +304,15 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to communication established.
+        /// </summary>
+        public static string CommunicationEstablished {
+            get {
+                return ResourceManager.GetString("CommunicationEstablished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to iGP11 - COMMUNICATOR MODE.
         /// </summary>
         public static string CommunicatorMode {
@@ -345,6 +354,33 @@ namespace iGP11.Tool.Localization {
         public static string ConvertTextures {
             get {
                 return ResourceManager.GetString("ConvertTextures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Denoise.
+        /// </summary>
+        public static string Denoise {
+            get {
+                return ResourceManager.GetString("Denoise", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove noise from a signal.
+        /// </summary>
+        public static string DenoiseLongDescription {
+            get {
+                return ResourceManager.GetString("DenoiseLongDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove noise from a signal.
+        /// </summary>
+        public static string DenoiseShortDescription {
+            get {
+                return ResourceManager.GetString("DenoiseShortDescription", resourceCulture);
             }
         }
         
@@ -633,6 +669,33 @@ namespace iGP11.Tool.Localization {
         public static string Launch {
             get {
                 return ResourceManager.GetString("Launch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lift gamma gain.
+        /// </summary>
+        public static string LiftGammaGain {
+            get {
+                return ResourceManager.GetString("LiftGammaGain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Control how gamma is applied to an image.
+        /// </summary>
+        public static string LiftGammaGainLongDescription {
+            get {
+                return ResourceManager.GetString("LiftGammaGainLongDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Control how gamma is applied to an image.
+        /// </summary>
+        public static string LiftGammaGainShortDescription {
+            get {
+                return ResourceManager.GetString("LiftGammaGainShortDescription", resourceCulture);
             }
         }
         

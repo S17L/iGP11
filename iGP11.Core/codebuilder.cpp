@@ -499,6 +499,16 @@ core::BokehDoFCodeBuilder core::ShaderCodeBuilder::setBokehDoF(float depthMinimu
     return core::BokehDoFCodeBuilder(this, depthMinimum, depthMaximum, depthRateGain, luminescenceMinimum, luminescenceMaximum, luminescenceRateGain);
 }
 
+void core::ShaderCodeBuilder::setDenoise(float noiseLevel, float blendingCoefficient, float weightThreshold, float counterThreshold, float gaussianSigma, unsigned int windowSize) {
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("DENOISE_ENABLED"), translate(true)));
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("DENOISE_NOISE_LEVEL"), translate(noiseLevel)));
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("DENOISE_BLENDING_COEFFICIENT"), translate(blendingCoefficient)));
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("DENOISE_WEIGHT_THRESHOLD"), translate(weightThreshold)));
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("DENOISE_COUNTER_THRESHOLD"), translate(counterThreshold)));
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("DENOISE_GAUSSIAN_SIGMA"), translate(gaussianSigma)));
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("DENOISE_WINDOW_SIZE"), translate(windowSize)));
+}
+
 void core::ShaderCodeBuilder::setLiftGammaGain(core::dto::Color lift, core::dto::Color gamma, core::dto::Color gain) {
     add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_ENABLED"), translate(true)));
     add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_LIFT_RED"), translate(lift.red)));

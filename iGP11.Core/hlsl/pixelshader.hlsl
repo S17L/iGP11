@@ -24,8 +24,7 @@ struct PixelInputType
     float2 texcoord : TEXCOORD0;
 };
 
-/* BEGIN */
-/* COMMON FUNCTIONS */
+/* BEGIN -> COMMON FUNCTIONS */
 
 float getLuminescence(float3 color)
 {
@@ -42,11 +41,9 @@ float scale(float value, float oldMin, float oldMax, float newMin, float newMax)
     return ((newMax - newMin) / (oldMax - oldMin)) * (value - oldMax) + newMax;
 }
 
-/* COMMON FUNCTIONS */
-/* END */
+/* END -> COMMON FUNCTIONS */
 
-/* BEGIN */
-/* DEPTH TRANSFORMATION */
+/* BEGIN -> DEPTH TRANSFORMATION */
 
 #define DEPTH_BUFFER_AVAILABLE 0
 #define DEPTH_BUFFER_ACCESS_LINEAR 1
@@ -82,11 +79,9 @@ float getDepth(float2 texcoord)
 #endif
 }
 
-/* DEPTH TRANSFORMATION */
-/* END */
+/* END -> DEPTH TRANSFORMATION */
 
-/* BEGIN */
-/* BOKEH DOF */
+/* BEGIN -> BOKEH DOF */
 
 #define BOKEH_DOF_ENABLED 0
 #define BOKEH_DOF_PRESERVE_SHAPE 0
@@ -196,11 +191,52 @@ float4 renderBokehDoFBlending(PixelInputType input) : SV_TARGET
 }
 #endif
 
-/* BOKEH DOF */
-/* END */
+/* END -> BOKEH DOF */
 
-/* BEGIN */
-/* GAUSSIAN BLUR */
+/* BEGIN -> DENOISE */
+
+#define DENOISE_ENABLED 0
+#define DENOISE_NOISE_LEVEL 0.15
+#define DENOISE_BLENDING_COEFFICIENT 0.8
+#define DENOISE_WEIGHT_THRESHOLD 0.03
+#define DENOISE_COUNTER_THRESHOLD 0.05
+#define DENOISE_GAUSSIAN_SIGMA 50.0
+#define DENOISE_WINDOW_SIZE 3
+#define DENOISE_WINDOW_AREA pow(2.0 * DENOISE_WINDOW_SIZE + 1.0, 2)
+
+#if DENOISE_ENABLED == 1
+float4 renderDenoise(PixelInputType input) : SV_TARGET
+{
+    float4 color = _color_texture.Sample(_point_sampler, input.texcoord);
+    float4 output = 0;
+    float counter = 0;
+    float sum = 0;
+
+    for (int i = -DENOISE_WINDOW_SIZE; i <= DENOISE_WINDOW_SIZE; i++)
+    {
+        for (int j = -DENOISE_WINDOW_SIZE; j <= DENOISE_WINDOW_SIZE; j++)
+        {
+            float4 currentColor = _color_texture.Sample(_point_sampler, input.texcoord + float2(i, j) * _texel);
+            float weight = dot(color - currentColor, color - currentColor);
+
+            weight = exp(-(weight * rcp(DENOISE_NOISE_LEVEL) + (i * i + j * j) * rcp(DENOISE_GAUSSIAN_SIGMA)));
+            counter += weight > DENOISE_WEIGHT_THRESHOLD;
+            sum += weight;
+            output += currentColor * weight;
+        }
+    }
+
+    output /= sum;
+    float coefficient = (counter > (DENOISE_COUNTER_THRESHOLD * DENOISE_WINDOW_AREA)) ? 1.0 - DENOISE_BLENDING_COEFFICIENT : DENOISE_BLENDING_COEFFICIENT;
+    output = lerp(output, color, coefficient);
+
+    return output;
+}
+#endif
+
+/* END -> DENOISE */
+
+/* BEGIN -> GAUSSIAN BLUR */
 
 #define GAUSSIAN_BLUR_ENABLED 0
 #define GAUSSIAN_BLUR_SIZE 2
@@ -238,11 +274,9 @@ float4 renderVerticalGaussianBlur(PixelInputType input) : SV_TARGET
 }
 #endif
 
-/* GAUSSIAN BLUR */
-/* END */
+/* END -> GAUSSIAN BLUR */
 
-/* BEGIN */
-/* LIFTGAMMAGAIN */
+/* BEGIN -> LIFTGAMMAGAIN */
 
 #define LIFTGAMMAGAIN_ENABLED 0
 #define LIFTGAMMAGAIN_LIFT_RED 1.0
@@ -274,11 +308,9 @@ float4 renderLiftGammaGain(PixelInputType input) : SV_TARGET
 }
 #endif
 
-/* LIFTGAMMAGAIN */
-/* END */
+/* END -> LIFTGAMMAGAIN */
 
-/* BEGIN */
-/* LUMASHARPEN */
+/* BEGIN -> LUMASHARPEN */
 
 #define LUMASHARPEN_ENABLED 0
 #define LUMASHARPEN_SHARPENING_STRENGTH 1.25
@@ -309,11 +341,9 @@ float4 renderLumaSharpen(PixelInputType input) : SV_TARGET
 }
 #endif
 
-/* LUMASHARPEN */
-/* END */
+/* END -> LUMASHARPEN */
 
-/* BEGIN */
-/* TONEMAP */
+/* BEGIN -> TONEMAP */
 
 #define TONEMAP_ENABLED 0
 #define TONEMAP_GAMMA 1
@@ -344,11 +374,9 @@ float4 renderTonemap(PixelInputType input) : SV_TARGET
 }
 #endif
 
-/* TONEMAP */
-/* END */
+/* END -> TONEMAP */
 
-/* BEGIN */
-/* VIBRANCE */
+/* BEGIN -> VIBRANCE */
 
 #define VIBRANCE_ENABLED 0
 #define VIBRANCE_STRENGTH 0.3
@@ -372,8 +400,7 @@ float4 renderVibrance(PixelInputType input) : SV_TARGET
 }
 #endif
 
-/* VIBRANCE */
-/* END */
+/* END -> VIBRANCE */
 
 float4 renderAlpha(PixelInputType input) : SV_TARGET
 {

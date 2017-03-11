@@ -54,6 +54,15 @@
           "luminescenceMaximum": 5,
           "luminescenceRateGain": 2
         },
+        "denoise": {
+          "isEnabled": false,
+          "noiseLevel": 0.15,
+          "blendingCoefficient": 0.8,
+          "weightThreshold": 0.03,
+          "counterThreshold": 0.05,
+          "gaussianSigma": 50,
+          "windowSize": 3 
+        },
         "liftGammaGain": {
           "isEnabled": false,
           "liftRed": 1.0,

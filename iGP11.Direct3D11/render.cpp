@@ -393,6 +393,18 @@ direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createAlphaCode(ID3D11Shad
     return code;
 }
 
+direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createDenoiseCode(ID3D11ShaderResourceView *colorTextureView, core::dto::Denoise denoise) {
+    auto codeBuilder = getCodeBuilder();
+    codeBuilder->setDenoise(denoise.noiseLevel, denoise.blendingCoefficient, denoise.weightThreshold, denoise.counterThreshold, denoise.gaussianSigma, denoise.windowSize);
+
+    direct3d11::ShaderCode code;
+    code.setColorTextureView(colorTextureView);
+    code.setVertexShaderCode(codeBuilder->buildVertexShaderCode(), ENCRYPT_STRING("vsmain"));
+    code.setPixelShaderCode(codeBuilder->buildPixelShaderCode(), ENCRYPT_STRING("renderDenoise"));
+
+    return code;
+}
+
 direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createLiftGammaGainCode(ID3D11ShaderResourceView *colorTextureView, core::dto::LiftGammaGain liftGammaGain) {
     auto codeBuilder = getCodeBuilder();
     codeBuilder->setLiftGammaGain(liftGammaGain.lift, liftGammaGain.gamma, liftGammaGain.gain);

@@ -198,6 +198,9 @@
   <data name="CommunicationError" xml:space="preserve">
     <value>communication lost/could not be established</value>
   </data>
+  <data name="CommunicationEstablished" xml:space="preserve">
+    <value>communication established</value>
+  </data>
   <data name="CommunicatorMode" xml:space="preserve">
     <value>iGP11 - COMMUNICATOR MODE</value>
   </data>
@@ -212,6 +215,15 @@
   </data>
   <data name="ConvertTextures" xml:space="preserve">
     <value>convert textures</value>
+  </data>
+  <data name="Denoise" xml:space="preserve">
+    <value>Denoise</value>
+  </data>
+  <data name="DenoiseLongDescription" xml:space="preserve">
+    <value>Remove noise from a signal</value>
+  </data>
+  <data name="DenoiseShortDescription" xml:space="preserve">
+    <value>Remove noise from a signal</value>
   </data>
   <data name="DepthBuffer" xml:space="preserve">
     <value>Depth buffer</value>
@@ -308,6 +320,15 @@
   </data>
   <data name="Launch" xml:space="preserve">
     <value>LAUNCH GAME</value>
+  </data>
+  <data name="LiftGammaGain" xml:space="preserve">
+    <value>Lift gamma gain</value>
+  </data>
+  <data name="LiftGammaGainLongDescription" xml:space="preserve">
+    <value>Control how gamma is applied to an image</value>
+  </data>
+  <data name="LiftGammaGainShortDescription" xml:space="preserve">
+    <value>Control how gamma is applied to an image</value>
   </data>
   <data name="Loading" xml:space="preserve">
     <value>Loading...</value>

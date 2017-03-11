@@ -250,6 +250,16 @@ namespace core {
             std::string data;
         };
 
+        struct Denoise final {
+            bool isEnabled = false;
+            float noiseLevel = 0;
+            float blendingCoefficient = 0;
+            float weightThreshold = 0;
+            float counterThreshold = 0;
+            float gaussianSigma = 0;
+            unsigned int windowSize = 0;
+        };
+
         struct DepthBuffer final {
             float linearZNear = 0;
             float linearZFar = 0;
@@ -308,6 +318,7 @@ namespace core {
 
         struct Direct3D11Settings final {
             BokehDoF bokehDoF;
+            Denoise denoise;
             DepthBuffer depthBuffer;
             Direct3D11PluginSettings pluginSettings;
             LiftGammaGain liftGammaGain;

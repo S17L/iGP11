@@ -476,6 +476,8 @@ namespace iGP11.Tool.ViewModel.Injection
                     return;
                 }
 
+                await PublishUpdateStatusEventAsync(StatusType.Ok, "CommunicationEstablished");
+
                 _status = null;
                 _proxySettings = proxySettings;
                 _plugin.Clear();

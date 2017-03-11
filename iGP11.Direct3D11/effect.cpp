@@ -42,6 +42,10 @@ void direct3d11::EffectsApplicator::applyProcessing(const direct3d11::dto::PostP
                 addEffect(new direct3d11::LuminescenceEffect(_context, _proxy->nextColorTexture(), _resolution, _codeBuilderFactory.get()));
             }
             else if (_filterSettings.pluginSettings.renderingMode == core::RenderingMode::effects) {
+                if (_filterSettings.denoise.isEnabled) {
+                    addEffect(new direct3d11::DenoiseEffect(_context, _proxy->nextColorTexture(), _resolution, _filterSettings.denoise, _codeBuilderFactory.get()));
+                }
+                
                 if (_filterSettings.tonemap.isEnabled) {
                     addEffect(new direct3d11::TonemapEffect(_context, _proxy->nextColorTexture(), _resolution, _filterSettings.tonemap, _codeBuilderFactory.get()));
                 }

@@ -13,6 +13,11 @@ namespace iGP11.Tool.Domain.Model.GameSettings
         public BokehDoF BokehDoF { get; set; }
 
         [Complex]
+        [DataMember(Name = "denoise", IsRequired = true)]
+        [Editable]
+        public Denoise Denoise { get; set; }
+
+        [Complex]
         [DataMember(Name = "depthBuffer", IsRequired = true)]
         [Editable]
         public DepthBuffer DepthBuffer { get; set; }

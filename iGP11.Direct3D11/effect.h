@@ -8,6 +8,7 @@
 #include "baseefect.h"
 #include "bokehdof.h"
 #include "codebuilder.h"
+#include "denoise.h"
 #include "depth.h"
 #include "horizontalgaussianblur.h"
 #include "liftgammagain.h"
@@ -26,6 +27,7 @@ namespace direct3d11 {
         struct FilterSettings {
             std::string codeDirectoryPath;
             core::dto::BokehDoF bokehDoF;
+            core::dto::Denoise denoise;
             core::dto::DepthBuffer depthBuffer;
             core::dto::Direct3D11PluginSettings pluginSettings;
             core::dto::LiftGammaGain liftGammaGain;

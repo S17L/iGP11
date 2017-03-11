@@ -108,6 +108,9 @@
     <ClInclude Include="liftgammagain.h">
       <Filter>Header Files\effects</Filter>
     </ClInclude>
+    <ClInclude Include="denoise.h">
+      <Filter>Header Files\effects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -186,6 +189,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="liftgammagain.cpp">
+      <Filter>Source Files\effects</Filter>
+    </ClCompile>
+    <ClCompile Include="denoise.cpp">
       <Filter>Source Files\effects</Filter>
     </ClCompile>
   </ItemGroup>

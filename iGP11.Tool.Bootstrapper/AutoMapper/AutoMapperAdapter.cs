@@ -20,6 +20,7 @@ namespace iGP11.Tool.Bootstrapper.AutoMapper
                 {
                     CreateMapping<ApplicationSettings, Domain.Model.ApplicationSettings.ApplicationSettings>(configuration);
                     CreateMapping<BokehDoF, Domain.Model.GameSettings.BokehDoF>(configuration);
+                    CreateMapping<Denoise, Domain.Model.GameSettings.Denoise>(configuration);
                     CreateMapping<DepthBuffer, Domain.Model.GameSettings.DepthBuffer>(configuration);
                     CreateMapping<Direct3D11PluginSettings, Domain.Model.GameSettings.Direct3D11PluginSettings>(configuration);
                     CreateMapping<Direct3D11Settings, Domain.Model.GameSettings.Direct3D11Settings>(configuration);

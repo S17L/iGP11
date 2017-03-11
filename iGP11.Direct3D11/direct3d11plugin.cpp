@@ -69,6 +69,7 @@ direct3d11::dto::FilterSettings Direct3D11Plugin::getFilterConfiguration() {
     direct3d11::dto::FilterSettings filterSettings;
     filterSettings.codeDirectoryPath = _pluginSettings.proxyDirectoryPath;
     filterSettings.bokehDoF = _settings.bokehDoF;
+    filterSettings.denoise = _settings.denoise;
     filterSettings.depthBuffer = _settings.depthBuffer;
     filterSettings.pluginSettings = _settings.pluginSettings;
     filterSettings.liftGammaGain = _settings.liftGammaGain;

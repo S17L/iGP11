@@ -11,28 +11,35 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [DataMember(Name = "bokehDoF", IsRequired = true)]
         [ComponentName("BokehDoF")]
         [Editable]
-        [Order(3)]
+        [Order(4)]
         public BokehDoF BokehDoF { get; set; }
 
         [Complex]
-        [DataMember(Name = "depthBuffer", IsRequired = true)]
+        [ComponentName("Denoise")]
+        [DataMember(Name = "denoise", IsRequired = true)]
+        [Editable]
+        [Order(3)]
+        public Denoise Denoise { get; set; }
+
+        [Complex]
         [ComponentName("DepthBuffer")]
+        [DataMember(Name = "depthBuffer", IsRequired = true)]
         [Editable]
         [Order(2)]
         public DepthBuffer DepthBuffer { get; set; }
 
         [Complex]
-        [DataMember(Name = "liftGammaGain", IsRequired = true)]
         [ComponentName("LiftGammaGain")]
+        [DataMember(Name = "liftGammaGain", IsRequired = true)]
         [Editable]
-        [Order(4)]
+        [Order(5)]
         public LiftGammaGain LiftGammaGain { get; set; }
 
         [Complex]
         [ComponentName("LumaSharpen")]
         [DataMember(Name = "lumaSharpen", IsRequired = true)]
         [Editable]
-        [Order(5)]
+        [Order(6)]
         public LumaSharpen LumaSharpen { get; set; }
 
         [Complex]
@@ -55,14 +62,14 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [ComponentName("Tonemap")]
         [DataMember(Name = "tonemap", IsRequired = true)]
         [Editable]
-        [Order(6)]
+        [Order(7)]
         public Tonemap Tonemap { get; set; }
 
         [Complex]
         [ComponentName("Vibrance")]
         [DataMember(Name = "vibrance", IsRequired = true)]
         [Editable]
-        [Order(7)]
+        [Order(8)]
         public Vibrance Vibrance { get; set; }
     }
 }

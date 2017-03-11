@@ -259,6 +259,7 @@ namespace core {
         void setLinearDepthTextureAccessibility(float distanceNear, float distanceFar);
         void setDepthTextureLimit(float depthMin, float depthMax);
         BokehDoFCodeBuilder setBokehDoF(float depthMinimum, float depthMaximum, float depthRateGain, float luminescenceMinimum, float luminescenceMaximum, float luminescenceRateGain);
+        void setDenoise(float noiseLevel, float blendingCoefficient, float weightThreshold, float counterThreshold, float gaussianSigma, unsigned int windowSize);
         void setGaussianBlur(unsigned int size, float sigma, float minWeight = 0.005);
         void setLiftGammaGain(dto::Color lift, dto::Color gamma, dto::Color gain);
         void setLumaSharpen(float sharpeningStrength, float sharpeningClamp, float offset);

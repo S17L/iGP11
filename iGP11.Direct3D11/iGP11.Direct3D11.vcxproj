@@ -166,6 +166,7 @@
     <ClInclude Include="camera.h" />
     <ClInclude Include="darksouls2profile.h" />
     <ClInclude Include="darksouls3profile.h" />
+    <ClInclude Include="denoise.h" />
     <ClInclude Include="depth.h" />
     <ClInclude Include="fallout4profile.h" />
     <ClInclude Include="horizontalgaussianblur.h" />
@@ -195,6 +196,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="darksouls2profile.cpp" />
     <ClCompile Include="darksouls3profile.cpp" />
+    <ClCompile Include="denoise.cpp" />
     <ClCompile Include="depth.cpp" />
     <ClCompile Include="entrypoint.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>

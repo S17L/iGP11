@@ -90,6 +90,7 @@
     <Compile Include="Model\GameSettings\GameFactory.cs" />
     <Compile Include="Model\ApplicationSettings\ApplicationSettings.cs" />
     <Compile Include="Model\GameSettings\LiftGammaGain.cs" />
+    <Compile Include="Model\GameSettings\Denoise.cs" />
     <Compile Include="Model\GameSettings\Tonemap.cs" />
     <Compile Include="Model\GameSettings\Vibrance.cs" />
     <Compile Include="Model\GameSettings\LumaSharpen.cs" />

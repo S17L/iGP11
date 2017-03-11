@@ -52,6 +52,26 @@ void write(rapidjson::Writer<rapidjson::StringBuffer> &writer, const core::dto::
             writer.EndObject();
         }
 
+        writer.String(ENCRYPT_STRING("denoise"));
+        writer.StartObject();
+        {
+            writer.String(ENCRYPT_STRING("isEnabled"));
+            writer.Bool(data.denoise.isEnabled);
+            writer.String(ENCRYPT_STRING("noiseLevel"));
+            writer.Double(data.denoise.noiseLevel);
+            writer.String(ENCRYPT_STRING("blendingCoefficient"));
+            writer.Double(data.denoise.blendingCoefficient);
+            writer.String(ENCRYPT_STRING("weightThreshold"));
+            writer.Double(data.denoise.weightThreshold);
+            writer.String(ENCRYPT_STRING("counterThreshold"));
+            writer.Double(data.denoise.counterThreshold);
+            writer.String(ENCRYPT_STRING("gaussianSigma"));
+            writer.Double(data.denoise.gaussianSigma);
+            writer.String(ENCRYPT_STRING("windowSize"));
+            writer.Uint(data.denoise.windowSize);
+            writer.EndObject();
+        }
+
         writer.String(ENCRYPT_STRING("depthBuffer"));
         writer.StartObject();
         {
@@ -236,6 +256,19 @@ core::dto::Direct3D11Settings core::JsonSerializer::deserializeDirect3D11Setting
         bokehDoF.luminescenceMaximum = bokehDoFJson[ENCRYPT_STRING("luminescenceMaximum")].GetDouble();
         bokehDoF.luminescenceRateGain = bokehDoFJson[ENCRYPT_STRING("luminescenceRateGain")].GetDouble();
         settings.bokehDoF = bokehDoF;
+    }
+
+    rapidjson::Value &denoiseJson = document[ENCRYPT_STRING("denoise")];
+    if (!denoiseJson.IsNull()) {
+        core::dto::Denoise denoise;
+        denoise.isEnabled = denoiseJson[ENCRYPT_STRING("isEnabled")].GetBool();
+        denoise.noiseLevel = denoiseJson[ENCRYPT_STRING("noiseLevel")].GetDouble();
+        denoise.blendingCoefficient = denoiseJson[ENCRYPT_STRING("blendingCoefficient")].GetDouble();
+        denoise.weightThreshold = denoiseJson[ENCRYPT_STRING("weightThreshold")].GetDouble();
+        denoise.counterThreshold = denoiseJson[ENCRYPT_STRING("counterThreshold")].GetDouble();
+        denoise.gaussianSigma = denoiseJson[ENCRYPT_STRING("gaussianSigma")].GetDouble();
+        denoise.windowSize = denoiseJson[ENCRYPT_STRING("windowSize")].GetUint();
+        settings.denoise = denoise;
     }
 
     rapidjson::Value &depthBufferJson = document[ENCRYPT_STRING("depthBuffer")];
