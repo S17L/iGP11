@@ -50,6 +50,10 @@ void direct3d11::EffectsApplicator::applyProcessing(const direct3d11::dto::PostP
                     addEffect(new direct3d11::VibranceEffect(_context, _proxy->nextColorTexture(), _resolution, _filterSettings.vibrance, _codeBuilderFactory.get()));
                 }
 
+                if (_filterSettings.liftGammaGain.isEnabled) {
+                    addEffect(new direct3d11::LiftGammaGainEffect(_context, _proxy->nextColorTexture(), _resolution, _filterSettings.liftGammaGain, _codeBuilderFactory.get()));
+                }
+
                 if (_filterSettings.lumaSharpen.isEnabled) {
                     addEffect(new direct3d11::LumasharpenEffect(_context, _proxy->nextColorTexture(), _resolution, _filterSettings.lumaSharpen, _codeBuilderFactory.get()));
                 }

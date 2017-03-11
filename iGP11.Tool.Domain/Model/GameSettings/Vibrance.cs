@@ -7,24 +7,24 @@ namespace iGP11.Tool.Domain.Model.GameSettings
     [DataContract]
     public class Vibrance
     {
-        [DataMember(Name = "blueChannelStrength")]
+        [DataMember(Name = "gainBlue")]
         [Editable]
         [FloatRange(-10, 10)]
-        public float BlueChannelStrength { get; set; }
+        public float GainBlue { get; set; }
 
-        [DataMember(Name = "greenChannelStrength")]
+        [DataMember(Name = "gainGreen")]
         [Editable]
         [FloatRange(-10, 10)]
-        public float GreenChannelStrength { get; set; }
+        public float GainGreen { get; set; }
 
         [DataMember(Name = "isEnabled")]
         [Editable]
         public bool IsEnabled { get; set; }
 
-        [DataMember(Name = "redChannelStrength")]
+        [DataMember(Name = "gainRed")]
         [Editable]
         [FloatRange(-10, 10)]
-        public float RedChannelStrength { get; set; }
+        public float GainRed { get; set; }
 
         [DataMember(Name = "strength")]
         [Editable]

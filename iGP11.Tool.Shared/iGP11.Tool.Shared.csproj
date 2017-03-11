@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Event\GameUpdatedEvent.cs" />
     <Compile Include="Model\GameSettings\Game.cs" />
+    <Compile Include="Model\GameSettings\LiftGammaGain.cs" />
     <Compile Include="Model\PluginType.cs" />
     <Compile Include="Notification\ActionSucceededNotification.cs" />
     <Compile Include="Notification\ApplicationStartedNotification.cs" />

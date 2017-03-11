@@ -25,6 +25,7 @@ namespace iGP11.Tool.Bootstrapper.AutoMapper
                     CreateMapping<Direct3D11Settings, Domain.Model.GameSettings.Direct3D11Settings>(configuration);
                     CreateMapping<Game, Domain.Model.GameSettings.Game>(configuration);
                     CreateMapping<GameProfile, Domain.Model.GameSettings.GameProfile>(configuration);
+                    CreateMapping<LiftGammaGain, Domain.Model.GameSettings.LiftGammaGain>(configuration);
                     CreateMapping<LumaSharpen, Domain.Model.GameSettings.LumaSharpen>(configuration);
                     CreateMapping<ProxyPluginSettings, Application.Model.ProxyPluginSettings>(configuration);
                     CreateMapping<ProxySettings, Application.Model.ProxySettings>(configuration);

@@ -393,9 +393,21 @@ direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createAlphaCode(ID3D11Shad
     return code;
 }
 
+direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createLiftGammaGainCode(ID3D11ShaderResourceView *colorTextureView, core::dto::LiftGammaGain liftGammaGain) {
+    auto codeBuilder = getCodeBuilder();
+    codeBuilder->setLiftGammaGain(liftGammaGain.lift, liftGammaGain.gamma, liftGammaGain.gain);
+
+    direct3d11::ShaderCode code;
+    code.setColorTextureView(colorTextureView);
+    code.setVertexShaderCode(codeBuilder->buildVertexShaderCode(), ENCRYPT_STRING("vsmain"));
+    code.setPixelShaderCode(codeBuilder->buildPixelShaderCode(), ENCRYPT_STRING("renderLiftGammaGain"));
+
+    return code;
+}
+
 direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createLumaSharpenCode(ID3D11ShaderResourceView *colorTextureView, core::dto::LumaSharpen lumaSharpen) {
     auto codeBuilder = getCodeBuilder();
-    codeBuilder->setLumaSharpen(lumaSharpen.sharpeningStrength, lumaSharpen.sharpeningClamp, lumaSharpen.offsetBias);
+    codeBuilder->setLumaSharpen(lumaSharpen.sharpeningStrength, lumaSharpen.sharpeningClamp, lumaSharpen.offset);
 
     direct3d11::ShaderCode code;
     code.setColorTextureView(colorTextureView);
@@ -418,7 +430,7 @@ direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createLuminescenceCode(ID3
 
 direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createTonemapCode(ID3D11ShaderResourceView *colorTextureView, core::dto::Tonemap tonemap) {
     auto codeBuilder = getCodeBuilder();
-    codeBuilder->setTonemap(tonemap.gamma, tonemap.exposure, tonemap.saturation, tonemap.bleach, tonemap.defog, tonemap.defogRedChannelLoss, tonemap.defogGreenChannelLoss, tonemap.defogBlueChannelLoss);
+    codeBuilder->setTonemap(tonemap.gamma, tonemap.exposure, tonemap.saturation, tonemap.bleach, tonemap.defog, tonemap.fog);
 
     direct3d11::ShaderCode code;
     code.setColorTextureView(colorTextureView);
@@ -430,7 +442,7 @@ direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createTonemapCode(ID3D11Sh
 
 direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createVibranceCode(ID3D11ShaderResourceView *colorTextureView, core::dto::Vibrance vibrance) {
     auto codeBuilder = getCodeBuilder();
-    codeBuilder->setVibrance(vibrance.strength, vibrance.redChannelStrength, vibrance.greenChannelStrength, vibrance.blueChannelStrength);
+    codeBuilder->setVibrance(vibrance.strength, vibrance.gain);
 
     direct3d11::ShaderCode code;
     code.setColorTextureView(colorTextureView);

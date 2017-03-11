@@ -10,35 +10,36 @@ namespace iGP11.Tool.Shared.Model.GameSettings
     public class Vibrance
     {
         private const string GeneralGroupBy = "General";
+        private const string GainGroupBy = "Gain";
 
-        [ComponentName("BlueChannelStrength")]
-        [DataMember(Name = "blueChannelStrength")]
+        [ComponentName("Blue")]
+        [DataMember(Name = "gainBlue")]
         [Editable]
         [FloatRange(-10, 10)]
-        [GroupedBy(GeneralGroupBy)]
-        [Order(3)]
-        public float BlueChannelStrength { get; set; }
-
-        [ComponentName("GreenChannelStrength")]
-        [DataMember(Name = "greenChannelStrength")]
-        [Editable]
-        [FloatRange(-10, 10)]
-        [GroupedBy(GeneralGroupBy)]
+        [GroupedBy(GainGroupBy)]
         [Order(2)]
-        public float GreenChannelStrength { get; set; }
+        public float GainBlue { get; set; }
+
+        [ComponentName("Green")]
+        [DataMember(Name = "gainGreen")]
+        [Editable]
+        [FloatRange(-10, 10)]
+        [GroupedBy(GainGroupBy)]
+        [Order(1)]
+        public float GainGreen { get; set; }
 
         [ComponentName("Enabled")]
         [DataMember(Name = "isEnabled")]
         [Editable]
         public bool IsEnabled { get; set; }
 
-        [ComponentName("RedChannelStrength")]
-        [DataMember(Name = "redChannelStrength")]
+        [ComponentName("Red")]
+        [DataMember(Name = "gainRed")]
         [Editable]
         [FloatRange(-10, 10)]
-        [GroupedBy(GeneralGroupBy)]
-        [Order(1)]
-        public float RedChannelStrength { get; set; }
+        [GroupedBy(GainGroupBy)]
+        [Order(0)]
+        public float GainRed { get; set; }
 
         [ComponentName("Strength")]
         [DataMember(Name = "strength")]

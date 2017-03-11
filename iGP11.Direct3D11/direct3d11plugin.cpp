@@ -71,6 +71,7 @@ direct3d11::dto::FilterSettings Direct3D11Plugin::getFilterConfiguration() {
     filterSettings.bokehDoF = _settings.bokehDoF;
     filterSettings.depthBuffer = _settings.depthBuffer;
     filterSettings.pluginSettings = _settings.pluginSettings;
+    filterSettings.liftGammaGain = _settings.liftGammaGain;
     filterSettings.lumaSharpen = _settings.lumaSharpen;
     filterSettings.tonemap = _settings.tonemap;
     filterSettings.vibrance = _settings.vibrance;

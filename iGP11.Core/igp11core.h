@@ -221,7 +221,7 @@ namespace core {
     };
 
     namespace dto {
-        struct BokehDoF {
+        struct BokehDoF final {
             bool isEnabled = false;
             bool isChromaticAberrationEnabled = false;
             float chromaticAberrationFringe = 0;
@@ -239,12 +239,18 @@ namespace core {
             float luminescenceRateGain = 0;
         };
 
-        struct Command {
+        struct Color final {
+            float red = 0;
+            float green = 0;
+            float blue = 0;
+        };
+
+        struct Command final {
             int id;
             std::string data;
         };
 
-        struct DepthBuffer {
+        struct DepthBuffer final {
             float linearZNear = 0;
             float linearZFar = 0;
             bool isLimitEnabled = false;
@@ -252,62 +258,66 @@ namespace core {
             float depthMaximum = 0;
         };
 
-        struct Textures {
+        struct Textures final {
             TextureDetailLevel detailLevel;
             TextureOverrideMode overrideMode;
             std::string dumpingPath;
             std::string overridePath;
         };
 
-        struct Direct3D11PluginSettings {
+        struct Direct3D11PluginSettings final {
             Direct3D11ProfileType profileType;
             RenderingMode renderingMode;
         };
 
-        struct LumaSharpen {
+        struct LumaSharpen final {
             bool isEnabled = false;
             float sharpeningStrength;
             float sharpeningClamp;
-            float offsetBias;
+            float offset;
         };
 
-        struct Tonemap {
+        struct LiftGammaGain final {
+            bool isEnabled = false;
+            Color lift;
+            Color gamma;
+            Color gain;
+        };
+
+        struct Tonemap final {
             bool isEnabled = false;
             float gamma = 0;
             float exposure = 0;
             float saturation = 0;
             float bleach = 0;
             float defog = 0;
-            float defogRedChannelLoss = 0;
-            float defogGreenChannelLoss = 0;
-            float defogBlueChannelLoss = 0;
+            Color fog;
         };
 
-        struct Vibrance {
+        struct Vibrance final {
             bool isEnabled = false;
             float strength = 0;
-            float redChannelStrength = 0;
-            float greenChannelStrength = 0;
-            float blueChannelStrength = 0;
+            Color gain;
         };
 
-        struct PluginSettings {
+        struct PluginSettings final {
             std::string gameFilePath;
             std::string logsDirectoryPath;
             std::string proxyDirectoryPath;
         };
 
-        struct Direct3D11Settings {
+        struct Direct3D11Settings final {
             BokehDoF bokehDoF;
             DepthBuffer depthBuffer;
             Direct3D11PluginSettings pluginSettings;
+            LiftGammaGain liftGammaGain;
             LumaSharpen lumaSharpen;
             Textures textures;
             Tonemap tonemap;
             Vibrance vibrance;
         };
 
-        struct GameSettings {
+        struct GameSettings final {
             PluginSettings pluginSettings;
             core::PluginType pluginType;
             std::string communicationAddress;
@@ -316,7 +326,7 @@ namespace core {
             Direct3D11Settings direct3D11Settings;
         };
 
-        struct ProxySettings {
+        struct ProxySettings final {
             std::string gameFilePath;
             std::string proxyDirectoryPath;
             std::string logsDirectoryPath;
@@ -325,12 +335,12 @@ namespace core {
             Direct3D11Settings direct3D11Settings;
         };
 
-        struct UpdateProxySettings {
+        struct UpdateProxySettings final {
             PluginType pluginType;
             Direct3D11Settings direct3D11Settings;
         };
 
-        struct ProcessDetail {
+        struct ProcessDetail final {
             unsigned long id;
             std::string path;
         };

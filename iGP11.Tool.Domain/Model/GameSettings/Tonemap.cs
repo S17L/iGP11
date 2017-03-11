@@ -17,20 +17,20 @@ namespace iGP11.Tool.Domain.Model.GameSettings
         [FloatRange(0, 1)]
         public float Defog { get; set; }
 
-        [DataMember(Name = "defogBlueChannelLoss")]
+        [DataMember(Name = "fogBlue")]
         [Editable]
-        [FloatRange(0, 2.55f)]
-        public float DefogBlueChannelLoss { get; set; }
+        [FloatRange(0, 1)]
+        public float FogBlue { get; set; }
 
-        [DataMember(Name = "defogGreenChannelLoss")]
+        [DataMember(Name = "fogGreen")]
         [Editable]
-        [FloatRange(0, 2.55f)]
-        public float DefogGreenChannelLoss { get; set; }
+        [FloatRange(0, 1)]
+        public float FogGreen { get; set; }
 
-        [DataMember(Name = "defogRedChannelLoss")]
+        [DataMember(Name = "fogRed")]
         [Editable]
-        [FloatRange(0, 2.55f)]
-        public float DefogRedChannelLoss { get; set; }
+        [FloatRange(0, 1)]
+        public float FogRed { get; set; }
 
         [DataMember(Name = "exposure")]
         [Editable]

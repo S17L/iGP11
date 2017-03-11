@@ -16,13 +16,13 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [Editable]
         public bool IsEnabled { get; set; }
 
-        [ComponentName("OffsetBias")]
-        [DataMember(Name = "offsetBias")]
+        [ComponentName("Offset")]
+        [DataMember(Name = "offset")]
         [Editable]
         [FloatRange(0, 6)]
         [GroupedBy(GeneralGroupBy)]
         [Order(2)]
-        public float OffsetBias { get; set; }
+        public float Offset { get; set; }
 
         [ComponentName("SharpeningClamp")]
         [DataMember(Name = "sharpeningClamp")]

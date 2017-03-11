@@ -260,10 +260,11 @@ namespace core {
         void setDepthTextureLimit(float depthMin, float depthMax);
         BokehDoFCodeBuilder setBokehDoF(float depthMinimum, float depthMaximum, float depthRateGain, float luminescenceMinimum, float luminescenceMaximum, float luminescenceRateGain);
         void setGaussianBlur(unsigned int size, float sigma, float minWeight = 0.005);
-        void setLumaSharpen(float sharpeningStrength, float sharpeningClamp, float offsetBias);
+        void setLiftGammaGain(dto::Color lift, dto::Color gamma, dto::Color gain);
+        void setLumaSharpen(float sharpeningStrength, float sharpeningClamp, float offset);
         void setResolution(unsigned int width, unsigned int height);
-        void setTonemap(float gamma, float exposure, float saturation, float bleach, float defog, float defogRedChannelLoss, float defogGreenChannelLoss, float defogBlueChannelLoss);
-        void setVibrance(float strength, float redChannelGain, float greenChannelGain, float blueChannelGain);
+        void setTonemap(float gamma, float exposure, float saturation, float bleach, float defog, dto::Color fog);
+        void setVibrance(float strength, dto::Color gain);
         std::string buildPixelShaderCode();
         std::string buildVertexShaderCode();
     };

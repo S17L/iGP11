@@ -78,6 +78,32 @@ void write(rapidjson::Writer<rapidjson::StringBuffer> &writer, const core::dto::
             writer.EndObject();
         }
 
+        writer.String(ENCRYPT_STRING("liftGammaGain"));
+        writer.StartObject();
+        {
+            writer.String(ENCRYPT_STRING("isEnabled"));
+            writer.Bool(data.liftGammaGain.isEnabled);
+            writer.String(ENCRYPT_STRING("liftRed"));
+            writer.Double(data.liftGammaGain.lift.red);
+            writer.String(ENCRYPT_STRING("liftGreen"));
+            writer.Double(data.liftGammaGain.lift.green);
+            writer.String(ENCRYPT_STRING("liftBlue"));
+            writer.Double(data.liftGammaGain.lift.blue);
+            writer.String(ENCRYPT_STRING("gammaRed"));
+            writer.Double(data.liftGammaGain.gamma.red);
+            writer.String(ENCRYPT_STRING("gammaGreen"));
+            writer.Double(data.liftGammaGain.gamma.green);
+            writer.String(ENCRYPT_STRING("gammaBlue"));
+            writer.Double(data.liftGammaGain.gamma.blue);
+            writer.String(ENCRYPT_STRING("gainRed"));
+            writer.Double(data.liftGammaGain.gain.red);
+            writer.String(ENCRYPT_STRING("gainGreen"));
+            writer.Double(data.liftGammaGain.gain.green);
+            writer.String(ENCRYPT_STRING("gainBlue"));
+            writer.Double(data.liftGammaGain.gain.blue);
+            writer.EndObject();
+        }
+
         writer.String(ENCRYPT_STRING("lumaSharpen"));
         writer.StartObject();
         {
@@ -87,8 +113,8 @@ void write(rapidjson::Writer<rapidjson::StringBuffer> &writer, const core::dto::
             writer.Double(data.lumaSharpen.sharpeningStrength);
             writer.String(ENCRYPT_STRING("sharpeningClamp"));
             writer.Double(data.lumaSharpen.sharpeningClamp);
-            writer.String(ENCRYPT_STRING("offsetBias"));
-            writer.Double(data.lumaSharpen.offsetBias);
+            writer.String(ENCRYPT_STRING("offset"));
+            writer.Double(data.lumaSharpen.offset);
             writer.EndObject();
         }
 
@@ -121,12 +147,12 @@ void write(rapidjson::Writer<rapidjson::StringBuffer> &writer, const core::dto::
             writer.Double(data.tonemap.bleach);
             writer.String(ENCRYPT_STRING("defog"));
             writer.Double(data.tonemap.defog);
-            writer.String(ENCRYPT_STRING("defogRedChannelLoss"));
-            writer.Double(data.tonemap.defogRedChannelLoss);
-            writer.String(ENCRYPT_STRING("defogGreenChannelLoss"));
-            writer.Double(data.tonemap.defogGreenChannelLoss);
-            writer.String(ENCRYPT_STRING("defogBlueChannelLoss"));
-            writer.Double(data.tonemap.defogBlueChannelLoss);
+            writer.String(ENCRYPT_STRING("fogRed"));
+            writer.Double(data.tonemap.fog.red);
+            writer.String(ENCRYPT_STRING("fogGreen"));
+            writer.Double(data.tonemap.fog.green);
+            writer.String(ENCRYPT_STRING("fogBlue"));
+            writer.Double(data.tonemap.fog.blue);
             writer.EndObject();
         }
 
@@ -137,12 +163,12 @@ void write(rapidjson::Writer<rapidjson::StringBuffer> &writer, const core::dto::
             writer.Bool(data.vibrance.isEnabled);
             writer.String(ENCRYPT_STRING("strength"));
             writer.Double(data.vibrance.strength);
-            writer.String(ENCRYPT_STRING("redChannelStrength"));
-            writer.Double(data.vibrance.redChannelStrength);
-            writer.String(ENCRYPT_STRING("greenChannelStrength"));
-            writer.Double(data.vibrance.greenChannelStrength);
-            writer.String(ENCRYPT_STRING("blueChannelStrength"));
-            writer.Double(data.vibrance.blueChannelStrength);
+            writer.String(ENCRYPT_STRING("gainRed"));
+            writer.Double(data.vibrance.gain.red);
+            writer.String(ENCRYPT_STRING("gainGreen"));
+            writer.Double(data.vibrance.gain.green);
+            writer.String(ENCRYPT_STRING("gainBlue"));
+            writer.Double(data.vibrance.gain.blue);
             writer.EndObject();
         }
 
@@ -231,13 +257,29 @@ core::dto::Direct3D11Settings core::JsonSerializer::deserializeDirect3D11Setting
         settings.pluginSettings = pluginSettings;
     }
 
+    rapidjson::Value &liftGammaGainJson = document[ENCRYPT_STRING("liftGammaGain")];
+    if (!liftGammaGainJson.IsNull()) {
+        core::dto::LiftGammaGain liftGammaGain;
+        liftGammaGain.isEnabled = liftGammaGainJson[ENCRYPT_STRING("isEnabled")].GetBool();
+        liftGammaGain.lift.red = liftGammaGainJson[ENCRYPT_STRING("liftRed")].GetDouble();
+        liftGammaGain.lift.green = liftGammaGainJson[ENCRYPT_STRING("liftGreen")].GetDouble();
+        liftGammaGain.lift.blue = liftGammaGainJson[ENCRYPT_STRING("liftBlue")].GetDouble();
+        liftGammaGain.gamma.red = liftGammaGainJson[ENCRYPT_STRING("gammaRed")].GetDouble();
+        liftGammaGain.gamma.green = liftGammaGainJson[ENCRYPT_STRING("gammaGreen")].GetDouble();
+        liftGammaGain.gamma.blue = liftGammaGainJson[ENCRYPT_STRING("gammaBlue")].GetDouble();
+        liftGammaGain.gain.red = liftGammaGainJson[ENCRYPT_STRING("gainRed")].GetDouble();
+        liftGammaGain.gain.green = liftGammaGainJson[ENCRYPT_STRING("gainGreen")].GetDouble();
+        liftGammaGain.gain.blue = liftGammaGainJson[ENCRYPT_STRING("gainBlue")].GetDouble();
+        settings.liftGammaGain = liftGammaGain;
+    }
+
     rapidjson::Value &lumaSharpenJson = document[ENCRYPT_STRING("lumaSharpen")];
     if (!lumaSharpenJson.IsNull()) {
         core::dto::LumaSharpen lumaSharpen;
         lumaSharpen.isEnabled = lumaSharpenJson[ENCRYPT_STRING("isEnabled")].GetBool();
         lumaSharpen.sharpeningStrength = lumaSharpenJson[ENCRYPT_STRING("sharpeningStrength")].GetDouble();
         lumaSharpen.sharpeningClamp = lumaSharpenJson[ENCRYPT_STRING("sharpeningClamp")].GetDouble();
-        lumaSharpen.offsetBias = lumaSharpenJson[ENCRYPT_STRING("offsetBias")].GetDouble();
+        lumaSharpen.offset = lumaSharpenJson[ENCRYPT_STRING("offset")].GetDouble();
         settings.lumaSharpen = lumaSharpen;
     }
 
@@ -260,9 +302,9 @@ core::dto::Direct3D11Settings core::JsonSerializer::deserializeDirect3D11Setting
         tonemap.saturation = tonemapJson[ENCRYPT_STRING("saturation")].GetDouble();
         tonemap.bleach = tonemapJson[ENCRYPT_STRING("bleach")].GetDouble();
         tonemap.defog = tonemapJson[ENCRYPT_STRING("defog")].GetDouble();
-        tonemap.defogRedChannelLoss = tonemapJson[ENCRYPT_STRING("defogRedChannelLoss")].GetDouble();
-        tonemap.defogGreenChannelLoss = tonemapJson[ENCRYPT_STRING("defogGreenChannelLoss")].GetDouble();
-        tonemap.defogBlueChannelLoss = tonemapJson[ENCRYPT_STRING("defogBlueChannelLoss")].GetDouble();
+        tonemap.fog.red = tonemapJson[ENCRYPT_STRING("fogRed")].GetDouble();
+        tonemap.fog.green = tonemapJson[ENCRYPT_STRING("fogGreen")].GetDouble();
+        tonemap.fog.blue = tonemapJson[ENCRYPT_STRING("fogBlue")].GetDouble();
         settings.tonemap = tonemap;
     }
 
@@ -271,9 +313,9 @@ core::dto::Direct3D11Settings core::JsonSerializer::deserializeDirect3D11Setting
         core::dto::Vibrance vibrance;
         vibrance.isEnabled = vibranceJson[ENCRYPT_STRING("isEnabled")].GetBool();
         vibrance.strength = vibranceJson[ENCRYPT_STRING("strength")].GetDouble();
-        vibrance.redChannelStrength = vibranceJson[ENCRYPT_STRING("redChannelStrength")].GetDouble();
-        vibrance.greenChannelStrength = vibranceJson[ENCRYPT_STRING("greenChannelStrength")].GetDouble();
-        vibrance.blueChannelStrength = vibranceJson[ENCRYPT_STRING("blueChannelStrength")].GetDouble();
+        vibrance.gain.red = vibranceJson[ENCRYPT_STRING("gainRed")].GetDouble();
+        vibrance.gain.green = vibranceJson[ENCRYPT_STRING("gainGreen")].GetDouble();
+        vibrance.gain.blue = vibranceJson[ENCRYPT_STRING("gainBlue")].GetDouble();
         settings.vibrance = vibrance;
     }
 

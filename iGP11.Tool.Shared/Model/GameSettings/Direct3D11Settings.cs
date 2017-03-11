@@ -22,10 +22,17 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         public DepthBuffer DepthBuffer { get; set; }
 
         [Complex]
+        [DataMember(Name = "liftGammaGain", IsRequired = true)]
+        [ComponentName("LiftGammaGain")]
+        [Editable]
+        [Order(4)]
+        public LiftGammaGain LiftGammaGain { get; set; }
+
+        [Complex]
         [ComponentName("LumaSharpen")]
         [DataMember(Name = "lumaSharpen", IsRequired = true)]
         [Editable]
-        [Order(4)]
+        [Order(5)]
         public LumaSharpen LumaSharpen { get; set; }
 
         [Complex]
@@ -48,14 +55,14 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [ComponentName("Tonemap")]
         [DataMember(Name = "tonemap", IsRequired = true)]
         [Editable]
-        [Order(5)]
+        [Order(6)]
         public Tonemap Tonemap { get; set; }
 
         [Complex]
         [ComponentName("Vibrance")]
         [DataMember(Name = "vibrance", IsRequired = true)]
         [Editable]
-        [Order(6)]
+        [Order(7)]
         public Vibrance Vibrance { get; set; }
     }
 }

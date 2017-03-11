@@ -105,6 +105,9 @@
     <ClInclude Include="direct3d11plugin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="liftgammagain.h">
+      <Filter>Header Files\effects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -181,6 +184,9 @@
     </ClCompile>
     <ClCompile Include="direct3d11plugin.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="liftgammagain.cpp">
+      <Filter>Source Files\effects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

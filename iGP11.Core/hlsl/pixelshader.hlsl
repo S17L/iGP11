@@ -204,10 +204,11 @@ float4 renderBokehDoFBlending(PixelInputType input) : SV_TARGET
 
 #define GAUSSIAN_BLUR_ENABLED 0
 #define GAUSSIAN_BLUR_SIZE 2
+
+#if GAUSSIAN_BLUR_ENABLED == 1
 static const float _gaussianblur_offset[GAUSSIAN_BLUR_SIZE] = { 0.000000, 1.002473 };
 static const float _gaussianblur_weight[GAUSSIAN_BLUR_SIZE] = { 0.786986, 0.106771 };
 
-#if GAUSSIAN_BLUR_ENABLED == 1
 float4 renderHorizontalGaussianBlur(PixelInputType input) : SV_TARGET
 {
     float4 color = _color_texture.Sample(_bilinear_sampler, input.texcoord) * _gaussianblur_weight[0];
@@ -241,12 +242,48 @@ float4 renderVerticalGaussianBlur(PixelInputType input) : SV_TARGET
 /* END */
 
 /* BEGIN */
+/* LIFTGAMMAGAIN */
+
+#define LIFTGAMMAGAIN_ENABLED 0
+#define LIFTGAMMAGAIN_LIFT_RED 1.0
+#define LIFTGAMMAGAIN_LIFT_GREEN 1.0
+#define LIFTGAMMAGAIN_LIFT_BLUE 1.0
+#define LIFTGAMMAGAIN_GAMMA_RED 1.0
+#define LIFTGAMMAGAIN_GAMMA_GREEN 1.0
+#define LIFTGAMMAGAIN_GAMMA_BLUE 1.0
+#define LIFTGAMMAGAIN_GAIN_RED 1.0
+#define LIFTGAMMAGAIN_GAIN_GREEN 1.0
+#define LIFTGAMMAGAIN_GAIN_BLUE 1.0
+
+#if LIFTGAMMAGAIN_ENABLED == 1
+static const float3 _lift_color = float3(LIFTGAMMAGAIN_LIFT_RED, LIFTGAMMAGAIN_LIFT_GREEN, LIFTGAMMAGAIN_LIFT_BLUE);
+static const float3 _gamma_color = float3(LIFTGAMMAGAIN_GAMMA_RED, LIFTGAMMAGAIN_GAMMA_GREEN, LIFTGAMMAGAIN_GAMMA_BLUE);
+static const float3 _gain_color = float3(LIFTGAMMAGAIN_GAIN_RED, LIFTGAMMAGAIN_GAIN_GREEN, LIFTGAMMAGAIN_GAIN_BLUE);
+
+float4 renderLiftGammaGain(PixelInputType input) : SV_TARGET
+{
+    float4 color = _color_texture.Sample(_point_sampler, input.texcoord);
+    
+    color.rgb = color.rgb * (1.5 - 0.5 * _lift_color) + 0.5 * _lift_color - 0.5;
+	color.rgb = saturate(color.rgb);
+    color.rgb *= _gain_color;
+    color.rgb = pow(color.rgb, 1.0 / _gamma_color);
+    color.rgb = saturate(color.rgb);
+
+    return color;
+}
+#endif
+
+/* LIFTGAMMAGAIN */
+/* END */
+
+/* BEGIN */
 /* LUMASHARPEN */
 
 #define LUMASHARPEN_ENABLED 0
 #define LUMASHARPEN_SHARPENING_STRENGTH 1.25
 #define LUMASHARPEN_SHARPENING_CLAMP 0.035
-#define LUMASHARPEN_OFFSET_BIAS 1
+#define LUMASHARPEN_OFFSET 1
 
 #if LUMASHARPEN_ENABLED == 1
 float4 renderLumaSharpen(PixelInputType input) : SV_TARGET
@@ -254,10 +291,10 @@ float4 renderLumaSharpen(PixelInputType input) : SV_TARGET
     float3 color = _color_texture.Sample(_point_sampler, input.texcoord).rgb;
     float3 sharpeningStrengthLuma = LUMASHARPEN_SHARPENING_STRENGTH * _luminescence_coefficient;
 
-    float3 blurColor = _color_texture.Sample(_bilinear_sampler, input.texcoord + float2(1, -1) * _texel * 0.5 * LUMASHARPEN_OFFSET_BIAS).rgb;
-    blurColor += _color_texture.Sample(_bilinear_sampler, input.texcoord + float2(-1, -1) * _texel * 0.5 * LUMASHARPEN_OFFSET_BIAS).rgb;
-    blurColor += _color_texture.Sample(_bilinear_sampler, input.texcoord + float2(1, 1) * _texel * 0.5 * LUMASHARPEN_OFFSET_BIAS).rgb;
-    blurColor += _color_texture.Sample(_bilinear_sampler, input.texcoord + float2(-1, 1) * _texel * 0.5 * LUMASHARPEN_OFFSET_BIAS).rgb;
+    float3 blurColor = _color_texture.Sample(_bilinear_sampler, input.texcoord + float2(1, -1) * _texel * 0.5 * LUMASHARPEN_OFFSET).rgb;
+    blurColor += _color_texture.Sample(_bilinear_sampler, input.texcoord + float2(-1, -1) * _texel * 0.5 * LUMASHARPEN_OFFSET).rgb;
+    blurColor += _color_texture.Sample(_bilinear_sampler, input.texcoord + float2(1, 1) * _texel * 0.5 * LUMASHARPEN_OFFSET).rgb;
+    blurColor += _color_texture.Sample(_bilinear_sampler, input.texcoord + float2(-1, 1) * _texel * 0.5 * LUMASHARPEN_OFFSET).rgb;
     blurColor /= 4;
 
     float3 sharp = color - blurColor;
@@ -284,16 +321,17 @@ float4 renderLumaSharpen(PixelInputType input) : SV_TARGET
 #define TONEMAP_SATURATION 0
 #define TONEMAP_BLEACH 0
 #define TONEMAP_DEFOG 0
-#define TONEMAP_DEFOG_RED_CHANNEL_LOSS 0
-#define TONEMAP_DEFOG_GREEN_CHANNEL_LOSS 0
-#define TONEMAP_DEFOG_BLUE_CHANNEL_LOSS 2.55
-static const float3 _defog_color = TONEMAP_DEFOG * float3(TONEMAP_DEFOG_RED_CHANNEL_LOSS, TONEMAP_DEFOG_GREEN_CHANNEL_LOSS, TONEMAP_DEFOG_BLUE_CHANNEL_LOSS);
+#define TONEMAP_FOG_RED 0
+#define TONEMAP_FOG_GREEN 0
+#define TONEMAP_FOG_BLUE 1.0
 
 #if TONEMAP_ENABLED == 1
+static const float3 _defog_color = TONEMAP_DEFOG * float3(TONEMAP_FOG_RED, TONEMAP_FOG_GREEN, TONEMAP_FOG_BLUE);
+
 float4 renderTonemap(PixelInputType input) : SV_TARGET
 {
     float4 color = _color_texture.Sample(_point_sampler, input.texcoord);
-    color.rgb = saturate(color.rgb - _defog_color);
+    color.rgb = saturate(color.rgb - _defog_color * 2.55);
     color.rgb *= pow(2.0f, TONEMAP_EXPOSURE);
     color.rgb = pow(color.rgb, TONEMAP_GAMMA);
     float luminescence = getLuminescence(color.rgb);
@@ -314,12 +352,13 @@ float4 renderTonemap(PixelInputType input) : SV_TARGET
 
 #define VIBRANCE_ENABLED 0
 #define VIBRANCE_STRENGTH 0.3
-#define VIBRANCE_RED_CHANNEL_GAIN 1
-#define VIBRANCE_GREEN_CHANNEL_GAIN 1
-#define VIBRANCE_BLUE_CHANNEL_GAIN 1
-static const float3 _vibrance_coefficient = VIBRANCE_STRENGTH * float3(VIBRANCE_RED_CHANNEL_GAIN, VIBRANCE_GREEN_CHANNEL_GAIN, VIBRANCE_BLUE_CHANNEL_GAIN);
+#define VIBRANCE_GAIN_RED 1.0
+#define VIBRANCE_GAIN_GREEN 1.0
+#define VIBRANCE_GAIN_BLUE 1.0
 
 #if VIBRANCE_ENABLED == 1
+static const float3 _vibrance_coefficient = VIBRANCE_STRENGTH * float3(VIBRANCE_GAIN_RED, VIBRANCE_GAIN_GREEN, VIBRANCE_GAIN_BLUE);
+
 float4 renderVibrance(PixelInputType input) : SV_TARGET
 {
     float4 color = _color_texture.Sample(_point_sampler, input.texcoord);

@@ -499,11 +499,24 @@ core::BokehDoFCodeBuilder core::ShaderCodeBuilder::setBokehDoF(float depthMinimu
     return core::BokehDoFCodeBuilder(this, depthMinimum, depthMaximum, depthRateGain, luminescenceMinimum, luminescenceMaximum, luminescenceRateGain);
 }
 
-void core::ShaderCodeBuilder::setLumaSharpen(float sharpeningStrength, float sharpeningClamp, float offsetBias) {
+void core::ShaderCodeBuilder::setLiftGammaGain(core::dto::Color lift, core::dto::Color gamma, core::dto::Color gain) {
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_ENABLED"), translate(true)));
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_LIFT_RED"), translate(lift.red)));
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_LIFT_GREEN"), translate(lift.green)));
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_LIFT_BLUE"), translate(lift.blue)));
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_GAMMA_RED"), translate(gamma.red)));
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_GAMMA_GREEN"), translate(gamma.green)));
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_GAMMA_BLUE"), translate(gamma.blue)));
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_GAIN_RED"), translate(gain.red)));
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_GAIN_GREEN"), translate(gain.green)));
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_GAIN_BLUE"), translate(gain.blue)));
+}
+
+void core::ShaderCodeBuilder::setLumaSharpen(float sharpeningStrength, float sharpeningClamp, float offset) {
     add(new core::DefineAlterationElement(ENCRYPT_STRING("LUMASHARPEN_ENABLED"), translate(true)));
     add(new core::DefineAlterationElement(ENCRYPT_STRING("LUMASHARPEN_SHARPENING_STRENGTH"), translate(sharpeningStrength)));
     add(new core::DefineAlterationElement(ENCRYPT_STRING("LUMASHARPEN_SHARPENING_CLAMP"), translate(sharpeningClamp)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("LUMASHARPEN_OFFSET_BIAS"), translate(offsetBias)));
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("LUMASHARPEN_OFFSET"), translate(offset)));
 }
 
 void core::ShaderCodeBuilder::setResolution(unsigned int width, unsigned int height) {
@@ -511,24 +524,24 @@ void core::ShaderCodeBuilder::setResolution(unsigned int width, unsigned int hei
     add(new core::DefineAlterationElement(ENCRYPT_STRING("SCREEN_HEIGHT"), translate(height)));
 }
 
-void core::ShaderCodeBuilder::setTonemap(float gamma, float exposure, float saturation, float bleach, float defog, float defogRedChannelLoss, float defogGreenChannelLoss, float defogBlueChannelLoss) {
+void core::ShaderCodeBuilder::setTonemap(float gamma, float exposure, float saturation, float bleach, float defog, core::dto::Color fog) {
     add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_ENABLED"), translate(true)));
     add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_GAMMA"), translate(gamma)));
     add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_EXPOSURE"), translate(exposure)));
     add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_SATURATION"), translate(saturation)));
     add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_BLEACH"), translate(bleach)));
     add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_DEFOG"), translate(defog)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_DEFOG_RED_CHANNEL_LOSS"), translate(defogRedChannelLoss)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_DEFOG_GREEN_CHANNEL_LOSS"), translate(defogGreenChannelLoss)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_DEFOG_BLUE_CHANNEL_LOSS"), translate(defogBlueChannelLoss)));
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_FOG_RED"), translate(fog.red)));
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_FOG_GREEN"), translate(fog.green)));
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_FOG_BLUE"), translate(fog.blue)));
 }
 
-void core::ShaderCodeBuilder::setVibrance(float strength, float redChannelGain, float greenChannelGain, float blueChannelGain) {
+void core::ShaderCodeBuilder::setVibrance(float strength, core::dto::Color gain) {
     add(new core::DefineAlterationElement(ENCRYPT_STRING("VIBRANCE_ENABLED"), translate(true)));
     add(new core::DefineAlterationElement(ENCRYPT_STRING("VIBRANCE_STRENGTH"), translate(strength)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("VIBRANCE_RED_CHANNEL_GAIN"), translate(redChannelGain)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("VIBRANCE_GREEN_CHANNEL_GAIN"), translate(greenChannelGain)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("VIBRANCE_BLUE_CHANNEL_GAIN"), translate(blueChannelGain)));
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("VIBRANCE_GAIN_RED"), translate(gain.red)));
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("VIBRANCE_GAIN_GREEN"), translate(gain.green)));
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("VIBRANCE_GAIN_BLUE"), translate(gain.blue)));
 }
 
 void core::ShaderCodeBuilder::setGaussianBlur(unsigned int size, float sigma, float minWeight) {

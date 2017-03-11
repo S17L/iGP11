@@ -11,10 +11,10 @@ namespace iGP11.Tool.Domain.Model.GameSettings
         [Editable]
         public bool IsEnabled { get; set; }
 
-        [DataMember(Name = "offsetBias")]
+        [DataMember(Name = "offset")]
         [Editable]
         [FloatRange(0, 6)]
-        public float OffsetBias { get; set; }
+        public float Offset { get; set; }
 
         [DataMember(Name = "sharpeningClamp")]
         [Editable]

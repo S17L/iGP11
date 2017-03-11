@@ -44,7 +44,6 @@ namespace iGP11.Tool.ViewModel.PropertyEditor
         public object ObjectProperty
         {
             get { return _objectProperty; }
-
             set
             {
                 if (_objectProperty == value)
@@ -65,7 +64,6 @@ namespace iGP11.Tool.ViewModel.PropertyEditor
         public TProperty Property
         {
             get { return _property.Value; }
-
             set
             {
                 if (_equalityComparer.Equals(_property.Value, value))
@@ -85,7 +83,16 @@ namespace iGP11.Tool.ViewModel.PropertyEditor
 
         public IEnumerable<string> GetDataValidationErrors()
         {
-            if (!_isValid)
+            if (_isValid)
+            {
+                yield break;
+            }
+
+            if (_property.Configuration.GroupedBy != null)
+            {
+                yield return $"[{_property.Configuration.GroupedBy.Localize()}] {_property.Name.Localize()}: data error";
+            }
+            else
             {
                 yield return $"{_property.Name.Localize()}: data error";
             }

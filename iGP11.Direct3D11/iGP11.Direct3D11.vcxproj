@@ -172,6 +172,7 @@
     <ClInclude Include="igp11direct3d11.h" />
     <ClInclude Include="direct3d11plugin.h" />
     <ClInclude Include="effect.h" />
+    <ClInclude Include="liftgammagain.h" />
     <ClInclude Include="lumasharpen.h" />
     <ClInclude Include="luminescence.h" />
     <ClInclude Include="genericprofile.h" />
@@ -214,6 +215,7 @@
     <ClCompile Include="horizontalgaussianblur.cpp" />
     <ClCompile Include="igp11direct3d11.cpp" />
     <ClCompile Include="effect.cpp" />
+    <ClCompile Include="liftgammagain.cpp" />
     <ClCompile Include="lumasharpen.cpp" />
     <ClCompile Include="luminescence.cpp" />
     <ClCompile Include="genericprofile.cpp" />

@@ -10,6 +10,7 @@
 #include "codebuilder.h"
 #include "depth.h"
 #include "horizontalgaussianblur.h"
+#include "liftgammagain.h"
 #include "lumasharpen.h"
 #include "luminescence.h"
 #include "render.h"
@@ -27,6 +28,7 @@ namespace direct3d11 {
             core::dto::BokehDoF bokehDoF;
             core::dto::DepthBuffer depthBuffer;
             core::dto::Direct3D11PluginSettings pluginSettings;
+            core::dto::LiftGammaGain liftGammaGain;
             core::dto::LumaSharpen lumaSharpen;
             core::dto::Tonemap tonemap;
             core::dto::Vibrance vibrance;

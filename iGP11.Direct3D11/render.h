@@ -171,6 +171,7 @@ namespace direct3d11 {
         ShaderCodeFactory(std::string codeDirectoryPath, dto::RenderingResolution resolution)
             : _codeDirectoryPath(codeDirectoryPath), _resolution(resolution) { }
         ShaderCode createAlphaCode(ID3D11ShaderResourceView *colorTextureView);
+        ShaderCode createLiftGammaGainCode(ID3D11ShaderResourceView *colorTextureView, core::dto::LiftGammaGain liftGammaGain);
         ShaderCode createLumaSharpenCode(ID3D11ShaderResourceView *colorTextureView, core::dto::LumaSharpen lumaSharpen);
         ShaderCode createLuminescenceCode(ID3D11ShaderResourceView *colorTextureView);
         ShaderCode createTonemapCode(ID3D11ShaderResourceView *colorTextureView, core::dto::Tonemap tonemap);

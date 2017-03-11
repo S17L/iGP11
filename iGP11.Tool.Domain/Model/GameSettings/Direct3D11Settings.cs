@@ -18,6 +18,11 @@ namespace iGP11.Tool.Domain.Model.GameSettings
         public DepthBuffer DepthBuffer { get; set; }
 
         [Complex]
+        [DataMember(Name = "liftGammaGain", IsRequired = true)]
+        [Editable]
+        public LiftGammaGain LiftGammaGain { get; set; }
+
+        [Complex]
         [DataMember(Name = "lumaSharpen", IsRequired = true)]
         [Editable]
         public LumaSharpen LumaSharpen { get; set; }

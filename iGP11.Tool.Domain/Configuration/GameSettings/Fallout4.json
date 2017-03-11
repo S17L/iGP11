@@ -54,29 +54,41 @@
           "luminescenceMaximum": 5,
           "luminescenceRateGain": 2
         },
+        "liftGammaGain": {
+          "isEnabled": false,
+          "liftRed": 1.0,
+          "liftGreen": 1.0,
+          "liftBlue": 1.0,
+          "gammaRed": 1.0,
+          "gammaGreen": 1.0,
+          "gammaBlue": 1.0,
+          "gainRed": 1.0,
+          "gainGreen": 1.0,
+          "gainBlue": 1.0        
+        },
         "lumaSharpen": {
           "isEnabled": true,
           "sharpeningStrength": 1.75,
           "sharpeningClamp": 0.035,
-          "offsetBias": 1
+          "offset": 1
         },
         "tonemap": {
-          "isEnabled": true,
+          "isEnabled": false,
           "gamma": 1,
           "exposure": 0,
-          "saturation": 0.25,
+          "saturation": 0.5,
           "bleach": 0,
           "defog": 0,
-          "defogRedChannelLoss": 0,
-          "defogGreenChannelLoss": 0,
-          "defogBlueChannelLoss": 2.55
+          "fogRed": 0,
+          "fogGreen": 0,
+          "fogBlue": 1.0
         },
         "vibrance": {
           "isEnabled": true,
-          "strength": 0.3,
-          "redChannelStrength": 1,
-          "greenChannelStrength": 1,
-          "blueChannelStrength": 1
+          "strength": 0.1,
+          "gainRed": 1.0,
+          "gainGreen": 1.0,
+          "gainBlue": 1.0
         }
       }
     }

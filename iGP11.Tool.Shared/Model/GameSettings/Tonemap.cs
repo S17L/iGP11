@@ -10,6 +10,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
     public class Tonemap
     {
         private const string GeneralGroupBy = "General";
+        private const string FogGroupBy = "Fog";
 
         [ComponentName("Bleach")]
         [DataMember(Name = "bleach")]
@@ -27,29 +28,29 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [Order(4)]
         public float Defog { get; set; }
 
-        [ComponentName("DefogBlueChannelLoss")]
-        [DataMember(Name = "defogBlueChannelLoss")]
+        [ComponentName("Blue")]
+        [DataMember(Name = "fogBlue")]
         [Editable]
-        [FloatRange(0, 2.55f)]
-        [GroupedBy(GeneralGroupBy)]
-        [Order(7)]
-        public float DefogBlueChannelLoss { get; set; }
+        [FloatRange(0, 1)]
+        [GroupedBy(FogGroupBy)]
+        [Order(2)]
+        public float FogBlue { get; set; }
 
-        [ComponentName("DefogGreenChannelLoss")]
-        [DataMember(Name = "defogGreenChannelLoss")]
+        [ComponentName("Green")]
+        [DataMember(Name = "fogGreen")]
         [Editable]
-        [FloatRange(0, 2.55f)]
-        [GroupedBy(GeneralGroupBy)]
-        [Order(6)]
-        public float DefogGreenChannelLoss { get; set; }
+        [FloatRange(0, 1)]
+        [GroupedBy(FogGroupBy)]
+        [Order(1)]
+        public float FogGreen { get; set; }
 
-        [ComponentName("DefogRedChannelLoss")]
-        [DataMember(Name = "defogRedChannelLoss")]
+        [ComponentName("Red")]
+        [DataMember(Name = "fogRed")]
         [Editable]
-        [FloatRange(0, 2.55f)]
-        [GroupedBy(GeneralGroupBy)]
-        [Order(5)]
-        public float DefogRedChannelLoss { get; set; }
+        [FloatRange(0, 1)]
+        [GroupedBy(FogGroupBy)]
+        [Order(0)]
+        public float FogRed { get; set; }
 
         [ComponentName("Exposure")]
         [DataMember(Name = "exposure")]
