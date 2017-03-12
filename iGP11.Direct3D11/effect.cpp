@@ -62,7 +62,7 @@ void direct3d11::EffectsApplicator::applyProcessing(const direct3d11::dto::PostP
                     addEffect(new direct3d11::LumasharpenEffect(_context, _proxy->nextColorTexture(), _resolution, _filterSettings.lumaSharpen, _codeBuilderFactory.get()));
                 }
 
-                if (_filterSettings.bokehDoF.isEnabled) {
+                if (_filterSettings.bokehDoF.isEnabled && postProcessingSettings.depthTexture != nullptr) {
                     addEffect(new direct3d11::BokehDoFEffect(_context, _proxy->nextColorTexture(), _proxy->getDepthTextureView(), _resolution, _filterSettings.bokehDoF, _filterSettings.depthBuffer, _codeBuilderFactory.get()));
                 }
             }

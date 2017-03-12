@@ -32,27 +32,27 @@
         },
         "depthBuffer": {
           "linearZNear": 0.01,
-          "linearZFar": 50,
+          "linearZFar": 100,
           "isLimitEnabled": true,
-          "depthMinimum": 0.02,
+          "depthMinimum": 0.04,
           "depthMaximum": 0.4
         },
         "bokehDoF": {
           "isEnabled": true,
           "isChromaticAberrationEnabled": true,
-          "chromaticAberrationFringe": 15,
+          "chromaticAberrationFringe": 2048,
           "isPreservingShape": false,
           "shapeSize": 3,
-          "shapeStrength": 100,
-          "shapeRotation": 15,
+          "shapeStrength": 50,
+          "shapeRotation": 0,
           "isBlurEnabled": true,
-          "blurStrength": 0.3,
+          "blurStrength": 0.1,
           "depthMinimum": 0,
           "depthMaximum": 1,
           "depthRateGain": 1,
-          "luminescenceMinimum": 0.01,
-          "luminescenceMaximum": 10,
-          "luminescenceRateGain": 2
+          "luminescenceMinimum": 0,
+          "luminescenceMaximum": 32,
+          "luminescenceRateGain": 3
         },
         "denoise": {
           "isEnabled": false,
@@ -77,7 +77,7 @@
         },
         "lumaSharpen": {
           "isEnabled": true,
-          "sharpeningStrength": 1,
+          "sharpeningStrength": 1.25,
           "sharpeningClamp": 0.035,
           "offset": 1
         },
@@ -93,7 +93,7 @@
           "fogBlue": 1.0
         },
         "vibrance": {
-          "isEnabled": true,
+          "isEnabled": false,
           "strength": 0.1,
           "gainRed": 1.0,
           "gainGreen": 1.0,

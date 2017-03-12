@@ -85,6 +85,7 @@ float getDepth(float2 texcoord)
 
 #define BOKEH_DOF_ENABLED 0
 #define BOKEH_DOF_PRESERVE_SHAPE 0
+#define BOKEH_DOF_TEXEL_COUNT 0
 #define BOKEH_DOF_BLUR_STRENGTH 1.0
 #define BOKEH_DOF_DEPTH_MIN 0.0
 #define BOKEH_DOF_DEPTH_MAX 1.0
@@ -147,7 +148,9 @@ float4 renderBokehDoF(PixelInputType input) : SV_TARGET
 
     /* BOKEH DOF: PLACEHOLDER */
 
-#if BOKEH_DOF_PRESERVE_SHAPE == 1
+#if BOKEH_DOF_PRESERVE_SHAPE == 0
+    bokehDoFColor /= BOKEH_DOF_TEXEL_COUNT;
+#else
     bokehDoFColor /= bokehDoFColor.w;
     bokehDoFColor = saturate(bokehDoFColor);
     bokehDoFColor *= bokehDoFCoC;
@@ -178,12 +181,7 @@ float4 renderBokehDoFBlending(PixelInputType input) : SV_TARGET
     float4 bokehDoFColor = _pass_0_texture.Sample(_point_sampler, input.texcoord);
     float weight = BOKEH_DOF_BLUR_STRENGTH * getDepth(input.texcoord);
 
-#if BOKEH_DOF_PRESERVE_SHAPE == 0
-    color = (color + weight * bokehDoFColor / bokehDoFColor.w) / (1 + weight);
-#else
     color = (color + weight * bokehDoFColor) / (1 + weight * bokehDoFColor.w);
-#endif
-    
     color = saturate(color);
     color.w = 0;
 

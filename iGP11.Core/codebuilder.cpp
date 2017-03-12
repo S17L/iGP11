@@ -126,6 +126,10 @@ std::string translate(unsigned int value) {
     return core::stringFormat(ENCRYPT_STRING("%u"), value);
 }
 
+std::string translate(size_t value) {
+    return core::stringFormat(ENCRYPT_STRING("%lu"), value);
+}
+
 std::list<std::string> translate(float *collection, size_t size) {
     return core::linq::makeEnumerable(collection, size)
         .select<std::string>([](const float &number)->std::string { return translate(number); })
@@ -385,7 +389,7 @@ void core::BokehDoFCodeBuilder::build() {
     _codeBuilder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_LUMINESCENCE_RATE_GAIN"), translate(_luminescenceRateGain)));
 }
 
-void core::BokehDoFCodeBuilder::buildBokehDoFPassType(BokehDoFPassType passType, bool isPreservingShape, unsigned int size, float rotation) {
+void core::BokehDoFCodeBuilder::buildBokehDoFPassType(BokehDoFPassType passType, bool preserveShape, unsigned int size, float rotation) {
     float radians = 0;
 
     switch (passType) {
@@ -405,6 +409,7 @@ void core::BokehDoFCodeBuilder::buildBokehDoFPassType(BokehDoFPassType passType,
         pixelArray.add(i * cos(radians), i * sin(radians));
     }
 
+    size_t count = 0;
     auto pixelsResult = pixelArray.getPixels();
     std::stringstream stream;
     stream << pixelsResult.toInitializeTexelCache();
@@ -415,21 +420,26 @@ void core::BokehDoFCodeBuilder::buildBokehDoFPassType(BokehDoFPassType passType,
         stream << ENCRYPT_STRING("pixelColor = ") << value << ";" << "\n";
         std::list<std::string> texelVariableNames;
         stream << pixelAggregate.toGetTexelVariables(texelVariableNames);
+        count += texelVariableNames.size();
 
-        for (auto texelVariableName : texelVariableNames) {
-            auto texel = texelVariableName.c_str();
-            stream << core::stringFormat(ENCRYPT_STRING(R"text(
+        if (preserveShape)
+        {
+            for (auto texelVariableName : texelVariableNames) {
+                auto texel = texelVariableName.c_str();
+                stream << core::stringFormat(ENCRYPT_STRING(R"text(
 if (%s.w >= bokehDoFCoC)
 {
     bokehDoFCoC = %s.w;
-})text"), texel, texel, texel);
+})text"), texel, texel);
+            }
         }
 
         stream << ENCRYPT_STRING("bokehDoFColor += pixelColor;") << "\n";
     }
 
     _codeBuilder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_ENABLED"), ::translate(true)));
-    _codeBuilder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_PRESERVE_SHAPE"), ::translate(isPreservingShape)));
+    _codeBuilder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_TEXEL_COUNT"), ::translate(count)));
+    _codeBuilder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_PRESERVE_SHAPE"), ::translate(preserveShape)));
     _codeBuilder->add(new core::LineAlterationElement(ENCRYPT_STRING("/* BOKEH DOF: PLACEHOLDER */"), stream.str()));
 }
 

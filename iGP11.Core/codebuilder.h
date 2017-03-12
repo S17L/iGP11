@@ -216,6 +216,12 @@ namespace core {
         std::list<Texel> getTexels() const {
             return _texels;
         }
+        float getX() {
+            return _pixel.x;
+        }
+        float getY() {
+            return _pixel.y;
+        }
         std::string toGetValue(std::string &value);
         std::string toGetTexelVariables(std::list<std::string> &variableNames);
     };
@@ -280,7 +286,7 @@ namespace core {
         float _luminescenceMaximum;
         float _luminescenceRateGain;
         void build();
-        void buildBokehDoFPassType(BokehDoFPassType passType, bool isPreservingShape, unsigned int size, float rotation);
+        void buildBokehDoFPassType(BokehDoFPassType passType, bool preserveShape, unsigned int size, float rotation);
     public:
         BokehDoFCodeBuilder(ShaderCodeBuilder *codeBuilder, float depthMinimum, float depthMaximum, float depthRateGain, float luminescenceMinimum, float luminescenceMaximum, float luminescenceRateGain)
             : _codeBuilder(codeBuilder), _depthMinimum(depthMinimum), _depthMaximum(depthMaximum), _depthRateGain(depthRateGain), _luminescenceMinimum(luminescenceMinimum), _luminescenceMaximum(luminescenceMaximum), _luminescenceRateGain(luminescenceRateGain) {}

@@ -615,6 +615,9 @@ direct3d11::ShaderApplicator::ShaderApplicator(
         }
 
         SAFE_RELEASE(error);
+#if !NDEBUG
+        log(vertexShaderCode);
+#endif
         throw core::exception::InitializationException(ENCRYPT_STRING("direct3d11::ShaderApplicator"), core::stringFormat(ENCRYPT_STRING("vertex shader compilation failed: %s"), compilationError.c_str()));
     }
 
@@ -629,6 +632,9 @@ direct3d11::ShaderApplicator::ShaderApplicator(
         }
 
         SAFE_RELEASE(error);
+#if !NDEBUG
+        log(pixelShaderCode);
+#endif
         throw core::exception::InitializationException(ENCRYPT_STRING("direct3d11::ShaderApplicator"), core::stringFormat(ENCRYPT_STRING("pixel shader compilation failed: %s"), compilationError.c_str()));
     }
 
