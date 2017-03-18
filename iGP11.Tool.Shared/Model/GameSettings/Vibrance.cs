@@ -4,13 +4,14 @@ using iGP11.Library.Component.DataAnnotations;
 
 namespace iGP11.Tool.Shared.Model.GameSettings
 {
+    [ComponentName("Vibrance")]
     [ComponentShortDescription("VibranceShortDescription")]
     [ComponentLongDescription("VibranceLongDescription")]
     [DataContract]
     public class Vibrance
     {
-        private const string GeneralGroupBy = "General";
         private const string GainGroupBy = "Gain";
+        private const string GeneralGroupBy = "General";
 
         [ComponentName("Blue")]
         [DataMember(Name = "gainBlue")]
@@ -18,7 +19,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [FloatRange(-10, 10)]
         [GroupedBy(GainGroupBy)]
         [Order(2)]
-        public float GainBlue { get; set; }
+        public float GainBlue { get; set; } = 1;
 
         [ComponentName("Green")]
         [DataMember(Name = "gainGreen")]
@@ -26,12 +27,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [FloatRange(-10, 10)]
         [GroupedBy(GainGroupBy)]
         [Order(1)]
-        public float GainGreen { get; set; }
-
-        [ComponentName("Enabled")]
-        [DataMember(Name = "isEnabled")]
-        [Editable]
-        public bool IsEnabled { get; set; }
+        public float GainGreen { get; set; } = 1;
 
         [ComponentName("Red")]
         [DataMember(Name = "gainRed")]
@@ -39,7 +35,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [FloatRange(-10, 10)]
         [GroupedBy(GainGroupBy)]
         [Order(0)]
-        public float GainRed { get; set; }
+        public float GainRed { get; set; } = 1;
 
         [ComponentName("Strength")]
         [DataMember(Name = "strength")]
@@ -47,6 +43,6 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [FloatRange(0, 1)]
         [GroupedBy(GeneralGroupBy)]
         [Order(0)]
-        public float Strength { get; set; }
+        public float Strength { get; set; } = 0.3f;
     }
 }

@@ -12,6 +12,8 @@ namespace iGP11.Tool.UserControls
 
         public static readonly DependencyProperty IsArrowVisibleProperty = DependencyProperty.Register("IsArrowVisible", typeof(bool), typeof(NavigationItemControl), new UIPropertyMetadata(true));
 
+        public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register("IsSelected", typeof(bool), typeof(NavigationItemControl), new UIPropertyMetadata(false));
+
         static NavigationItemControl()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(NavigationItemControl), new FrameworkPropertyMetadata(typeof(NavigationItemControl)));
@@ -33,6 +35,12 @@ namespace iGP11.Tool.UserControls
         {
             get { return (bool)GetValue(IsArrowVisibleProperty); }
             set { SetValue(IsArrowVisibleProperty, value); }
+        }
+
+        public bool IsSelected
+        {
+            get { return (bool)GetValue(IsSelectedProperty); }
+            set { SetValue(IsSelectedProperty, value); }
         }
     }
 }

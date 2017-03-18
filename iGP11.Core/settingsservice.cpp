@@ -6,7 +6,7 @@ const std::string _filePath = ENCRYPT_STRING("iGP11\\settings.igp");
 std::string getFileContent(const std::string &filePath) {
 	std::ifstream file(filePath);
     if (file.fail()) {
-        throw core::exception::ResourceNotFoundException(core::stringFormat(ENCRYPT_STRING("file: %s", _filePath.c_str())));
+        throw core::exception::ResourceNotFoundException(core::stringFormat(ENCRYPT_STRING("file: %s"), _filePath.c_str()));
     }
 
 	std::string content;

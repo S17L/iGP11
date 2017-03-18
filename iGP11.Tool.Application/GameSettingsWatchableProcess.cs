@@ -85,7 +85,10 @@ namespace iGP11.Tool.Application
 
             try
             {
-                foreach (var directoryPath in component.GetDirectoryPaths())
+                foreach (var directoryPath in component.AllProperties
+                    .OfType<IGenericProperty<string>>()
+                    .Where(property => property.Configuration.IsDirectoryPath)
+                    .Select(property => property.Value))
                 {
                     _logger.Log(LogLevel.Information, $"demanding access to: {directoryPath}...");
                     _directoryRepository.DemandAccess(directoryPath);

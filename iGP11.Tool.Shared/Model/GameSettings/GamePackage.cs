@@ -1,8 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-using iGP11.Tool.Shared.Model.GameSettings;
-
-namespace iGP11.Tool.ReadModel.Api.Model
+namespace iGP11.Tool.Shared.Model.GameSettings
 {
     [DataContract]
     public class GamePackage

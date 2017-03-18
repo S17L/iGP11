@@ -25,15 +25,10 @@ using namespace core::logging;
 namespace direct3d11 {
     namespace dto {
         struct FilterSettings {
+            std::list<core::dto::EffectData> effects;
             std::string codeDirectoryPath;
-            core::dto::BokehDoF bokehDoF;
-            core::dto::Denoise denoise;
             core::dto::DepthBuffer depthBuffer;
             core::dto::Direct3D11PluginSettings pluginSettings;
-            core::dto::LiftGammaGain liftGammaGain;
-            core::dto::LumaSharpen lumaSharpen;
-            core::dto::Tonemap tonemap;
-            core::dto::Vibrance vibrance;
         };
     }
 }
@@ -46,6 +41,7 @@ namespace direct3d11 {
 		dto::FilterSettings _filterSettings;
 		dto::FilterSettings _requestedFilterSettings;
 		Direct3D11Context *_context;
+        core::ISerializer *_serializer;
 		std::unique_ptr<ShaderCodeFactory> _codeBuilderFactory;
 		std::unique_ptr<RenderingProxy> _proxy;
 		std::list<std::shared_ptr<IEffect>> _effects;
@@ -58,7 +54,8 @@ namespace direct3d11 {
 	public:
 		EffectsApplicator(
 			dto::FilterSettings filterSettings,
-			Direct3D11Context *context);
+			Direct3D11Context *context,
+            core::ISerializer *serializer);
 		void apply(const dto::PostProcessingSettings &postProcessingSettings);
         void deinitialize();
         bool initializationRequired(const dto::PostProcessingSettings &postProcessingSettings);

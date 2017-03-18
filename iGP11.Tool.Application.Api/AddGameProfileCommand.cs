@@ -6,15 +6,15 @@ namespace iGP11.Tool.Application.Api
     [DataContract]
     public class AddGameProfileCommand
     {
-        public AddGameProfileCommand(string name, Guid gameId, Guid basedOnProfileId)
+        public AddGameProfileCommand(string name, Guid gameId, Guid basedOnGameProfileId)
         {
             Name = name;
             GameId = gameId;
-            BasedOnProfileId = basedOnProfileId;
+            BasedOnGameProfileId = basedOnGameProfileId;
         }
 
-        [DataMember(Name = "basedOnProfileId", IsRequired = true)]
-        public Guid BasedOnProfileId { get; private set; }
+        [DataMember(Name = "basedOnGameProfileId", IsRequired = true)]
+        public Guid BasedOnGameProfileId { get; private set; }
 
         [DataMember(Name = "gameId", IsRequired = true)]
         public Guid GameId { get; private set; }

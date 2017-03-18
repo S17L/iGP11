@@ -2,6 +2,8 @@
 {
     public interface IGenericProperty<TProperty> : IProperty
     {
+        TProperty FormattedValue { get; }
+
         TProperty Value { get; set; }
     }
 }

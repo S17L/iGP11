@@ -4,6 +4,7 @@ using iGP11.Library.Component.DataAnnotations;
 
 namespace iGP11.Tool.Shared.Model.GameSettings
 {
+    [ComponentName("Textures")]
     [ComponentShortDescription("TexturesShortDescription")]
     [ComponentLongDescription("TexturesLongDescription")]
     [DataContract]

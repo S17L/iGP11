@@ -8,8 +8,6 @@ namespace iGP11.Library.Component
     {
         IPropertyConfiguration Configuration { get; }
 
-        bool HasValidators { get; }
-
         bool IsValid { get; }
 
         Localizable Name { get; }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
 using iGP11.Tool.Model;
+using iGP11.Tool.Shared.Plugin;
 using iGP11.Tool.ViewModel;
 
 namespace iGP11.Tool
@@ -33,6 +34,14 @@ namespace iGP11.Tool
         public void ShowInformationDialog(Target invoker, string title, string information)
         {
             new InformationWindow(invoker, title, information).ShowDialog();
+        }
+
+        public EffectType? ShowPickEffectTypeDialog(Target invoker, IEnumerable<EffectType> effectTypes)
+        {
+            var window = new PickEffectTypeWindow(invoker, effectTypes);
+            return window.ShowDialog().GetValueOrDefault()
+                       ? (EffectType?)window.EffectType
+                       : null;
         }
 
         public string ShowRenameProfileDialog(Target invoker, string name)

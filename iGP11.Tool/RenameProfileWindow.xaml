@@ -15,7 +15,7 @@
         Style="{StaticResource ResourceKey=StyleDialog}">
     <StackPanel Orientation="Vertical">
         <TextBlock
-            Text="{Binding Source={StaticResource ResourceKey=LocalizationRenameProfileDialogTitle}, Mode=OneTime}"
+            Text="{Binding Source={StaticResource ResourceKey=LocalizationRenameGameProfileDialogTitle}, Mode=OneTime}"
             Style="{StaticResource ResourceKey=StyleTextBlockWindowTitle}" />
         <TextBox
             themes:FrameworkService.Placeholder="{Binding Source={StaticResource ResourceKey=LocalizationGameProfileName}, Mode=OneTime}"
@@ -29,7 +29,7 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0"
                     Command="{Binding Path=SubmitCommand}"
-                    Content="{Binding Source={StaticResource ResourceKey=LocalizationSubmit}, Mode=OneTime}"
+                    Content="{Binding Source={StaticResource ResourceKey=LocalizationRename}, Mode=OneTime}"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center"
                     Style="{StaticResource ResourceKey=StyleBalancedImageButton}" />

@@ -37,68 +37,21 @@
           "depthMinimum": 0.007,
           "depthMaximum": 0.4
         },
-        "bokehDoF": {
-          "isEnabled": true,
-          "isChromaticAberrationEnabled": true,
-          "chromaticAberrationFringe": 128,
-          "isPreservingShape": false,
-          "shapeSize": 3,
-          "shapeStrength": 50,
-          "shapeRotation": 15,
-          "isBlurEnabled": true,
-          "blurStrength": 0.1,
-          "depthMinimum": 0,
-          "depthMaximum": 1,
-          "depthRateGain": 1,
-          "luminescenceMinimum": 2,
-          "luminescenceMaximum": 10,
-          "luminescenceRateGain": 2
-        },
-        "denoise": {
-          "isEnabled": false,
-          "noiseLevel": 0.15,
-          "blendingCoefficient": 0.8,
-          "weightThreshold": 0.03,
-          "counterThreshold": 0.05,
-          "gaussianSigma": 50,
-          "windowSize": 3 
-        },
-        "liftGammaGain": {
-          "isEnabled": false,
-          "liftRed": 1.0,
-          "liftGreen": 1.0,
-          "liftBlue": 1.0,
-          "gammaRed": 1.0,
-          "gammaGreen": 1.0,
-          "gammaBlue": 1.0,
-          "gainRed": 1.0,
-          "gainGreen": 1.0,
-          "gainBlue": 1.0        
-        },
-        "lumaSharpen": {
-          "isEnabled": true,
-          "sharpeningStrength": 1,
-          "sharpeningClamp": 0.035,
-          "offset": 1
-        },
-        "tonemap": {
-          "isEnabled": false,
-          "gamma": 1,
-          "exposure": 0,
-          "saturation": 0.5,
-          "bleach": 0,
-          "defog": 0,
-          "fogRed": 0,
-          "fogGreen": 0,
-          "fogBlue": 1.0
-        },
-        "vibrance": {
-          "isEnabled": false,
-          "strength": 0.1,
-          "gainRed": 1.0,
-          "gainGreen": 1.0,
-          "gainBlue": 1.0
-        }
+        "effects": [
+          {
+            "id": "{CF4EF797-CE26-4A57-BFE9-82955401F66E}",
+            "type": 3,
+            "isEnabled": true,
+            "data": "{ \"sharpeningStrength\": 1, \"sharpeningClamp\": 0.035, \"offset\": 1 }"
+          },
+          {
+            "id": "{2E3D517C-46C0-4E9D-8EDB-DA6BEDA92BD8}",
+            "type": 0,
+            "isEnabled": true,
+            "data":
+              "{ \"isChromaticAberrationEnabled\": true, \"chromaticAberrationFringe\": 128, \"isPreservingShape\": false, \"shapeSize\": 3, \"shapeStrength\": 50, \"shapeRotation\": 15, \"isBlurEnabled\": true, \"blurStrength\": 0.1, \"depthMinimum\": 0, \"depthMaximum\": 1, \"depthRateGain\": 1, \"luminescenceMinimum\": 2, \"luminescenceMaximum\": 10, \"luminescenceRateGain\": 2 }"
+          }
+        ]
       }
     }
   ]

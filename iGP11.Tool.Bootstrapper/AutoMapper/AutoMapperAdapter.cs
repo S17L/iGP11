@@ -19,23 +19,23 @@ namespace iGP11.Tool.Bootstrapper.AutoMapper
                 configuration =>
                 {
                     CreateMapping<ApplicationSettings, Domain.Model.ApplicationSettings.ApplicationSettings>(configuration);
-                    CreateMapping<BokehDoF, Domain.Model.GameSettings.BokehDoF>(configuration);
-                    CreateMapping<Denoise, Domain.Model.GameSettings.Denoise>(configuration);
+                    CreateCloneMapping<BokehDoF>(configuration);
+                    CreateCloneMapping<Denoise>(configuration);
                     CreateMapping<DepthBuffer, Domain.Model.GameSettings.DepthBuffer>(configuration);
                     CreateMapping<Direct3D11PluginSettings, Domain.Model.GameSettings.Direct3D11PluginSettings>(configuration);
                     CreateMapping<Direct3D11Settings, Domain.Model.GameSettings.Direct3D11Settings>(configuration);
                     CreateMapping<Game, Domain.Model.GameSettings.Game>(configuration);
                     CreateMapping<GameProfile, Domain.Model.GameSettings.GameProfile>(configuration);
-                    CreateMapping<LiftGammaGain, Domain.Model.GameSettings.LiftGammaGain>(configuration);
-                    CreateMapping<LumaSharpen, Domain.Model.GameSettings.LumaSharpen>(configuration);
+                    CreateCloneMapping<LiftGammaGain>(configuration);
+                    CreateCloneMapping<LumaSharpen>(configuration);
                     CreateMapping<ProxyPluginSettings, Application.Model.ProxyPluginSettings>(configuration);
                     CreateMapping<ProxySettings, Application.Model.ProxySettings>(configuration);
                     CreateMapping<TextureConversionSettings, Domain.Model.TextureManagementSettings.TextureConversionSettings>(configuration);
                     CreateMapping<TextureManagementSettings, Domain.Model.TextureManagementSettings.TextureManagementSettings>(configuration);
                     CreateMapping<Textures, Domain.Model.GameSettings.Textures>(configuration);
-                    CreateMapping<Tonemap, Domain.Model.GameSettings.Tonemap>(configuration);
+                    CreateCloneMapping<Tonemap>(configuration);
                     CreateMapping<UsageStatistics, Domain.Model.UsageStatistics.UsageStatistics>(configuration);
-                    CreateMapping<Vibrance, Domain.Model.GameSettings.Vibrance>(configuration);
+                    CreateCloneMapping<Vibrance>(configuration);
                 }).CreateMapper();
         }
 
@@ -47,6 +47,11 @@ namespace iGP11.Tool.Bootstrapper.AutoMapper
         public override TDestination Map<TDestination>(object source)
         {
             return _mapper.Map<TDestination>(source);
+        }
+
+        private static void CreateCloneMapping<TSource>(IProfileExpression configuration)
+        {
+            configuration.CreateMap<TSource, TSource>();
         }
 
         private static void CreateMapping<TSource, TDestination>(IProfileExpression configuration)

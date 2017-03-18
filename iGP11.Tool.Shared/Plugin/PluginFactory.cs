@@ -3,32 +3,34 @@ using System.Collections.Generic;
 
 using iGP11.Library.Component;
 using iGP11.Library.Component.DataAnnotations;
-using iGP11.Tool.Application.Api.Model;
-using iGP11.Tool.ReadModel.Api.Model;
 using iGP11.Tool.Shared.Model;
 using iGP11.Tool.Shared.Model.GameSettings;
 
-namespace iGP11.Tool.Model
+namespace iGP11.Tool.Shared.Plugin
 {
-    public class PluginComponentFactory : IPluginComponentFactory
+    public class PluginFactory : IPluginFactory
     {
-        private readonly IDictionary<PluginType, Func<GamePackage, IComponent>> _gameProfileFactory;
-        private readonly IDictionary<PluginType, Func<ProxyPluginSettings, IComponent>> _proxyPluginSettingsFactory;
+        private readonly IDictionary<PluginType, Func<GamePackage, IPluginDataAccessLayer>> _gameProfileFactory;
+        private readonly IDictionary<PluginType, Func<ProxyPluginSettings, IPluginDataAccessLayer>> _proxyPluginSettingsFactory;
 
-        public PluginComponentFactory(ComponentAssembler assembler)
+        public PluginFactory(ComponentAssembler assembler)
         {
-            _gameProfileFactory = new Dictionary<PluginType, Func<GamePackage, IComponent>>
+            _gameProfileFactory = new Dictionary<PluginType, Func<GamePackage, IPluginDataAccessLayer>>
             {
-                [PluginType.Direct3D11] = package => GetAssembler(package.Game, assembler).Assemble(package.GameProfile.Direct3D11Settings)
+                [PluginType.Direct3D11] = package => new Direct3D11PluginDataAccessLayer(
+                    package.GameProfile.Direct3D11Settings,
+                    GetAssembler(package.Game, assembler))
             };
 
-            _proxyPluginSettingsFactory = new Dictionary<PluginType, Func<ProxyPluginSettings, IComponent>>
+            _proxyPluginSettingsFactory = new Dictionary<PluginType, Func<ProxyPluginSettings, IPluginDataAccessLayer>>
             {
-                [PluginType.Direct3D11] = settings => assembler.Assemble(settings.Direct3D11Settings, new AssemblingContext(FormType.Edit))
+                [PluginType.Direct3D11] = settings => new Direct3D11PluginDataAccessLayer(
+                    settings.Direct3D11Settings,
+                    new ConcreteComponentAssembler(assembler, new AssemblingContext(FormType.Edit)))
             };
         }
 
-        public IComponent Create(GamePackage package)
+        public IPluginDataAccessLayer Create(GamePackage package)
         {
             if (!_gameProfileFactory.ContainsKey(package.GameProfile.PluginType))
             {
@@ -38,7 +40,7 @@ namespace iGP11.Tool.Model
             return _gameProfileFactory[package.GameProfile.PluginType](package);
         }
 
-        public IComponent Create(ProxyPluginSettings settings)
+        public IPluginDataAccessLayer Create(ProxyPluginSettings settings)
         {
             if (!_proxyPluginSettingsFactory.ContainsKey(settings.PluginType))
             {

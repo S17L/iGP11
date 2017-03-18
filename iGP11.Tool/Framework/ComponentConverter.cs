@@ -16,7 +16,7 @@ namespace iGP11.Tool.Framework
     public class ComponentConverter : MarkupExtension,
                                       IValueConverter
     {
-        private static readonly IDictionary<WeakReference, ViewModel.ViewModel> _dictionary = new Dictionary<WeakReference, ViewModel.ViewModel>();
+        private static readonly IDictionary<WeakReference, IComponentViewModel> _dictionary = new Dictionary<WeakReference, IComponentViewModel>();
         private static readonly object _lock = new object();
 
         public FormType FormType { get; set; } = FormType.None;

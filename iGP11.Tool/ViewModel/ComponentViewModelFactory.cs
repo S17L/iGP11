@@ -16,12 +16,12 @@ namespace iGP11.Tool.ViewModel
             _directoryPicker = directoryPicker;
         }
 
-        public ComponentViewModel<TEntry> Create<TEntry>(Component<TEntry> component)
+        public IComponentViewModel Create(IComponent component)
         {
-            return GetObjectViewModel(component);
+            return GetObjectViewModel((dynamic)component);
         }
 
-        public IEnumerable<IComponentViewModel> CreateEditable(IComponent component)
+        public IEnumerable<IComponentViewModel> CreateMany(IComponent component)
         {
             var entries = new List<IComponentViewModel>();
             if (component != null)

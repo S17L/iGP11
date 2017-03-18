@@ -59,7 +59,6 @@
     <Compile Include="IFindProxyActivationStatusQuery.cs" />
     <Compile Include="IFindTextureManagementSettingsQuery.cs" />
     <Compile Include="Model\ConstantSettings.cs" />
-    <Compile Include="Model\GamePackage.cs" />
     <Compile Include="PluginStateEqualityComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

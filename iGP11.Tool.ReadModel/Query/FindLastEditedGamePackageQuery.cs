@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 
 using iGP11.Tool.ReadModel.Api;
-using iGP11.Tool.ReadModel.Api.Model;
+using iGP11.Tool.Shared.Model.GameSettings;
 
 namespace iGP11.Tool.ReadModel.Query
 {

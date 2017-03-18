@@ -39,9 +39,7 @@ namespace iGP11.Library.Component
 
         public IPropertyConfiguration Configuration { get; }
 
-        public virtual TValue FinalValue => _getter();
-
-        public bool HasValidators => _validators.Any();
+        public virtual TValue FormattedValue => _getter();
 
         public bool IsValid => Validate().IsNullOrEmpty();
 
@@ -61,9 +59,14 @@ namespace iGP11.Library.Component
                    || new MappingExpressionVisitor(expression, _expression).AreEqual;
         }
 
+        public void Restore()
+        {
+            _setter(_initial);
+        }
+
         public IEnumerable<ValidationResult> Validate()
         {
-            return _validators.SelectMany(validator => validator.Validate(new PropertyContext<TValue>(this), _validationContext, FinalValue))
+            return _validators.SelectMany(validator => validator.Validate(new PropertyContext<TValue>(this), _validationContext, FormattedValue))
                 .Select(localizable => new ValidationResult(localizable))
                 .ToArray();
         }

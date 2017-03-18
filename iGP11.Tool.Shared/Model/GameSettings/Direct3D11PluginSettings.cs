@@ -4,8 +4,9 @@ using iGP11.Library.Component.DataAnnotations;
 
 namespace iGP11.Tool.Shared.Model.GameSettings
 {
-    [ComponentShortDescription("Direct3D11PluginSettingsShortDescription")]
-    [ComponentLongDescription("Direct3D11PluginSettingsLongDescription")]
+    [ComponentName("PluginSettings")]
+    [ComponentShortDescription("PluginSettingsShortDescription")]
+    [ComponentLongDescription("PluginSettingsLongDescription")]
     [DataContract]
     public class Direct3D11PluginSettings
     {

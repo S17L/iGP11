@@ -46,8 +46,6 @@ namespace iGP11.Library.Component
 
         public IPropertyConfiguration Configuration { get; }
 
-        public bool HasValidators => _validators.Any() || _properties.Any(property => property.HasValidators);
-
         public bool IsValid => Validate().IsNullOrEmpty();
 
         public Localizable Name { get; }
@@ -58,14 +56,6 @@ namespace iGP11.Library.Component
 
         public Type Type => typeof(TObject);
 
-        public IEnumerable<string> GetDirectoryPaths()
-        {
-            return _allProperties.OfType<Property<string>>()
-                .Where(property => property.Configuration.IsDirectoryPath)
-                .Select(property => property.FinalValue)
-                .ToArray();
-        }
-
         public bool IsApplicable(Expression expression)
         {
             return _properties.Any(property => property.IsApplicable(expression));
@@ -73,10 +63,11 @@ namespace iGP11.Library.Component
 
         public void Tokenize()
         {
-            foreach (var property in _allProperties.OfType<Property<string>>()
+            foreach (var property in _allProperties
+                .OfType<IGenericProperty<string>>()
                 .Where(property => property.Configuration.IsTokenizable))
             {
-                property.Value = property.FinalValue;
+                property.Value = property.FormattedValue;
             }
         }
 
@@ -99,7 +90,7 @@ namespace iGP11.Library.Component
             }
         }
 
-        private static void IterateProperties(IComponent component, ICollection<IProperty> properties)
+        private static void Iterate(IComponent component, ICollection<IProperty> properties)
         {
             var components = component.Properties.OfType<IComponent>().ToArray();
             foreach (var property in component.Properties.Except(components))
@@ -110,14 +101,14 @@ namespace iGP11.Library.Component
             foreach (var root in components)
             {
                 properties.Add(root);
-                IterateProperties(root, properties);
+                Iterate(root, properties);
             }
         }
 
         private IEnumerable<IProperty> GetProperties()
         {
             var properties = new List<IProperty>();
-            IterateProperties(this, properties);
+            Iterate(this, properties);
 
             return properties;
         }

@@ -6,6 +6,7 @@
 #include "processservice.h"
 #include "profilepicker.h"
 #include "resourceprovider.h"
+#include "jsonserializer.h"
 #include "textureservice.h"
 
 using namespace core::logging;
@@ -13,6 +14,7 @@ using namespace core::logging;
 #define DLL __declspec(dllexport)
 
 std::unique_ptr<core::IProcessService> _processService;
+std::unique_ptr<core::ISerializer> _serializer;
 std::unique_ptr<core::ITextureCacheFactory> _textureCacheFactory;
 std::unique_ptr<direct3d11::IProfilePicker> _profilePicker;
 std::unique_ptr<direct3d11::ITextureService> _textureService;
@@ -33,6 +35,7 @@ extern "C"
         auto init = plugin.initialize(
             &core::MinHookService::getInstance(),
             _processService.get(),
+            _serializer.get(),
             _textureCacheFactory.get(),
             pluginSettings,
             settings,
@@ -64,6 +67,7 @@ BOOL APIENTRY DllMain(HINSTANCE module, DWORD reason, LPVOID reserved) {
     if (reason == DLL_PROCESS_ATTACH) {
         log(ENCRYPT_STRING("iGP11.Direct3D11.dll attached"));
         _processService.reset(new core::ProcessService());
+        _serializer.reset(new core::JsonSerializer());
         _textureCacheFactory.reset(new core::TextureCacheFactory());
         _profilePicker.reset(new direct3d11::ProfilePicker());
         _textureService.reset(new direct3d11::TextureService());
@@ -71,6 +75,7 @@ BOOL APIENTRY DllMain(HINSTANCE module, DWORD reason, LPVOID reserved) {
     else if (reason == DLL_PROCESS_DETACH) {
         log(ENCRYPT_STRING("iGP11.Direct3D11.dll detached"));
         _processService.reset();
+        _serializer.reset();
         _textureCacheFactory.reset();
         _profilePicker.reset();
         _textureService.reset();

@@ -6,6 +6,7 @@ using iGP11.Tool.Shared.Model.GameSettings.Validation;
 namespace iGP11.Tool.Shared.Model.GameSettings
 {
     [BokehDoFValidator]
+    [ComponentName("BokehDoF")]
     [ComponentShortDescription("BokehDoFShortDescription")]
     [ComponentLongDescription("BokehDoFLongDescription")]
     [DataContract]
@@ -22,7 +23,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [FloatRange(0)]
         [GroupedBy(BlurGroupedBy)]
         [Order(1)]
-        public float BlurStrength { get; set; }
+        public float BlurStrength { get; set; } = 1;
 
         [ComponentName("Fringe")]
         [DataMember(Name = "chromaticAberrationFringe")]
@@ -30,7 +31,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [FloatRange(0)]
         [GroupedBy(ChromaticAberrationGroupedBy)]
         [Order(1)]
-        public float ChromaticAberrationFringe { get; set; }
+        public float ChromaticAberrationFringe { get; set; } = 0.5f;
 
         [DataMember(Name = "depthMaximum")]
         [ComponentName("DepthMaximum")]
@@ -38,7 +39,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [FloatRange(0)]
         [GroupedBy(GeneralGroupedBy)]
         [Order(1)]
-        public float DepthMaximum { get; set; }
+        public float DepthMaximum { get; set; } = 1;
 
         [DataMember(Name = "depthMinimum")]
         [ComponentName("DepthMinimum")]
@@ -54,7 +55,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [FloatRange(0)]
         [GroupedBy(GeneralGroupedBy)]
         [Order(2)]
-        public float DepthRateGain { get; set; }
+        public float DepthRateGain { get; set; } = 2;
 
         [ComponentName("Enabled")]
         [DataMember(Name = "isBlurEnabled")]
@@ -70,11 +71,6 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [Order(0)]
         public bool IsChromaticAberrationEnabled { get; set; }
 
-        [ComponentName("Enabled")]
-        [DataMember(Name = "isEnabled")]
-        [Editable]
-        public bool IsEnabled { get; set; }
-
         [DataMember(Name = "isPreservingShape")]
         [ComponentName("PreserveShape")]
         [Editable]
@@ -88,7 +84,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [FloatRange(0)]
         [GroupedBy(GeneralGroupedBy)]
         [Order(4)]
-        public float LuminescenceMaximum { get; set; }
+        public float LuminescenceMaximum { get; set; } = 1;
 
         [DataMember(Name = "luminescenceMinimum")]
         [ComponentName("LuminescenceMinimum")]
@@ -96,7 +92,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [FloatRange(0)]
         [GroupedBy(GeneralGroupedBy)]
         [Order(3)]
-        public float LuminescenceMinimum { get; set; }
+        public float LuminescenceMinimum { get; set; } = 0.1f;
 
         [DataMember(Name = "luminescenceRateGain")]
         [ComponentName("LuminescenceRateGain")]
@@ -104,7 +100,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [FloatRange(0)]
         [GroupedBy(GeneralGroupedBy)]
         [Order(5)]
-        public float LuminescenceRateGain { get; set; }
+        public float LuminescenceRateGain { get; set; } = 2;
 
         [ComponentName("ShapeRotation")]
         [DataMember(Name = "shapeRotation")]
@@ -120,7 +116,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [GroupedBy(ShapeGroupedBy)]
         [Order(1)]
         [UintRange(1, 64)]
-        public uint ShapeSize { get; set; }
+        public uint ShapeSize { get; set; } = 3;
 
         [ComponentName("ShapeStrength")]
         [DataMember(Name = "shapeStrength")]
@@ -128,6 +124,6 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [FloatRange(0)]
         [GroupedBy(ShapeGroupedBy)]
         [Order(2)]
-        public float ShapeStrength { get; set; }
+        public float ShapeStrength { get; set; } = 1;
     }
 }

@@ -74,6 +74,13 @@ namespace iGP11.Library
             return (collection == null) || !collection.Any();
         }
 
+        public static void Move<TEntry>(this IList<TEntry> collection, int oldIndex, int newIndex)
+        {
+            var item = collection[oldIndex];
+            collection.RemoveAt(oldIndex);
+            collection.Insert(newIndex, item);
+        }
+
         public static void Remove<TEntry>(this ICollection<TEntry> collection, Predicate<TEntry> filter)
         {
             if (collection.IsNullOrEmpty())

@@ -4,9 +4,9 @@ using iGP11.Library;
 using iGP11.Library.DDD.Action;
 using iGP11.Library.EventPublisher;
 using iGP11.Tool.Common;
-using iGP11.Tool.Model;
 using iGP11.Tool.ReadModel.Api;
 using iGP11.Tool.Shared.Model;
+using iGP11.Tool.Shared.Plugin;
 
 namespace iGP11.Tool.ViewModel.Injection
 {
@@ -22,7 +22,7 @@ namespace iGP11.Tool.ViewModel.Injection
         private readonly IFindGamesQuery _findGamesQuery;
         private readonly IFindLastEditedGamePackageQuery _findLastEditedGamePackageQuery;
         private readonly INavigationService _navigationService;
-        private readonly IPluginComponentFactory _pluginComponentFactory;
+        private readonly IPluginFactory _pluginFactory;
         private readonly ITaskRunner _runner;
         private readonly IEqualityComparer<ProxySettings> _stateEqualityComparer;
 
@@ -37,7 +37,7 @@ namespace iGP11.Tool.ViewModel.Injection
             IEqualityComparer<ProxySettings> stateEqualityComparer,
             IEventPublisher eventPublisher,
             IFilePicker filePicker,
-            IPluginComponentFactory pluginComponentFactory,
+            IPluginFactory pluginFactory,
             INavigationService navigationService,
             ITaskRunner runner)
         {
@@ -51,7 +51,7 @@ namespace iGP11.Tool.ViewModel.Injection
             _stateEqualityComparer = stateEqualityComparer;
             _eventPublisher = eventPublisher;
             _filePicker = filePicker;
-            _pluginComponentFactory = pluginComponentFactory;
+            _pluginFactory = pluginFactory;
             _navigationService = navigationService;
             _runner = runner;
         }
@@ -69,7 +69,7 @@ namespace iGP11.Tool.ViewModel.Injection
                 _stateEqualityComparer,
                 _eventPublisher,
                 _filePicker,
-                _pluginComponentFactory,
+                _pluginFactory,
                 _navigationService,
                 processable,
                 _runner);

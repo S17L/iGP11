@@ -57,6 +57,7 @@ private:
 	core::ActivationStatus _activationStatus;
 	core::IHookService *_hookService;
 	core::IProcessService *_processService;
+    core::ISerializer *_serializer;
     core::dto::PluginSettings _pluginSettings;
 	core::dto::Direct3D11Settings _settings;
 	direct3d11::IProfilePicker *_profilePicker;
@@ -96,6 +97,7 @@ public:
 	bool initialize(
 		core::IHookService *hookService,
 		core::IProcessService *processService,
+        core::ISerializer *serializer,
 		core::ITextureCacheFactory *textureCacheFactory,
         core::dto::PluginSettings pluginSettings,
 		core::dto::Direct3D11Settings settings,

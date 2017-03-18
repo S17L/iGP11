@@ -13,65 +13,24 @@ std::string toString(rapidjson::Value &value) {
     return stringBuffer.GetString();
 }
 
+void write(rapidjson::Writer<rapidjson::StringBuffer> &writer, const core::dto::EffectData &data) {
+    writer.StartObject();
+    {
+        writer.String(ENCRYPT_STRING("data"));
+        writer.String(data.data.c_str());
+        writer.String(ENCRYPT_STRING("id"));
+        writer.String(data.id.c_str());
+        writer.String(ENCRYPT_STRING("isEnabled"));
+        writer.Bool(data.isEnabled);
+        writer.String(ENCRYPT_STRING("type"));
+        writer.Int(static_cast<int>(data.type));
+        writer.EndObject();
+    }
+}
+
 void write(rapidjson::Writer<rapidjson::StringBuffer> &writer, const core::dto::Direct3D11Settings &data) {
     writer.StartObject();
     {
-        writer.String(ENCRYPT_STRING("bokehDoF"));
-        writer.StartObject();
-        {
-            writer.String(ENCRYPT_STRING("isEnabled"));
-            writer.Bool(data.bokehDoF.isEnabled);
-            writer.String(ENCRYPT_STRING("isChromaticAberrationEnabled"));
-            writer.Bool(data.bokehDoF.isChromaticAberrationEnabled);
-            writer.String(ENCRYPT_STRING("chromaticAberrationFringe"));
-            writer.Double(data.bokehDoF.chromaticAberrationFringe);
-            writer.String(ENCRYPT_STRING("isPreservingShape"));
-            writer.Bool(data.bokehDoF.isPreservingShape);
-            writer.String(ENCRYPT_STRING("shapeSize"));
-            writer.Uint(data.bokehDoF.shapeSize);
-            writer.String(ENCRYPT_STRING("shapeStrength"));
-            writer.Double(data.bokehDoF.shapeStrength);
-            writer.String(ENCRYPT_STRING("shapeRotation"));
-            writer.Double(data.bokehDoF.shapeRotation);
-            writer.String(ENCRYPT_STRING("isBlurEnabled"));
-            writer.Bool(data.bokehDoF.isBlurEnabled);
-            writer.String(ENCRYPT_STRING("blurStrength"));
-            writer.Double(data.bokehDoF.blurStrength);
-            writer.String(ENCRYPT_STRING("depthMinimum"));
-            writer.Double(data.bokehDoF.depthMinimum);
-            writer.String(ENCRYPT_STRING("depthMaximum"));
-            writer.Double(data.bokehDoF.depthMaximum);
-            writer.String(ENCRYPT_STRING("depthRateGain"));
-            writer.Double(data.bokehDoF.depthRateGain);
-            writer.String(ENCRYPT_STRING("luminescenceMinimum"));
-            writer.Double(data.bokehDoF.luminescenceMinimum);
-            writer.String(ENCRYPT_STRING("luminescenceMaximum"));
-            writer.Double(data.bokehDoF.luminescenceMaximum);
-            writer.String(ENCRYPT_STRING("luminescenceRateGain"));
-            writer.Double(data.bokehDoF.luminescenceRateGain);
-            writer.EndObject();
-        }
-
-        writer.String(ENCRYPT_STRING("denoise"));
-        writer.StartObject();
-        {
-            writer.String(ENCRYPT_STRING("isEnabled"));
-            writer.Bool(data.denoise.isEnabled);
-            writer.String(ENCRYPT_STRING("noiseLevel"));
-            writer.Double(data.denoise.noiseLevel);
-            writer.String(ENCRYPT_STRING("blendingCoefficient"));
-            writer.Double(data.denoise.blendingCoefficient);
-            writer.String(ENCRYPT_STRING("weightThreshold"));
-            writer.Double(data.denoise.weightThreshold);
-            writer.String(ENCRYPT_STRING("counterThreshold"));
-            writer.Double(data.denoise.counterThreshold);
-            writer.String(ENCRYPT_STRING("gaussianSigma"));
-            writer.Double(data.denoise.gaussianSigma);
-            writer.String(ENCRYPT_STRING("windowSize"));
-            writer.Uint(data.denoise.windowSize);
-            writer.EndObject();
-        }
-
         writer.String(ENCRYPT_STRING("depthBuffer"));
         writer.StartObject();
         {
@@ -88,6 +47,16 @@ void write(rapidjson::Writer<rapidjson::StringBuffer> &writer, const core::dto::
             writer.EndObject();
         }
 
+        writer.String(ENCRYPT_STRING("effects"));
+        writer.StartArray();
+        {
+            for (auto effectData : data.effects) {
+                ::write(writer, effectData);
+            }
+
+            writer.EndArray();
+        }
+
         writer.String(ENCRYPT_STRING("pluginSettings"));
         writer.StartObject();
         {
@@ -95,46 +64,6 @@ void write(rapidjson::Writer<rapidjson::StringBuffer> &writer, const core::dto::
             writer.Int(static_cast<int>(data.pluginSettings.profileType));
             writer.String(ENCRYPT_STRING("renderingMode"));
             writer.Int(static_cast<int>(data.pluginSettings.renderingMode));
-            writer.EndObject();
-        }
-
-        writer.String(ENCRYPT_STRING("liftGammaGain"));
-        writer.StartObject();
-        {
-            writer.String(ENCRYPT_STRING("isEnabled"));
-            writer.Bool(data.liftGammaGain.isEnabled);
-            writer.String(ENCRYPT_STRING("liftRed"));
-            writer.Double(data.liftGammaGain.lift.red);
-            writer.String(ENCRYPT_STRING("liftGreen"));
-            writer.Double(data.liftGammaGain.lift.green);
-            writer.String(ENCRYPT_STRING("liftBlue"));
-            writer.Double(data.liftGammaGain.lift.blue);
-            writer.String(ENCRYPT_STRING("gammaRed"));
-            writer.Double(data.liftGammaGain.gamma.red);
-            writer.String(ENCRYPT_STRING("gammaGreen"));
-            writer.Double(data.liftGammaGain.gamma.green);
-            writer.String(ENCRYPT_STRING("gammaBlue"));
-            writer.Double(data.liftGammaGain.gamma.blue);
-            writer.String(ENCRYPT_STRING("gainRed"));
-            writer.Double(data.liftGammaGain.gain.red);
-            writer.String(ENCRYPT_STRING("gainGreen"));
-            writer.Double(data.liftGammaGain.gain.green);
-            writer.String(ENCRYPT_STRING("gainBlue"));
-            writer.Double(data.liftGammaGain.gain.blue);
-            writer.EndObject();
-        }
-
-        writer.String(ENCRYPT_STRING("lumaSharpen"));
-        writer.StartObject();
-        {
-            writer.String(ENCRYPT_STRING("isEnabled"));
-            writer.Bool(data.lumaSharpen.isEnabled);
-            writer.String(ENCRYPT_STRING("sharpeningStrength"));
-            writer.Double(data.lumaSharpen.sharpeningStrength);
-            writer.String(ENCRYPT_STRING("sharpeningClamp"));
-            writer.Double(data.lumaSharpen.sharpeningClamp);
-            writer.String(ENCRYPT_STRING("offset"));
-            writer.Double(data.lumaSharpen.offset);
             writer.EndObject();
         }
 
@@ -152,46 +81,6 @@ void write(rapidjson::Writer<rapidjson::StringBuffer> &writer, const core::dto::
             writer.EndObject();
         }
 
-        writer.String(ENCRYPT_STRING("tonemap"));
-        writer.StartObject();
-        {
-            writer.String(ENCRYPT_STRING("isEnabled"));
-            writer.Bool(data.tonemap.isEnabled);
-            writer.String(ENCRYPT_STRING("gamma"));
-            writer.Double(data.tonemap.gamma);
-            writer.String(ENCRYPT_STRING("exposure"));
-            writer.Double(data.tonemap.exposure);
-            writer.String(ENCRYPT_STRING("saturation"));
-            writer.Double(data.tonemap.saturation);
-            writer.String(ENCRYPT_STRING("bleach"));
-            writer.Double(data.tonemap.bleach);
-            writer.String(ENCRYPT_STRING("defog"));
-            writer.Double(data.tonemap.defog);
-            writer.String(ENCRYPT_STRING("fogRed"));
-            writer.Double(data.tonemap.fog.red);
-            writer.String(ENCRYPT_STRING("fogGreen"));
-            writer.Double(data.tonemap.fog.green);
-            writer.String(ENCRYPT_STRING("fogBlue"));
-            writer.Double(data.tonemap.fog.blue);
-            writer.EndObject();
-        }
-
-        writer.String(ENCRYPT_STRING("vibrance"));
-        writer.StartObject();
-        {
-            writer.String(ENCRYPT_STRING("isEnabled"));
-            writer.Bool(data.vibrance.isEnabled);
-            writer.String(ENCRYPT_STRING("strength"));
-            writer.Double(data.vibrance.strength);
-            writer.String(ENCRYPT_STRING("gainRed"));
-            writer.Double(data.vibrance.gain.red);
-            writer.String(ENCRYPT_STRING("gainGreen"));
-            writer.Double(data.vibrance.gain.green);
-            writer.String(ENCRYPT_STRING("gainBlue"));
-            writer.Double(data.vibrance.gain.blue);
-            writer.EndObject();
-        }
-
         writer.EndObject();
     }
 }
@@ -205,6 +94,104 @@ core::dto::Command core::JsonSerializer::deserializeCommand(const std::string &v
     command.data = document[ENCRYPT_STRING("data")].GetString();
 
     return command;
+}
+
+core::dto::BokehDoF core::JsonSerializer::deserializeBokehDoF(const std::string &value) {
+    rapidjson::Document document;
+    document.Parse(value.c_str());
+
+    core::dto::BokehDoF bokehDoF;
+    bokehDoF.isChromaticAberrationEnabled = document[ENCRYPT_STRING("isChromaticAberrationEnabled")].GetBool();
+    bokehDoF.chromaticAberrationFringe = document[ENCRYPT_STRING("chromaticAberrationFringe")].GetDouble();
+    bokehDoF.isPreservingShape = document[ENCRYPT_STRING("isPreservingShape")].GetBool();
+    bokehDoF.shapeSize = document[ENCRYPT_STRING("shapeSize")].GetUint();
+    bokehDoF.shapeStrength = document[ENCRYPT_STRING("shapeStrength")].GetDouble();
+    bokehDoF.shapeRotation = document[ENCRYPT_STRING("shapeRotation")].GetDouble();
+    bokehDoF.isBlurEnabled = document[ENCRYPT_STRING("isBlurEnabled")].GetBool();
+    bokehDoF.blurStrength = document[ENCRYPT_STRING("blurStrength")].GetDouble();
+    bokehDoF.depthMinimum = document[ENCRYPT_STRING("depthMinimum")].GetDouble();
+    bokehDoF.depthMaximum = document[ENCRYPT_STRING("depthMaximum")].GetDouble();
+    bokehDoF.depthRateGain = document[ENCRYPT_STRING("depthRateGain")].GetDouble();
+    bokehDoF.luminescenceMinimum = document[ENCRYPT_STRING("luminescenceMinimum")].GetDouble();
+    bokehDoF.luminescenceMaximum = document[ENCRYPT_STRING("luminescenceMaximum")].GetDouble();
+    bokehDoF.luminescenceRateGain = document[ENCRYPT_STRING("luminescenceRateGain")].GetDouble();
+
+    return bokehDoF;
+}
+
+core::dto::Denoise core::JsonSerializer::deserializeDenoise(const std::string &value) {
+    rapidjson::Document document;
+    document.Parse(value.c_str());
+
+    core::dto::Denoise denoise;
+    denoise.noiseLevel = document[ENCRYPT_STRING("noiseLevel")].GetDouble();
+    denoise.blendingCoefficient = document[ENCRYPT_STRING("blendingCoefficient")].GetDouble();
+    denoise.weightThreshold = document[ENCRYPT_STRING("weightThreshold")].GetDouble();
+    denoise.counterThreshold = document[ENCRYPT_STRING("counterThreshold")].GetDouble();
+    denoise.gaussianSigma = document[ENCRYPT_STRING("gaussianSigma")].GetDouble();
+    denoise.windowSize = document[ENCRYPT_STRING("windowSize")].GetUint();
+
+    return denoise;
+}
+
+core::dto::LiftGammaGain core::JsonSerializer::deserializeLiftGammaGain(const std::string &value) {
+    rapidjson::Document document;
+    document.Parse(value.c_str());
+
+    core::dto::LiftGammaGain liftGammaGain;
+    liftGammaGain.lift.red = document[ENCRYPT_STRING("liftRed")].GetDouble();
+    liftGammaGain.lift.green = document[ENCRYPT_STRING("liftGreen")].GetDouble();
+    liftGammaGain.lift.blue = document[ENCRYPT_STRING("liftBlue")].GetDouble();
+    liftGammaGain.gamma.red = document[ENCRYPT_STRING("gammaRed")].GetDouble();
+    liftGammaGain.gamma.green = document[ENCRYPT_STRING("gammaGreen")].GetDouble();
+    liftGammaGain.gamma.blue = document[ENCRYPT_STRING("gammaBlue")].GetDouble();
+    liftGammaGain.gain.red = document[ENCRYPT_STRING("gainRed")].GetDouble();
+    liftGammaGain.gain.green = document[ENCRYPT_STRING("gainGreen")].GetDouble();
+    liftGammaGain.gain.blue = document[ENCRYPT_STRING("gainBlue")].GetDouble();
+
+    return liftGammaGain;
+}
+
+core::dto::LumaSharpen core::JsonSerializer::deserializeLumaSharpen(const std::string &value) {
+    rapidjson::Document document;
+    document.Parse(value.c_str());
+
+    core::dto::LumaSharpen lumaSharpen;
+    lumaSharpen.sharpeningStrength = document[ENCRYPT_STRING("sharpeningStrength")].GetDouble();
+    lumaSharpen.sharpeningClamp = document[ENCRYPT_STRING("sharpeningClamp")].GetDouble();
+    lumaSharpen.offset = document[ENCRYPT_STRING("offset")].GetDouble();
+
+    return lumaSharpen;
+}
+
+core::dto::Tonemap core::JsonSerializer::deserializeTonemap(const std::string &value) {
+    rapidjson::Document document;
+    document.Parse(value.c_str());
+
+    core::dto::Tonemap tonemap;
+    tonemap.gamma = document[ENCRYPT_STRING("gamma")].GetDouble();
+    tonemap.exposure = document[ENCRYPT_STRING("exposure")].GetDouble();
+    tonemap.saturation = document[ENCRYPT_STRING("saturation")].GetDouble();
+    tonemap.bleach = document[ENCRYPT_STRING("bleach")].GetDouble();
+    tonemap.defog = document[ENCRYPT_STRING("defog")].GetDouble();
+    tonemap.fog.red = document[ENCRYPT_STRING("fogRed")].GetDouble();
+    tonemap.fog.green = document[ENCRYPT_STRING("fogGreen")].GetDouble();
+    tonemap.fog.blue = document[ENCRYPT_STRING("fogBlue")].GetDouble();
+
+    return tonemap;
+}
+
+core::dto::Vibrance core::JsonSerializer::deserializeVibrance(const std::string &value) {
+    rapidjson::Document document;
+    document.Parse(value.c_str());
+
+    core::dto::Vibrance vibrance;
+    vibrance.strength = document[ENCRYPT_STRING("strength")].GetDouble();
+    vibrance.gain.red = document[ENCRYPT_STRING("gainRed")].GetDouble();
+    vibrance.gain.green = document[ENCRYPT_STRING("gainGreen")].GetDouble();
+    vibrance.gain.blue = document[ENCRYPT_STRING("gainBlue")].GetDouble();
+
+    return vibrance;
 }
 
 core::dto::GameSettings core::JsonSerializer::deserializeSettings(const std::string &value) {
@@ -237,38 +224,17 @@ core::dto::Direct3D11Settings core::JsonSerializer::deserializeDirect3D11Setting
     document.Parse(value.c_str());
 
     core::dto::Direct3D11Settings settings;
-    rapidjson::Value &bokehDoFJson = document[ENCRYPT_STRING("bokehDoF")];
-    if (!bokehDoFJson.IsNull()) {
-        core::dto::BokehDoF bokehDoF;
-        bokehDoF.isEnabled = bokehDoFJson[ENCRYPT_STRING("isEnabled")].GetBool();
-        bokehDoF.isChromaticAberrationEnabled = bokehDoFJson[ENCRYPT_STRING("isChromaticAberrationEnabled")].GetBool();
-        bokehDoF.chromaticAberrationFringe = bokehDoFJson[ENCRYPT_STRING("chromaticAberrationFringe")].GetDouble();
-        bokehDoF.isPreservingShape = bokehDoFJson[ENCRYPT_STRING("isPreservingShape")].GetBool();
-        bokehDoF.shapeSize = bokehDoFJson[ENCRYPT_STRING("shapeSize")].GetUint();
-        bokehDoF.shapeStrength = bokehDoFJson[ENCRYPT_STRING("shapeStrength")].GetDouble();
-        bokehDoF.shapeRotation = bokehDoFJson[ENCRYPT_STRING("shapeRotation")].GetDouble();
-        bokehDoF.isBlurEnabled = bokehDoFJson[ENCRYPT_STRING("isBlurEnabled")].GetBool();
-        bokehDoF.blurStrength = bokehDoFJson[ENCRYPT_STRING("blurStrength")].GetDouble();
-        bokehDoF.depthMinimum = bokehDoFJson[ENCRYPT_STRING("depthMinimum")].GetDouble();
-        bokehDoF.depthMaximum = bokehDoFJson[ENCRYPT_STRING("depthMaximum")].GetDouble();
-        bokehDoF.depthRateGain = bokehDoFJson[ENCRYPT_STRING("depthRateGain")].GetDouble();
-        bokehDoF.luminescenceMinimum = bokehDoFJson[ENCRYPT_STRING("luminescenceMinimum")].GetDouble();
-        bokehDoF.luminescenceMaximum = bokehDoFJson[ENCRYPT_STRING("luminescenceMaximum")].GetDouble();
-        bokehDoF.luminescenceRateGain = bokehDoFJson[ENCRYPT_STRING("luminescenceRateGain")].GetDouble();
-        settings.bokehDoF = bokehDoF;
-    }
-
-    rapidjson::Value &denoiseJson = document[ENCRYPT_STRING("denoise")];
-    if (!denoiseJson.IsNull()) {
-        core::dto::Denoise denoise;
-        denoise.isEnabled = denoiseJson[ENCRYPT_STRING("isEnabled")].GetBool();
-        denoise.noiseLevel = denoiseJson[ENCRYPT_STRING("noiseLevel")].GetDouble();
-        denoise.blendingCoefficient = denoiseJson[ENCRYPT_STRING("blendingCoefficient")].GetDouble();
-        denoise.weightThreshold = denoiseJson[ENCRYPT_STRING("weightThreshold")].GetDouble();
-        denoise.counterThreshold = denoiseJson[ENCRYPT_STRING("counterThreshold")].GetDouble();
-        denoise.gaussianSigma = denoiseJson[ENCRYPT_STRING("gaussianSigma")].GetDouble();
-        denoise.windowSize = denoiseJson[ENCRYPT_STRING("windowSize")].GetUint();
-        settings.denoise = denoise;
+    rapidjson::Value &effectsJson = document[ENCRYPT_STRING("effects")];
+    if (!effectsJson.IsNull() && effectsJson.IsArray()) {
+        for (rapidjson::SizeType i = 0; i < effectsJson.Size(); i++) {
+            rapidjson::Value &effectDataJson = effectsJson[i];
+            core::dto::EffectData effectData;
+            effectData.data = effectDataJson[ENCRYPT_STRING("data")].GetString();
+            effectData.id = effectDataJson[ENCRYPT_STRING("id")].GetString();
+            effectData.isEnabled = effectDataJson[ENCRYPT_STRING("isEnabled")].GetBool();
+            effectData.type = static_cast<core::EffectType>(effectDataJson[ENCRYPT_STRING("type")].GetInt());
+            settings.effects.push_back(effectData);
+        }
     }
 
     rapidjson::Value &depthBufferJson = document[ENCRYPT_STRING("depthBuffer")];
@@ -290,32 +256,6 @@ core::dto::Direct3D11Settings core::JsonSerializer::deserializeDirect3D11Setting
         settings.pluginSettings = pluginSettings;
     }
 
-    rapidjson::Value &liftGammaGainJson = document[ENCRYPT_STRING("liftGammaGain")];
-    if (!liftGammaGainJson.IsNull()) {
-        core::dto::LiftGammaGain liftGammaGain;
-        liftGammaGain.isEnabled = liftGammaGainJson[ENCRYPT_STRING("isEnabled")].GetBool();
-        liftGammaGain.lift.red = liftGammaGainJson[ENCRYPT_STRING("liftRed")].GetDouble();
-        liftGammaGain.lift.green = liftGammaGainJson[ENCRYPT_STRING("liftGreen")].GetDouble();
-        liftGammaGain.lift.blue = liftGammaGainJson[ENCRYPT_STRING("liftBlue")].GetDouble();
-        liftGammaGain.gamma.red = liftGammaGainJson[ENCRYPT_STRING("gammaRed")].GetDouble();
-        liftGammaGain.gamma.green = liftGammaGainJson[ENCRYPT_STRING("gammaGreen")].GetDouble();
-        liftGammaGain.gamma.blue = liftGammaGainJson[ENCRYPT_STRING("gammaBlue")].GetDouble();
-        liftGammaGain.gain.red = liftGammaGainJson[ENCRYPT_STRING("gainRed")].GetDouble();
-        liftGammaGain.gain.green = liftGammaGainJson[ENCRYPT_STRING("gainGreen")].GetDouble();
-        liftGammaGain.gain.blue = liftGammaGainJson[ENCRYPT_STRING("gainBlue")].GetDouble();
-        settings.liftGammaGain = liftGammaGain;
-    }
-
-    rapidjson::Value &lumaSharpenJson = document[ENCRYPT_STRING("lumaSharpen")];
-    if (!lumaSharpenJson.IsNull()) {
-        core::dto::LumaSharpen lumaSharpen;
-        lumaSharpen.isEnabled = lumaSharpenJson[ENCRYPT_STRING("isEnabled")].GetBool();
-        lumaSharpen.sharpeningStrength = lumaSharpenJson[ENCRYPT_STRING("sharpeningStrength")].GetDouble();
-        lumaSharpen.sharpeningClamp = lumaSharpenJson[ENCRYPT_STRING("sharpeningClamp")].GetDouble();
-        lumaSharpen.offset = lumaSharpenJson[ENCRYPT_STRING("offset")].GetDouble();
-        settings.lumaSharpen = lumaSharpen;
-    }
-
     rapidjson::Value &texturesJson = document[ENCRYPT_STRING("textures")];
     if (!texturesJson.IsNull()) {
         core::dto::Textures textures;
@@ -324,32 +264,6 @@ core::dto::Direct3D11Settings core::JsonSerializer::deserializeDirect3D11Setting
         textures.dumpingPath = texturesJson[ENCRYPT_STRING("dumpingPath")].GetString();
         textures.overridePath = texturesJson[ENCRYPT_STRING("overridePath")].GetString();
         settings.textures = textures;
-    }
-
-    rapidjson::Value &tonemapJson = document[ENCRYPT_STRING("tonemap")];
-    if (!tonemapJson.IsNull()) {
-        core::dto::Tonemap tonemap;
-        tonemap.isEnabled = tonemapJson[ENCRYPT_STRING("isEnabled")].GetBool();
-        tonemap.gamma = tonemapJson[ENCRYPT_STRING("gamma")].GetDouble();
-        tonemap.exposure = tonemapJson[ENCRYPT_STRING("exposure")].GetDouble();
-        tonemap.saturation = tonemapJson[ENCRYPT_STRING("saturation")].GetDouble();
-        tonemap.bleach = tonemapJson[ENCRYPT_STRING("bleach")].GetDouble();
-        tonemap.defog = tonemapJson[ENCRYPT_STRING("defog")].GetDouble();
-        tonemap.fog.red = tonemapJson[ENCRYPT_STRING("fogRed")].GetDouble();
-        tonemap.fog.green = tonemapJson[ENCRYPT_STRING("fogGreen")].GetDouble();
-        tonemap.fog.blue = tonemapJson[ENCRYPT_STRING("fogBlue")].GetDouble();
-        settings.tonemap = tonemap;
-    }
-
-    rapidjson::Value &vibranceJson = document[ENCRYPT_STRING("vibrance")];
-    if (!vibranceJson.IsNull()) {
-        core::dto::Vibrance vibrance;
-        vibrance.isEnabled = vibranceJson[ENCRYPT_STRING("isEnabled")].GetBool();
-        vibrance.strength = vibranceJson[ENCRYPT_STRING("strength")].GetDouble();
-        vibrance.gain.red = vibranceJson[ENCRYPT_STRING("gainRed")].GetDouble();
-        vibrance.gain.green = vibranceJson[ENCRYPT_STRING("gainGreen")].GetDouble();
-        vibrance.gain.blue = vibranceJson[ENCRYPT_STRING("gainBlue")].GetDouble();
-        settings.vibrance = vibrance;
     }
 
     return settings;

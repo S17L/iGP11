@@ -34,7 +34,7 @@ namespace iGP11.Tool.Application.CommandHandler
                 return;
             }
 
-            var gameProfileTemplate = game.Profiles.SingleOrDefault(entity => entity.Id == (AggregateId)command.BasedOnProfileId);
+            var gameProfileTemplate = game.Profiles.SingleOrDefault(entity => entity.Id == (AggregateId)command.BasedOnGameProfileId);
             if (gameProfileTemplate == null)
             {
                 await context.EmitAsync(new ErrorOccuredNotification());

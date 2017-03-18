@@ -5,6 +5,7 @@ using iGP11.Tool.Shared.Model.GameSettings.Validation;
 
 namespace iGP11.Tool.Shared.Model.GameSettings
 {
+    [ComponentName("DepthBuffer")]
     [ComponentShortDescription("DepthBufferShortDescription")]
     [ComponentLongDescription("DepthBufferLongDescription")]
     [DataContract]

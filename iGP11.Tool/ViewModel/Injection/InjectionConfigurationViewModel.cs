@@ -15,10 +15,10 @@ using iGP11.Tool.Events;
 using iGP11.Tool.Localization;
 using iGP11.Tool.Model;
 using iGP11.Tool.ReadModel.Api;
-using iGP11.Tool.ReadModel.Api.Model;
 using iGP11.Tool.Shared.Model;
 using iGP11.Tool.Shared.Model.GameSettings;
 using iGP11.Tool.Shared.Notification;
+using iGP11.Tool.Shared.Plugin;
 using iGP11.Tool.ViewModel.PropertyEditor;
 
 namespace iGP11.Tool.ViewModel.Injection
@@ -28,14 +28,15 @@ namespace iGP11.Tool.ViewModel.Injection
                                                           IEventHandler<ApplicationMinimizedEvent>,
                                                           IEventHandler<ApplicationActionEvent>,
                                                           IEventHandler<ApplicationRestoredEvent>,
-                                                          IInjectionConfigurationViewModel
+                                                          IEventHandler<EditPluginComponentEvent>,
+                                                          IEventHandler<PluginChangedEvent>,
+                                                          IEventHandler<ReplacePluginComponentEvent>
     {
         private const int TaskInterval = 5000;
 
         private readonly DomainActionBuilder _actionBuilder;
         private readonly ComponentViewModelFactory _componentViewModelFactory;
         private readonly IDirectoryPicker _directoryPicker;
-        private readonly IEventPublisher _eventPublisher;
         private readonly IFilePicker _filePicker;
         private readonly IFindFirstLaunchTimeQuery _findFirstLaunchTimeQuery;
         private readonly IFindGamePackageByIdQuery _findGamePackageByIdQuery;
@@ -44,19 +45,18 @@ namespace iGP11.Tool.ViewModel.Injection
         private readonly ObservableRangeCollection<LookupViewModel> _gameProfiles = new ObservableRangeCollection<LookupViewModel>();
         private readonly ObservableRangeCollection<LookupViewModel> _games = new ObservableRangeCollection<LookupViewModel>();
         private readonly INavigationService _navigationService;
-        private readonly ObservableRangeCollection<IComponentViewModel> _plugin = new ObservableRangeCollection<IComponentViewModel>();
-        private readonly IPluginComponentFactory _pluginComponentFactory;
+        private readonly IPluginFactory _pluginFactory;
         private readonly IProcessable _processable;
+        private readonly IEventPublisher _publisher;
         private readonly BlockingTaskQueue _queue = new BlockingTaskQueue();
         private readonly ITaskRunner _runner;
         private readonly IEqualityComparer<ProxySettings> _stateEqualityComparer;
         private bool _applicationActive = true;
         private IEnumerable<Game> _gamePackages;
         private IInjectionViewModel _injectionViewModel = new CollectDataViewModel();
-        private bool _isValid;
         private ModeType _mode = ModeType.Injector;
         private GamePackage _package;
-        private IComponentViewModel _pluginEditForm;
+        private IComponentViewModel _pluginComponent;
 
         private ProxySettings _proxySettings;
         private IScheduler _scheduler;
@@ -71,9 +71,9 @@ namespace iGP11.Tool.ViewModel.Injection
             IFindLastEditedGamePackageQuery findLastEditedGamePackageQuery,
             IDirectoryPicker directoryPicker,
             IEqualityComparer<ProxySettings> stateEqualityComparer,
-            IEventPublisher eventPublisher,
+            IEventPublisher publisher,
             IFilePicker filePicker,
-            IPluginComponentFactory pluginComponentFactory,
+            IPluginFactory pluginFactory,
             INavigationService navigationService,
             IProcessable processable,
             ITaskRunner runner)
@@ -86,29 +86,29 @@ namespace iGP11.Tool.ViewModel.Injection
             _findLastEditedGamePackageQuery = findLastEditedGamePackageQuery;
             _directoryPicker = directoryPicker;
             _stateEqualityComparer = stateEqualityComparer;
-            _eventPublisher = eventPublisher;
+            _publisher = publisher;
             _filePicker = filePicker;
-            _pluginComponentFactory = pluginComponentFactory;
+            _pluginFactory = pluginFactory;
             _navigationService = navigationService;
             _processable = processable;
             _runner = runner;
 
-            _eventPublisher.Register<ApplicationActionEvent>(this);
-            _eventPublisher.Register<ApplicationMinimizedEvent>(this);
-            _eventPublisher.Register<ApplicationRestoredEvent>(this);
+            _publisher.Register<ApplicationActionEvent>(this);
+            _publisher.Register<ApplicationMinimizedEvent>(this);
+            _publisher.Register<ApplicationRestoredEvent>(this);
 
             ActionCommand = new ActionCommand(() => _queue.QueueTask(ExecuteActionAsync), IsActionEnabled);
             ActivationState = new StateViewModel(_runner);
             AddGameProfileCommand = new ActionCommand(() => _queue.QueueTask(AddGameProfileAsync), () => true);
             ChangedCommand = new ActionCommand(async () => await UpdateGameProfileAsync(), () => true);
             ClearGameFilePathCommand = new ActionCommand(async () => await ClearApplicationFilePathAsync(), () => !GameFilePath.IsNullOrEmpty());
-            EditGameProfileCommand = new ActionCommand(() => _queue.QueueAction(ShowMainForm), () => true);
+            EditGameProfileCommand = new ActionCommand(() => _queue.QueueAction(EditPluginMainSettings), () => true);
             MoveToGameFilePathCommand = new ActionCommand(MoveToApplicationPath, () => !GameFilePath.IsNullOrEmpty());
             MoveToConfigurationDirectoryPathCommand = new ActionCommand(MoveToConfigurationDirectoryPath, () => !GameFilePath.IsNullOrEmpty());
             MoveToLogsDirectoryPathCommand = new ActionCommand(MoveToLogsDirectoryPath, () => !GameFilePath.IsNullOrEmpty());
             SwitchModeCommand = new ActionCommand(async () => await SwapModeAsync(), () => true);
             PickGameFilePathCommand = new ActionCommand(async () => await PickApplicationFilePathAsync(), () => true);
-            PickPluginSettingsEditViewCommand = new GenericActionCommand<IComponentViewModel>(PickPluginSettingsEditView, () => true);
+            PickPluginSettingsEditViewCommand = new GenericActionCommand<IComponentViewModel>(EditPluginComponent, () => true);
             RemoveGameProfileCommand = new ActionCommand(async () => await RemoveGameProfileAsync(), () => _package?.Game.Profiles.Count > 1);
             RenameGameProfileCommand = new ActionCommand(async () => await RenameGameProfileAsync(), () => true);
             ValidationTriggeredCommand = new GenericActionCommand<ValidationResultEventArgs>(eventArgs => _queue.QueueAction(Validate), () => true);
@@ -183,28 +183,9 @@ namespace iGP11.Tool.ViewModel.Injection
 
         public IEnumerable<LookupViewModel> Games => _games;
 
-        public bool HasEditableSettings => !_plugin.IsNullOrEmpty();
-
         public bool HasGameFilePath => _injectionViewModel.GameFilePath.IsNotNullOrEmpty();
 
         public bool IsStandardMode => _mode == ModeType.Injector;
-
-        public bool IsValid
-        {
-            get { return _isValid; }
-            set
-            {
-                if (_isValid == value)
-                {
-                    return;
-                }
-
-                _isValid = value;
-
-                Rebind();
-                OnPropertyChanged();
-            }
-        }
 
         public string LogsDirectoryPath
         {
@@ -228,15 +209,15 @@ namespace iGP11.Tool.ViewModel.Injection
 
         public IActionCommand PickPluginSettingsEditViewCommand { get; }
 
-        public IEnumerable<IComponentViewModel> Plugin => _plugin;
-
-        public IComponentViewModel PluginEditForm
+        public IComponentViewModel PluginComponent
         {
-            get { return _pluginEditForm; }
+            get { return _pluginComponent; }
 
             set
             {
-                _pluginEditForm = value;
+                _pluginComponent = value;
+
+                PluginViewModel.Select(value);
                 OnPropertyChanged();
             }
         }
@@ -250,6 +231,8 @@ namespace iGP11.Tool.ViewModel.Injection
                 OnPropertyChanged();
             }
         }
+
+        public PluginViewModel PluginViewModel { get; private set; }
 
         public string ProxyDirectoryPath
         {
@@ -278,17 +261,9 @@ namespace iGP11.Tool.ViewModel.Injection
 
         public void Dispose()
         {
-            _eventPublisher.Unregister<ApplicationActionEvent>(this);
-            _eventPublisher.Unregister<ApplicationMinimizedEvent>(this);
-            _eventPublisher.Unregister<ApplicationRestoredEvent>(this);
-        }
-
-        public void RebindPlugin()
-        {
-            foreach (var viewModel in _plugin)
-            {
-                viewModel.Rebind();
-            }
+            _publisher.Unregister<ApplicationActionEvent>(this);
+            _publisher.Unregister<ApplicationMinimizedEvent>(this);
+            _publisher.Unregister<ApplicationRestoredEvent>(this);
         }
 
         public async Task ShowReleaseNotesAsync()
@@ -333,6 +308,33 @@ namespace iGP11.Tool.ViewModel.Injection
             await Task.Yield();
         }
 
+        async Task IEventHandler<EditPluginComponentEvent>.HandleAsync(EditPluginComponentEvent @event)
+        {
+            _runner.Run(() => PluginComponent = @event.Component);
+
+            await Task.Yield();
+        }
+
+        async Task IEventHandler<PluginChangedEvent>.HandleAsync(PluginChangedEvent @event)
+        {
+            _runner.Run(async () => await UpdateGameProfileAsync());
+
+            await Task.Yield();
+        }
+
+        async Task IEventHandler<ReplacePluginComponentEvent>.HandleAsync(ReplacePluginComponentEvent @event)
+        {
+            _runner.Run(() =>
+            {
+                if (PluginComponent == @event.OldComponent)
+                {
+                    PluginComponent = @event.NewComponent;
+                }
+            });
+
+            await Task.Yield();
+        }
+
         private async Task AddGameProfileAsync()
         {
             var gameId = _package.Game.Id;
@@ -345,7 +347,7 @@ namespace iGP11.Tool.ViewModel.Injection
             using (new ProcessingScope(_processable))
             {
                 var id = Guid.Empty;
-                await _actionBuilder.Dispatch(new AddGameProfileCommand(addedProfile.ProfileName, gameId, addedProfile.BasedOnProfileId))
+                await _actionBuilder.Dispatch(new AddGameProfileCommand(addedProfile.ProfileName, gameId, addedProfile.BasedOnGameProfileId))
                     .CompleteFor<GameProfileAddedNotification>((context, @event) => id = @event.Id)
                     .CompleteFor<ErrorOccuredNotification>(async (context, @event) => await PublishUnknownErrorEventAsync())
                     .OnTimeout(async () => await PublishTimeoutEventAsync())
@@ -365,8 +367,8 @@ namespace iGP11.Tool.ViewModel.Injection
             var initialized = false;
             await _actionBuilder.Dispatch(new InitializeCommand())
                 .CompleteFor<ActionSucceededNotification>((context, @event) => initialized = true)
-                .CompleteFor<ErrorOccuredNotification>(async (context, @event) => await _eventPublisher.PublishAsync(new ShutdownEvent()))
-                .OnTimeout(async () => await _eventPublisher.PublishAsync(new ShutdownEvent()))
+                .CompleteFor<ErrorOccuredNotification>(async (context, @event) => await _publisher.PublishAsync(new ShutdownEvent()))
+                .OnTimeout(async () => await _publisher.PublishAsync(new ShutdownEvent()))
                 .Execute();
 
             if (initialized)
@@ -387,7 +389,7 @@ namespace iGP11.Tool.ViewModel.Injection
                 Rebind();
 
                 await _actionBuilder.Dispatch(new UpdateLastEditedGameProfileCommand(_package.GameProfile.Id))
-                    .CompleteFor<ActionSucceededNotification>(async (context, @event) => await PublishUpdateStatusEventAsync(StatusType.Ok, "ProfileChanged", GameName, GameProfileName))
+                    .CompleteFor<ActionSucceededNotification>(async (context, @event) => await PublishUpdateStatusEventAsync(StatusType.Ok, "GameProfileChanged", GameName, GameProfileName))
                     .CompleteFor<ErrorOccuredNotification>(async (context, @event) => await PublishUnknownErrorEventAsync())
                     .OnTimeout(async () => await PublishTimeoutEventAsync())
                     .Execute();
@@ -405,7 +407,7 @@ namespace iGP11.Tool.ViewModel.Injection
                 Rebind();
 
                 await _actionBuilder.Dispatch(new UpdateLastEditedGameProfileCommand(_package.GameProfile.Id))
-                    .CompleteFor<ActionSucceededNotification>(async (context, @event) => await PublishUpdateStatusEventAsync(StatusType.Ok, "ProfileChanged", GameName, GameProfileName))
+                    .CompleteFor<ActionSucceededNotification>(async (context, @event) => await PublishUpdateStatusEventAsync(StatusType.Ok, "GameProfileChanged", GameName, GameProfileName))
                     .CompleteFor<ErrorOccuredNotification>(async (context, @event) => await PublishUnknownErrorEventAsync())
                     .OnTimeout(async () => await PublishTimeoutEventAsync())
                     .Execute();
@@ -416,6 +418,16 @@ namespace iGP11.Tool.ViewModel.Injection
         {
             GameFilePath = string.Empty;
             await UpdateGameAsync();
+        }
+
+        private void EditPluginComponent(IComponentViewModel viewModel)
+        {
+            PluginComponent = viewModel;
+        }
+
+        private void EditPluginMainSettings()
+        {
+            PluginComponent = null;
         }
 
         private void EstimateCommunicatorActivationState(ActivationStatus status)
@@ -480,15 +492,19 @@ namespace iGP11.Tool.ViewModel.Injection
 
                 _status = null;
                 _proxySettings = proxySettings;
-                _plugin.Clear();
-                _plugin.AddRange(_componentViewModelFactory.CreateEditable(_pluginComponentFactory.Create(proxySettings)));
+
+                PluginViewModel = new PluginViewModel(
+                    _pluginFactory.Create(proxySettings),
+                    _publisher,
+                    _navigationService,
+                    _componentViewModelFactory);
 
                 GameFilePath = proxySettings.GameFilePath;
                 ProxyDirectoryPath = proxySettings.ProxyDirectoryPath;
                 LogsDirectoryPath = proxySettings.LogsDirectoryPath;
                 PluginType = proxySettings.PluginType;
 
-                ShowMainForm();
+                EditPluginMainSettings();
                 EstimateCommunicatorActivationState(proxySettings.ActivationStatus);
                 Rebind();
             }
@@ -595,10 +611,10 @@ namespace iGP11.Tool.ViewModel.Injection
             switch (applicationAction)
             {
                 case ApplicationAction.Default:
-                    await _eventPublisher.PublishAsync(new ShowApplicationEvent());
+                    await _publisher.PublishAsync(new ShowApplicationEvent());
                     break;
                 case ApplicationAction.Injection:
-                    await _eventPublisher.PublishAsync(new ShowApplicationEvent());
+                    await _publisher.PublishAsync(new ShowApplicationEvent());
                     await InjectPluginAsync(true);
                     break;
                 default:
@@ -631,12 +647,15 @@ namespace iGP11.Tool.ViewModel.Injection
             _injectionViewModel = new InjectionViewModel(this, _package);
             _scheduler = new BlockingScheduler(() => _runner.Run(async () => await EstimateInjectorStateAsync(true)), TaskInterval);
 
-            _plugin.Clear();
-            _plugin.AddRange(_componentViewModelFactory.CreateEditable(_pluginComponentFactory.Create(_package)));
+            PluginViewModel = new PluginViewModel(
+                _pluginFactory.Create(_package),
+                _publisher,
+                _navigationService,
+                _componentViewModelFactory);
 
             await EstimateInjectorStateAsync();
             Validate();
-            ShowMainForm();
+            EditPluginMainSettings();
             StartScheduler();
         }
 
@@ -644,7 +663,7 @@ namespace iGP11.Tool.ViewModel.Injection
         {
             if (!IsInjectionEnabled())
             {
-                await _eventPublisher.PublishAsync(new ShowApplicationEvent());
+                await _publisher.PublishAsync(new ShowApplicationEvent());
                 return;
             }
 
@@ -666,7 +685,7 @@ namespace iGP11.Tool.ViewModel.Injection
                         await PublishUpdateStatusEventAsync(StatusType.Ok, "InjectionCompleted");
                         if (hideApplication)
                         {
-                            await _eventPublisher.PublishAsync(new HideApplicationToTrayEvent());
+                            await _publisher.PublishAsync(new HideApplicationToTrayEvent());
                         }
 
                         break;
@@ -690,12 +709,12 @@ namespace iGP11.Tool.ViewModel.Injection
 
         private bool IsInjectionEnabled()
         {
-            return (_mode == ModeType.Injector) && (_status == ActivationStatus.NotRunning) && _isValid;
+            return (_mode == ModeType.Injector) && (_status == ActivationStatus.NotRunning) && (PluginViewModel?.IsValid == true);
         }
 
         private bool IsUpdateConfigurationEnabled()
         {
-            return (_mode == ModeType.Communicator) && _isValid;
+            return (_mode == ModeType.Communicator) && (PluginViewModel?.IsValid == true);
         }
 
         private void MoveToApplicationPath()
@@ -725,19 +744,14 @@ namespace iGP11.Tool.ViewModel.Injection
             await UpdateGameAsync();
         }
 
-        private void PickPluginSettingsEditView(IComponentViewModel viewModel)
-        {
-            PluginEditForm = viewModel;
-        }
-
         private async Task PublishErrorEventAsync(Localizable error)
         {
-            await _eventPublisher.PublishAsync(new UpdateStatusEvent(Target.EntryPoint, StatusType.Failed, error.Localize()));
+            await _publisher.PublishAsync(new UpdateStatusEvent(Target.EntryPoint, StatusType.Failed, error.Localize()));
         }
 
-        private async Task PublishProcessConfigurationUpdatedEventAsync()
+        private async Task PublishGameProfileUpdatedEventAsync()
         {
-            await PublishUpdateStatusEventAsync(StatusType.Ok, "ProcessConfigurationUpdated", DateTime.Now);
+            await PublishUpdateStatusEventAsync(StatusType.Ok, "GameProfileUpdated", DateTime.Now);
         }
 
         private async Task PublishTimeoutEventAsync()
@@ -752,7 +766,7 @@ namespace iGP11.Tool.ViewModel.Injection
 
         private async Task PublishUpdateStatusEventAsync(StatusType type, string key, params object[] arguments)
         {
-            await _eventPublisher.PublishAsync(
+            await _publisher.PublishAsync(
                 new UpdateStatusEvent(
                     Target.EntryPoint,
                     type,
@@ -773,13 +787,11 @@ namespace iGP11.Tool.ViewModel.Injection
             OnPropertyChanged(() => GameProfileId);
 
             OnPropertyChanged(() => HasGameFilePath);
-            OnPropertyChanged(() => HasEditableSettings);
             OnPropertyChanged(() => IsStandardMode);
-            OnPropertyChanged(() => IsValid);
             OnPropertyChanged(() => LogsDirectoryPath);
-            OnPropertyChanged(() => Plugin);
-            OnPropertyChanged(() => PluginEditForm);
+            OnPropertyChanged(() => PluginComponent);
             OnPropertyChanged(() => PluginType);
+            OnPropertyChanged(() => PluginViewModel);
             OnPropertyChanged(() => ProxyDirectoryPath);
 
             ActionCommand.Rebind();
@@ -818,8 +830,8 @@ namespace iGP11.Tool.ViewModel.Injection
             var id = _package.GameProfile.Id;
             if (!_navigationService.ShowConfirmationDialog(
                     Target.EntryPoint,
-                    Localization.Localization.Current.Get("RemoveProfileDialogTitle"),
-                    Localization.Localization.Current.Get("RemoveProfileQuestion")))
+                    Localization.Localization.Current.Get("RemoveGameProfileDialogTitle"),
+                    Localization.Localization.Current.Get("RemoveGameProfileQuestion")))
             {
                 return;
             }
@@ -856,7 +868,7 @@ namespace iGP11.Tool.ViewModel.Injection
                 gameProfile.Name = name;
 
                 await _actionBuilder.Dispatch(new UpdateGameProfileCommand(gameProfile))
-                    .CompleteFor<ActionSucceededNotification>(async (context, @event) => await PublishUpdateStatusEventAsync(StatusType.Ok, "ProfileRenamed"))
+                    .CompleteFor<ActionSucceededNotification>(async (context, @event) => await PublishUpdateStatusEventAsync(StatusType.Ok, "GameProfileRenamed"))
                     .CompleteFor<ErrorOccuredNotification>(async (context, @event) => await PublishUnknownErrorEventAsync())
                     .OnTimeout(async () => await PublishTimeoutEventAsync())
                     .Execute();
@@ -867,11 +879,6 @@ namespace iGP11.Tool.ViewModel.Injection
                 OnPropertyChanged(() => GameProfileId);
                 OnPropertyChanged(() => GameProfileName);
             }
-        }
-
-        private void ShowMainForm()
-        {
-            PluginEditForm = null;
         }
 
         private void StartScheduler()
@@ -928,7 +935,7 @@ namespace iGP11.Tool.ViewModel.Injection
                 Validate();
                 Rebind();
 
-                if ((_mode == ModeType.Communicator) || !_isValid)
+                if ((_mode == ModeType.Communicator) || (PluginViewModel?.IsValid == false))
                 {
                     return;
                 }
@@ -937,7 +944,7 @@ namespace iGP11.Tool.ViewModel.Injection
             }
 
             await _actionBuilder.Dispatch(new UpdateGameCommand(game.Id, game.Name, game.FilePath))
-                .CompleteFor<ActionSucceededNotification>(async (context, @event) => await PublishProcessConfigurationUpdatedEventAsync())
+                .CompleteFor<ActionSucceededNotification>(async (context, @event) => await PublishGameProfileUpdatedEventAsync())
                 .CompleteFor<ErrorOccuredNotification>(async (context, @event) => await PublishUnknownErrorEventAsync())
                 .OnTimeout(async () => await PublishTimeoutEventAsync())
                 .Execute();
@@ -951,7 +958,7 @@ namespace iGP11.Tool.ViewModel.Injection
                 Validate();
                 Rebind();
 
-                if ((_mode == ModeType.Communicator) || !_isValid)
+                if ((_mode == ModeType.Communicator) || (PluginViewModel?.IsValid == false))
                 {
                     return;
                 }
@@ -960,7 +967,7 @@ namespace iGP11.Tool.ViewModel.Injection
             }
 
             await _actionBuilder.Dispatch(new UpdateGameProfileCommand(gameProfile))
-                .CompleteFor<ActionSucceededNotification>(async (context, @event) => await PublishProcessConfigurationUpdatedEventAsync())
+                .CompleteFor<ActionSucceededNotification>(async (context, @event) => await PublishGameProfileUpdatedEventAsync())
                 .CompleteFor<ErrorOccuredNotification>(async (context, @event) => await PublishUnknownErrorEventAsync())
                 .OnTimeout(async () => await PublishTimeoutEventAsync())
                 .Execute();
@@ -972,8 +979,8 @@ namespace iGP11.Tool.ViewModel.Injection
             using (new DisabledSchedulerScope(_scheduler))
             {
                 await _actionBuilder.Dispatch(new UpdateProxySettingsCommand(_proxySettings))
-                    .CompleteFor<ProxySettingsLoadedNotification>(async (context, @event) => await PublishProcessConfigurationUpdatedEventAsync())
-                    .CompleteFor<ErrorOccuredNotification>(async (context, @event) => await PublishUpdateStatusEventAsync(StatusType.Failed, "ProcessConfigurationUpdatingFailed", DateTime.Now))
+                    .CompleteFor<ProxySettingsLoadedNotification>(async (context, @event) => await PublishGameProfileUpdatedEventAsync())
+                    .CompleteFor<ErrorOccuredNotification>(async (context, @event) => await PublishUpdateStatusEventAsync(StatusType.Failed, "GameProfileUpdatingFailed", DateTime.Now))
                     .OnTimeout(async () => await PublishTimeoutEventAsync())
                     .Execute();
             }
@@ -981,7 +988,8 @@ namespace iGP11.Tool.ViewModel.Injection
 
         private void Validate()
         {
-            IsValid = _plugin.All(settings => !settings.HasErrors);
+            PluginViewModel.Validate();
+            Rebind();
         }
     }
 }

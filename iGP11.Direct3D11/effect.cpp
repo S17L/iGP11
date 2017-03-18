@@ -1,10 +1,11 @@
 #include "stdafx.h"
 #include "effect.h"
 
-direct3d11::EffectsApplicator::EffectsApplicator(dto::FilterSettings filterSettings, direct3d11::Direct3D11Context *context) {
+direct3d11::EffectsApplicator::EffectsApplicator(dto::FilterSettings filterSettings, direct3d11::Direct3D11Context *context, core::ISerializer *serializer) {
     _filterSettings = filterSettings;
     _requestedFilterSettings = filterSettings;
     _context = context;
+    _serializer = serializer;
 }
 
 void direct3d11::EffectsApplicator::addEffect(direct3d11::IEffect *effect) {
@@ -42,28 +43,81 @@ void direct3d11::EffectsApplicator::applyProcessing(const direct3d11::dto::PostP
                 addEffect(new direct3d11::LuminescenceEffect(_context, _proxy->nextColorTexture(), _resolution, _codeBuilderFactory.get()));
             }
             else if (_filterSettings.pluginSettings.renderingMode == core::RenderingMode::effects) {
-                if (_filterSettings.denoise.isEnabled) {
-                    addEffect(new direct3d11::DenoiseEffect(_context, _proxy->nextColorTexture(), _resolution, _filterSettings.denoise, _codeBuilderFactory.get()));
-                }
-                
-                if (_filterSettings.tonemap.isEnabled) {
-                    addEffect(new direct3d11::TonemapEffect(_context, _proxy->nextColorTexture(), _resolution, _filterSettings.tonemap, _codeBuilderFactory.get()));
-                }
+                for (auto effectData : _filterSettings.effects) {
+                    if (!effectData.isEnabled) {
+                        continue;
+                    }
 
-                if (_filterSettings.vibrance.isEnabled) {
-                    addEffect(new direct3d11::VibranceEffect(_context, _proxy->nextColorTexture(), _resolution, _filterSettings.vibrance, _codeBuilderFactory.get()));
-                }
+                    ThreadLoggerAppenderScope scope(core::stringFormat(ENCRYPT_STRING("attempting to add effect: %d"), static_cast<int>(effectData.type)));
+                    switch (effectData.type)
+                    {
+                    case core::EffectType::bokehdof:
+                        addEffect(
+                            new direct3d11::BokehDoFEffect(
+                                _context,
+                                _proxy->nextColorTexture(),
+                                _proxy->getDepthTextureView(),
+                                _resolution,
+                                _serializer->deserializeBokehDoF(effectData.data),
+                                _filterSettings.depthBuffer,
+                                _codeBuilderFactory.get()));
 
-                if (_filterSettings.liftGammaGain.isEnabled) {
-                    addEffect(new direct3d11::LiftGammaGainEffect(_context, _proxy->nextColorTexture(), _resolution, _filterSettings.liftGammaGain, _codeBuilderFactory.get()));
-                }
+                        break;
+                    case core::EffectType::denoise:
+                        addEffect(
+                            new direct3d11::DenoiseEffect(
+                                _context,
+                                _proxy->nextColorTexture(),
+                                _resolution,
+                                _serializer->deserializeDenoise(effectData.data),
+                                _codeBuilderFactory.get()));
 
-                if (_filterSettings.lumaSharpen.isEnabled) {
-                    addEffect(new direct3d11::LumasharpenEffect(_context, _proxy->nextColorTexture(), _resolution, _filterSettings.lumaSharpen, _codeBuilderFactory.get()));
-                }
+                        break;
+                    case core::EffectType::liftgammagain:
+                        addEffect(
+                            new direct3d11::LiftGammaGainEffect(
+                                _context,
+                                _proxy->nextColorTexture(),
+                                _resolution,
+                                _serializer->deserializeLiftGammaGain(effectData.data),
+                                _codeBuilderFactory.get()));
 
-                if (_filterSettings.bokehDoF.isEnabled && postProcessingSettings.depthTexture != nullptr) {
-                    addEffect(new direct3d11::BokehDoFEffect(_context, _proxy->nextColorTexture(), _proxy->getDepthTextureView(), _resolution, _filterSettings.bokehDoF, _filterSettings.depthBuffer, _codeBuilderFactory.get()));
+                        break;
+                    case core::EffectType::lumasharpen:
+                        addEffect(
+                            new direct3d11::LumasharpenEffect(
+                                _context,
+                                _proxy->nextColorTexture(),
+                                _resolution,
+                                _serializer->deserializeLumaSharpen(effectData.data),
+                                _codeBuilderFactory.get()));
+
+                        break;
+                    case core::EffectType::tonemap:
+                        addEffect(
+                            new direct3d11::TonemapEffect(
+                                _context,
+                                _proxy->nextColorTexture(),
+                                _resolution,
+                                _serializer->deserializeTonemap(effectData.data),
+                                _codeBuilderFactory.get()));
+
+                        break;
+                    case core::EffectType::vibrance:
+                        core::logging::log("adding vibrance");
+                        core::logging::log(effectData.data);
+                        addEffect(
+                            new direct3d11::VibranceEffect(
+                                _context,
+                                _proxy->nextColorTexture(),
+                                _resolution,
+                                _serializer->deserializeVibrance(effectData.data),
+                                _codeBuilderFactory.get()));
+
+                        break;
+                    default:
+                        break;
+                    }
                 }
             }
 

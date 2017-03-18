@@ -67,15 +67,10 @@ D3D11_SHADER_RESOURCE_VIEW_DESC applyTextureDetailLevel(D3D11_SHADER_RESOURCE_VI
 
 direct3d11::dto::FilterSettings Direct3D11Plugin::getFilterConfiguration() {
     direct3d11::dto::FilterSettings filterSettings;
+    filterSettings.effects = _settings.effects;
     filterSettings.codeDirectoryPath = _pluginSettings.proxyDirectoryPath;
-    filterSettings.bokehDoF = _settings.bokehDoF;
-    filterSettings.denoise = _settings.denoise;
     filterSettings.depthBuffer = _settings.depthBuffer;
     filterSettings.pluginSettings = _settings.pluginSettings;
-    filterSettings.liftGammaGain = _settings.liftGammaGain;
-    filterSettings.lumaSharpen = _settings.lumaSharpen;
-    filterSettings.tonemap = _settings.tonemap;
-    filterSettings.vibrance = _settings.vibrance;
 
     return filterSettings;
 }
@@ -197,7 +192,7 @@ HRESULT __stdcall dxgiSwapChainPresentOverride(IDXGISwapChain *chain, UINT inter
 
         if (_this._activationStatus == core::ActivationStatus::pluginactivated) {
             if (_this._applicator == nullptr) {
-                _this._applicator.reset(new direct3d11::EffectsApplicator(_this.getFilterConfiguration(), _this._context.get()));
+                _this._applicator.reset(new direct3d11::EffectsApplicator(_this.getFilterConfiguration(), _this._context.get(), _this._serializer));
             }
 
             if (_this._frameCounter->nextFrame()) {
@@ -376,6 +371,7 @@ bool Direct3D11Plugin::isInitialized() {
 bool Direct3D11Plugin::initialize(
     core::IHookService *hookService,
     core::IProcessService *processService,
+    core::ISerializer *serializer,
     core::ITextureCacheFactory *textureCacheFactory,
     core::dto::PluginSettings pluginSettings,
     core::dto::Direct3D11Settings settings,
@@ -385,8 +381,8 @@ bool Direct3D11Plugin::initialize(
         log(error, core::stringFormat(ENCRYPT_STRING("plugin is already initialized [ status: %d ]"), _activationStatus));
         return true;
     }
-    else if (hookService == nullptr || processService == nullptr || textureCacheFactory == nullptr || profilePicker == nullptr || textureService == nullptr) {
-        log(error, ENCRYPT_STRING("at least one provided external service is undefined"));
+    else if (hookService == nullptr || processService == nullptr || serializer == nullptr || textureCacheFactory == nullptr || profilePicker == nullptr || textureService == nullptr) {
+        log(error, ENCRYPT_STRING("at least one provided external dependency is undefined"));
         return false;
     }
 
@@ -394,6 +390,7 @@ bool Direct3D11Plugin::initialize(
     _textureService = textureService;
     _hookService = hookService;
     _processService = processService;
+    _serializer = serializer;
     _pluginSettings = pluginSettings;
     _settings = settings;
     _profilePicker = profilePicker;

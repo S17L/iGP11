@@ -1,18 +1,18 @@
 ﻿using iGP11.Library.Component;
 using iGP11.Tool.Application.Api.Model;
-using iGP11.Tool.ReadModel.Api.Model;
 using iGP11.Tool.Shared.Model;
+using iGP11.Tool.Shared.Model.GameSettings;
 
 namespace iGP11.Tool.ViewModel.Injection
 {
     public class InjectionViewModel : ViewModel,
                                       IInjectionViewModel
     {
-        private readonly IInjectionConfigurationViewModel _injectionConfigurationViewModel;
+        private readonly InjectionConfigurationViewModel _injectionConfigurationViewModel;
         private readonly GamePackage _package;
         private readonly ITokenReplacer _tokenReplacer;
 
-        public InjectionViewModel(IInjectionConfigurationViewModel injectionConfigurationViewModel, GamePackage package)
+        public InjectionViewModel(InjectionConfigurationViewModel injectionConfigurationViewModel, GamePackage package)
         {
             _injectionConfigurationViewModel = injectionConfigurationViewModel;
             _package = package;
@@ -38,7 +38,7 @@ namespace iGP11.Tool.ViewModel.Injection
                 }
 
                 _package.Game.FilePath = value;
-                _injectionConfigurationViewModel.RebindPlugin();
+                _injectionConfigurationViewModel.PluginViewModel?.Rebind();
             }
         }
 

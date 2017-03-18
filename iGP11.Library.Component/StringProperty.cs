@@ -25,13 +25,13 @@ namespace iGP11.Library.Component
             _tokenReplacer = tokenReplacer;
         }
 
-        public override string FinalValue => Value.IsNotNullOrEmpty() && Configuration.IsTokenizable
-                                                 ? _tokenReplacer?.Replace(Value) ?? Value
-                                                 : Value;
+        public override string FormattedValue => Value.IsNotNullOrEmpty() && Configuration.IsTokenizable
+                                                     ? _tokenReplacer?.Replace(Value) ?? Value
+                                                     : Value;
 
         public override string ToString()
         {
-            return FinalValue;
+            return FormattedValue;
         }
     }
 }

@@ -12,12 +12,24 @@
     <BitmapImage x:Key="Add16X16" UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/add_16x16.png" />
     <BitmapImage x:Key="AddHover16X16"
                  UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/add_hover_16x16.png" />
+    <BitmapImage x:Key="AddHover24X24"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/add_hover_24x24.png" />
     <BitmapImage x:Key="ArrowDown16X16"
                  UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/arrow_down_16x16.png" />
+    <BitmapImage x:Key="ArrowDown24X24"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/arrow_down_24x24.png" />
     <BitmapImage x:Key="ArrowDownHover16X16"
                  UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/arrow_down_hover_16x16.png" />
+    <BitmapImage x:Key="ArrowDownHover24X24"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/arrow_down_hover_24x24.png" />
+    <BitmapImage x:Key="ArrowUp16X16"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/arrow_up_16x16.png" />
+    <BitmapImage x:Key="ArrowUp24X24"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/arrow_up_24x24.png" />
     <BitmapImage x:Key="ArrowUpHover16X16"
                  UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/arrow_up_hover_16x16.png" />
+    <BitmapImage x:Key="ArrowUpHover24X24"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/arrow_up_hover_24x24.png" />
     <BitmapImage x:Key="Attention16X16"
                  UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/attention_16x16.png" />
     <BitmapImage x:Key="AttentionHover16X16"
@@ -38,6 +50,8 @@
                  UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/delete_16x16.png" />
     <BitmapImage x:Key="DeleteHover16X16"
                  UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/delete_hover_16x16.png" />
+    <BitmapImage x:Key="DeleteHover24X24"
+                 UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/delete_hover_24x24.png" />
     <BitmapImage x:Key="Disconnected32X32"
                  UriSource="pack://application:,,,/iGP11.Tool;component/Framework/Icons/disconnected_32x32.png" />
     <BitmapImage x:Key="DisconnectedHover32X32"
@@ -211,6 +225,7 @@
         <Setter Property="Width" Value="16" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
+        <Setter Property="RenderOptions.EdgeMode" Value="Aliased" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="UseLayoutRounding" Value="True" />
         <Style.Triggers>
@@ -742,6 +757,91 @@
         </Setter>
     </Style>
 
+    <Style x:Key="StyleHoverImageButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="{StaticResource ResourceKey=SolidColorBrushBlack}" />
+        <Setter Property="Padding" Value="0, 5" />
+        <Setter Property="themes:FrameworkService.ImageHeight" Value="24" />
+        <Setter Property="themes:FrameworkService.ImageWidth" Value="24" />
+        <Setter Property="themes:FrameworkService.LightColor"
+                Value="{StaticResource ResourceKey=SolidColorBrushLightMedium}" />
+        <Setter Property="themes:FrameworkService.DarkColor"
+                Value="{StaticResource ResourceKey=SolidColorBrushLightHigh}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="Container">
+                        <Border.Style>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="Background"
+                                        Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=Background}" />
+                                <Setter Property="BorderBrush"
+                                        Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=BorderBrush}" />
+                                <Setter Property="BorderThickness"
+                                        Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=BorderThickness}" />
+                                <Setter Property="Cursor" Value="Hand" />
+                                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                <Setter Property="TextBlock.Foreground"
+                                        Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity"
+                                                Value="{StaticResource ResourceKey=OpacityDisabledContent}" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <userControls:ImageTextBlock
+                            x:Name="ImageTextBlock"
+                            Padding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=Padding}"
+                            HorizontalAlignment="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=HorizontalAlignment}"
+                            HorizontalContentAlignment="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=HorizontalContentAlignment}"
+                            Image="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.Image)}"
+                            ImageWidth="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.ImageWidth)}"
+                            ImageHeight="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.ImageHeight)}"
+                            Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=Content}"
+                            Title="{Binding RelativeSource={RelativeSource Self}, Path=(themes:ToolTipService.Title)}"
+                            Description="{Binding RelativeSource={RelativeSource Self}, Path=(themes:ToolTipService.Description)}"
+                            Background="Transparent" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" TargetName="Container" Value="0.75" />
+                            <Setter Property="TextBlock.Foreground" Value="White" TargetName="Container" />
+                        </Trigger>
+                        <Trigger Property="Button.IsPressed" Value="True">
+                            <Setter Property="Opacity" TargetName="Container" Value="0.5" />
+                        </Trigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}"
+                                           Value="True" />
+                                <Condition
+                                    Binding="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.ImageHover), Converter={framework:IsNullConverter}}"
+                                    Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter Property="Image"
+                                        Value="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.ImageHover)}"
+                                        TargetName="ImageTextBlock" />
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <DataTrigger
+                Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Content, Converter={framework:IsNullOrEmptyConverter}}"
+                Value="True">
+                <Setter Property="Padding" Value="0, 5" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
     <ControlTemplate x:Key="ControlTemplateToolTip" TargetType="{x:Type Control}">
         <Border x:Name="Container">
             <Border.Style>
@@ -968,6 +1068,10 @@
     </Style>
 
     <Style x:Key="StyleCheckBox" TargetType="{x:Type CheckBox}">
+        <Setter Property="themes:FrameworkService.LightColor"
+                Value="{StaticResource ResourceKey=SolidColorBrushDarkSmall}" />
+        <Setter Property="themes:FrameworkService.DarkColor"
+                Value="{StaticResource ResourceKey=SolidColorBrushDarkHigh}" />
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
@@ -1011,21 +1115,21 @@
                                         Grid.Column="1" Grid.ColumnSpan="5"
                                         Grid.Row="2" Grid.RowSpan="5"
                                         BorderThickness="1"
-                                        BorderBrush="{StaticResource ResourceKey=SolidColorBrushDarkSmall}" />
+                                        BorderBrush="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.LightColor)}" />
                                 <Path Name="InnerPath"
                                       Grid.Column="1" Grid.ColumnSpan="5"
                                       Grid.Row="2" Grid.RowSpan="5"
                                       Data="M31,5 L19.5,5 19.5,19.5 34.5,19.5 34.5,11.75"
                                       Stretch="Fill"
-                                      Stroke="{StaticResource ResourceKey=SolidColorBrushDarkSmall}" />
+                                      Stroke="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.LightColor)}" />
                                 <Path Name="CheckMark"
                                       Grid.Column="2" Grid.ColumnSpan="5"
                                       Grid.Row="1" Grid.RowSpan="5"
                                       Opacity="0"
                                       Data="M9.07743946676476E-09,4.31805768640244L4.68740335877841,8.86361158398516C4.68740335877841,8.86361158398516,16.3281249985376,-2.42451336648723,16.3281249985376,-2.42451336648723L14.0622100581796,-4.77304938341948 4.68740335877846,4.31805791992662 2.22656251699567,1.93164208562579z"
-                                      Fill="{StaticResource ResourceKey=SolidColorBrushDarkHigh}"
+                                      Fill="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.DarkColor)}"
                                       Stretch="Fill"
-                                      Stroke="{StaticResource ResourceKey=SolidColorBrushDarkHigh}" />
+                                      Stroke="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.DarkColor)}" />
                                 <Path Name="InderminateMark"
                                       Grid.Column="3"
                                       Grid.Row="4"
@@ -1033,7 +1137,7 @@
                                       Opacity="0"
                                       Stretch="Fill"
                                       StrokeThickness="0"
-                                      Fill="{StaticResource ResourceKey=SolidColorBrushDarkSmall}" />
+                                      Fill="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.LightColor)}" />
                             </Grid>
                         </BulletDecorator.Bullet>
                         <VisualStateManager.VisualStateGroups>
@@ -1075,15 +1179,15 @@
                             <Setter Property="Cursor" Value="Arrow" />
                             <Setter Property="Opacity" Value="{StaticResource ResourceKey=OpacityDisabledContent}" />
                             <Setter TargetName="CheckMark" Property="Fill"
-                                    Value="{StaticResource ResourceKey=SolidColorBrushDarkSmall}" />
+                                    Value="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.LightColor)}" />
                             <Setter TargetName="CheckMark" Property="Stroke"
-                                    Value="{StaticResource ResourceKey=SolidColorBrushDarkSmall}" />
+                                    Value="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.LightColor)}" />
                             <Setter TargetName="InnerPath" Property="Stroke"
-                                    Value="{StaticResource ResourceKey=SolidColorBrushDarkSmall}" />
+                                    Value="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.LightColor)}" />
                             <Setter TargetName="InderminateMark" Property="Fill"
-                                    Value="{StaticResource ResourceKey=SolidColorBrushDarkSmall}" />
+                                    Value="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.LightColor)}" />
                             <Setter TargetName="InnerBorder" Property="BorderBrush"
-                                    Value="{StaticResource ResourceKey=SolidColorBrushDarkSmall}" />
+                                    Value="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.LightColor)}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

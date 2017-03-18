@@ -4,13 +4,13 @@ namespace iGP11.Tool.Model
 {
     public class AddedProfile
     {
-        public AddedProfile(string profileName, Guid basedOnProfileId)
+        public AddedProfile(string profileName, Guid basedOnGameProfileId)
         {
             ProfileName = profileName;
-            BasedOnProfileId = basedOnProfileId;
+            BasedOnGameProfileId = basedOnGameProfileId;
         }
 
-        public Guid BasedOnProfileId { get; }
+        public Guid BasedOnGameProfileId { get; }
 
         public string ProfileName { get; }
     }

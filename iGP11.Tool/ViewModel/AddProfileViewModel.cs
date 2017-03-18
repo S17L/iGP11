@@ -23,7 +23,7 @@ namespace iGP11.Tool.ViewModel
             Profiles = profiles.ToCollection();
             ProfileId = Profiles.First().Id;
             CancelCommand = new ActionCommand(Close, () => true);
-            SubmitCommand = new ActionCommand(Submit, () => _errors.IsNullOrEmpty());
+            AddCommand = new ActionCommand(Add, () => _errors.IsNullOrEmpty());
             Evaluate();
         }
 
@@ -36,6 +36,8 @@ namespace iGP11.Tool.ViewModel
         public event CancelEventHandler OnCancelled;
 
         public event SubmitEventHandler OnSubmitted;
+
+        public IActionCommand AddCommand { get; }
 
         public IActionCommand CancelCommand { get; }
 
@@ -70,13 +72,16 @@ namespace iGP11.Tool.ViewModel
 
         public IEnumerable<LookupViewModel> Profiles { get; }
 
-        public IActionCommand SubmitCommand { get; }
-
         public IEnumerable GetErrors(string propertyName)
         {
             return nameof(ProfileName) == propertyName
                        ? _errors
                        : Enumerable.Empty<string>();
+        }
+
+        private void Add()
+        {
+            OnSubmitted?.Invoke(_profileName);
         }
 
         private void Close()
@@ -90,7 +95,7 @@ namespace iGP11.Tool.ViewModel
 
             OnPropertyChanged(() => HasErrors);
             OnPropertyChanged(() => ProfileName);
-            SubmitCommand.Rebind();
+            AddCommand.Rebind();
             CancelCommand.Rebind();
             ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(null));
         }
@@ -105,11 +110,6 @@ namespace iGP11.Tool.ViewModel
             {
                 yield return Localization.Localization.Current.Get("ValueTooLong");
             }
-        }
-
-        private void Submit()
-        {
-            OnSubmitted?.Invoke(_profileName);
         }
     }
 }

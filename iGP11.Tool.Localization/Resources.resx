@@ -147,11 +147,20 @@
   <data name="ActivationStatusRunning" xml:space="preserve">
     <value>game running</value>
   </data>
-  <data name="AddProfile" xml:space="preserve">
-    <value>add profile</value>
+  <data name="Add" xml:space="preserve">
+    <value>ADD</value>
   </data>
-  <data name="AddProfileDialogTitle" xml:space="preserve">
-    <value>Add profile</value>
+  <data name="AddEffect" xml:space="preserve">
+    <value>add effect</value>
+  </data>
+  <data name="AddEffectTypeDialogTitle" xml:space="preserve">
+    <value>Add effect type</value>
+  </data>
+  <data name="AddGameProfile" xml:space="preserve">
+    <value>add game profile</value>
+  </data>
+  <data name="AddGameProfileDialogTitle" xml:space="preserve">
+    <value>Add game profile</value>
   </data>
   <data name="ApplicationFilePath" xml:space="preserve">
     <value>executable file path</value>
@@ -168,16 +177,13 @@
   <data name="AvailableTextures" xml:space="preserve">
     <value>textures</value>
   </data>
-  <data name="BasedOnProfile" xml:space="preserve">
-    <value>based on profile</value>
+  <data name="BasedOnGameProfile" xml:space="preserve">
+    <value>based on game profile</value>
   </data>
   <data name="BokehDoF" xml:space="preserve">
     <value>Depth of field</value>
   </data>
   <data name="BokehDoFLongDescription" xml:space="preserve">
-    <value>Hexagonal depth of field</value>
-  </data>
-  <data name="BokehDoFShortDescription" xml:space="preserve">
     <value>Hexagonal depth of field</value>
   </data>
   <data name="Cancel" xml:space="preserve">
@@ -222,9 +228,6 @@
   <data name="DenoiseLongDescription" xml:space="preserve">
     <value>Remove noise from a signal</value>
   </data>
-  <data name="DenoiseShortDescription" xml:space="preserve">
-    <value>Remove noise from a signal</value>
-  </data>
   <data name="DepthBuffer" xml:space="preserve">
     <value>Depth buffer</value>
   </data>
@@ -236,15 +239,6 @@
   </data>
   <data name="Direct3D11" xml:space="preserve">
     <value>direct3d11</value>
-  </data>
-  <data name="Direct3D11PluginSettings" xml:space="preserve">
-    <value>Direct3D11 plugin settings</value>
-  </data>
-  <data name="Direct3D11PluginSettingsLongDescription" xml:space="preserve">
-    <value>Adjust plugin settings</value>
-  </data>
-  <data name="Direct3D11PluginSettingsShortDescription" xml:space="preserve">
-    <value>Adjust plugin settings</value>
   </data>
   <data name="DisconnectFromGame" xml:space="preserve">
     <value>Disconnect</value>
@@ -261,11 +255,14 @@
   <data name="EditConfigurationDescription" xml:space="preserve">
     <value>Editing any of those settings will cause an application to reload</value>
   </data>
+  <data name="EffectType" xml:space="preserve">
+    <value>effect type</value>
+  </data>
   <data name="Error" xml:space="preserve">
     <value>error</value>
   </data>
   <data name="ErrorCount" xml:space="preserve">
-    <value>{0} validation errors</value>
+    <value>errors</value>
   </data>
   <data name="Expand" xml:space="preserve">
     <value>expand</value>
@@ -288,8 +285,23 @@
   <data name="GameProfile" xml:space="preserve">
     <value>game profile</value>
   </data>
+  <data name="GameProfileChanged" xml:space="preserve">
+    <value>loaded game profile: {0} {1}</value>
+  </data>
+  <data name="GameProfileHeader" xml:space="preserve">
+    <value>Game profile:</value>
+  </data>
   <data name="GameProfileName" xml:space="preserve">
     <value>game profile name</value>
+  </data>
+  <data name="GameProfileRenamed" xml:space="preserve">
+    <value>game profile renamed</value>
+  </data>
+  <data name="GameProfileUpdated" xml:space="preserve">
+    <value>game profile updated at {0}</value>
+  </data>
+  <data name="GameProfileUpdatingFailed" xml:space="preserve">
+    <value>updating game profile failed at {0}</value>
   </data>
   <data name="GameSettings" xml:space="preserve">
     <value>Game settings</value>
@@ -327,9 +339,6 @@
   <data name="LiftGammaGainLongDescription" xml:space="preserve">
     <value>Control how gamma is applied to an image</value>
   </data>
-  <data name="LiftGammaGainShortDescription" xml:space="preserve">
-    <value>Control how gamma is applied to an image</value>
-  </data>
   <data name="Loading" xml:space="preserve">
     <value>Loading...</value>
   </data>
@@ -345,8 +354,11 @@
   <data name="LumaSharpenLongDescription" xml:space="preserve">
     <value>Adjust image sharpening</value>
   </data>
-  <data name="LumaSharpenShortDescription" xml:space="preserve">
-    <value>Adjust image sharpening</value>
+  <data name="MoveDown" xml:space="preserve">
+    <value>move down</value>
+  </data>
+  <data name="MoveUp" xml:space="preserve">
+    <value>move up</value>
   </data>
   <data name="NoEndpointListening" xml:space="preserve">
     <value>There is no endpoint listening at given address...</value>
@@ -375,23 +387,17 @@
   <data name="PluginHeader" xml:space="preserve">
     <value>Plugin:</value>
   </data>
+  <data name="PluginSettings" xml:space="preserve">
+    <value>Plugin settings</value>
+  </data>
+  <data name="PluginSettingsLongDescription" xml:space="preserve">
+    <value>Adjust plugin specific settings</value>
+  </data>
+  <data name="PluginSettingsShortDescription" xml:space="preserve">
+    <value>Adjust plugin specific settings</value>
+  </data>
   <data name="PluginType" xml:space="preserve">
     <value>plugin type</value>
-  </data>
-  <data name="ProcessConfigurationUpdated" xml:space="preserve">
-    <value>plugin configuration updated at {0}</value>
-  </data>
-  <data name="ProcessConfigurationUpdatingFailed" xml:space="preserve">
-    <value>updating plugin configuration failed at {0}</value>
-  </data>
-  <data name="ProfileChanged" xml:space="preserve">
-    <value>loaded profile: {0} {1}</value>
-  </data>
-  <data name="ProfileHeader" xml:space="preserve">
-    <value>Profile:</value>
-  </data>
-  <data name="ProfileRenamed" xml:space="preserve">
-    <value>profile renamed</value>
   </data>
   <data name="ProfileType" xml:space="preserve">
     <value>profile</value>
@@ -407,21 +413,27 @@ In case of problems make sure Windows or any other installed program does not cr
   <data name="ReleaseNotesTitle" xml:space="preserve">
     <value>Release notes</value>
   </data>
-  <data name="RemoveProfile" xml:space="preserve">
-    <value>remove profile</value>
+  <data name="RemoveEffect" xml:space="preserve">
+    <value>remove effect</value>
   </data>
-  <data name="RemoveProfileDialogTitle" xml:space="preserve">
-    <value>Remove profile</value>
+  <data name="RemoveGameProfile" xml:space="preserve">
+    <value>remove game profile</value>
   </data>
-  <data name="RemoveProfileQuestion" xml:space="preserve">
-    <value>Remove profile?
-Profile data will be lost.</value>
+  <data name="RemoveGameProfileDialogTitle" xml:space="preserve">
+    <value>Remove game profile</value>
   </data>
-  <data name="RenameProfile" xml:space="preserve">
-    <value>rename profile</value>
+  <data name="RemoveGameProfileQuestion" xml:space="preserve">
+    <value>Remove game profile?
+Game profile data will be lost.</value>
   </data>
-  <data name="RenameProfileDialogTitle" xml:space="preserve">
-    <value>Rename profile</value>
+  <data name="Rename" xml:space="preserve">
+    <value>RENAME</value>
+  </data>
+  <data name="RenameGameProfile" xml:space="preserve">
+    <value>rename game profile</value>
+  </data>
+  <data name="RenameGameProfileDialogTitle" xml:space="preserve">
+    <value>Rename game profile</value>
   </data>
   <data name="RenderingModeAlpha" xml:space="preserve">
     <value>alpha</value>
@@ -488,9 +500,6 @@ Retrieve dumped textures from tex_dump directory</value>
   <data name="TonemapLongDescription" xml:space="preserve">
     <value>Reproduce a greater dynamic range of luminosity</value>
   </data>
-  <data name="TonemapShortDescription" xml:space="preserve">
-    <value>Reproduce a greater dynamic range of luminosity</value>
-  </data>
   <data name="UncheckAll" xml:space="preserve">
     <value>uncheck all</value>
   </data>
@@ -519,9 +528,6 @@ Retrieve dumped textures from tex_dump directory</value>
     <value>Vibrance</value>
   </data>
   <data name="VibranceLongDescription" xml:space="preserve">
-    <value>Increases the intensity of the more muted colors</value>
-  </data>
-  <data name="VibranceShortDescription" xml:space="preserve">
     <value>Increases the intensity of the more muted colors</value>
   </data>
 </root>

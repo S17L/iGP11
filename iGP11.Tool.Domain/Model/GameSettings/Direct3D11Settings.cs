@@ -1,6 +1,8 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 using iGP11.Library.Component.DataAnnotations;
+using iGP11.Tool.Shared.Plugin;
 
 namespace iGP11.Tool.Domain.Model.GameSettings
 {
@@ -8,29 +10,12 @@ namespace iGP11.Tool.Domain.Model.GameSettings
     public class Direct3D11Settings
     {
         [Complex]
-        [DataMember(Name = "bokehDoF", IsRequired = true)]
-        [Editable]
-        public BokehDoF BokehDoF { get; set; }
-
-        [Complex]
-        [DataMember(Name = "denoise", IsRequired = true)]
-        [Editable]
-        public Denoise Denoise { get; set; }
-
-        [Complex]
         [DataMember(Name = "depthBuffer", IsRequired = true)]
         [Editable]
         public DepthBuffer DepthBuffer { get; set; }
 
-        [Complex]
-        [DataMember(Name = "liftGammaGain", IsRequired = true)]
-        [Editable]
-        public LiftGammaGain LiftGammaGain { get; set; }
-
-        [Complex]
-        [DataMember(Name = "lumaSharpen", IsRequired = true)]
-        [Editable]
-        public LumaSharpen LumaSharpen { get; set; }
+        [DataMember(Name = "effects", IsRequired = true)]
+        public IList<EffectData> Effects { get; set; }
 
         [Complex]
         [DataMember(Name = "pluginSettings", IsRequired = true, EmitDefaultValue = true)]
@@ -42,15 +27,5 @@ namespace iGP11.Tool.Domain.Model.GameSettings
         [Editable]
         [NoValidation]
         public Textures Textures { get; set; }
-
-        [Complex]
-        [DataMember(Name = "tonemap", IsRequired = true)]
-        [Editable]
-        public Tonemap Tonemap { get; set; }
-
-        [Complex]
-        [DataMember(Name = "vibrance", IsRequired = true)]
-        [Editable]
-        public Vibrance Vibrance { get; set; }
     }
 }

@@ -55,8 +55,6 @@ namespace iGP11.Tool.ViewModel.PropertyEditor
 
         public bool HasErrors => _errors.Any();
 
-        public bool IsValidationVisible => !_component.Configuration.HasDisabledValidation;
-
         public string LongDescription => _component.Configuration.LongDescription.Localize();
 
         public string Name => _component.Name.Localize();

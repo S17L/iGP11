@@ -151,20 +151,47 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to add profile.
+        ///   Looks up a localized string similar to ADD.
         /// </summary>
-        public static string AddProfile {
+        public static string Add {
             get {
-                return ResourceManager.GetString("AddProfile", resourceCulture);
+                return ResourceManager.GetString("Add", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add profile.
+        ///   Looks up a localized string similar to add effect.
         /// </summary>
-        public static string AddProfileDialogTitle {
+        public static string AddEffect {
             get {
-                return ResourceManager.GetString("AddProfileDialogTitle", resourceCulture);
+                return ResourceManager.GetString("AddEffect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add effect type.
+        /// </summary>
+        public static string AddEffectTypeDialogTitle {
+            get {
+                return ResourceManager.GetString("AddEffectTypeDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to add game profile.
+        /// </summary>
+        public static string AddGameProfile {
+            get {
+                return ResourceManager.GetString("AddGameProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add game profile.
+        /// </summary>
+        public static string AddGameProfileDialogTitle {
+            get {
+                return ResourceManager.GetString("AddGameProfileDialogTitle", resourceCulture);
             }
         }
         
@@ -214,11 +241,11 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to based on profile.
+        ///   Looks up a localized string similar to based on game profile.
         /// </summary>
-        public static string BasedOnProfile {
+        public static string BasedOnGameProfile {
             get {
-                return ResourceManager.GetString("BasedOnProfile", resourceCulture);
+                return ResourceManager.GetString("BasedOnGameProfile", resourceCulture);
             }
         }
         
@@ -237,15 +264,6 @@ namespace iGP11.Tool.Localization {
         public static string BokehDoFLongDescription {
             get {
                 return ResourceManager.GetString("BokehDoFLongDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Hexagonal depth of field.
-        /// </summary>
-        public static string BokehDoFShortDescription {
-            get {
-                return ResourceManager.GetString("BokehDoFShortDescription", resourceCulture);
             }
         }
         
@@ -376,15 +394,6 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remove noise from a signal.
-        /// </summary>
-        public static string DenoiseShortDescription {
-            get {
-                return ResourceManager.GetString("DenoiseShortDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Depth buffer.
         /// </summary>
         public static string DepthBuffer {
@@ -417,33 +426,6 @@ namespace iGP11.Tool.Localization {
         public static string Direct3D11 {
             get {
                 return ResourceManager.GetString("Direct3D11", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Direct3D11 plugin settings.
-        /// </summary>
-        public static string Direct3D11PluginSettings {
-            get {
-                return ResourceManager.GetString("Direct3D11PluginSettings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Adjust plugin settings.
-        /// </summary>
-        public static string Direct3D11PluginSettingsLongDescription {
-            get {
-                return ResourceManager.GetString("Direct3D11PluginSettingsLongDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Adjust plugin settings.
-        /// </summary>
-        public static string Direct3D11PluginSettingsShortDescription {
-            get {
-                return ResourceManager.GetString("Direct3D11PluginSettingsShortDescription", resourceCulture);
             }
         }
         
@@ -493,6 +475,15 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to effect type.
+        /// </summary>
+        public static string EffectType {
+            get {
+                return ResourceManager.GetString("EffectType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to error.
         /// </summary>
         public static string Error {
@@ -502,7 +493,7 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} validation errors.
+        ///   Looks up a localized string similar to errors.
         /// </summary>
         public static string ErrorCount {
             get {
@@ -574,11 +565,56 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to loaded game profile: {0} {1}.
+        /// </summary>
+        public static string GameProfileChanged {
+            get {
+                return ResourceManager.GetString("GameProfileChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game profile:.
+        /// </summary>
+        public static string GameProfileHeader {
+            get {
+                return ResourceManager.GetString("GameProfileHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to game profile name.
         /// </summary>
         public static string GameProfileName {
             get {
                 return ResourceManager.GetString("GameProfileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to game profile renamed.
+        /// </summary>
+        public static string GameProfileRenamed {
+            get {
+                return ResourceManager.GetString("GameProfileRenamed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to game profile updated at {0}.
+        /// </summary>
+        public static string GameProfileUpdated {
+            get {
+                return ResourceManager.GetString("GameProfileUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to updating game profile failed at {0}.
+        /// </summary>
+        public static string GameProfileUpdatingFailed {
+            get {
+                return ResourceManager.GetString("GameProfileUpdatingFailed", resourceCulture);
             }
         }
         
@@ -691,15 +727,6 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Control how gamma is applied to an image.
-        /// </summary>
-        public static string LiftGammaGainShortDescription {
-            get {
-                return ResourceManager.GetString("LiftGammaGainShortDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Loading....
         /// </summary>
         public static string Loading {
@@ -745,11 +772,20 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Adjust image sharpening.
+        ///   Looks up a localized string similar to move down.
         /// </summary>
-        public static string LumaSharpenShortDescription {
+        public static string MoveDown {
             get {
-                return ResourceManager.GetString("LumaSharpenShortDescription", resourceCulture);
+                return ResourceManager.GetString("MoveDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to move up.
+        /// </summary>
+        public static string MoveUp {
+            get {
+                return ResourceManager.GetString("MoveUp", resourceCulture);
             }
         }
         
@@ -835,56 +871,38 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Plugin settings.
+        /// </summary>
+        public static string PluginSettings {
+            get {
+                return ResourceManager.GetString("PluginSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adjust plugin specific settings.
+        /// </summary>
+        public static string PluginSettingsLongDescription {
+            get {
+                return ResourceManager.GetString("PluginSettingsLongDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adjust plugin specific settings.
+        /// </summary>
+        public static string PluginSettingsShortDescription {
+            get {
+                return ResourceManager.GetString("PluginSettingsShortDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to plugin type.
         /// </summary>
         public static string PluginType {
             get {
                 return ResourceManager.GetString("PluginType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to plugin configuration updated at {0}.
-        /// </summary>
-        public static string ProcessConfigurationUpdated {
-            get {
-                return ResourceManager.GetString("ProcessConfigurationUpdated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to updating plugin configuration failed at {0}.
-        /// </summary>
-        public static string ProcessConfigurationUpdatingFailed {
-            get {
-                return ResourceManager.GetString("ProcessConfigurationUpdatingFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to loaded profile: {0} {1}.
-        /// </summary>
-        public static string ProfileChanged {
-            get {
-                return ResourceManager.GetString("ProfileChanged", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Profile:.
-        /// </summary>
-        public static string ProfileHeader {
-            get {
-                return ResourceManager.GetString("ProfileHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to profile renamed.
-        /// </summary>
-        public static string ProfileRenamed {
-            get {
-                return ResourceManager.GetString("ProfileRenamed", resourceCulture);
             }
         }
         
@@ -927,48 +945,66 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to remove profile.
+        ///   Looks up a localized string similar to remove effect.
         /// </summary>
-        public static string RemoveProfile {
+        public static string RemoveEffect {
             get {
-                return ResourceManager.GetString("RemoveProfile", resourceCulture);
+                return ResourceManager.GetString("RemoveEffect", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remove profile.
+        ///   Looks up a localized string similar to remove game profile.
         /// </summary>
-        public static string RemoveProfileDialogTitle {
+        public static string RemoveGameProfile {
             get {
-                return ResourceManager.GetString("RemoveProfileDialogTitle", resourceCulture);
+                return ResourceManager.GetString("RemoveGameProfile", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remove profile?
-        ///Profile data will be lost..
+        ///   Looks up a localized string similar to Remove game profile.
         /// </summary>
-        public static string RemoveProfileQuestion {
+        public static string RemoveGameProfileDialogTitle {
             get {
-                return ResourceManager.GetString("RemoveProfileQuestion", resourceCulture);
+                return ResourceManager.GetString("RemoveGameProfileDialogTitle", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to rename profile.
+        ///   Looks up a localized string similar to Remove game profile?
+        ///Game profile data will be lost..
         /// </summary>
-        public static string RenameProfile {
+        public static string RemoveGameProfileQuestion {
             get {
-                return ResourceManager.GetString("RenameProfile", resourceCulture);
+                return ResourceManager.GetString("RemoveGameProfileQuestion", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rename profile.
+        ///   Looks up a localized string similar to RENAME.
         /// </summary>
-        public static string RenameProfileDialogTitle {
+        public static string Rename {
             get {
-                return ResourceManager.GetString("RenameProfileDialogTitle", resourceCulture);
+                return ResourceManager.GetString("Rename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to rename game profile.
+        /// </summary>
+        public static string RenameGameProfile {
+            get {
+                return ResourceManager.GetString("RenameGameProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename game profile.
+        /// </summary>
+        public static string RenameGameProfileDialogTitle {
+            get {
+                return ResourceManager.GetString("RenameGameProfileDialogTitle", resourceCulture);
             }
         }
         
@@ -1164,15 +1200,6 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reproduce a greater dynamic range of luminosity.
-        /// </summary>
-        public static string TonemapShortDescription {
-            get {
-                return ResourceManager.GetString("TonemapShortDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to uncheck all.
         /// </summary>
         public static string UncheckAll {
@@ -1259,15 +1286,6 @@ namespace iGP11.Tool.Localization {
         public static string VibranceLongDescription {
             get {
                 return ResourceManager.GetString("VibranceLongDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Increases the intensity of the more muted colors.
-        /// </summary>
-        public static string VibranceShortDescription {
-            get {
-                return ResourceManager.GetString("VibranceShortDescription", resourceCulture);
             }
         }
     }

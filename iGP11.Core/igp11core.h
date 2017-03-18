@@ -14,6 +14,15 @@ namespace core {
         pluginactivationfailed = 6
     };
 
+    enum class EffectType {
+        bokehdof = 0,
+        denoise = 1,
+        liftgammagain = 2,
+        lumasharpen = 3,
+        tonemap = 4,
+        vibrance = 5
+    };
+
     enum class PluginType {
         direct3d11 = 0
     };
@@ -222,7 +231,6 @@ namespace core {
 
     namespace dto {
         struct BokehDoF final {
-            bool isEnabled = false;
             bool isChromaticAberrationEnabled = false;
             float chromaticAberrationFringe = 0;
             bool isPreservingShape = false;
@@ -251,7 +259,6 @@ namespace core {
         };
 
         struct Denoise final {
-            bool isEnabled = false;
             float noiseLevel = 0;
             float blendingCoefficient = 0;
             float weightThreshold = 0;
@@ -268,6 +275,13 @@ namespace core {
             float depthMaximum = 0;
         };
 
+        struct EffectData final {
+            std::string id;
+            EffectType type;
+            bool isEnabled = false;
+            std::string data;
+        };
+
         struct Textures final {
             TextureDetailLevel detailLevel;
             TextureOverrideMode overrideMode;
@@ -281,21 +295,18 @@ namespace core {
         };
 
         struct LumaSharpen final {
-            bool isEnabled = false;
             float sharpeningStrength;
             float sharpeningClamp;
             float offset;
         };
 
         struct LiftGammaGain final {
-            bool isEnabled = false;
             Color lift;
             Color gamma;
             Color gain;
         };
 
         struct Tonemap final {
-            bool isEnabled = false;
             float gamma = 0;
             float exposure = 0;
             float saturation = 0;
@@ -305,7 +316,6 @@ namespace core {
         };
 
         struct Vibrance final {
-            bool isEnabled = false;
             float strength = 0;
             Color gain;
         };
@@ -317,15 +327,10 @@ namespace core {
         };
 
         struct Direct3D11Settings final {
-            BokehDoF bokehDoF;
-            Denoise denoise;
+            std::list<EffectData> effects;
             DepthBuffer depthBuffer;
             Direct3D11PluginSettings pluginSettings;
-            LiftGammaGain liftGammaGain;
-            LumaSharpen lumaSharpen;
             Textures textures;
-            Tonemap tonemap;
-            Vibrance vibrance;
         };
 
         struct GameSettings final {
@@ -464,6 +469,12 @@ namespace core {
         virtual ~ISerializer() {}
         virtual core::dto::Command deserializeCommand(const std::string &value) = 0;
         virtual core::dto::GameSettings deserializeSettings(const std::string &value) = 0;
+        virtual core::dto::BokehDoF deserializeBokehDoF(const std::string &value) = 0;
+        virtual core::dto::Denoise deserializeDenoise(const std::string &value) = 0;
+        virtual core::dto::LiftGammaGain deserializeLiftGammaGain(const std::string &value) = 0;
+        virtual core::dto::LumaSharpen deserializeLumaSharpen(const std::string &value) = 0;
+        virtual core::dto::Tonemap deserializeTonemap(const std::string &value) = 0;
+        virtual core::dto::Vibrance deserializeVibrance(const std::string &value) = 0;
         virtual core::dto::Direct3D11Settings deserializeDirect3D11Settings(const std::string &value) = 0;
         virtual core::dto::UpdateProxySettings deserializeUpdateProxySettings(const std::string &value) = 0;
         virtual std::string serialize(core::dto::ProxySettings data) = 0;

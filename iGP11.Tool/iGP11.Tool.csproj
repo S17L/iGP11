@@ -111,6 +111,9 @@
     <Compile Include="ApplicationActionCommandHandler.cs" />
     <Compile Include="AttributeExtensions.cs" />
     <Compile Include="CommandId.cs" />
+    <Compile Include="Events\EditPluginComponentEvent.cs" />
+    <Compile Include="Events\PluginChangedEvent.cs" />
+    <Compile Include="Events\ReplacePluginComponentEvent.cs" />
     <Compile Include="Events\ShutdownEvent.cs" />
     <Compile Include="Model\StatusType.cs" />
     <Compile Include="Model\ApplicationAction.cs" />
@@ -127,16 +130,19 @@
     <Compile Include="Framework\IconToBitmapImageConverter.cs" />
     <Compile Include="Model\AddedProfile.cs" />
     <Compile Include="Common\TaskRunner.cs" />
-    <Compile Include="Model\IPluginComponentFactory.cs" />
-    <Compile Include="Model\PluginComponentFactory.cs" />
     <Compile Include="Model\StatusTypeExtensions.cs" />
+    <Compile Include="PickEffectTypeWindow.xaml.cs">
+      <DependentUpon>PickEffectTypeWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\AssemblyInformationControl.xaml.cs">
       <DependentUpon>AssemblyInformationControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\Injection\IInjectionConfigurationViewModel.cs" />
+    <Compile Include="ViewModel\Injection\PluginEffectViewModel.cs" />
     <Compile Include="ViewModel\Injection\IInjectionViewModel.cs" />
     <Compile Include="ViewModel\Injection\CollectDataViewModel.cs" />
     <Compile Include="ViewModel\Injection\InjectionViewModel.cs" />
+    <Compile Include="ViewModel\Injection\PluginElementViewModel.cs" />
+    <Compile Include="ViewModel\Injection\PluginViewModel.cs" />
     <Compile Include="ViewModel\LookupViewModel.cs" />
     <Compile Include="Model\ModeType.cs" />
     <Compile Include="InformationWindow.xaml.cs">
@@ -188,6 +194,7 @@
     <Compile Include="ViewModel\PropertyEditor\GroupedByViewModel.cs" />
     <Compile Include="ViewModel\AddProfileViewModel.cs" />
     <Compile Include="ViewModel\PropertyEditor\IComponentViewModel.cs" />
+    <Compile Include="ViewModel\PickEffectTypeViewModel.cs" />
     <Compile Include="ViewModel\RenameProfileViewModel.cs" />
     <Compile Include="ViewModel\Texture\TextureManagementWindowViewModel.cs" />
     <Compile Include="Common\DirectoryPicker.cs" />
@@ -248,6 +255,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Localization.tt</DependentUpon>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PickEffectTypeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="RenameProfileWindow.xaml">
       <SubType>Designer</SubType>
@@ -455,10 +466,6 @@
     <Resource Include="Framework\Icons\texture_management_hover_32x32.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Framework\Icons\add_16x16.png" />
-    <Resource Include="Framework\Icons\add_hover_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Framework\Icons\arrow_up_16x16.png" />
   </ItemGroup>
   <ItemGroup>
@@ -466,6 +473,14 @@
     <Resource Include="Framework\Icons\connected_hover_32x32.png" />
     <Resource Include="Framework\Icons\disconnected_32x32.png" />
     <Resource Include="Framework\Icons\disconnected_hover_32x32.png" />
+    <Resource Include="Framework\Icons\add_16x16.png" />
+    <Resource Include="Framework\Icons\add_hover_16x16.png" />
+    <Resource Include="Framework\Icons\add_hover_24x24.png" />
+    <Resource Include="Framework\Icons\delete_hover_24x24.png" />
+    <Resource Include="Framework\Icons\arrow_down_24x24.png" />
+    <Resource Include="Framework\Icons\arrow_down_hover_24x24.png" />
+    <Resource Include="Framework\Icons\arrow_up_24x24.png" />
+    <Resource Include="Framework\Icons\arrow_up_hover_24x24.png" />
     <Content Include="Localization.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Localization.xaml</LastGenOutput>

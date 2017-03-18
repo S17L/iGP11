@@ -14,15 +14,16 @@
         Width="300"
         Style="{StaticResource ResourceKey=StyleDialog}">
     <StackPanel Orientation="Vertical">
-        <TextBlock Text="{Binding Source={StaticResource ResourceKey=LocalizationAddProfileDialogTitle}, Mode=OneTime}"
-                   Style="{StaticResource ResourceKey=StyleTextBlockWindowTitle}" />
+        <TextBlock
+            Text="{Binding Source={StaticResource ResourceKey=LocalizationAddGameProfileDialogTitle}, Mode=OneTime}"
+            Style="{StaticResource ResourceKey=StyleTextBlockWindowTitle}" />
         <TextBox
             themes:FrameworkService.Placeholder="{Binding Source={StaticResource ResourceKey=LocalizationGameProfileName}, Mode=OneTime}"
             Margin="20, 10, 50, 10"
             Style="{StaticResource ResourceKey=StyleValidatedTextBox}"
             Text="{Binding Path=ProfileName, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
         <ComboBox
-            themes:FrameworkService.Placeholder="{Binding Source={StaticResource ResourceKey=LocalizationBasedOnProfile}, Mode=OneTime}"
+            themes:FrameworkService.Placeholder="{Binding Source={StaticResource ResourceKey=LocalizationBasedOnGameProfile}, Mode=OneTime}"
             Margin="20, 10"
             ItemsSource="{Binding Path=Profiles, Mode=OneWay}"
             SelectedValuePath="Id"
@@ -34,8 +35,8 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button Command="{Binding Path=SubmitCommand}"
-                    Content="{Binding Source={StaticResource ResourceKey=LocalizationSubmit}, Mode=OneTime}"
+            <Button Command="{Binding Path=AddCommand}"
+                    Content="{Binding Source={StaticResource ResourceKey=LocalizationAdd}, Mode=OneTime}"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center"
                     Style="{StaticResource ResourceKey=StyleBalancedImageButton}" />
