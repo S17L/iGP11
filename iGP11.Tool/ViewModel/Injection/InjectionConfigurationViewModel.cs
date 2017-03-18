@@ -161,7 +161,7 @@ namespace iGP11.Tool.ViewModel.Injection
             }
         }
 
-        public string GameName => _package?.Game.Name ?? string.Empty;
+        public string GameName => _injectionViewModel?.GameName ?? string.Empty;
 
         public Guid GameProfileId
         {
@@ -177,7 +177,7 @@ namespace iGP11.Tool.ViewModel.Injection
             }
         }
 
-        public string GameProfileName => _package?.GameProfile.Name ?? string.Empty;
+        public string GameProfileName => _injectionViewModel?.GameProfileName ?? string.Empty;
 
         public IEnumerable<LookupViewModel> GameProfiles => _gameProfiles;
 
@@ -499,6 +499,9 @@ namespace iGP11.Tool.ViewModel.Injection
                     _navigationService,
                     _componentViewModelFactory);
 
+                _injectionViewModel.GameName = proxySettings.GameName;
+                _injectionViewModel.GameProfileName = proxySettings.GameProfileName;
+
                 GameFilePath = proxySettings.GameFilePath;
                 ProxyDirectoryPath = proxySettings.ProxyDirectoryPath;
                 LogsDirectoryPath = proxySettings.LogsDirectoryPath;
@@ -670,9 +673,9 @@ namespace iGP11.Tool.ViewModel.Injection
             using (new ProcessingScope(_processable))
             using (new DisabledSchedulerScope(_scheduler))
             {
-                await PublishUpdateStatusEventAsync(StatusType.Information, "InjectionStarted");
+                await PublishUpdateStatusEventAsync(StatusType.Information, "GameLaunching");
 
-                var status = InjectionStatus.Failed;
+                var status = GameLaunchingStatus.Failed;
                 await _actionBuilder.Dispatch(new StarGameCommand(_package.Game.Id))
                     .CompleteFor<ApplicationStartedNotification>((context, @event) => status = @event.Status)
                     .CompleteFor<ErrorOccuredNotification>(async (context, @event) => await PublishErrorEventAsync(@event.Error))
@@ -681,18 +684,19 @@ namespace iGP11.Tool.ViewModel.Injection
 
                 switch (status)
                 {
-                    case InjectionStatus.Completed:
-                        await PublishUpdateStatusEventAsync(StatusType.Ok, "InjectionCompleted");
+                    case GameLaunchingStatus.Completed:
+                        await PublishUpdateStatusEventAsync(StatusType.Ok, "GameLaunchingStatusCompleted");
                         if (hideApplication)
                         {
                             await _publisher.PublishAsync(new HideApplicationToTrayEvent());
                         }
 
                         break;
-                    case InjectionStatus.PluginAlreadyLoaded:
-                        await PublishUpdateStatusEventAsync(StatusType.Information, "PluginAlreadyLoaded");
+                    case GameLaunchingStatus.PluginAlreadyLoaded:
+                        await PublishUpdateStatusEventAsync(StatusType.Information, "GameLaunchingStatusPluginAlreadyLoaded");
                         break;
-                    case InjectionStatus.Failed:
+                    case GameLaunchingStatus.Failed:
+                        await PublishUpdateStatusEventAsync(StatusType.Failed, "GameLaunchingStatusFailed");
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();

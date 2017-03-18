@@ -91,6 +91,7 @@ namespace iGP11.Tool.ViewModel.Injection
 
         private async void UpdateAvailabilityAsync(bool value)
         {
+            _effect.IsEnabled = value;
             await _viewModel.UpdateEffectAsync(_effect.Id, value);
         }
     }

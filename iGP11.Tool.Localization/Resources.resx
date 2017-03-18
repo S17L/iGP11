@@ -181,7 +181,7 @@
     <value>based on game profile</value>
   </data>
   <data name="BokehDoF" xml:space="preserve">
-    <value>Depth of field</value>
+    <value>Bokeh depth of field</value>
   </data>
   <data name="BokehDoFLongDescription" xml:space="preserve">
     <value>Hexagonal depth of field</value>
@@ -255,6 +255,9 @@
   <data name="EditConfigurationDescription" xml:space="preserve">
     <value>Editing any of those settings will cause an application to reload</value>
   </data>
+  <data name="Effects" xml:space="preserve">
+    <value>EFFECTS</value>
+  </data>
   <data name="EffectType" xml:space="preserve">
     <value>effect type</value>
   </data>
@@ -279,6 +282,18 @@
   <data name="GameHeader" xml:space="preserve">
     <value>Game:</value>
   </data>
+  <data name="GameLaunching" xml:space="preserve">
+    <value>launching application and loading plugin...</value>
+  </data>
+  <data name="GameLaunchingStatusCompleted" xml:space="preserve">
+    <value>process started and iGP11 launched</value>
+  </data>
+  <data name="GameLaunchingStatusFailed" xml:space="preserve">
+    <value>launching game failed</value>
+  </data>
+  <data name="GameLaunchingStatusPluginAlreadyLoaded" xml:space="preserve">
+    <value>plugin already loaded</value>
+  </data>
   <data name="GameName" xml:space="preserve">
     <value>game name</value>
   </data>
@@ -297,6 +312,9 @@
   <data name="GameProfileRenamed" xml:space="preserve">
     <value>game profile renamed</value>
   </data>
+  <data name="GameProfileSettings" xml:space="preserve">
+    <value>GAME PROFILE SETTINGS</value>
+  </data>
   <data name="GameProfileUpdated" xml:space="preserve">
     <value>game profile updated at {0}</value>
   </data>
@@ -311,12 +329,6 @@
   </data>
   <data name="Icons" xml:space="preserve">
     <value>icons by</value>
-  </data>
-  <data name="InjectionCompleted" xml:space="preserve">
-    <value>process started and iGP11 launched</value>
-  </data>
-  <data name="InjectionStarted" xml:space="preserve">
-    <value>launching application and loading plugin</value>
   </data>
   <data name="InjectorMode" xml:space="preserve">
     <value>iGP11 - STANDARD MODE</value>
@@ -360,6 +372,9 @@
   <data name="MoveUp" xml:space="preserve">
     <value>move up</value>
   </data>
+  <data name="NoEffects" xml:space="preserve">
+    <value>No effects have been configured...</value>
+  </data>
   <data name="NoEndpointListening" xml:space="preserve">
     <value>There is no endpoint listening at given address...</value>
   </data>
@@ -380,9 +395,6 @@
   </data>
   <data name="OperationTimeout" xml:space="preserve">
     <value>operation timeout</value>
-  </data>
-  <data name="PluginAlreadyLoaded" xml:space="preserve">
-    <value>plugin already loaded</value>
   </data>
   <data name="PluginHeader" xml:space="preserve">
     <value>Plugin:</value>
@@ -415,6 +427,13 @@ In case of problems make sure Windows or any other installed program does not cr
   </data>
   <data name="RemoveEffect" xml:space="preserve">
     <value>remove effect</value>
+  </data>
+  <data name="RemoveEffectDialogTitle" xml:space="preserve">
+    <value>Remove effect</value>
+  </data>
+  <data name="RemoveEffectQuestion" xml:space="preserve">
+    <value>Remove effect?
+Effect data will be lost.</value>
   </data>
   <data name="RemoveGameProfile" xml:space="preserve">
     <value>remove game profile</value>

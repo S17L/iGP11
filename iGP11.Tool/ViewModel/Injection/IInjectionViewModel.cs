@@ -8,6 +8,10 @@ namespace iGP11.Tool.ViewModel.Injection
 
         string FormattedLogsDirectoryPath { get; }
 
+        string GameName { get; set; }
+
+        string GameProfileName { get; set; }
+
         string GameFilePath { get; set; }
 
         string LogsDirectoryPath { get; set; }

@@ -16,5 +16,9 @@ namespace iGP11.Tool.ViewModel.Injection
         public PluginType PluginType { get; set; }
 
         public string ProxyDirectoryPath { get; set; }
+
+        public string GameName { get; set; }
+
+        public string GameProfileName { get; set; }
     }
 }

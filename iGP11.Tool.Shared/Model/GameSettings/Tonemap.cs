@@ -37,7 +37,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [Order(1)]
         public float Exposure { get; set; }
 
-        [ComponentName("Blue")]
+        [ComponentName("FogBlue")]
         [DataMember(Name = "fogBlue")]
         [Editable]
         [FloatRange(0, 1)]
@@ -45,7 +45,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [Order(2)]
         public float FogBlue { get; set; } = 1;
 
-        [ComponentName("Green")]
+        [ComponentName("FogGreen")]
         [DataMember(Name = "fogGreen")]
         [Editable]
         [FloatRange(0, 1)]
@@ -53,7 +53,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [Order(1)]
         public float FogGreen { get; set; }
 
-        [ComponentName("Red")]
+        [ComponentName("FogRed")]
         [DataMember(Name = "fogRed")]
         [Editable]
         [FloatRange(0, 1)]

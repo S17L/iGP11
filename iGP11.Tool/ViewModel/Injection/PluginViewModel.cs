@@ -48,6 +48,8 @@ namespace iGP11.Tool.ViewModel.Injection
 
         public IEnumerable<PluginEffectViewModel> Effects => _effects;
 
+        public bool HasEffects => _effects.Any();
+
         public IEnumerable<PluginElementViewModel> Elements => _elements;
 
         public bool IsValid
@@ -126,10 +128,20 @@ namespace iGP11.Tool.ViewModel.Injection
             {
                 viewModel.Rebind();
             }
+
+            OnPropertyChanged(() => HasEffects);
         }
 
         public async Task RemoveEffectAsync(Guid id)
         {
+            if (!_navigationService.ShowConfirmationDialog(
+                    Target.EntryPoint,
+                    Localization.Localization.Current.Get("RemoveEffectDialogTitle"),
+                    Localization.Localization.Current.Get("RemoveEffectQuestion")))
+            {
+                return;
+            }
+
             var oldComponentViewModel = _effects.Single(effect => effect.Id == id);
             _effects.Remove(oldComponentViewModel);
 
@@ -157,7 +169,6 @@ namespace iGP11.Tool.ViewModel.Injection
 
         public async Task UpdateEffectAsync(Guid id, bool isEnabled)
         {
-            _effects.Single(effect => effect.Id == id).IsEnabled = isEnabled;
             UpdateEffects();
             await _publisher.PublishAsync(new PluginChangedEvent());
         }

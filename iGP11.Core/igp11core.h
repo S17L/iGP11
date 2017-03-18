@@ -334,8 +334,10 @@ namespace core {
         };
 
         struct GameSettings final {
+            std::string gameName;
+            std::string gameProfileName;
             PluginSettings pluginSettings;
-            core::PluginType pluginType;
+            PluginType pluginType;
             std::string communicationAddress;
             unsigned short communicationPort;
             std::string direct3D11PluginPath;
@@ -343,6 +345,8 @@ namespace core {
         };
 
         struct ProxySettings final {
+            std::string gameName;
+            std::string gameProfileName;
             std::string gameFilePath;
             std::string proxyDirectoryPath;
             std::string logsDirectoryPath;

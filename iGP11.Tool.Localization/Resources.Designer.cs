@@ -250,7 +250,7 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Depth of field.
+        ///   Looks up a localized string similar to Bokeh depth of field.
         /// </summary>
         public static string BokehDoF {
             get {
@@ -475,6 +475,15 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EFFECTS.
+        /// </summary>
+        public static string Effects {
+            get {
+                return ResourceManager.GetString("Effects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to effect type.
         /// </summary>
         public static string EffectType {
@@ -547,6 +556,42 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to launching application and loading plugin....
+        /// </summary>
+        public static string GameLaunching {
+            get {
+                return ResourceManager.GetString("GameLaunching", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to process started and iGP11 launched.
+        /// </summary>
+        public static string GameLaunchingStatusCompleted {
+            get {
+                return ResourceManager.GetString("GameLaunchingStatusCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to launching game failed.
+        /// </summary>
+        public static string GameLaunchingStatusFailed {
+            get {
+                return ResourceManager.GetString("GameLaunchingStatusFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to plugin already loaded.
+        /// </summary>
+        public static string GameLaunchingStatusPluginAlreadyLoaded {
+            get {
+                return ResourceManager.GetString("GameLaunchingStatusPluginAlreadyLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to game name.
         /// </summary>
         public static string GameName {
@@ -601,6 +646,15 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GAME PROFILE SETTINGS.
+        /// </summary>
+        public static string GameProfileSettings {
+            get {
+                return ResourceManager.GetString("GameProfileSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to game profile updated at {0}.
         /// </summary>
         public static string GameProfileUpdated {
@@ -642,24 +696,6 @@ namespace iGP11.Tool.Localization {
         public static string Icons {
             get {
                 return ResourceManager.GetString("Icons", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to process started and iGP11 launched.
-        /// </summary>
-        public static string InjectionCompleted {
-            get {
-                return ResourceManager.GetString("InjectionCompleted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to launching application and loading plugin.
-        /// </summary>
-        public static string InjectionStarted {
-            get {
-                return ResourceManager.GetString("InjectionStarted", resourceCulture);
             }
         }
         
@@ -790,6 +826,15 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No effects have been configured....
+        /// </summary>
+        public static string NoEffects {
+            get {
+                return ResourceManager.GetString("NoEffects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There is no endpoint listening at given address....
         /// </summary>
         public static string NoEndpointListening {
@@ -849,15 +894,6 @@ namespace iGP11.Tool.Localization {
         public static string OperationTimeout {
             get {
                 return ResourceManager.GetString("OperationTimeout", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to plugin already loaded.
-        /// </summary>
-        public static string PluginAlreadyLoaded {
-            get {
-                return ResourceManager.GetString("PluginAlreadyLoaded", resourceCulture);
             }
         }
         
@@ -950,6 +986,25 @@ namespace iGP11.Tool.Localization {
         public static string RemoveEffect {
             get {
                 return ResourceManager.GetString("RemoveEffect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove effect.
+        /// </summary>
+        public static string RemoveEffectDialogTitle {
+            get {
+                return ResourceManager.GetString("RemoveEffectDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove effect?
+        ///Effect data will be lost..
+        /// </summary>
+        public static string RemoveEffectQuestion {
+            get {
+                return ResourceManager.GetString("RemoveEffectQuestion", resourceCulture);
             }
         }
         

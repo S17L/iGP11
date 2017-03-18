@@ -12,8 +12,8 @@
         d:DataContext="{d:DesignInstance viewModel:MainWindowViewModel}"
         ResizeMode="CanResize"
         WindowStartupLocation="CenterScreen"
-        Height="736"
-        MinHeight="736"
+        Height="720"
+        MinHeight="720"
         Width="1024"
         MinWidth="1024"
         MaxWidth="1024">
@@ -146,11 +146,10 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <StackPanel
+                    <Grid
                         Grid.Column="0"
-                        Background="{StaticResource ResourceKey=SolidColorBrushDarkSmall}"
-                        Orientation="Vertical">
-                        <StackPanel.Resources>
+                        Background="{StaticResource ResourceKey=SolidColorBrushDarkSmall}">
+                        <Grid.Resources>
                             <Style x:Key="StyleHeaderTextBlock" TargetType="{x:Type TextBlock}"
                                    BasedOn="{StaticResource ResourceKey=StyleH2TextBlock}">
                                 <Setter Property="Foreground" Value="{StaticResource ResourceKey=SolidColorBrushWhite}" />
@@ -159,7 +158,18 @@
                                    BasedOn="{StaticResource ResourceKey=StyleTextBlock}">
                                 <Setter Property="Foreground" Value="{StaticResource ResourceKey=SolidColorBrushWhite}" />
                             </Style>
-                        </StackPanel.Resources>
+                            <Style x:Key="StyleActionButton" TargetType="{x:Type Button}" BasedOn="{StaticResource ResourceKey=StyleBalancedImageButton}">
+                                <Setter Property="Height" Value="32" />
+                                <Setter Property="Width" Value="32" />
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
                         <userControls:NavigationItemControl
                             ClickedCommand="{Binding Path=EditGameProfileCommand}"
                             IsSelected="{Binding Path=PluginComponent, Converter={framework:IsNullConverter}}">
@@ -225,10 +235,12 @@
                                 </Grid>
                             </StackPanel>
                         </userControls:NavigationItemControl>
-                        <TextBlock Foreground="{StaticResource ResourceKey=SolidColorBrushWhite}"
+                        <TextBlock Grid.Row="1"
+                                   Foreground="{StaticResource ResourceKey=SolidColorBrushWhite}"
                                    Padding="15, 10"
-                                   Text="GAME PROFILE SETTINGS" />
-                        <ItemsControl ItemsSource="{Binding Path=PluginViewModel.Elements, Mode=OneWay}">
+                                   Text="{Binding Source={StaticResource ResourceKey=LocalizationGameProfileSettings}, Mode=OneTime}" />
+                        <ItemsControl Grid.Row="2"
+                                      ItemsSource="{Binding Path=PluginViewModel.Elements, Mode=OneWay}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <VirtualizingStackPanel Orientation="Vertical" />
@@ -275,91 +287,95 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        <DockPanel>
+                        <DockPanel Grid.Row="3">
                             <Button DockPanel.Dock="Right"
-                                    Background="{StaticResource ResourceKey=SolidColorBrushBalancedMedium}"
-                                    themes:FrameworkService.Image="{StaticResource ResourceKey=AddHover24X24}"
+                                    themes:FrameworkService.Image="{StaticResource ResourceKey=AddHover16X16}"
                                     themes:ToolTipService.Title="{Binding Source={StaticResource ResourceKey=LocalizationAddEffect}, Mode=OneTime}"
-                                    Style="{StaticResource ResourceKey=StyleHoverImageButton}"
+                                    Style="{StaticResource ResourceKey=StyleActionButton}"
                                     Command="{Binding Path=PluginViewModel.AddCommand}" />
                             <TextBlock Foreground="{StaticResource ResourceKey=SolidColorBrushWhite}"
                                        Margin="15, 0"
-                                       Text="EFFECTS" />
+                                       Text="{Binding Source={StaticResource ResourceKey=LocalizationEffects}, Mode=OneTime}" />
                         </DockPanel>
-                        <ItemsControl ItemsSource="{Binding Path=PluginViewModel.Effects, Mode=OneWay}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <VirtualizingStackPanel Orientation="Vertical" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate DataType="{x:Type injection:PluginEffectViewModel}">
-                                    <StackPanel Orientation="Vertical">
-                                        <userControls:NavigationItemControl
-                                            ClickedCommand="{Binding ElementName=InjectionConfigurationViewModelDataContext, Path=DataContext.PickPluginSettingsEditViewCommand}"
-                                            ClickedCommandParameter="{Binding Path=Component}"
-                                            IsArrowVisible="False"
-                                            IsSelected="{Binding Path=IsSelected}"
-                                            Padding="10, 0, 0, 0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto" />
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="Auto" />
-                                                    <ColumnDefinition Width="Auto" />
-                                                </Grid.ColumnDefinitions>
-                                                <CheckBox themes:FrameworkService.LightColor="White"
-                                                          themes:FrameworkService.DarkColor="White"
-                                                          IsChecked="{Binding Path=IsEnabled}" />
-                                                <TextBlock Grid.Column="1"
-                                                           Text="{Binding Path=Component.Name}"
-                                                           Style="{StaticResource ResourceKey=StyleHeaderTextBlock}" />
-                                                <TextBlock
-                                                    Background="{StaticResource ResourceKey=SolidColorBrushWhite}"
-                                                    FontSize="{StaticResource ResourceKey=FontSizeInformation}"
-                                                    Foreground="{StaticResource ResourceKey=SolidColorBrushBlack}"
-                                                    Grid.Column="2"
-                                                    Margin="20, 0"
-                                                    Padding="10, 5"
-                                                    Visibility="{Binding Path=Component.HasErrors, Converter={framework:VisibleValueConverter}}">
-                                                    <TextBlock.Text>
-                                                        <MultiBinding StringFormat="{}{0} {1}">
-                                                            <Binding Path="Component.ErrorCount" />
-                                                            <Binding
-                                                                Source="{StaticResource ResourceKey=LocalizationErrorCount}"
-                                                                Mode="OneTime" />
-                                                        </MultiBinding>
-                                                    </TextBlock.Text>
-                                                </TextBlock>
-                                                <StackPanel Grid.Column="3" Orientation="Horizontal">
-                                                    <Button
-                                                        Background="{StaticResource ResourceKey=SolidColorBrushBalancedMedium}"
-                                                        themes:FrameworkService.Image="{StaticResource ResourceKey=ArrowUpHover24X24}"
-                                                        themes:ToolTipService.Title="{Binding Source={StaticResource ResourceKey=LocalizationMoveUp}, Mode=OneTime}"
-                                                        Style="{StaticResource ResourceKey=StyleHoverImageButton}"
-                                                        Visibility="{Binding Path=MoveUpAvailable, Converter={framework:VisibleValueConverter IsCollapsing=False}}"
-                                                        Command="{Binding Path=MoveUpCommand}" />
-                                                    <Button
-                                                        Background="{StaticResource ResourceKey=SolidColorBrushBalancedMedium}"
-                                                        themes:FrameworkService.Image="{StaticResource ResourceKey=ArrowDownHover24X24}"
-                                                        themes:ToolTipService.Title="{Binding Source={StaticResource ResourceKey=LocalizationMoveDown}, Mode=OneTime}"
-                                                        Style="{StaticResource ResourceKey=StyleHoverImageButton}"
-                                                        Visibility="{Binding Path=MoveDownAvailable, Converter={framework:VisibleValueConverter IsCollapsing=False}}"
-                                                        Command="{Binding Path=MoveDownCommand}" />
-                                                    <Button
-                                                        Background="{StaticResource ResourceKey=SolidColorBrushBalancedMedium}"
-                                                        themes:FrameworkService.Image="{StaticResource ResourceKey=DeleteHover24X24}"
-                                                        themes:ToolTipService.Title="{Binding Source={StaticResource ResourceKey=LocalizationRemoveEffect}, Mode=OneTime}"
-                                                        Style="{StaticResource ResourceKey=StyleHoverImageButton}"
-                                                        Command="{Binding Path=RemoveCommand}" />
-                                                </StackPanel>
-                                            </Grid>
-                                        </userControls:NavigationItemControl>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </StackPanel>
+                        <ScrollViewer Grid.Row="4" VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding Path=PluginViewModel.Effects, Mode=OneWay}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel Orientation="Vertical" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type injection:PluginEffectViewModel}">
+                                        <StackPanel Orientation="Vertical">
+                                            <userControls:NavigationItemControl
+                                                ClickedCommand="{Binding ElementName=InjectionConfigurationViewModelDataContext, Path=DataContext.PickPluginSettingsEditViewCommand}"
+                                                ClickedCommandParameter="{Binding Path=Component}"
+                                                IsArrowVisible="False"
+                                                IsSelected="{Binding Path=IsSelected}"
+                                                Padding="10, 0, 0, 0">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <CheckBox themes:FrameworkService.LightColor="White"
+                                                              themes:FrameworkService.DarkColor="White"
+                                                              IsChecked="{Binding Path=IsEnabled}" />
+                                                    <TextBlock Grid.Column="1"
+                                                               Text="{Binding Path=Component.Name}"
+                                                               Style="{StaticResource ResourceKey=StyleHeaderTextBlock}" />
+                                                    <TextBlock
+                                                        Background="{StaticResource ResourceKey=SolidColorBrushWhite}"
+                                                        FontSize="{StaticResource ResourceKey=FontSizeInformation}"
+                                                        Foreground="{StaticResource ResourceKey=SolidColorBrushBlack}"
+                                                        Grid.Column="2"
+                                                        Margin="20, 0"
+                                                        Padding="10, 5"
+                                                        Visibility="{Binding Path=Component.HasErrors, Converter={framework:VisibleValueConverter}}">
+                                                        <TextBlock.Text>
+                                                            <MultiBinding StringFormat="{}{0} {1}">
+                                                                <Binding Path="Component.ErrorCount" />
+                                                                <Binding
+                                                                    Source="{StaticResource ResourceKey=LocalizationErrorCount}"
+                                                                    Mode="OneTime" />
+                                                            </MultiBinding>
+                                                        </TextBlock.Text>
+                                                    </TextBlock>
+                                                    <StackPanel Grid.Column="3" Orientation="Horizontal">
+                                                        <Button
+                                                            themes:FrameworkService.Image="{StaticResource ResourceKey=ArrowUpHover16X16}"
+                                                            themes:ToolTipService.Title="{Binding Source={StaticResource ResourceKey=LocalizationMoveUp}, Mode=OneTime}"
+                                                            Style="{StaticResource ResourceKey=StyleActionButton}"
+                                                            Visibility="{Binding Path=MoveUpAvailable, Converter={framework:VisibleValueConverter IsCollapsing=False}}"
+                                                            Command="{Binding Path=MoveUpCommand}" />
+                                                        <Button
+                                                            themes:FrameworkService.Image="{StaticResource ResourceKey=ArrowDownHover16X16}"
+                                                            themes:ToolTipService.Title="{Binding Source={StaticResource ResourceKey=LocalizationMoveDown}, Mode=OneTime}"
+                                                            Style="{StaticResource ResourceKey=StyleActionButton}"
+                                                            Visibility="{Binding Path=MoveDownAvailable, Converter={framework:VisibleValueConverter IsCollapsing=False}}"
+                                                            Command="{Binding Path=MoveDownCommand}" />
+                                                        <Button
+                                                            themes:FrameworkService.Image="{StaticResource ResourceKey=DeleteHover16X16}"
+                                                            themes:ToolTipService.Title="{Binding Source={StaticResource ResourceKey=LocalizationRemoveEffect}, Mode=OneTime}"
+                                                            Style="{StaticResource ResourceKey=StyleActionButton}"
+                                                            Command="{Binding Path=RemoveCommand}" />
+                                                    </StackPanel>
+                                                </Grid>
+                                            </userControls:NavigationItemControl>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                        <TextBlock Grid.Row="4"
+                                   Foreground="{StaticResource ResourceKey=SolidColorBrushWhite}"
+                                   Margin="15, 0"
+                                   Text="{Binding Source={StaticResource ResourceKey=LocalizationNoEffects}, Mode=OneTime}"
+                                   VerticalAlignment="Top"
+                                   Visibility="{Binding Path=PluginViewModel.HasEffects, Converter={framework:HiddenValueConverter}}"/>
+                    </Grid>
                     <Border BorderThickness="0, 0, 1, 0"
                             BorderBrush="{StaticResource ResourceKey=SolidColorBrushDarkSmall}" Grid.Column="1">
                         <Grid>
@@ -403,8 +419,8 @@
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="10" />
-                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="{Binding Path=IsStandardMode, Converter={framework:RowDefinitionHeightConverter Value=10, Type=Pixel}}" />
+                                            <RowDefinition Height="{Binding Path=IsStandardMode, Converter={framework:RowDefinitionHeightConverter Value=1, Type=Auto}}" />
                                             <RowDefinition Height="10" />
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
@@ -429,12 +445,12 @@
                                             themes:FrameworkService.Placeholder="{Binding Source={StaticResource ResourceKey=LocalizationGameName}, Mode=OneTime}"
                                             Grid.Row="2"
                                             Grid.Column="0"
-                                            IsEnabled="{Binding Path=IsStandardMode}"
                                             ItemsSource="{Binding Path=Games, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                             SelectedValuePath="Id"
                                             DisplayMemberPath="Name"
                                             SelectedValue="{Binding Path=GameId}"
-                                            Style="{StaticResource ResourceKey=StyleComboBox}" />
+                                            Style="{StaticResource ResourceKey=StyleComboBox}"
+                                            Visibility="{Binding Path=IsStandardMode, Converter={framework:VisibleValueConverter}}" />
                                         <TextBlock
                                             Grid.Row="4"
                                             Grid.Column="0"
@@ -532,8 +548,8 @@
                                     <Grid Margin="0, 10, 0, 0">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="10" />
-                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="{Binding Path=IsStandardMode, Converter={framework:RowDefinitionHeightConverter Value=10, Type=Pixel}}" />
+                                            <RowDefinition Height="{Binding Path=IsStandardMode, Converter={framework:RowDefinitionHeightConverter Value=1, Type=Auto}}" />
                                             <RowDefinition Height="10" />
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
@@ -551,12 +567,12 @@
                                             themes:FrameworkService.Placeholder="{Binding Source={StaticResource ResourceKey=LocalizationGameProfileName}, Mode=OneTime}"
                                             Grid.Row="2"
                                             Grid.Column="0"
-                                            IsEnabled="{Binding Path=IsStandardMode}"
                                             ItemsSource="{Binding Path=GameProfiles, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                             SelectedValuePath="Id"
                                             DisplayMemberPath="Name"
                                             SelectedValue="{Binding Path=GameProfileId}"
-                                            Style="{StaticResource ResourceKey=StyleComboBox}" />
+                                            Style="{StaticResource ResourceKey=StyleComboBox}"
+                                            Visibility="{Binding Path=IsStandardMode, Converter={framework:VisibleValueConverter}}" />
                                         <StackPanel
                                             Grid.Row="2"
                                             Grid.Column="1"

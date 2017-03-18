@@ -110,8 +110,9 @@ namespace iGP11.Tool.Application
                 CommunicationAddress = _communicationAddress,
                 CommunicationPort = _communicationPort,
                 Direct3D11PluginPath = _plugins.Direct3D11,
-                GameProfile = gameProfile,
-                GameFilePath = _game.FilePath
+                GameFilePath = _game.FilePath,
+                GameName = _game.Name,
+                GameProfile = gameProfile
             };
 
             Inject(settings).Wait();

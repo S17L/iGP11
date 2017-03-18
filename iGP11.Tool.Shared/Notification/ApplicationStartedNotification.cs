@@ -7,12 +7,12 @@ namespace iGP11.Tool.Shared.Notification
     [DataContract]
     public class ApplicationStartedNotification
     {
-        public ApplicationStartedNotification(InjectionStatus status)
+        public ApplicationStartedNotification(GameLaunchingStatus status)
         {
             Status = status;
         }
 
         [DataMember(Name = "status", IsRequired = true)]
-        public InjectionStatus Status { get; private set; }
+        public GameLaunchingStatus Status { get; private set; }
     }
 }

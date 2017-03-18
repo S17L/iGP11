@@ -115,6 +115,7 @@
     <Compile Include="Events\PluginChangedEvent.cs" />
     <Compile Include="Events\ReplacePluginComponentEvent.cs" />
     <Compile Include="Events\ShutdownEvent.cs" />
+    <Compile Include="Framework\RowDefinitionHeightConverter.cs" />
     <Compile Include="Model\StatusType.cs" />
     <Compile Include="Model\ApplicationAction.cs" />
     <Compile Include="Events\ApplicationActionEvent.cs" />

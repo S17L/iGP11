@@ -20,7 +20,7 @@ namespace iGP11.Tool.ReadModel.EventHandler
         {
             using (await IsolatedDatabaseAccess.Open())
             {
-                _database.InjectionStatuses[@event.FilePath] = @event.Status;
+                _database.GameLaunchingStatuses[@event.FilePath] = @event.Status;
             }
 
             await context.EmitAsync(new ApplicationStartedNotification(@event.Status));

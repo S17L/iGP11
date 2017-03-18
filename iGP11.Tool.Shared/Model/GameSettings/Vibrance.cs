@@ -13,7 +13,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         private const string GainGroupBy = "Gain";
         private const string GeneralGroupBy = "General";
 
-        [ComponentName("Blue")]
+        [ComponentName("GainBlue")]
         [DataMember(Name = "gainBlue")]
         [Editable]
         [FloatRange(-10, 10)]
@@ -21,7 +21,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [Order(2)]
         public float GainBlue { get; set; } = 1;
 
-        [ComponentName("Green")]
+        [ComponentName("GainGreen")]
         [DataMember(Name = "gainGreen")]
         [Editable]
         [FloatRange(-10, 10)]
@@ -29,7 +29,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [Order(1)]
         public float GainGreen { get; set; } = 1;
 
-        [ComponentName("Red")]
+        [ComponentName("GainRed")]
         [DataMember(Name = "gainRed")]
         [Editable]
         [FloatRange(-10, 10)]

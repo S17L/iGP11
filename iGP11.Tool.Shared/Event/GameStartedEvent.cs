@@ -7,7 +7,7 @@ namespace iGP11.Tool.Shared.Event
     [DataContract]
     public class GameStartedEvent
     {
-        public GameStartedEvent(string filePath, InjectionStatus status)
+        public GameStartedEvent(string filePath, GameLaunchingStatus status)
         {
             FilePath = filePath;
             Status = status;
@@ -17,6 +17,6 @@ namespace iGP11.Tool.Shared.Event
         public string FilePath { get; private set; }
 
         [DataMember(Name = "status", IsRequired = true)]
-        public InjectionStatus Status { get; private set; }
+        public GameLaunchingStatus Status { get; private set; }
     }
 }

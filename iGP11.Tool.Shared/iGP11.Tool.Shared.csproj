@@ -96,7 +96,7 @@
     <Compile Include="Model\GameSettings\Validation\BokehDoFValidator.cs" />
     <Compile Include="Model\GameSettings\Validation\DepthBufferValidator.cs" />
     <Compile Include="Model\GameSettings\Vibrance.cs" />
-    <Compile Include="Model\InjectionStatus.cs" />
+    <Compile Include="Model\GameLaunchingStatus.cs" />
     <Compile Include="Model\ProxyPluginSettings.cs" />
     <Compile Include="Model\ProxySettings.cs" />
     <Compile Include="Model\Texture.cs" />

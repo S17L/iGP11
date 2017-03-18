@@ -533,7 +533,7 @@
                                 <Setter Property="HorizontalAlignment" Value="Stretch" />
                                 <Setter Property="TextBlock.Foreground"
                                         Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
-                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="VerticalAlignment" Value="Stretch" />
                                 <Style.Triggers>
                                     <Trigger Property="IsEnabled" Value="False">
                                         <Setter Property="Opacity"
@@ -755,91 +755,6 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
-
-    <Style x:Key="StyleHoverImageButton" TargetType="{x:Type Button}">
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderBrush" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Foreground" Value="{StaticResource ResourceKey=SolidColorBrushBlack}" />
-        <Setter Property="Padding" Value="0, 5" />
-        <Setter Property="themes:FrameworkService.ImageHeight" Value="24" />
-        <Setter Property="themes:FrameworkService.ImageWidth" Value="24" />
-        <Setter Property="themes:FrameworkService.LightColor"
-                Value="{StaticResource ResourceKey=SolidColorBrushLightMedium}" />
-        <Setter Property="themes:FrameworkService.DarkColor"
-                Value="{StaticResource ResourceKey=SolidColorBrushLightHigh}" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border x:Name="Container">
-                        <Border.Style>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="Background"
-                                        Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=Background}" />
-                                <Setter Property="BorderBrush"
-                                        Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=BorderBrush}" />
-                                <Setter Property="BorderThickness"
-                                        Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=BorderThickness}" />
-                                <Setter Property="Cursor" Value="Hand" />
-                                <Setter Property="HorizontalAlignment" Value="Stretch" />
-                                <Setter Property="TextBlock.Foreground"
-                                        Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
-                                <Setter Property="VerticalAlignment" Value="Center" />
-                                <Style.Triggers>
-                                    <Trigger Property="IsEnabled" Value="False">
-                                        <Setter Property="Opacity"
-                                                Value="{StaticResource ResourceKey=OpacityDisabledContent}" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <userControls:ImageTextBlock
-                            x:Name="ImageTextBlock"
-                            Padding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=Padding}"
-                            HorizontalAlignment="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=HorizontalAlignment}"
-                            HorizontalContentAlignment="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=HorizontalContentAlignment}"
-                            Image="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.Image)}"
-                            ImageWidth="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.ImageWidth)}"
-                            ImageHeight="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.ImageHeight)}"
-                            Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=Content}"
-                            Title="{Binding RelativeSource={RelativeSource Self}, Path=(themes:ToolTipService.Title)}"
-                            Description="{Binding RelativeSource={RelativeSource Self}, Path=(themes:ToolTipService.Description)}"
-                            Background="Transparent" />
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Opacity" TargetName="Container" Value="0.75" />
-                            <Setter Property="TextBlock.Foreground" Value="White" TargetName="Container" />
-                        </Trigger>
-                        <Trigger Property="Button.IsPressed" Value="True">
-                            <Setter Property="Opacity" TargetName="Container" Value="0.5" />
-                        </Trigger>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}"
-                                           Value="True" />
-                                <Condition
-                                    Binding="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.ImageHover), Converter={framework:IsNullConverter}}"
-                                    Value="False" />
-                            </MultiDataTrigger.Conditions>
-                            <MultiDataTrigger.Setters>
-                                <Setter Property="Image"
-                                        Value="{Binding RelativeSource={RelativeSource Self}, Path=(themes:FrameworkService.ImageHover)}"
-                                        TargetName="ImageTextBlock" />
-                            </MultiDataTrigger.Setters>
-                        </MultiDataTrigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <DataTrigger
-                Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Content, Converter={framework:IsNullOrEmptyConverter}}"
-                Value="True">
-                <Setter Property="Padding" Value="0, 5" />
-            </DataTrigger>
-        </Style.Triggers>
     </Style>
 
     <ControlTemplate x:Key="ControlTemplateToolTip" TargetType="{x:Type Control}">
@@ -1295,18 +1210,18 @@
     </Style>
 
     <Style TargetType="{x:Type ScrollBar}">
-        <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
-        <Setter Property="Foreground" Value="{StaticResource ResourceKey=SolidColorBrushDarkSmall}" />
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+        <Setter Property="Foreground" Value="{StaticResource ResourceKey=SolidColorBrushDarkMedium}" />
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Width" Value="12" />
+        <Setter Property="Width" Value="15" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ScrollBar}">
-                    <Grid x:Name="GridRoot" Width="12" Background="{TemplateBinding Background}">
+                    <Grid x:Name="GridRoot" Width="15" Background="{TemplateBinding Background}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="0.00001*" />
                         </Grid.RowDefinitions>
-                        <Track x:Name="PART_Track" Grid.Row="0" IsDirectionReversed="true" Focusable="false">
+                        <Track x:Name="PART_Track" IsDirectionReversed="true" Focusable="false">
                             <Track.Thumb>
                                 <Thumb x:Name="Thumb" Background="{TemplateBinding Foreground}"
                                        Style="{StaticResource ResourceKey=ScrollBarTrackThumb}" />
@@ -1322,7 +1237,7 @@
                         </Track>
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsEnabled" Value="false">
+                        <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="Thumb" Property="Visibility" Value="Collapsed" />
                         </Trigger>
                         <Trigger Property="Orientation" Value="Horizontal">
@@ -1337,7 +1252,7 @@
                                 </Setter.Value>
                             </Setter>
                             <Setter Property="Width" Value="Auto" />
-                            <Setter Property="Height" Value="12" />
+                            <Setter Property="Height" Value="15" />
                             <Setter TargetName="Thumb" Property="Tag" Value="Horizontal" />
                             <Setter TargetName="PageDown" Property="Command" Value="ScrollBar.PageLeftCommand" />
                             <Setter TargetName="PageUp" Property="Command" Value="ScrollBar.PageRightCommand" />

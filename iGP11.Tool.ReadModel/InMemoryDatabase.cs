@@ -19,8 +19,8 @@ namespace iGP11.Tool.ReadModel
         [DataMember(Name = "games", IsRequired = true)]
         public List<Game> Games { get; private set; } = new List<Game>();
 
-        [DataMember(Name = "injectionStatuses", IsRequired = true)]
-        public ConcurrentDictionary<string, InjectionStatus> InjectionStatuses { get; private set; } = new ConcurrentDictionary<string, InjectionStatus>();
+        [DataMember(Name = "gameLaunchingStatuses", IsRequired = true)]
+        public ConcurrentDictionary<string, GameLaunchingStatus> GameLaunchingStatuses { get; private set; } = new ConcurrentDictionary<string, GameLaunchingStatus>();
 
         [DataMember(Name = "lastEditedGameProfileId", IsRequired = true)]
         public Guid? LastEditedGameProfileId { get; set; }

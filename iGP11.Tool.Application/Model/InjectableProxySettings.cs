@@ -16,6 +16,9 @@ namespace iGP11.Tool.Application.Model
         [DataMember(Name = "direct3D11PluginPath", IsRequired = true)]
         public string Direct3D11PluginPath { get; set; }
 
+        [DataMember(Name = "gameName", IsRequired = true)]
+        public string GameName { get; set; }
+
         [DataMember(Name = "gameFilePath", IsRequired = true)]
         public string GameFilePath { get; set; }
 

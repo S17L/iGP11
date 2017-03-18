@@ -36,14 +36,14 @@ namespace iGP11.Tool.Application.CommandHandler
                 await context.PublishAsync(
                     new SharedEvent.GameStartedEvent(
                         game.FilePath,
-                        InjectionStatus.PluginAlreadyLoaded));
+                        GameLaunchingStatus.PluginAlreadyLoaded));
 
                 return;
             }
 
             var result = _injectionService.Start(game.FilePath)
-                             ? InjectionStatus.Completed
-                             : InjectionStatus.Failed;
+                             ? GameLaunchingStatus.Completed
+                             : GameLaunchingStatus.Failed;
 
             await context.PublishAsync(new SharedEvent.GameStartedEvent(game.FilePath, result));
         }

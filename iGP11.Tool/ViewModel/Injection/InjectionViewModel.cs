@@ -83,5 +83,29 @@ namespace iGP11.Tool.ViewModel.Injection
                 _package.GameProfile.ProxyDirectoryPath = value;
             }
         }
+
+        public string GameName
+        {
+            get { return _package.Game?.Name; }
+            set
+            {
+                if (_package.Game != null)
+                {
+                    _package.Game.Name = value;
+                }
+            }
+        }
+
+        public string GameProfileName
+        {
+            get { return _package.GameProfile?.Name; }
+            set
+            {
+                if (_package.GameProfile != null)
+                {
+                    _package.GameProfile.Name = value;
+                }
+            }
+        }
     }
 }

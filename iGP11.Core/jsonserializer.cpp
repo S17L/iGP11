@@ -199,7 +199,10 @@ core::dto::GameSettings core::JsonSerializer::deserializeSettings(const std::str
     document.Parse(value.c_str());
 
     core::dto::GameSettings gameSettings;
+    gameSettings.gameName = document[ENCRYPT_STRING("gameName")].GetString();
+
     rapidjson::Value &gameProfileJson = document[ENCRYPT_STRING("gameProfile")];
+    gameSettings.gameProfileName = gameProfileJson[ENCRYPT_STRING("name")].GetString();
     gameSettings.pluginType = static_cast<core::PluginType>(gameProfileJson[ENCRYPT_STRING("pluginType")].GetInt());
     gameSettings.communicationAddress = document[ENCRYPT_STRING("communicationAddress")].GetString();
     gameSettings.communicationPort = (unsigned short)document[ENCRYPT_STRING("communicationPort")].GetUint();
@@ -290,6 +293,10 @@ std::string core::JsonSerializer::serialize(core::dto::ProxySettings data) {
 
     writer.StartObject();
     {
+        writer.String(ENCRYPT_STRING("gameName"));
+        writer.String(data.gameName.c_str());
+        writer.String(ENCRYPT_STRING("gameProfileName"));
+        writer.String(data.gameProfileName.c_str());
         writer.String(ENCRYPT_STRING("gameFilePath"));
         writer.String(data.gameFilePath.c_str());
         writer.String(ENCRYPT_STRING("proxyDirectoryPath"));

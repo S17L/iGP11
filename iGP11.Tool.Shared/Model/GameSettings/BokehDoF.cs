@@ -14,7 +14,8 @@ namespace iGP11.Tool.Shared.Model.GameSettings
     {
         private const string BlurGroupedBy = "Blur";
         private const string ChromaticAberrationGroupedBy = "ChromaticAberration";
-        private const string GeneralGroupedBy = "General";
+        private const string DepthGroupedBy = "Depth";
+        private const string LuminescenceGroupedBy = "Luminescence";
         private const string ShapeGroupedBy = "Shape";
 
         [ComponentName("BlurStrength")]
@@ -37,7 +38,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [ComponentName("DepthMaximum")]
         [Editable]
         [FloatRange(0)]
-        [GroupedBy(GeneralGroupedBy)]
+        [GroupedBy(DepthGroupedBy)]
         [Order(1)]
         public float DepthMaximum { get; set; } = 1;
 
@@ -45,7 +46,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [ComponentName("DepthMinimum")]
         [Editable]
         [FloatRange(0)]
-        [GroupedBy(GeneralGroupedBy)]
+        [GroupedBy(DepthGroupedBy)]
         [Order(0)]
         public float DepthMinimum { get; set; }
 
@@ -53,7 +54,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [ComponentName("DepthRateGain")]
         [Editable]
         [FloatRange(0)]
-        [GroupedBy(GeneralGroupedBy)]
+        [GroupedBy(DepthGroupedBy)]
         [Order(2)]
         public float DepthRateGain { get; set; } = 2;
 
@@ -82,7 +83,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [ComponentName("LuminescenceMaximum")]
         [Editable]
         [FloatRange(0)]
-        [GroupedBy(GeneralGroupedBy)]
+        [GroupedBy(LuminescenceGroupedBy)]
         [Order(4)]
         public float LuminescenceMaximum { get; set; } = 1;
 
@@ -90,7 +91,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [ComponentName("LuminescenceMinimum")]
         [Editable]
         [FloatRange(0)]
-        [GroupedBy(GeneralGroupedBy)]
+        [GroupedBy(LuminescenceGroupedBy)]
         [Order(3)]
         public float LuminescenceMinimum { get; set; } = 0.1f;
 
@@ -98,7 +99,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [ComponentName("LuminescenceRateGain")]
         [Editable]
         [FloatRange(0)]
-        [GroupedBy(GeneralGroupedBy)]
+        [GroupedBy(LuminescenceGroupedBy)]
         [Order(5)]
         public float LuminescenceRateGain { get; set; } = 2;
 

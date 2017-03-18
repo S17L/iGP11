@@ -14,7 +14,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         private const string GammaGroupBy = "Gamma";
         private const string LiftGroupBy = "Lift";
 
-        [ComponentName("Blue")]
+        [ComponentName("GainBlue")]
         [DataMember(Name = "gainBlue", IsRequired = true)]
         [Editable]
         [FloatRange(0, 2)]
@@ -22,7 +22,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [Order(2)]
         public float GainBlue { get; set; } = 1;
 
-        [ComponentName("Green")]
+        [ComponentName("GainGreen")]
         [DataMember(Name = "gainGreen", IsRequired = true)]
         [Editable]
         [FloatRange(0, 2)]
@@ -30,7 +30,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [Order(1)]
         public float GainGreen { get; set; } = 1;
 
-        [ComponentName("Red")]
+        [ComponentName("GainRed")]
         [DataMember(Name = "gainRed", IsRequired = true)]
         [Editable]
         [FloatRange(0, 2)]
@@ -38,7 +38,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [Order(0)]
         public float GainRed { get; set; } = 1;
 
-        [ComponentName("Blue")]
+        [ComponentName("GammaBlue")]
         [DataMember(Name = "gammaBlue", IsRequired = true)]
         [Editable]
         [FloatRange(0, 2)]
@@ -46,7 +46,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [Order(2)]
         public float GammaBlue { get; set; } = 1;
 
-        [ComponentName("Green")]
+        [ComponentName("GammaGreen")]
         [DataMember(Name = "gammaGreen", IsRequired = true)]
         [Editable]
         [FloatRange(0, 2)]
@@ -54,7 +54,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [Order(1)]
         public float GammaGreen { get; set; } = 1;
 
-        [ComponentName("Red")]
+        [ComponentName("GammaRed")]
         [DataMember(Name = "gammaRed", IsRequired = true)]
         [Editable]
         [FloatRange(0, 2)]
@@ -62,7 +62,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [Order(0)]
         public float GammaRed { get; set; } = 1;
 
-        [ComponentName("Blue")]
+        [ComponentName("LiftBlue")]
         [DataMember(Name = "liftBlue", IsRequired = true)]
         [Editable]
         [FloatRange(0, 2)]
@@ -70,7 +70,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [Order(2)]
         public float LiftBlue { get; set; } = 1;
 
-        [ComponentName("Green")]
+        [ComponentName("LiftGreen")]
         [DataMember(Name = "liftGreen", IsRequired = true)]
         [Editable]
         [FloatRange(0, 2)]
@@ -78,7 +78,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [Order(1)]
         public float LiftGreen { get; set; } = 1;
 
-        [ComponentName("Red")]
+        [ComponentName("LiftRed")]
         [DataMember(Name = "liftRed", IsRequired = true)]
         [Editable]
         [FloatRange(0, 2)]

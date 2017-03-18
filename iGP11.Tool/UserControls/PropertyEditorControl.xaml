@@ -126,12 +126,13 @@
                            Text="{Binding Path=ErrorBody}"
                            Visibility="{Binding Path=HasErrors, Converter={framework:VisibleValueConverter}}" />
                 <ItemsControl Grid.IsSharedSizeScope="True"
+                              Margin="0, -5"
                               ItemsSource="{Binding Path=DataSource}"
                               ItemTemplateSelector="{StaticResource ResourceKey=PropertyDataTemplateSelector}"
                               HorizontalContentAlignment="Stretch">
                     <ItemsControl.ItemContainerStyle>
                         <Style>
-                            <Setter Property="FrameworkElement.Margin" Value="0, 3" />
+                            <Setter Property="FrameworkElement.Margin" Value="0, 5" />
                         </Style>
                     </ItemsControl.ItemContainerStyle>
                     <ItemsControl.ItemsPanel>

@@ -1,6 +1,6 @@
 ﻿namespace iGP11.Tool.Shared.Model
 {
-    public enum InjectionStatus
+    public enum GameLaunchingStatus
     {
         Failed,
         Completed,
