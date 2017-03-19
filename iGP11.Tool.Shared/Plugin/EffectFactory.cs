@@ -20,6 +20,7 @@ namespace iGP11.Tool.Shared.Plugin
             {
                 [EffectType.BokehDoF] = data => CreateEffect<BokehDoF>(data),
                 [EffectType.Denoise] = data => CreateEffect<Denoise>(data),
+                [EffectType.Hdr] = data => CreateEffect<Hdr>(data),
                 [EffectType.LiftGammaGain] = data => CreateEffect<LiftGammaGain>(data),
                 [EffectType.Lumasharpen] = data => CreateEffect<LumaSharpen>(data),
                 [EffectType.Tonemap] = data => CreateEffect<Tonemap>(data),
@@ -30,6 +31,7 @@ namespace iGP11.Tool.Shared.Plugin
             {
                 [EffectType.BokehDoF] = () => CreateEffectData(EffectType.BokehDoF, new BokehDoF()),
                 [EffectType.Denoise] = () => CreateEffectData(EffectType.Denoise, new Denoise()),
+                [EffectType.Hdr] = () => CreateEffectData(EffectType.Hdr, new Hdr()),
                 [EffectType.LiftGammaGain] = () => CreateEffectData(EffectType.LiftGammaGain, new LiftGammaGain()),
                 [EffectType.Lumasharpen] = () => CreateEffectData(EffectType.Lumasharpen, new LumaSharpen()),
                 [EffectType.Tonemap] = () => CreateEffectData(EffectType.Tonemap, new Tonemap()),

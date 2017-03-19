@@ -172,6 +172,7 @@ namespace direct3d11 {
             : _codeDirectoryPath(codeDirectoryPath), _resolution(resolution) { }
         ShaderCode createAlphaCode(ID3D11ShaderResourceView *colorTextureView);
         ShaderCode createDenoiseCode(ID3D11ShaderResourceView *colorTextureView, core::dto::Denoise denoise);
+        ShaderCode createHDRCode(ID3D11ShaderResourceView *colorTextureView, core::dto::HDR hdr);
         ShaderCode createLiftGammaGainCode(ID3D11ShaderResourceView *colorTextureView, core::dto::LiftGammaGain liftGammaGain);
         ShaderCode createLumaSharpenCode(ID3D11ShaderResourceView *colorTextureView, core::dto::LumaSharpen lumaSharpen);
         ShaderCode createLuminescenceCode(ID3D11ShaderResourceView *colorTextureView);

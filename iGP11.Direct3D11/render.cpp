@@ -405,6 +405,18 @@ direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createDenoiseCode(ID3D11Sh
     return code;
 }
 
+direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createHDRCode(ID3D11ShaderResourceView *colorTextureView, core::dto::HDR hdr) {
+    auto codeBuilder = getCodeBuilder();
+    codeBuilder->setHDR(hdr.strength, hdr.radius);
+
+    direct3d11::ShaderCode code;
+    code.setColorTextureView(colorTextureView);
+    code.setVertexShaderCode(codeBuilder->buildVertexShaderCode(), ENCRYPT_STRING("vsmain"));
+    code.setPixelShaderCode(codeBuilder->buildPixelShaderCode(), ENCRYPT_STRING("renderHDR"));
+
+    return code;
+}
+
 direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createLiftGammaGainCode(ID3D11ShaderResourceView *colorTextureView, core::dto::LiftGammaGain liftGammaGain) {
     auto codeBuilder = getCodeBuilder();
     codeBuilder->setLiftGammaGain(liftGammaGain.lift, liftGammaGain.gamma, liftGammaGain.gain);

@@ -73,6 +73,16 @@ void direct3d11::EffectsApplicator::applyProcessing(const direct3d11::dto::PostP
                                 _codeBuilderFactory.get()));
 
                         break;
+                    case core::EffectType::hdr:
+                        addEffect(
+                            new direct3d11::HDREffect(
+                                _context,
+                                _proxy->nextColorTexture(),
+                                _resolution,
+                                _serializer->deserializeHDR(effectData.data),
+                                _codeBuilderFactory.get()));
+
+                        break;
                     case core::EffectType::liftgammagain:
                         addEffect(
                             new direct3d11::LiftGammaGainEffect(

@@ -9,9 +9,9 @@ namespace iGP11.Tool.Infrastructure.Database.Model
     {
         private static readonly BlockingTaskQueue _queue = new BlockingTaskQueue();
 
-        public static Task<IDisposable> Open()
+        public static async Task<IDisposable> Open()
         {
-            return _queue.GetBlockingScope();
+            return await _queue.GetBlockingScope();
         }
     }
 }

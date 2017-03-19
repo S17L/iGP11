@@ -39,8 +39,15 @@
         },
         "effects": [
           {
+            "id": "{8F6BE1FB-79F6-443F-BEDE-4B4D0A70F3EA}",
+            "type": 2,
+            "isEnabled": true,
+            "data":
+              "{ \"strength\": 1.5, \"radius\": 0.87 }"
+          },
+          {
             "id": "{D365A5E4-105B-4394-AC8B-70E9F0536BE7}",
-            "type": 3,
+            "type": 4,
             "isEnabled": true,
             "data": "{ \"sharpeningStrength\": 1.25, \"sharpeningClamp\": 0.035, \"offset\": 1 }"
           },
@@ -48,8 +55,7 @@
             "id": "{DD95A884-9690-4DBB-B796-0625FF023A1B}",
             "type": 0,
             "isEnabled": true,
-            "data":
-              "{ \"isChromaticAberrationEnabled\": true, \"chromaticAberrationFringe\": 2048, \"isPreservingShape\": false, \"shapeSize\": 3, \"shapeStrength\": 50, \"shapeRotation\": 0, \"isBlurEnabled\": true, \"blurStrength\": 0.1, \"depthMinimum\": 0, \"depthMaximum\": 1, \"depthRateGain\": 1, \"luminescenceMinimum\": 0, \"luminescenceMaximum\": 32, \"luminescenceRateGain\": 3 }"
+            "data": "{ \"isChromaticAberrationEnabled\": true, \"chromaticAberrationFringe\": 2048, \"isPreservingShape\": false, \"shapeSize\": 3, \"shapeStrength\": 50, \"shapeRotation\": 0, \"isBlurEnabled\": true, \"blurStrength\": 0.1, \"depthMinimum\": 0, \"depthMaximum\": 1, \"depthRateGain\": 1, \"luminescenceMinimum\": 0, \"luminescenceMaximum\": 32, \"luminescenceRateGain\": 3 }"
           }
         ]
       }

@@ -59,7 +59,13 @@ namespace iGP11.Tool.Infrastructure.Database.Repository
         {
             using (await IsolatedDatabaseAccess.Open())
             {
-                return FindByProfileId(profileId);
+                var model = FindByProfileId(profileId);
+                if (model == null)
+                {
+                    throw new AggregateRootNotFoundException($"game with profile id: {profileId} could not be found");
+                }
+
+                return model.Clone();
             }
         }
 

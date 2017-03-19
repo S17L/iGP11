@@ -24,6 +24,7 @@ namespace iGP11.Tool.ViewModel.Injection
             _viewModel = viewModel;
 
             Component = componentViewModelFactory.Create(_effect.Component);
+            Component.Changed += OnPropertyChanged;
             MoveDownCommand = new ActionCommand(async () => await MoveDownAsync(), () => true);
             MoveUpCommand = new ActionCommand(async () => await MoveUpAsync(), () => true);
             RemoveCommand = new ActionCommand(async () => await RemoveAsync(), () => true);
@@ -84,6 +85,11 @@ namespace iGP11.Tool.ViewModel.Injection
             await _viewModel.MoveUpAsync(this);
         }
 
+        private void OnPropertyChanged(ViewModel viewModel, EventArgs eventArgs)
+        {
+            _viewModel.UpdateEffects();
+        }
+
         private async Task RemoveAsync()
         {
             await _viewModel.RemoveEffectAsync(_effect.Id);
@@ -92,7 +98,7 @@ namespace iGP11.Tool.ViewModel.Injection
         private async void UpdateAvailabilityAsync(bool value)
         {
             _effect.IsEnabled = value;
-            await _viewModel.UpdateEffectAsync(_effect.Id, value);
+            await _viewModel.UpdateEffectsAsync();
         }
     }
 }

@@ -7,7 +7,6 @@ namespace iGP11.Tool.Shared.Model.GameSettings
 {
     [BokehDoFValidator]
     [ComponentName("BokehDoF")]
-    [ComponentShortDescription("BokehDoFShortDescription")]
     [ComponentLongDescription("BokehDoFLongDescription")]
     [DataContract]
     public class BokehDoF

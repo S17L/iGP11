@@ -549,4 +549,10 @@ Retrieve dumped textures from tex_dump directory</value>
   <data name="VibranceLongDescription" xml:space="preserve">
     <value>Increases the intensity of the more muted colors</value>
   </data>
+  <data name="HDR" xml:space="preserve">
+    <value>HDR</value>
+  </data>
+  <data name="HDRLongDescription" xml:space="preserve">
+    <value>Compositing and tone-mapping of images to extend the dynamic range beyond the native capability of the capturing device</value>
+  </data>
 </root>

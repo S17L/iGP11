@@ -5,7 +5,6 @@ using iGP11.Library.Component.DataAnnotations;
 namespace iGP11.Tool.Shared.Model.GameSettings
 {
     [ComponentName("Denoise")]
-    [ComponentShortDescription("DenoiseShortDescription")]
     [ComponentLongDescription("DenoiseLongDescription")]
     [DataContract]
     public class Denoise

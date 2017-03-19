@@ -167,7 +167,7 @@ namespace iGP11.Tool.ViewModel.Injection
             }
         }
 
-        public async Task UpdateEffectAsync(Guid id, bool isEnabled)
+        public async Task UpdateEffectsAsync()
         {
             UpdateEffects();
             await _publisher.PublishAsync(new PluginChangedEvent());

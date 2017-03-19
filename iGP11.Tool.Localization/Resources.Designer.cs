@@ -691,6 +691,24 @@ namespace iGP11.Tool.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HDR.
+        /// </summary>
+        public static string HDR {
+            get {
+                return ResourceManager.GetString("HDR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compositing and tone-mapping of images to extend the dynamic range beyond the native capability of the capturing device.
+        /// </summary>
+        public static string HDRLongDescription {
+            get {
+                return ResourceManager.GetString("HDRLongDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to icons by.
         /// </summary>
         public static string Icons {

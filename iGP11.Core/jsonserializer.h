@@ -10,6 +10,7 @@ namespace core {
 		virtual core::dto::Command deserializeCommand(const std::string &value) override;
         virtual core::dto::BokehDoF deserializeBokehDoF(const std::string &value) override;
         virtual core::dto::Denoise deserializeDenoise(const std::string &value) override;
+        virtual core::dto::HDR deserializeHDR(const std::string &value) override;
         virtual core::dto::LiftGammaGain deserializeLiftGammaGain(const std::string &value) override;
         virtual core::dto::LumaSharpen deserializeLumaSharpen(const std::string &value) override;
         virtual core::dto::Tonemap deserializeTonemap(const std::string &value) override;

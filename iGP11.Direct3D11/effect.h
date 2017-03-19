@@ -10,6 +10,7 @@
 #include "codebuilder.h"
 #include "denoise.h"
 #include "depth.h"
+#include "hdr.h"
 #include "horizontalgaussianblur.h"
 #include "liftgammagain.h"
 #include "lumasharpen.h"

@@ -509,7 +509,7 @@ namespace iGP11.Tool.ViewModel.Injection
 
                 EditPluginMainSettings();
                 EstimateCommunicatorActivationState(proxySettings.ActivationStatus);
-                Rebind();
+                Validate();
             }
         }
 

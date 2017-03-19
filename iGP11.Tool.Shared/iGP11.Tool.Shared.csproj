@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\GameSettings\GamePackage.cs" />
+    <Compile Include="Model\GameSettings\Hdr.cs" />
     <Compile Include="Plugin\ApplicationFilePathTokenReplacingPolicy.cs" />
     <Compile Include="Plugin\Effect.cs" />
     <Compile Include="Plugin\EffectData.cs" />

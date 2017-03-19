@@ -47,6 +47,7 @@ namespace iGP11.Tool.Shared.Plugin
         {
             yield return EffectType.BokehDoF;
             yield return EffectType.Denoise;
+            yield return EffectType.Hdr;
             yield return EffectType.LiftGammaGain;
             yield return EffectType.Lumasharpen;
             yield return EffectType.Tonemap;

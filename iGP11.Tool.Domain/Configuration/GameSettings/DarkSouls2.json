@@ -40,7 +40,7 @@
         "effects": [
           {
             "id": "{CF4EF797-CE26-4A57-BFE9-82955401F66E}",
-            "type": 3,
+            "type": 4,
             "isEnabled": true,
             "data": "{ \"sharpeningStrength\": 1, \"sharpeningClamp\": 0.035, \"offset\": 1 }"
           },

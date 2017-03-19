@@ -519,6 +519,12 @@ void core::ShaderCodeBuilder::setDenoise(float noiseLevel, float blendingCoeffic
     add(new core::DefineAlterationElement(ENCRYPT_STRING("DENOISE_WINDOW_SIZE"), translate(windowSize)));
 }
 
+void core::ShaderCodeBuilder::setHDR(float strength, float radius) {
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("HDR_ENABLED"), translate(true)));
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("HDR_STRENGTH"), translate(strength)));
+    add(new core::DefineAlterationElement(ENCRYPT_STRING("HDR_RADIUS_2"), translate(radius)));
+}
+
 void core::ShaderCodeBuilder::setLiftGammaGain(core::dto::Color lift, core::dto::Color gamma, core::dto::Color gain) {
     add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_ENABLED"), translate(true)));
     add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_LIFT_RED"), translate(lift.red)));

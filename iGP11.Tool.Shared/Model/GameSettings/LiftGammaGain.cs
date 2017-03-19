@@ -5,7 +5,6 @@ using iGP11.Library.Component.DataAnnotations;
 namespace iGP11.Tool.Shared.Model.GameSettings
 {
     [ComponentName("LiftGammaGain")]
-    [ComponentShortDescription("LiftGammaGainShortDescription")]
     [ComponentLongDescription("LiftGammaGainLongDescription")]
     [DataContract]
     public class LiftGammaGain

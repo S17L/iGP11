@@ -10,6 +10,9 @@ namespace iGP11.Tool.Shared.Plugin
         [ComponentName("Denoise")]
         Denoise,
 
+        [ComponentName("HDR")]
+        Hdr,
+
         [ComponentName("LiftGammaGain")]
         LiftGammaGain,
 

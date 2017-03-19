@@ -17,10 +17,11 @@ namespace core {
     enum class EffectType {
         bokehdof = 0,
         denoise = 1,
-        liftgammagain = 2,
-        lumasharpen = 3,
-        tonemap = 4,
-        vibrance = 5
+        hdr = 2,
+        liftgammagain = 3,
+        lumasharpen = 4,
+        tonemap = 5,
+        vibrance = 6
     };
 
     enum class PluginType {
@@ -282,6 +283,11 @@ namespace core {
             std::string data;
         };
 
+        struct HDR final {
+            float strength = 0;
+            float radius = 0;
+        };
+
         struct Textures final {
             TextureDetailLevel detailLevel;
             TextureOverrideMode overrideMode;
@@ -475,6 +481,7 @@ namespace core {
         virtual core::dto::GameSettings deserializeSettings(const std::string &value) = 0;
         virtual core::dto::BokehDoF deserializeBokehDoF(const std::string &value) = 0;
         virtual core::dto::Denoise deserializeDenoise(const std::string &value) = 0;
+        virtual core::dto::HDR deserializeHDR(const std::string &value) = 0;
         virtual core::dto::LiftGammaGain deserializeLiftGammaGain(const std::string &value) = 0;
         virtual core::dto::LumaSharpen deserializeLumaSharpen(const std::string &value) = 0;
         virtual core::dto::Tonemap deserializeTonemap(const std::string &value) = 0;

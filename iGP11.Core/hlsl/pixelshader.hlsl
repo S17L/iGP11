@@ -274,6 +274,50 @@ float4 renderVerticalGaussianBlur(PixelInputType input) : SV_TARGET
 
 /* END -> GAUSSIAN BLUR */
 
+/* BEGIN -> HDR */
+
+#define HDR_ENABLED 0
+#define HDR_STRENGTH 1.3
+#define HDR_RADIUS_1 0.793
+#define HDR_RADIUS_2 0.87
+
+#if HDR_ENABLED == 1
+float4 renderHDR(PixelInputType input) : SV_TARGET
+{
+    float4 color = _color_texture.Sample(_point_sampler, input.texcoord);
+
+    float3 bloomSum1 = _color_texture.Sample(_bilinear_sampler, input.texcoord + float2(1.5, -1.5) * HDR_RADIUS_1).rgb;
+    bloomSum1 += _color_texture.Sample(_bilinear_sampler, input.texcoord + float2(-1.5, -1.5) * HDR_RADIUS_1).rgb;
+    bloomSum1 += _color_texture.Sample(_bilinear_sampler, input.texcoord + float2(1.5, 1.5) * HDR_RADIUS_1).rgb;
+    bloomSum1 += _color_texture.Sample(_bilinear_sampler, input.texcoord + float2(-1.5, 1.5) * HDR_RADIUS_1).rgb;
+    bloomSum1 += _color_texture.Sample(_bilinear_sampler, input.texcoord + float2(0.0, -2.5) * HDR_RADIUS_1).rgb;
+    bloomSum1 += _color_texture.Sample(_bilinear_sampler, input.texcoord + float2(0.0, 2.5) * HDR_RADIUS_1).rgb;
+    bloomSum1 += _color_texture.Sample(_bilinear_sampler, input.texcoord + float2(-2.5, 0.0) * HDR_RADIUS_1).rgb;
+    bloomSum1 += _color_texture.Sample(_bilinear_sampler, input.texcoord + float2(2.5, 0.0) * HDR_RADIUS_1).rgb;
+    bloomSum1 *= 0.005;
+
+    float3 bloomSum2 = _color_texture.Sample(_bilinear_sampler, input.texcoord + float2(1.5, -1.5) * HDR_RADIUS_2).rgb;
+    bloomSum2 += _color_texture.Sample(_bilinear_sampler, input.texcoord + float2(-1.5, -1.5) * HDR_RADIUS_2).rgb;
+    bloomSum2 += _color_texture.Sample(_bilinear_sampler, input.texcoord + float2(1.5, 1.5) * HDR_RADIUS_2).rgb;
+    bloomSum2 += _color_texture.Sample(_bilinear_sampler, input.texcoord + float2(-1.5, 1.5) * HDR_RADIUS_2).rgb;
+    bloomSum2 += _color_texture.Sample(_bilinear_sampler, input.texcoord + float2(0.0, -2.5) * HDR_RADIUS_2).rgb;
+    bloomSum2 += _color_texture.Sample(_bilinear_sampler, input.texcoord + float2(0.0, 2.5) * HDR_RADIUS_2).rgb;
+    bloomSum2 += _color_texture.Sample(_bilinear_sampler, input.texcoord + float2(-2.5, 0.0) * HDR_RADIUS_2).rgb;
+    bloomSum2 += _color_texture.Sample(_bilinear_sampler, input.texcoord + float2(2.5, 0.0) * HDR_RADIUS_2).rgb;
+    bloomSum2 *= 0.010;
+
+    float distance = HDR_RADIUS_2 - HDR_RADIUS_1;
+    float3 HDR = (color.rgb + (bloomSum2 - bloomSum1)) * distance;
+    float3 weight = HDR + color.rgb;
+    color.rgb = pow(abs(weight), abs(HDR_STRENGTH)) + HDR;
+    color.rgb = saturate(color.rgb);
+	
+    return color;
+}
+#endif
+
+/* END -> HDR */
+
 /* BEGIN -> LIFTGAMMAGAIN */
 
 #define LIFTGAMMAGAIN_ENABLED 0

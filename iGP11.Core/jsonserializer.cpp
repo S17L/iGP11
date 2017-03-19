@@ -134,6 +134,17 @@ core::dto::Denoise core::JsonSerializer::deserializeDenoise(const std::string &v
     return denoise;
 }
 
+core::dto::HDR core::JsonSerializer::deserializeHDR(const std::string &value) {
+    rapidjson::Document document;
+    document.Parse(value.c_str());
+
+    core::dto::HDR hdr;
+    hdr.strength = document[ENCRYPT_STRING("strength")].GetDouble();
+    hdr.radius = document[ENCRYPT_STRING("radius")].GetDouble();
+
+    return hdr;
+}
+
 core::dto::LiftGammaGain core::JsonSerializer::deserializeLiftGammaGain(const std::string &value) {
     rapidjson::Document document;
     document.Parse(value.c_str());

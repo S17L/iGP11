@@ -169,6 +169,7 @@
     <ClInclude Include="denoise.h" />
     <ClInclude Include="depth.h" />
     <ClInclude Include="fallout4profile.h" />
+    <ClInclude Include="hdr.h" />
     <ClInclude Include="horizontalgaussianblur.h" />
     <ClInclude Include="igp11direct3d11.h" />
     <ClInclude Include="direct3d11plugin.h" />
@@ -214,6 +215,7 @@
     </ClCompile>
     <ClCompile Include="direct3d11plugin.cpp" />
     <ClCompile Include="fallout4profile.cpp" />
+    <ClCompile Include="hdr.cpp" />
     <ClCompile Include="horizontalgaussianblur.cpp" />
     <ClCompile Include="igp11direct3d11.cpp" />
     <ClCompile Include="effect.cpp" />

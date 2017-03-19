@@ -42,6 +42,15 @@
         </Style>
     </Window.Style>
     <Grid>
+        <Grid.Resources>
+            <Style x:Key="StyleErrorIndicator" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource ResourceKey=StyleTextBlock}">
+                <Setter Property="Background" Value="{StaticResource ResourceKey=SolidColorBrushWhite}" />
+                <Setter Property="FontSize" Value="{StaticResource ResourceKey=FontSizeInformation}" />
+                <Setter Property="Foreground" Value="{StaticResource ResourceKey=SolidColorBrushBlack}" />
+                <Setter Property="Margin" Value="20, 0" />
+                <Setter Property="Padding" Value="10, 5" />
+            </Style>
+        </Grid.Resources>
         <StackPanel
             HorizontalAlignment="Center"
             Orientation="Vertical"
@@ -173,67 +182,85 @@
                         <userControls:NavigationItemControl
                             ClickedCommand="{Binding Path=EditGameProfileCommand}"
                             IsSelected="{Binding Path=PluginComponent, Converter={framework:IsNullConverter}}">
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock FontSize="{StaticResource ResourceKey=FontSizeApplication}"
-                                           FontWeight="{StaticResource ResourceKey=FontWeightApplication}">
-                                    <TextBlock.Style>
-                                        <Style TargetType="{x:Type TextBlock}"
-                                               BasedOn="{StaticResource ResourceKey=StyleHeaderTextBlock}">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Path=IsStandardMode}" Value="True">
-                                                    <Setter Property="Text"
-                                                            Value="{Binding Source={StaticResource ResourceKey=LocalizationInjectorMode}, Mode=OneTime}" />
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Path=IsStandardMode}" Value="False">
-                                                    <Setter Property="Text"
-                                                            Value="{Binding Source={StaticResource ResourceKey=LocalizationCommunicatorMode}, Mode=OneTime}" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <TextBlock
-                                        Text="{Binding Source={StaticResource ResourceKey=LocalizationGameHeader}, Mode=OneTime}"
-                                        Style="{StaticResource ResourceKey=StyleDescriptionTextBlock}" />
-                                    <TextBlock Grid.Column="1" Grid.Row="0" Padding="10, 0, 0, 0"
-                                               Text="{Binding Path=GameName}"
-                                               Style="{StaticResource ResourceKey=StyleDescriptionTextBlock}" />
-                                    <TextBlock Grid.Column="0" Grid.Row="1"
-                                               Text="{Binding Source={StaticResource ResourceKey=LocalizationGameProfileHeader}, Mode=OneTime}"
-                                               Style="{StaticResource ResourceKey=StyleDescriptionTextBlock}" />
-                                    <TextBlock Grid.Column="1" Grid.Row="1" Padding="10, 0, 0, 0"
-                                               Text="{Binding Path=GameProfileName}"
-                                               Style="{StaticResource ResourceKey=StyleDescriptionTextBlock}" />
-                                    <TextBlock Grid.Column="0" Grid.Row="2"
-                                               Text="{Binding Source={StaticResource ResourceKey=LocalizationPluginHeader}, Mode=OneTime}"
-                                               Style="{StaticResource ResourceKey=StyleDescriptionTextBlock}" />
-                                    <TextBlock Grid.Column="1" Grid.Row="2" Padding="10, 0, 0, 0"
-                                               Text="{Binding Path=PluginType, Converter={framework:EnumConverter}}"
-                                               Style="{StaticResource ResourceKey=StyleDescriptionTextBlock}" />
-                                    <StackPanel Grid.Column="0"
-                                                Grid.ColumnSpan="2"
-                                                Grid.Row="3"
-                                                Orientation="Horizontal"
-                                                Margin="0, 10, 0, 0">
-                                        <Rectangle Margin="0"
-                                                   themes:FrameworkService.State="{Binding Path=ActivationState.State}"
-                                                   Style="{StaticResource ResourceKey=StyleStateIndicatorRectangle}" />
-                                        <TextBlock Padding="10, 0, 0, 0" Text="{Binding Path=ActivationState.Text}"
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock FontSize="{StaticResource ResourceKey=FontSizeApplication}"
+                                            FontWeight="{StaticResource ResourceKey=FontWeightApplication}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}"
+                                                    BasedOn="{StaticResource ResourceKey=StyleHeaderTextBlock}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Path=IsStandardMode}" Value="True">
+                                                        <Setter Property="Text"
+                                                                Value="{Binding Source={StaticResource ResourceKey=LocalizationInjectorMode}, Mode=OneTime}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Path=IsStandardMode}" Value="False">
+                                                        <Setter Property="Text"
+                                                                Value="{Binding Source={StaticResource ResourceKey=LocalizationCommunicatorMode}, Mode=OneTime}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock
+                                            Text="{Binding Source={StaticResource ResourceKey=LocalizationGameHeader}, Mode=OneTime}"
+                                            Style="{StaticResource ResourceKey=StyleDescriptionTextBlock}" />
+                                        <TextBlock Grid.Column="1" Grid.Row="0" Padding="10, 0, 0, 0"
+                                                   Text="{Binding Path=GameName}"
                                                    Style="{StaticResource ResourceKey=StyleDescriptionTextBlock}" />
-                                    </StackPanel>
-                                </Grid>
-                            </StackPanel>
+                                        <TextBlock Grid.Column="0" Grid.Row="1"
+                                                   Text="{Binding Source={StaticResource ResourceKey=LocalizationGameProfileHeader}, Mode=OneTime}"
+                                                   Style="{StaticResource ResourceKey=StyleDescriptionTextBlock}" />
+                                        <TextBlock Grid.Column="1" Grid.Row="1" Padding="10, 0, 0, 0"
+                                                   Text="{Binding Path=GameProfileName}"
+                                                   Style="{StaticResource ResourceKey=StyleDescriptionTextBlock}" />
+                                        <TextBlock Grid.Column="0" Grid.Row="2"
+                                                   Text="{Binding Source={StaticResource ResourceKey=LocalizationPluginHeader}, Mode=OneTime}"
+                                                   Style="{StaticResource ResourceKey=StyleDescriptionTextBlock}" />
+                                        <TextBlock Grid.Column="1" Grid.Row="2" Padding="10, 0, 0, 0"
+                                                   Text="{Binding Path=PluginType, Converter={framework:EnumConverter}}"
+                                                   Style="{StaticResource ResourceKey=StyleDescriptionTextBlock}" />
+                                        <StackPanel Grid.Column="0"
+                                                    Grid.ColumnSpan="2"
+                                                    Grid.Row="3"
+                                                    Orientation="Horizontal"
+                                                    Margin="0, 10, 0, 0">
+                                            <Rectangle Margin="0"
+                                                       themes:FrameworkService.State="{Binding Path=ActivationState.State}"
+                                                       Style="{StaticResource ResourceKey=StyleStateIndicatorRectangle}" />
+                                            <TextBlock Padding="10, 0, 0, 0" Text="{Binding Path=ActivationState.Text}"
+                                                       Style="{StaticResource ResourceKey=StyleDescriptionTextBlock}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Style="{StaticResource ResourceKey=StyleErrorIndicator}"
+                                    Visibility="{Binding Path=HasGameFilePath, Converter={framework:HiddenValueConverter}}">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}1 {0}">
+                                            <Binding
+                                                Source="{StaticResource ResourceKey=LocalizationErrorCount}"
+                                                Mode="OneTime" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </Grid>
                         </userControls:NavigationItemControl>
                         <TextBlock Grid.Row="1"
                                    Foreground="{StaticResource ResourceKey=SolidColorBrushWhite}"
@@ -265,12 +292,8 @@
                                                                Style="{StaticResource ResourceKey=StyleDescriptionTextBlock}" />
                                                 </StackPanel>
                                                 <TextBlock
-                                                    Background="{StaticResource ResourceKey=SolidColorBrushWhite}"
-                                                    FontSize="{StaticResource ResourceKey=FontSizeInformation}"
-                                                    Foreground="{StaticResource ResourceKey=SolidColorBrushBlack}"
                                                     Grid.Column="1"
-                                                    Margin="20, 0"
-                                                    Padding="10, 5"
+                                                    Style="{StaticResource ResourceKey=StyleErrorIndicator}"
                                                     Visibility="{Binding Path=Component.HasErrors, Converter={framework:VisibleValueConverter}}">
                                                     <TextBlock.Text>
                                                         <MultiBinding StringFormat="{}{0} {1}">
@@ -327,12 +350,8 @@
                                                                Text="{Binding Path=Component.Name}"
                                                                Style="{StaticResource ResourceKey=StyleHeaderTextBlock}" />
                                                     <TextBlock
-                                                        Background="{StaticResource ResourceKey=SolidColorBrushWhite}"
-                                                        FontSize="{StaticResource ResourceKey=FontSizeInformation}"
-                                                        Foreground="{StaticResource ResourceKey=SolidColorBrushBlack}"
                                                         Grid.Column="2"
-                                                        Margin="20, 0"
-                                                        Padding="10, 5"
+                                                        Style="{StaticResource ResourceKey=StyleErrorIndicator}"
                                                         Visibility="{Binding Path=Component.HasErrors, Converter={framework:VisibleValueConverter}}">
                                                         <TextBlock.Text>
                                                             <MultiBinding StringFormat="{}{0} {1}">
