@@ -223,76 +223,63 @@ HRESULT __stdcall d3d11DeviceCreateTexture2DOverride(ID3D11Device *device, const
         && initialData->pSysMem != nullptr
         && initialData->SysMemSlicePitch > 0) {
 
-        auto textureOverrideMode = _this._settings.textures.overrideMode;
-        if (textureOverrideMode == core::TextureOverrideMode::dumping || textureOverrideMode == core::TextureOverrideMode::override) {
-            const unsigned int resolution = 417;
-            const unsigned int seed = 17;
-            uint64_t hash = core::algorithm::hash64(initialData->pSysMem, initialData->SysMemSlicePitch, resolution, seed);
+        auto deviceComponent = _this._context->getDevice();
+        if (deviceComponent.get() == device) {
+            auto textureOverrideMode = _this._settings.textures.overrideMode;
+            if (textureOverrideMode == core::TextureOverrideMode::dumping || textureOverrideMode == core::TextureOverrideMode::override) {
+                const unsigned int resolution = 417;
+                const unsigned int seed = 17;
+                uint64_t hash = core::algorithm::hash64(initialData->pSysMem, initialData->SysMemSlicePitch, resolution, seed);
 
-            if (hash > 0) {
-                auto textureId = core::stringFormat(ENCRYPT_STRING("%lu_%llu"), initialData->SysMemSlicePitch, hash);
-                if (textureOverrideMode == core::TextureOverrideMode::dumping) {
-                    auto filePath = core::file::combine(_this._settings.textures.dumpingPath, core::stringFormat(ENCRYPT_STRING("%s.dds"), textureId.c_str()));
-                    auto result = _this._d3d11DeviceCreateTexture2D(device, description, initialData, texture2D);
-                    if (FAILED(result)) {
-                        log(error, core::stringFormat(ENCRYPT_STRING("texture2d creation failed [ path: %s, result: 0x%08lx ]"), filePath.c_str(), result));
+                if (hash > 0) {
+                    auto textureId = core::stringFormat(ENCRYPT_STRING("%lu_%llu"), initialData->SysMemSlicePitch, hash);
+                    if (textureOverrideMode == core::TextureOverrideMode::dumping) {
+                        auto filePath = core::file::combine(_this._settings.textures.dumpingPath, core::stringFormat(ENCRYPT_STRING("%s.dds"), textureId.c_str()));
+                        auto result = _this._d3d11DeviceCreateTexture2D(device, description, initialData, texture2D);
+                        if (FAILED(result)) {
+                            log(error, core::stringFormat(ENCRYPT_STRING("texture creation failed [ path: %s, result: 0x%08lx ]"), filePath.c_str(), result));
+                        }
+                        else if (!core::file::fileExists(filePath)) {
+                            std::lock_guard<std::mutex> lock(_this._mutex);
+                            log(core::stringFormat(ENCRYPT_STRING("queueing texture to dump [ path: %s ]"), filePath.c_str()));
+                            _this._textures.push_back(Texture(filePath, reinterpret_cast<ID3D11Resource*>(*texture2D)));
+                        }
+
+                        return result;
                     }
-                    else if (!core::file::fileExists(filePath)) {
-                        std::lock_guard<std::mutex> lock(_this._mutex);
-                        
-                        HRESULT dumpingResult = S_FALSE;
-                        log(core::stringFormat(ENCRYPT_STRING("attempting to dump texture2d: [ path: %s ]"), filePath.c_str()));
+                    else if (textureOverrideMode == core::TextureOverrideMode::override && _this._textureCache->has(textureId)) {
+                        core::TextureProfile profile;
+                        profile.mapFrom = textureId;
+                        profile.mapTo = textureId;
+                        _this._textureCache->merge(profile);
+
+                        HRESULT result = S_FALSE;
+                        ID3D11Texture2D *oldValue = *texture2D;
+                        ID3D11ShaderResourceView *textureView;
+                        auto filePath = core::file::combine(_this._settings.textures.overridePath, core::stringFormat(ENCRYPT_STRING("%s.dds"), profile.mapTo.get().c_str()));
 
                         {
                             DisabledHookingScope scope;
-                            dumpingResult = _this._textureService->saveTextureToFile(
+                            result = _this._textureService->createTextureFromFile(
                                 _this._context.get(),
-                                reinterpret_cast<ID3D11Resource*>(*texture2D),
-                                filePath);
+                                reinterpret_cast<ID3D11Resource**>(texture2D),
+                                &textureView,
+                                filePath,
+                                profile.forceSrgb.get());
                         }
 
-                        if (SUCCEEDED(dumpingResult)) {
-                            log(core::stringFormat(ENCRYPT_STRING("texture2d dumped: [ path: %s ]"), filePath.c_str()));
+                        if (FAILED(result)) {
+                            log(error, core::stringFormat(ENCRYPT_STRING("texture creation failed [ path: %s, result: 0x%08lx ]"), filePath.c_str(), result));
+                            *texture2D = oldValue;
                         }
-                        else {
-                            log(error, core::stringFormat(ENCRYPT_STRING("texture2d dumping failed: [ path: %s, result: 0x%08lx ]"), filePath.c_str(), dumpingResult));
+                        else if (textureView != nullptr) {
+                            auto textureViewComponent = core::disposing::makeUnknown<ID3D11ShaderResourceView>(textureView);
+                            D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDescription;
+                            textureViewComponent->GetDesc(&shaderResourceViewDescription);
+                            ::setResourceDetail(textureId, reinterpret_cast<ID3D11Resource*>(*texture2D), shaderResourceViewDescription);
+
+                            return result;
                         }
-                    }
-
-                    return result;
-                }
-                else if (textureOverrideMode == core::TextureOverrideMode::override && _this._textureCache->has(textureId)) {
-                    core::TextureProfile profile;
-                    profile.mapFrom = textureId;
-                    profile.mapTo = textureId;
-                    _this._textureCache->merge(profile);
-
-                    HRESULT result = S_FALSE;
-                    ID3D11Texture2D *oldValue = *texture2D;
-                    ID3D11ShaderResourceView *textureView;
-                    auto filePath = core::file::combine(_this._settings.textures.overridePath, core::stringFormat(ENCRYPT_STRING("%s.dds"), profile.mapTo.get().c_str()));
-
-                    {
-                        DisabledHookingScope scope;
-                        result = _this._textureService->createTextureFromFile(
-                            _this._context.get(),
-                            reinterpret_cast<ID3D11Resource**>(texture2D),
-                            &textureView,
-                            filePath,
-                            profile.forceSrgb.get());
-                    }
-
-                    if (FAILED(result)) {
-                        log(error, core::stringFormat(ENCRYPT_STRING("texture2d creation failed [ path: %s, result: 0x%08lx ]"), filePath.c_str(), result));
-                        *texture2D = oldValue;
-                    }
-                    else if (textureView != nullptr) {
-                        auto textureViewComponent = core::disposing::makeUnknown<ID3D11ShaderResourceView>(textureView);
-                        D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDescription;
-                        textureViewComponent->GetDesc(&shaderResourceViewDescription);
-                        ::setResourceDetail(textureId, reinterpret_cast<ID3D11Resource*>(*texture2D), shaderResourceViewDescription);
-
-                        return result;
                     }
                 }
             }
@@ -311,10 +298,10 @@ HRESULT __stdcall d3d11DeviceCreateShaderResourceViewOverride(ID3D11Device *devi
             auto overridenDescription = applyTextureDetailLevel(_resourceDetail.description, _this._settings.textures.detailLevel);
             auto result = _this._d3d11DeviceCreateShaderResourceView(device, resource, &overridenDescription, shaderResourceView);
             if (FAILED(result)) {
-                log(error, core::stringFormat(ENCRYPT_STRING("texture2d resource view creation failed [ mode: %u, resource: %p, result: 0x%08lx ]"), textureOverrideMode, resource, result));
+                log(error, core::stringFormat(ENCRYPT_STRING("texture resource view creation failed [ mode: %u, resource: %p, result: 0x%08lx ]"), textureOverrideMode, resource, result));
             }
             else {
-                log(core::stringFormat(ENCRYPT_STRING("texture2d replaced [ id: %s, resource: %p ]"), _resourceDetail.id.c_str(), resource));
+                log(core::stringFormat(ENCRYPT_STRING("texture replaced [ id: %s, resource: %p ]"), _resourceDetail.id.c_str(), resource));
             }
 
             ::clearResourceDetail();
@@ -359,6 +346,37 @@ void __stdcall d3d11DeviceContextOMSetRenderTargetsOverride(ID3D11DeviceContext 
 
     if (_hookingEnabled && _this._activationStatus == core::ActivationStatus::pluginactivated) {
         _this._profile->outputMergerSetRenderTargets(viewCount, renderTargetViews, depthStencilView);
+    }
+
+    if (_this._settings.textures.overrideMode == core::TextureOverrideMode::dumping) {
+        std::lock_guard<std::mutex> lock(_this._mutex);
+
+        for (auto pair : _this._textures) {
+            if (core::file::fileExists(pair.filePath)) {
+                log(core::stringFormat(ENCRYPT_STRING("queued texture has already been dumped [ path: %s ]"), pair.filePath.c_str()));
+                continue;
+            }
+
+            HRESULT result = S_FALSE;
+            log(core::stringFormat(ENCRYPT_STRING("attempting to dump texture: [ path: %s ]"), pair.filePath.c_str()));
+
+            {
+                DisabledHookingScope scope;
+                result = _this._textureService->saveTextureToFile(
+                    _this._context.get(),
+                    pair.resource,
+                    pair.filePath);
+            }
+
+            if (SUCCEEDED(result)) {
+                log(core::stringFormat(ENCRYPT_STRING("texture dumped: [ path: %s ]"), pair.filePath.c_str()));
+            }
+            else {
+                log(error, core::stringFormat(ENCRYPT_STRING("texture dumping failed: [ path: %s, result: 0x%08lx ]"), pair.filePath.c_str(), result));
+            }
+        }
+
+        _this._textures.clear();
     }
 
     _this._d3d11DeviceContextSetRenderTargets(deviceContext, viewCount, renderTargetViews, depthStencilView);
@@ -657,6 +675,8 @@ bool Direct3D11Plugin::update(core::dto::Direct3D11Settings settings) {
 void Direct3D11Plugin::applyPostProcessing(const direct3d11::dto::PostProcessingSettings &postProcessingSettings) {
     if (_applicator != nullptr) {
         DisabledHookingScope scope;
+        std::lock_guard<std::mutex> lock(_mutex);
+
         _applicator->apply(postProcessingSettings);
     }
 }

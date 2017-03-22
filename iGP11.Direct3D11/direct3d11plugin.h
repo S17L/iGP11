@@ -40,6 +40,15 @@ void __stdcall d3d11DeviceContextOMSetDepthStencilStateOverride(ID3D11DeviceCont
 typedef void(__stdcall *ID3D11DeviceContextOMSetRenderTargetsDefinition) (ID3D11DeviceContext *deviceContext, UINT viewCount, ID3D11RenderTargetView *const *renderTargetViews, ID3D11DepthStencilView *depthStencilView);
 void __stdcall d3d11DeviceContextOMSetRenderTargetsOverride(ID3D11DeviceContext *deviceContext, UINT viewCount, ID3D11RenderTargetView *const *renderTargetViews, ID3D11DepthStencilView *depthStencilView);
 
+struct Texture {
+    std::string filePath;
+    ID3D11Resource *resource;
+    Texture(std::string filePath, ID3D11Resource *resource) {
+        this->filePath = filePath;
+        this->resource = resource;
+    }
+};
+
 class Direct3D11Plugin : public core::IDirect3D11Plugin, public direct3d11::IApplicator {
 	friend HRESULT __stdcall dxgiFactoryCreateSwapChainOverride(IDXGIFactory *dxgiFactory, IUnknown *device, DXGI_SWAP_CHAIN_DESC *description, IDXGISwapChain **chain);
 	friend HRESULT __stdcall dxgiSwapChainResizeBuffersOverride(IDXGISwapChain *chain, UINT bufferCount, UINT width, UINT height, DXGI_FORMAT newFormat, UINT chainFlags);
@@ -62,6 +71,7 @@ private:
 	core::dto::Direct3D11Settings _settings;
 	direct3d11::IProfilePicker *_profilePicker;
 	direct3d11::ITextureService *_textureService;
+    std::list<Texture> _textures;
 	std::unique_ptr<direct3d11::IProfile> _profile;
 	std::unique_ptr<core::IFrameCounter> _frameCounter;
 	std::shared_ptr<core::ITextureCache> _textureCache;
