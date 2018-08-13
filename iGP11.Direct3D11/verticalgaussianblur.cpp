@@ -11,6 +11,6 @@ std::string direct3d11::VerticalGaussianBlurEffect::getName() {
     return ENCRYPT_STRING("direct3d11::VerticalGaussianBlurEffect");
 }
 
-direct3d11::ShaderCode direct3d11::VerticalGaussianBlurEffect::getCode(direct3d11::Direct3D11Context *context, direct3d11::ShaderCodeFactory *codeFactory) {
+direct3d11::PassSettings direct3d11::VerticalGaussianBlurEffect::getCode(direct3d11::Direct3D11Context *context, direct3d11::ShaderCodeFactory *codeFactory) {
     return codeFactory->createVerticalGaussianBlurCode(_colorTextureView, _configuration.size, _configuration.sigma);
 }

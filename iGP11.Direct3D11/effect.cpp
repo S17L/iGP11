@@ -1,18 +1,119 @@
 #include "stdafx.h"
 #include "effect.h"
 
-direct3d11::EffectsApplicator::EffectsApplicator(dto::FilterSettings filterSettings, direct3d11::Direct3D11Context *context, core::ISerializer *serializer) {
+direct3d11::Technique::Technique(
+    Direct3D11Context *context,
+    core::Technique technique,
+    direct3d11::ITexture *color,
+    ID3D11ShaderResourceView *depth,
+    direct3d11::ITexture *output) {
+    _context = context;
+    _technique = technique;
+    _color = color;
+    _depth = depth;
+    _output = output;
+
+    log(
+        debug,
+        core::stringFormat(
+            ENCRYPT_STRING("technique: [ name: %s, color: %s, depth: %p, output: %s]"),
+            technique.name.c_str(),
+            direct3d11::stringify::toString(color).c_str(),
+            depth,
+            direct3d11::stringify::toString(output).c_str()));
+
+    log(debug, core::stringFormat("\n%s", technique.code.psCode.c_str()));
+    init();
+}
+
+void direct3d11::Technique::init() {
+    ThreadLoggerAppenderScope scope(core::stringFormat(ENCRYPT_STRING("%s: initialization"), _technique.name.c_str()));
+    auto textureDescription = direct3d11::utility::getDescription(_color->get());
+    for (auto pair : _technique.textures) {
+        ThreadLoggerAppenderScope scope(debug, ENCRYPT_STRING("custom texture"));
+        auto texture = std::shared_ptr<direct3d11::ITexture>(
+            new direct3d11::Texture(
+                _context,
+                direct3d11::utility::apply(textureDescription, pair.second.resolution)));
+
+        _texturesById[pair.second.id] = texture;
+        _slotById[pair.second.id] = pair.first;
+
+        log(
+            debug,
+            core::stringFormat(
+                ENCRYPT_STRING("id: %u, slot: %u, texture: %s, description: %s"),
+                pair.second.id,
+                pair.first,
+                direct3d11::stringify::toString(texture.get()).c_str(),
+                direct3d11::stringify::toString(&textureDescription).c_str()));
+    }
+
+    for (auto pass : _technique.passes) {
+        ThreadLoggerAppenderScope scope(
+            debug,
+            core::stringFormat(
+                ENCRYPT_STRING("pass: [ vs: %s, ps: %s ]"),
+                pass.vsFunctionName.c_str(),
+                pass.psFunctionName.c_str()));
+
+        auto passSettings = std::shared_ptr<direct3d11::PassSettings>(
+            new direct3d11::PassSettings(
+                _technique.code,
+                pass.vsFunctionName,
+                pass.psFunctionName));
+
+        passSettings->setIn(_technique.color, _color->getInView());
+        passSettings->setIn(_technique.depth, _depth);
+
+        for (auto texId : pass.in) {
+            passSettings->setIn(_slotById[texId], _texturesById[texId]->getInView());
+        }
+
+        core::dto::Resolution resolution;
+        core::type_slot outSlot = 0;
+        for (auto texId : pass.out) {
+            if (texId == core::OutputTexId) {
+                passSettings->setOut(outSlot++, _output->getOutView());
+                resolution = direct3d11::utility::getRenderingResolution(_output->get());
+            }
+            else {
+                auto texture = _texturesById[texId];
+                passSettings->setOut(outSlot++, texture->getOutView());
+                resolution = direct3d11::utility::getRenderingResolution(texture->get());
+            }
+        }
+
+        _passSettings.push_back(passSettings);
+        _passes.push_back(std::shared_ptr<direct3d11::Pass>(
+            new direct3d11::Pass(
+                _context,
+                passSettings.get(),
+                resolution)));
+    }
+}
+
+void direct3d11::Technique::render() {
+    for (auto pass : _passes) {
+        pass->render();
+    }
+}
+
+direct3d11::TechniqueApplicator::TechniqueApplicator(
+    dto::FilterSettings filterSettings,
+    direct3d11::Direct3D11Context *context,
+    core::ISerializer *serializer) {
     _filterSettings = filterSettings;
     _requestedFilterSettings = filterSettings;
     _context = context;
     _serializer = serializer;
 }
 
-void direct3d11::EffectsApplicator::addEffect(direct3d11::IEffect *effect) {
-    _effects.push_back(std::shared_ptr<direct3d11::IEffect>(effect));
+void direct3d11::TechniqueApplicator::addTechnique(direct3d11::ITechnique *technique) {
+    _techniques.push_back(std::shared_ptr<direct3d11::ITechnique>(technique));
 }
 
-void direct3d11::EffectsApplicator::applyProcessing(const direct3d11::dto::PostProcessingSettings &postProcessingSettings) {
+void direct3d11::TechniqueApplicator::applyProcessing(const direct3d11::dto::PostProcessingSettings &postProcessingSettings) {
     if (postProcessingSettings.colorTexture == nullptr) {
         return;
     }
@@ -25,109 +126,78 @@ void direct3d11::EffectsApplicator::applyProcessing(const direct3d11::dto::PostP
         clear();
 
         if (_resolution.width > 0 && _resolution.height > 0) {
-            ThreadLoggerAppenderScope scope(ENCRYPT_STRING("direct3d11::EffectsApplicator"));
+            ThreadLoggerAppenderScope scope(ENCRYPT_STRING("direct3d11::TechniqueApplicator"));
+            log(core::stringFormat(
+                ENCRYPT_STRING(
+                    "resolution: [ width: %u, height: %u ]"),
+                    _resolution.width,
+                    _resolution.height));
 
-            log(core::stringFormat(ENCRYPT_STRING("resolution: [ width: %u, height: %u ]"), _resolution.width, _resolution.height));
-            _proxy.reset(new direct3d11::RenderingProxy(_context, _resolution, postProcessingSettings.colorTexture, postProcessingSettings.depthTexture));
-            _codeBuilderFactory.reset(new direct3d11::ShaderCodeFactory(_filterSettings.codeDirectoryPath, _resolution));
+            _proxy.reset(new direct3d11::RenderingProxy(
+                _context,
+                postProcessingSettings.colorTexture,
+                postProcessingSettings.depthTexture));
+
+#if NDEBUG
+            core::HlslTechniqueBuilder techniqueBuilder(_resolution);
+#else
+            core::HlslTechniqueBuilder techniqueBuilder(_resolution, _filterSettings.codeDirectoryPath);
+#endif
 
             if (_filterSettings.pluginSettings.renderingMode == core::RenderingMode::alpha) {
-                addEffect(new direct3d11::AlphaEffect(_context, _proxy->nextColorTexture(), _resolution, _codeBuilderFactory.get()));
+                addTechnique(
+                    new direct3d11::Technique(
+                        _context,
+                        techniqueBuilder.buildAlpha(),
+                        _proxy->iterateIn(),
+                        _proxy->getDepthTextureView(),
+                        _proxy->iterateOut(true)));
             }
             else if (_filterSettings.pluginSettings.renderingMode == core::RenderingMode::depthbuffer) {
                 if (postProcessingSettings.depthTexture != nullptr) {
-                    addEffect(new direct3d11::DepthEffect(_context, _proxy->nextColorTexture(), _proxy->getDepthTextureView(), _resolution, _filterSettings.depthBuffer, _codeBuilderFactory.get()));
+                    addTechnique(
+                        new direct3d11::Technique(
+                            _context,
+                            techniqueBuilder.buildDepth(_filterSettings.depthBuffer),
+                            _proxy->iterateIn(),
+                            _proxy->getDepthTextureView(),
+                            _proxy->iterateOut(true)));
                 }
             }
             else if (_filterSettings.pluginSettings.renderingMode == core::RenderingMode::luminescence) {
-                addEffect(new direct3d11::LuminescenceEffect(_context, _proxy->nextColorTexture(), _resolution, _codeBuilderFactory.get()));
+                addTechnique(
+                    new direct3d11::Technique(
+                        _context,
+                        techniqueBuilder.buildLuminescence(),
+                        _proxy->iterateIn(),
+                        _proxy->getDepthTextureView(),
+                        _proxy->iterateOut(true)));
             }
             else if (_filterSettings.pluginSettings.renderingMode == core::RenderingMode::effects) {
-                for (auto effectData : _filterSettings.effects) {
-                    if (!effectData.isEnabled) {
-                        continue;
-                    }
+                auto count = 0;
+                auto techniques = core::linq::makeEnumerable(_filterSettings.techniques)
+                    .where([&](const core::dto::TechniqueData &data)->bool { return data.isEnabled; })
+                    .toList();
 
-                    ThreadLoggerAppenderScope scope(core::stringFormat(ENCRYPT_STRING("attempting to add effect: %d"), static_cast<int>(effectData.type)));
-                    switch (effectData.type)
-                    {
-                    case core::EffectType::bokehdof:
-                        addEffect(
-                            new direct3d11::BokehDoFEffect(
-                                _context,
-                                _proxy->nextColorTexture(),
-                                _proxy->getDepthTextureView(),
-                                _resolution,
-                                _serializer->deserializeBokehDoF(effectData.data),
-                                _filterSettings.depthBuffer,
-                                _codeBuilderFactory.get()));
+                for (auto techniqueData : techniques) {
+                    ThreadLoggerAppenderScope scope(
+                        core::stringFormat(
+                            ENCRYPT_STRING("attempting to add technique: %d"),
+                            static_cast<int>(techniqueData.type)));
 
-                        break;
-                    case core::EffectType::denoise:
-                        addEffect(
-                            new direct3d11::DenoiseEffect(
-                                _context,
-                                _proxy->nextColorTexture(),
-                                _resolution,
-                                _serializer->deserializeDenoise(effectData.data),
-                                _codeBuilderFactory.get()));
+                    core::HlslTechniqueFactory techniqueFactory(
+                        &techniqueBuilder,
+                        _serializer,
+                        _filterSettings.depthBuffer);
 
-                        break;
-                    case core::EffectType::hdr:
-                        addEffect(
-                            new direct3d11::HDREffect(
-                                _context,
-                                _proxy->nextColorTexture(),
-                                _resolution,
-                                _serializer->deserializeHDR(effectData.data),
-                                _codeBuilderFactory.get()));
-
-                        break;
-                    case core::EffectType::liftgammagain:
-                        addEffect(
-                            new direct3d11::LiftGammaGainEffect(
-                                _context,
-                                _proxy->nextColorTexture(),
-                                _resolution,
-                                _serializer->deserializeLiftGammaGain(effectData.data),
-                                _codeBuilderFactory.get()));
-
-                        break;
-                    case core::EffectType::lumasharpen:
-                        addEffect(
-                            new direct3d11::LumasharpenEffect(
-                                _context,
-                                _proxy->nextColorTexture(),
-                                _resolution,
-                                _serializer->deserializeLumaSharpen(effectData.data),
-                                _codeBuilderFactory.get()));
-
-                        break;
-                    case core::EffectType::tonemap:
-                        addEffect(
-                            new direct3d11::TonemapEffect(
-                                _context,
-                                _proxy->nextColorTexture(),
-                                _resolution,
-                                _serializer->deserializeTonemap(effectData.data),
-                                _codeBuilderFactory.get()));
-
-                        break;
-                    case core::EffectType::vibrance:
-                        core::logging::log("adding vibrance");
-                        core::logging::log(effectData.data);
-                        addEffect(
-                            new direct3d11::VibranceEffect(
-                                _context,
-                                _proxy->nextColorTexture(),
-                                _resolution,
-                                _serializer->deserializeVibrance(effectData.data),
-                                _codeBuilderFactory.get()));
-
-                        break;
-                    default:
-                        break;
-                    }
+                    count++;
+                    addTechnique(
+                        new direct3d11::Technique(
+                            _context,
+                            techniqueFactory.create(techniqueData.type, techniqueData.data),
+                            _proxy->iterateIn(),
+                            _proxy->getDepthTextureView(),
+                            _proxy->iterateOut(count == techniques.size())));
                 }
             }
 
@@ -138,38 +208,31 @@ void direct3d11::EffectsApplicator::applyProcessing(const direct3d11::dto::PostP
         _initRequested = false;
     }
 
-    auto size = _effects.size();
+    auto size = _techniques.size();
     if (size <= 0) {
         return;
     }
 
     ThreadLoggerAppenderScope scope(
         debug,
-        core::stringFormat(ENCRYPT_STRING("applying %llu effects"), size));
+        core::stringFormat(ENCRYPT_STRING("applying %llu techniques"), size));
 
     _proxy->begin();
 
-    for (auto effect : _effects) {
-        log(debug, effect->getName());
-        _proxy->iterate();
-        direct3d11::utility::setNoRenderer(_context);
-        effect->begin();
-        _proxy->getRenderingDestinationTexture()->setAsRenderer();
-        effect->render();
-        effect->end();
+    for (auto technique : _techniques) {
+        technique->render();
     }
 
     _proxy->end();
 }
 
-void direct3d11::EffectsApplicator::clear() {
-    _effects.clear();
+void direct3d11::TechniqueApplicator::clear() {
+    _techniques.clear();
     _proxy.reset();
-    _codeBuilderFactory.reset();
 }
 
-void direct3d11::EffectsApplicator::apply(const direct3d11::dto::PostProcessingSettings &postProcessingSettings) {
-    if (_hasError) {
+void direct3d11::TechniqueApplicator::apply(const direct3d11::dto::PostProcessingSettings &postProcessingSettings) {
+    if (_hasError) { 
         return;
     }
 
@@ -198,7 +261,7 @@ void direct3d11::EffectsApplicator::apply(const direct3d11::dto::PostProcessingS
     }
 }
 
-void direct3d11::EffectsApplicator::deinitialize() {
+void direct3d11::TechniqueApplicator::deinitialize() {
     _hasError = false;
     _initRequested = false;
     _resolution.height = 0;
@@ -209,7 +272,7 @@ void direct3d11::EffectsApplicator::deinitialize() {
     clear();
 }
 
-bool direct3d11::EffectsApplicator::initializationRequired(const direct3d11::dto::PostProcessingSettings &postProcessingSettings) {
+bool direct3d11::TechniqueApplicator::initializationRequired(const direct3d11::dto::PostProcessingSettings &postProcessingSettings) {
     if (postProcessingSettings.colorTexture == nullptr) {
         return false;
     }
@@ -222,7 +285,7 @@ bool direct3d11::EffectsApplicator::initializationRequired(const direct3d11::dto
         || _initRequested;
 }
 
-void direct3d11::EffectsApplicator::update(dto::FilterSettings filterSettings) {
+void direct3d11::TechniqueApplicator::update(dto::FilterSettings filterSettings) {
     _requestedFilterSettings = filterSettings;
     _hasError = false;
     _initRequested = true;

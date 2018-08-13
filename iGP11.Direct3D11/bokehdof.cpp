@@ -23,11 +23,11 @@ void direct3d11::BokehDoFEffect::begin() {
         log(debug, core::stringFormat(ENCRYPT_STRING("color texture description: %s"), direct3d11::stringify::toString(&textureDescription).c_str()));
 
         auto gaussianBlurConfiguration = direct3d11::utility::getGaussianBlurConfiguration(_bokehDoF.blurStrength);
-        auto shaderApplicatorFactory = [&](const direct3d11::ShaderCode &code) { return new direct3d11::ShaderApplicator(_context, code, _resolution); };
+        auto shaderApplicatorFactory = [&](const direct3d11::PassSettings &code) { return new direct3d11::Pass(_context, code, _resolution); };
 
         _firstTexture.reset(new direct3d11::Texture(_context, textureDescription));
         _secondTexture.reset(new direct3d11::Texture(_context, textureDescription));
-        _renderTarget.reset(new direct3d11::SquareRenderTarget(_context, _resolution));
+        _renderTarget.reset(new direct3d11::Renderer(_context, _resolution));
 
         _cocShaderApplicator.reset(shaderApplicatorFactory(_codeFactory->createBokehDoFCoCCode(_colorTexture->getShaderView(), _depthTextureView, _bokehDoF, _depthBuffer)));
         _horizontalGaussianBlurShaderApplicator.reset(shaderApplicatorFactory(_codeFactory->createHorizontalGaussianBlurCode(_firstTexture->getShaderView(), gaussianBlurConfiguration.size, gaussianBlurConfiguration.sigma)));

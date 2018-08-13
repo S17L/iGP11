@@ -11,13 +11,6 @@ ID3D11SamplerState* createSampler(ID3D11Device *device, D3D11_SAMPLER_DESC descr
     return sampler;
 }
 
-void applyDepthBuffer(core::ShaderCodeBuilder &codeBuilder, core::dto::DepthBuffer depthBuffer) {
-    codeBuilder.setLinearDepthTextureAccessibility(depthBuffer.linearZNear, depthBuffer.linearZFar);
-    if (depthBuffer.isLimitEnabled) {
-        codeBuilder.setDepthTextureLimit(depthBuffer.depthMinimum, depthBuffer.depthMaximum);
-    }
-}
-
 direct3d11::Texture::Texture(direct3d11::Direct3D11Context *context, const D3D11_TEXTURE2D_DESC &description) {
     _context = context;
 
@@ -56,13 +49,16 @@ direct3d11::Texture::Texture(direct3d11::Direct3D11Context *context, const D3D11
     _textureRenderView.reset(renderTargetView);
 }
 
-direct3d11::RenderingProxy::RenderingProxy(direct3d11::Direct3D11Context *context, direct3d11::dto::RenderingResolution resolution, ID3D11Texture2D *inputColorTexture, ID3D11Texture2D *inputDepthTexture) {
+direct3d11::RenderingProxy::RenderingProxy(
+    direct3d11::Direct3D11Context *context,
+    ID3D11Texture2D *color,
+    ID3D11Texture2D *depth) {
     ThreadLoggerAppenderScope scope(debug, ENCRYPT_STRING("initializing direct3d11::RenderingProxy"));
+    log(debug, core::stringFormat("color: %p, depth: %p", color, depth));
 
     _context = context;
-    _resolution = resolution;
-    _inputColorTexture = inputColorTexture;
-    _inputDepthTexture = inputDepthTexture;
+    _color = color;
+    _depth = depth;
 
     _inputRenderTargetView = core::disposing::makeUnknown<ID3D11RenderTargetView>(nullptr);
     _depthTexture = core::disposing::makeUnknown<ID3D11Texture2D>(nullptr);
@@ -77,14 +73,14 @@ direct3d11::RenderingProxy::RenderingProxy(direct3d11::Direct3D11Context *contex
     ID3D11DepthStencilState *depthStencilState = nullptr;
 
     auto device = _context->getDevice();
-    auto textureDescription = direct3d11::utility::getDescription(_inputColorTexture);
-    log(debug, core::stringFormat(ENCRYPT_STRING("color texture: %s"), direct3d11::stringify::toString(&textureDescription).c_str()));
+    auto textureDescription = direct3d11::utility::getDescription(_color);
+    log(debug, core::stringFormat(ENCRYPT_STRING("color: %s"), direct3d11::stringify::toString(&textureDescription).c_str()));
 
-    _inputTexture.reset(new direct3d11::Texture(_context, textureDescription));
+    _colorTexture.reset(new direct3d11::Texture(_context, textureDescription));
     _chainFirstTexture.reset(new direct3d11::Texture(_context, direct3d11::utility::createFloatTextureDescription(textureDescription)));
     _chainSecondTexture.reset(new direct3d11::Texture(_context, direct3d11::utility::createFloatTextureDescription(textureDescription)));
 
-    auto result = device->CreateRenderTargetView(_inputColorTexture, NULL, &renderTargetView);
+    auto result = device->CreateRenderTargetView(_color, NULL, &renderTargetView);
     if (FAILED(result)) {
         throw core::exception::OperationException(ENCRYPT_STRING("direct3d11::RenderingProxy"), ENCRYPT_STRING("color render target could not be created"));
     }
@@ -92,16 +88,16 @@ direct3d11::RenderingProxy::RenderingProxy(direct3d11::Direct3D11Context *contex
     _inputRenderTargetView.reset(renderTargetView);
     _renderingTexture.reset(new direct3d11::CustomizableTexture(
         _context,
-        _inputTexture->get(),
-        _inputTexture->getShaderView(),
+        _colorTexture->get(),
+        _colorTexture->getInView(),
         _inputRenderTargetView.get()));
 
-    if (_inputDepthTexture == nullptr) {
+    if (_depth == nullptr) {
         return;
     }
 
-    auto depthTextureDescription = direct3d11::utility::getDescription(_inputDepthTexture);
-    log(debug, core::stringFormat(ENCRYPT_STRING("depth texture: %s"), direct3d11::stringify::toString(&depthTextureDescription).c_str()));
+    auto depthTextureDescription = direct3d11::utility::getDescription(_depth);
+    log(debug, core::stringFormat(ENCRYPT_STRING("depth: %s"), direct3d11::stringify::toString(&depthTextureDescription).c_str()));
     depthTextureDescription.BindFlags |= D3D11_BIND_SHADER_RESOURCE;
 
     result = device->CreateTexture2D(&depthTextureDescription, nullptr, &texture);
@@ -139,7 +135,9 @@ direct3d11::RenderingProxy::RenderingProxy(direct3d11::Direct3D11Context *contex
 
     result = device->CreateRasterizerState(&rasterizerDescription, &rasterizedState);
     if (FAILED(result)) {
-        throw core::exception::InitializationException(ENCRYPT_STRING("direct3d11::RenderingProxy"), ENCRYPT_STRING("rasterized state could not be created"));
+        throw core::exception::InitializationException(
+            ENCRYPT_STRING("direct3d11::RenderingProxy"),
+            ENCRYPT_STRING("rasterized state could not be created"));
     }
 
     _rasterizerState.reset(rasterizedState);
@@ -162,7 +160,9 @@ direct3d11::RenderingProxy::RenderingProxy(direct3d11::Direct3D11Context *contex
 
     result = device->CreateDepthStencilState(&depthStencilDescription, &depthStencilState);
     if (FAILED(result)) {
-        throw core::exception::InitializationException(ENCRYPT_STRING("direct3d11::RenderingProxy"), ENCRYPT_STRING("depth stencil state could not be created"));
+        throw core::exception::InitializationException(
+            ENCRYPT_STRING("direct3d11::RenderingProxy"),
+            ENCRYPT_STRING("depth stencil state could not be created"));
     }
 
     _depthStencilState.reset(depthStencilState);
@@ -172,50 +172,31 @@ direct3d11::RenderingProxy::RenderingProxy(direct3d11::Direct3D11Context *contex
     _states.push_back(std::shared_ptr<direct3d11::IState>(new direct3d11::DeviceContextOMDepthStencilState(deviceContext.get())));
     _states.push_back(std::shared_ptr<direct3d11::IState>(new direct3d11::DeviceContextOMRenderTargets(deviceContext.get())));
     _states.push_back(std::shared_ptr<direct3d11::IState>(new direct3d11::DeviceContextRSState(deviceContext.get())));
-    _states.push_back(std::shared_ptr<direct3d11::IState>(new direct3d11::DeviceContextRSViewports(deviceContext.get())));
 }
 
 void direct3d11::RenderingProxy::begin() {
-    _index = 0;
-
     for (auto state : _states) {
         state->acquire();
     }
 
     auto deviceContext = _context->getDeviceContext();
-    deviceContext->CopyResource(_inputTexture->get(), _inputColorTexture);
-    if (_inputDepthTexture != nullptr) {
-        deviceContext->CopyResource(_depthTexture.get(), _inputDepthTexture);
+    deviceContext->CopyResource(_colorTexture->get(), _color);
+    if (_depth != nullptr) {
+        deviceContext->CopyResource(_depthTexture.get(), _depth);
     }
 
     deviceContext->OMSetBlendState(NULL, NULL, 0xffffffff);
     deviceContext->OMSetDepthStencilState(_depthStencilState.get(), 1);
     deviceContext->RSSetState(_rasterizerState.get());
-
-    D3D11_VIEWPORT viewport;
-    ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
-    viewport.Width = (float)_resolution.width;
-    viewport.Height = (float)_resolution.height;
-    viewport.MinDepth = 0.0f;
-    viewport.MaxDepth = 1.0f;
-    viewport.TopLeftX = 0.0f;
-    viewport.TopLeftY = 0.0f;
-    deviceContext->RSSetViewports(1, &viewport);
 }
 
 void direct3d11::RenderingProxy::end() {
-    _index = 0;
-
     for (auto state : _states) {
         state->restore();
     }
 }
 
-void direct3d11::RenderingProxy::iterate() {
-    _index++;
-}
-
-direct3d11::ITexture* direct3d11::RenderingProxy::nextColorTexture() {
+direct3d11::ITexture* direct3d11::RenderingProxy::iterateIn() {
     _count++;
     if (_count == 1) {
         return _renderingTexture.get();
@@ -228,11 +209,13 @@ direct3d11::ITexture* direct3d11::RenderingProxy::nextColorTexture() {
     }
 }
 
-direct3d11::ITexture* direct3d11::RenderingProxy::getRenderingDestinationTexture() const {
-    if (_index == _count) {
+direct3d11::ITexture* direct3d11::RenderingProxy::iterateOut(bool last) {
+    if (last) {
         return _renderingTexture.get();
     }
-    else if (_index % 2 == 1) {
+    
+    _index++;
+    if (_index % 2 == 1) {
         return _chainFirstTexture.get();
     }
     else {
@@ -244,9 +227,9 @@ ID3D11ShaderResourceView* direct3d11::RenderingProxy::getDepthTextureView() cons
     return _depthTextureView.get();
 }
 
-direct3d11::SquareRenderTarget::SquareRenderTarget(
+direct3d11::Renderer::Renderer(
     direct3d11::Direct3D11Context *context,
-    direct3d11::dto::RenderingResolution resolution) {
+    core::dto::Resolution resolution) {
     _context = context;
     _resolution = resolution;
 
@@ -280,7 +263,9 @@ direct3d11::SquareRenderTarget::SquareRenderTarget(
     ID3D11Buffer *vertexBuffer = nullptr;
     auto result = device->CreateBuffer(&vertexBufferDescription, &vertexData, &vertexBuffer);
     if (FAILED(result)) {
-        throw core::exception::InitializationException(ENCRYPT_STRING("direct3d11::SquareRenderTarget"), ENCRYPT_STRING("vertex buffer could not be created"));
+        throw core::exception::InitializationException(
+            ENCRYPT_STRING("direct3d11::Renderer"),
+            ENCRYPT_STRING("vertex buffer could not be created"));
     }
 
     _vertexBuffer.reset(vertexBuffer);
@@ -300,7 +285,9 @@ direct3d11::SquareRenderTarget::SquareRenderTarget(
     ID3D11Buffer *indexBuffer = nullptr;
     result = device->CreateBuffer(&indexBufferDescription, &indexData, &indexBuffer);
     if (FAILED(result)) {
-        throw core::exception::InitializationException(ENCRYPT_STRING("direct3d11::SquareRenderTarget"), ENCRYPT_STRING("index buffer could not be created"));
+        throw core::exception::InitializationException(
+            ENCRYPT_STRING("direct3d11::Renderer"),
+            ENCRYPT_STRING("index buffer could not be created"));
     }
 
     _indexBuffer.reset(indexBuffer);
@@ -310,12 +297,12 @@ direct3d11::SquareRenderTarget::SquareRenderTarget(
     _states.push_back(std::shared_ptr<direct3d11::IState>(new direct3d11::DeviceContextIAPrimitiveTopology(deviceContext.get())));
 }
 
-void direct3d11::SquareRenderTarget::render() {
+void direct3d11::Renderer::render() {
     auto deviceContext = _context->getDeviceContext();
     deviceContext->DrawIndexed(_count, 0, 0);
 }
 
-void direct3d11::SquareRenderTarget::begin() {
+void direct3d11::Renderer::begin() {
     float left = ((float)(_resolution.width / 2) * -1) + (float)_positionX;
     float right = left + (float)_resolution.width;
     float top = (float)(_resolution.height / 2) - (float)_positionY;
@@ -348,7 +335,9 @@ void direct3d11::SquareRenderTarget::begin() {
     D3D11_MAPPED_SUBRESOURCE resource;
     auto result = deviceContext->Map(vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
     if (FAILED(result)) {
-        throw core::exception::OperationException(ENCRYPT_STRING("direct3d11::SquareRenderTarget"), ENCRYPT_STRING("resource could not be mapped"));
+        throw core::exception::OperationException(
+            ENCRYPT_STRING("direct3d11::Renderer"),
+            ENCRYPT_STRING("resource could not be mapped"));
     }
 
     ::memcpy((direct3d11::dto::VertexType*)resource.pData, (void*)vertices.get(), (sizeof(direct3d11::dto::VertexType) * _count));
@@ -366,228 +355,19 @@ void direct3d11::SquareRenderTarget::begin() {
     deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-void direct3d11::SquareRenderTarget::end() {
+void direct3d11::Renderer::end() {
     for (auto state : _states) {
         state->restore();
     }
 }
 
-std::unique_ptr<core::ShaderCodeBuilder> direct3d11::ShaderCodeFactory::getCodeBuilder() {
-#if NDEBUG
-    auto codeBuilder = new core::ShaderCodeBuilder();
-#else
-    auto codeBuilder = new core::ShaderCodeBuilder(_codeDirectoryPath);
-#endif
-    codeBuilder->setResolution(_resolution.width, _resolution.height);
-
-    return std::unique_ptr<core::ShaderCodeBuilder>(codeBuilder);
-}
-
-direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createAlphaCode(ID3D11ShaderResourceView *colorTextureView) {
-    auto codeBuilder = getCodeBuilder();
-    direct3d11::ShaderCode code;
-    code.setColorTextureView(colorTextureView);
-    code.setVertexShaderCode(codeBuilder->buildVertexShaderCode(), ENCRYPT_STRING("vsmain"));
-    code.setPixelShaderCode(codeBuilder->buildPixelShaderCode(), ENCRYPT_STRING("renderAlpha"));
-
-    return code;
-}
-
-direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createDenoiseCode(ID3D11ShaderResourceView *colorTextureView, core::dto::Denoise denoise) {
-    auto codeBuilder = getCodeBuilder();
-    codeBuilder->setDenoise(denoise.noiseLevel, denoise.blendingCoefficient, denoise.weightThreshold, denoise.counterThreshold, denoise.gaussianSigma, denoise.windowSize);
-
-    direct3d11::ShaderCode code;
-    code.setColorTextureView(colorTextureView);
-    code.setVertexShaderCode(codeBuilder->buildVertexShaderCode(), ENCRYPT_STRING("vsmain"));
-    code.setPixelShaderCode(codeBuilder->buildPixelShaderCode(), ENCRYPT_STRING("renderDenoise"));
-
-    return code;
-}
-
-direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createHDRCode(ID3D11ShaderResourceView *colorTextureView, core::dto::HDR hdr) {
-    auto codeBuilder = getCodeBuilder();
-    codeBuilder->setHDR(hdr.strength, hdr.radius);
-
-    direct3d11::ShaderCode code;
-    code.setColorTextureView(colorTextureView);
-    code.setVertexShaderCode(codeBuilder->buildVertexShaderCode(), ENCRYPT_STRING("vsmain"));
-    code.setPixelShaderCode(codeBuilder->buildPixelShaderCode(), ENCRYPT_STRING("renderHDR"));
-
-    return code;
-}
-
-direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createLiftGammaGainCode(ID3D11ShaderResourceView *colorTextureView, core::dto::LiftGammaGain liftGammaGain) {
-    auto codeBuilder = getCodeBuilder();
-    codeBuilder->setLiftGammaGain(liftGammaGain.lift, liftGammaGain.gamma, liftGammaGain.gain);
-
-    direct3d11::ShaderCode code;
-    code.setColorTextureView(colorTextureView);
-    code.setVertexShaderCode(codeBuilder->buildVertexShaderCode(), ENCRYPT_STRING("vsmain"));
-    code.setPixelShaderCode(codeBuilder->buildPixelShaderCode(), ENCRYPT_STRING("renderLiftGammaGain"));
-
-    return code;
-}
-
-direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createLumaSharpenCode(ID3D11ShaderResourceView *colorTextureView, core::dto::LumaSharpen lumaSharpen) {
-    auto codeBuilder = getCodeBuilder();
-    codeBuilder->setLumaSharpen(lumaSharpen.sharpeningStrength, lumaSharpen.sharpeningClamp, lumaSharpen.offset);
-
-    direct3d11::ShaderCode code;
-    code.setColorTextureView(colorTextureView);
-    code.setVertexShaderCode(codeBuilder->buildVertexShaderCode(), ENCRYPT_STRING("vsmain"));
-    code.setPixelShaderCode(codeBuilder->buildPixelShaderCode(), ENCRYPT_STRING("renderLumaSharpen"));
-
-    return code;
-}
-
-direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createLuminescenceCode(ID3D11ShaderResourceView *colorTextureView) {
-    auto codeBuilder = getCodeBuilder();
-
-    direct3d11::ShaderCode code;
-    code.setColorTextureView(colorTextureView);
-    code.setVertexShaderCode(codeBuilder->buildVertexShaderCode(), ENCRYPT_STRING("vsmain"));
-    code.setPixelShaderCode(codeBuilder->buildPixelShaderCode(), ENCRYPT_STRING("renderLuminescence"));
-
-    return code;
-}
-
-direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createTonemapCode(ID3D11ShaderResourceView *colorTextureView, core::dto::Tonemap tonemap) {
-    auto codeBuilder = getCodeBuilder();
-    codeBuilder->setTonemap(tonemap.gamma, tonemap.exposure, tonemap.saturation, tonemap.bleach, tonemap.defog, tonemap.fog);
-
-    direct3d11::ShaderCode code;
-    code.setColorTextureView(colorTextureView);
-    code.setVertexShaderCode(codeBuilder->buildVertexShaderCode(), ENCRYPT_STRING("vsmain"));
-    code.setPixelShaderCode(codeBuilder->buildPixelShaderCode(), ENCRYPT_STRING("renderTonemap"));
-
-    return code;
-}
-
-direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createVibranceCode(ID3D11ShaderResourceView *colorTextureView, core::dto::Vibrance vibrance) {
-    auto codeBuilder = getCodeBuilder();
-    codeBuilder->setVibrance(vibrance.strength, vibrance.gain);
-
-    direct3d11::ShaderCode code;
-    code.setColorTextureView(colorTextureView);
-    code.setVertexShaderCode(codeBuilder->buildVertexShaderCode(), ENCRYPT_STRING("vsmain"));
-    code.setPixelShaderCode(codeBuilder->buildPixelShaderCode(), ENCRYPT_STRING("renderVibrance"));
-
-    return code;
-}
-
-direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createBokehDoFCoCCode(ID3D11ShaderResourceView *colorTextureView, ID3D11ShaderResourceView *depthTextureView, core::dto::BokehDoF bokehDoF, core::dto::DepthBuffer depthBuffer) {
-    auto codeBuilder = getCodeBuilder();
-    applyDepthBuffer(*codeBuilder.get(), depthBuffer);
-
-    auto bokehDoFCodeBuilder = codeBuilder->setBokehDoF(bokehDoF.depthMinimum, bokehDoF.depthMaximum, bokehDoF.depthRateGain, bokehDoF.luminescenceMinimum, bokehDoF.luminescenceMaximum, bokehDoF.luminescenceRateGain);
-    bokehDoFCodeBuilder.buildCoC();
-
-    direct3d11::ShaderCode code;
-    code.setColorTextureView(colorTextureView);
-    code.setDepthTextureView(depthTextureView);
-    code.setVertexShaderCode(codeBuilder->buildVertexShaderCode(), ENCRYPT_STRING("vsmain"));
-    code.setPixelShaderCode(codeBuilder->buildPixelShaderCode(), ENCRYPT_STRING("renderBokehDoFCoC"));
-
-    return code;
-}
-
-direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createBokehDoFCode(ID3D11ShaderResourceView *colorTextureView, ID3D11ShaderResourceView *depthTextureView, ID3D11ShaderResourceView *previousPassTextureView, core::BokehDoFPassType passType, core::dto::BokehDoF bokehDoF, core::dto::DepthBuffer depthBuffer) {
-    auto codeBuilder = getCodeBuilder();
-    applyDepthBuffer(*codeBuilder.get(), depthBuffer);
-
-    auto bokehDoFCodeBuilder = codeBuilder->setBokehDoF(bokehDoF.depthMinimum, bokehDoF.depthMaximum, bokehDoF.depthRateGain, bokehDoF.luminescenceMinimum, bokehDoF.luminescenceMaximum, bokehDoF.luminescenceRateGain);
-    bokehDoFCodeBuilder.buildBlur(passType, bokehDoF.isPreservingShape, bokehDoF.shapeSize, bokehDoF.shapeRotation);
-
-    direct3d11::ShaderCode code;
-    code.setColorTextureView(colorTextureView);
-    code.setDepthTextureView(depthTextureView);
-    code.setTextureView(previousPassTextureView, 2);
-    code.setVertexShaderCode(codeBuilder->buildVertexShaderCode(), ENCRYPT_STRING("vsmain"));
-    code.setPixelShaderCode(codeBuilder->buildPixelShaderCode(), ENCRYPT_STRING("renderBokehDoF"));
-
-    return code;
-}
-
-direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createBokehDoFChromaticAberrationCode(ID3D11ShaderResourceView *previousPassTextureView, core::dto::BokehDoF bokehDoF) {
-    auto codeBuilder = getCodeBuilder();
-
-    auto bokehDoFCodeBuilder = codeBuilder->setBokehDoF(bokehDoF.depthMinimum, bokehDoF.depthMaximum, bokehDoF.depthRateGain, bokehDoF.luminescenceMinimum, bokehDoF.luminescenceMaximum, bokehDoF.luminescenceRateGain);
-    if (bokehDoF.isChromaticAberrationEnabled) {
-        bokehDoFCodeBuilder.buildChromaticAberration(bokehDoF.chromaticAberrationFringe);
-    }
-    else {
-        bokehDoFCodeBuilder.enable();
-    }
-
-    direct3d11::ShaderCode code;
-    code.setTextureView(previousPassTextureView, 2);
-    code.setVertexShaderCode(codeBuilder->buildVertexShaderCode(), ENCRYPT_STRING("vsmain"));
-    code.setPixelShaderCode(codeBuilder->buildPixelShaderCode(), ENCRYPT_STRING("renderBokehDoFChromaticAberration"));
-
-    return code;
-}
-
-direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createBokehDoFBlendingCode(ID3D11ShaderResourceView *colorTextureView, ID3D11ShaderResourceView *depthTextureView, ID3D11ShaderResourceView *previousPassTextureView, core::dto::BokehDoF bokehDoF, core::dto::DepthBuffer depthBuffer) {
-    auto codeBuilder = getCodeBuilder();
-    applyDepthBuffer(*codeBuilder.get(), depthBuffer);
-
-    auto bokehDoFCodeBuilder = codeBuilder->setBokehDoF(bokehDoF.depthMinimum, bokehDoF.depthMaximum, bokehDoF.depthRateGain, bokehDoF.luminescenceMinimum, bokehDoF.luminescenceMaximum, bokehDoF.luminescenceRateGain);
-    bokehDoFCodeBuilder.buildBlend(bokehDoF.shapeStrength);
-
-    direct3d11::ShaderCode code;
-    code.setColorTextureView(colorTextureView);
-    code.setDepthTextureView(depthTextureView);
-    code.setTextureView(previousPassTextureView, 2);
-    code.setVertexShaderCode(codeBuilder->buildVertexShaderCode(), ENCRYPT_STRING("vsmain"));
-    code.setPixelShaderCode(codeBuilder->buildPixelShaderCode(), ENCRYPT_STRING("renderBokehDoFBlending"));
-
-    return code;
-}
-
-direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createDepthRenderingCode(ID3D11ShaderResourceView *colorTextureView, ID3D11ShaderResourceView *depthTextureView, core::dto::DepthBuffer depthBuffer) {
-    auto codeBuilder = getCodeBuilder();
-    applyDepthBuffer(*codeBuilder.get(), depthBuffer);
-
-    direct3d11::ShaderCode code;
-    code.setColorTextureView(colorTextureView);
-    code.setDepthTextureView(depthTextureView);
-    code.setVertexShaderCode(codeBuilder->buildVertexShaderCode(), ENCRYPT_STRING("vsmain"));
-    code.setPixelShaderCode(codeBuilder->buildPixelShaderCode(), ENCRYPT_STRING("renderDepth"));
-
-    return code;
-}
-
-direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createHorizontalGaussianBlurCode(ID3D11ShaderResourceView *colorTextureView, unsigned int size, float sigma) {
-    auto codeBuilder = getCodeBuilder();
-    codeBuilder->setGaussianBlur(size, sigma);
-
-    direct3d11::ShaderCode code;
-    code.setColorTextureView(colorTextureView);
-    code.setVertexShaderCode(codeBuilder->buildVertexShaderCode(), ENCRYPT_STRING("vsmain"));
-    code.setPixelShaderCode(codeBuilder->buildPixelShaderCode(), ENCRYPT_STRING("renderHorizontalGaussianBlur"));
-
-    return code;
-}
-
-direct3d11::ShaderCode direct3d11::ShaderCodeFactory::createVerticalGaussianBlurCode(ID3D11ShaderResourceView *colorTextureView, unsigned int size, float sigma) {
-    auto codeBuilder = getCodeBuilder();
-    codeBuilder->setGaussianBlur(size, sigma);
-
-    direct3d11::ShaderCode code;
-    code.setColorTextureView(colorTextureView);
-    code.setVertexShaderCode(codeBuilder->buildVertexShaderCode(), ENCRYPT_STRING("vsmain"));
-    code.setPixelShaderCode(codeBuilder->buildPixelShaderCode(), ENCRYPT_STRING("renderVerticalGaussianBlur"));
-
-    return code;
-}
-
-direct3d11::ShaderApplicator::ShaderApplicator(
+direct3d11::Pass::Pass(
     direct3d11::Direct3D11Context *context,
-    ShaderCode code,
-    direct3d11::dto::RenderingResolution resolution) {
+    PassSettings *passSettings,
+    core::dto::Resolution resolution) {
     _context = context;
-    _code = code;
+    _passSettings = passSettings;
+    _resolution = resolution;
 
     DirectX::XMMATRIX world;
     DirectX::XMMATRIX view;
@@ -595,12 +375,13 @@ direct3d11::ShaderApplicator::ShaderApplicator(
 
     direct3d11::camera::getWorld(world);
     direct3d11::camera::getCamera(view, 0, 0, -10);
-    direct3d11::camera::getOrtho(projection, (float)resolution.width, (float)resolution.height, 0.1f, 1000.0f);
+    direct3d11::camera::getOrtho(projection, (float)_resolution.width, (float)_resolution.height, 0.1f, 1000.0f);
 
     DirectX::XMStoreFloat4x4(&_matrixBufferType.world, world);
     DirectX::XMStoreFloat4x4(&_matrixBufferType.view, view);
     DirectX::XMStoreFloat4x4(&_matrixBufferType.projection, projection);
 
+    _renderer.reset(new direct3d11::Renderer(_context, _resolution));
     _vertexShader = core::disposing::makeUnknown<ID3D11VertexShader>(nullptr);
     _pixelShader = core::disposing::makeUnknown<ID3D11PixelShader>(nullptr);
     _inputLayout = core::disposing::makeUnknown<ID3D11InputLayout>(nullptr);
@@ -616,38 +397,64 @@ direct3d11::ShaderApplicator::ShaderApplicator(
     ID3DBlob *error = nullptr;
     ID3DBlob *shader = nullptr;
 
-    std::string vertexShaderCode = _code.getVertexShaderCode();
-    std::string pixelShaderCode = _code.getPixelShaderCode();
+    std::string vsCode = _passSettings->getVertexShaderCode();
+    std::string psCode = _passSettings->getPixelShaderCode();
 
-    auto result = ::D3DCompile(vertexShaderCode.c_str(), vertexShaderCode.length(), NULL, NULL, NULL, _code.getVertexShaderFunctionName(), ENCRYPT_STRING("vs_5_0"), D3DCOMPILE_ENABLE_STRICTNESS, 0, &shader, &error);
+    auto result = ::D3DCompile(
+        vsCode.c_str(),
+        vsCode.length(),
+        NULL,
+        NULL,
+        NULL,
+        _passSettings->getVertexShaderFunctionName(),
+        ENCRYPT_STRING("vs_5_0"),
+        D3DCOMPILE_ENABLE_STRICTNESS,
+        0,
+        &shader,
+        &error);
+
     if (FAILED(result) || shader == nullptr) {
-        std::string compilationError = ENCRYPT_STRING("undefined");
+        std::string compilationError = ENCRYPT_STRING("[-]");
         if (error != nullptr) {
             compilationError = (char*)error->GetBufferPointer();
         }
 
         SAFE_RELEASE(error);
-#if !NDEBUG
-        log(vertexShaderCode);
-#endif
-        throw core::exception::InitializationException(ENCRYPT_STRING("direct3d11::ShaderApplicator"), core::stringFormat(ENCRYPT_STRING("vertex shader compilation failed: %s"), compilationError.c_str()));
+        throw core::exception::InitializationException(
+            ENCRYPT_STRING("direct3d11::Pass"),
+            core::stringFormat(
+                ENCRYPT_STRING("vertex shader compilation failed: %s"),
+                compilationError.c_str()));
     }
 
     vertexShaderBuffer.reset(shader);
     shader = nullptr;
 
-    result = ::D3DCompile(pixelShaderCode.c_str(), pixelShaderCode.length(), NULL, NULL, NULL, _code.getPixelShaderFunctionName(), ENCRYPT_STRING("ps_5_0"), D3DCOMPILE_ENABLE_STRICTNESS, 0, &shader, &error);
+    result = ::D3DCompile(
+        psCode.c_str(),
+        psCode.length(),
+        NULL,
+        NULL,
+        NULL,
+        _passSettings->getPixelShaderFunctionName(),
+        ENCRYPT_STRING("ps_5_0"),
+        D3DCOMPILE_ENABLE_STRICTNESS,
+        0,
+        &shader,
+        &error);
+
     if (FAILED(result) || shader == nullptr) {
-        std::string compilationError = ENCRYPT_STRING("undefined");
+        std::string compilationError = ENCRYPT_STRING("[-]");
         if (error != nullptr) {
             compilationError = (char*)error->GetBufferPointer();
         }
 
         SAFE_RELEASE(error);
-#if !NDEBUG
-        log(pixelShaderCode);
-#endif
-        throw core::exception::InitializationException(ENCRYPT_STRING("direct3d11::ShaderApplicator"), core::stringFormat(ENCRYPT_STRING("pixel shader compilation failed: %s"), compilationError.c_str()));
+        throw core::exception::InitializationException(
+            ENCRYPT_STRING("direct3d11::Pass"),
+            core::stringFormat(
+                ENCRYPT_STRING("pixel shader compilation failed: %s"),
+                compilationError.c_str()));
     }
 
     pixelShaderBuffer.reset(shader);
@@ -655,7 +462,9 @@ direct3d11::ShaderApplicator::ShaderApplicator(
 
     result = device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), NULL, &vertexShader);
     if (FAILED(result)) {
-        throw core::exception::InitializationException(ENCRYPT_STRING("direct3d11::ShaderApplicator"), ENCRYPT_STRING("vertex shader creation failed"));
+        throw core::exception::InitializationException(
+            ENCRYPT_STRING("direct3d11::Pass"),
+            ENCRYPT_STRING("vertex shader creation failed"));
     }
 
     _vertexShader.reset(vertexShader);
@@ -663,7 +472,9 @@ direct3d11::ShaderApplicator::ShaderApplicator(
     ID3D11PixelShader *pixelShader = nullptr;
     result = device->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(), pixelShaderBuffer->GetBufferSize(), NULL, &pixelShader);
     if (FAILED(result)) {
-        throw core::exception::InitializationException(ENCRYPT_STRING("direct3d11::ShaderApplicator"), ENCRYPT_STRING("pixel shader creation failed"));
+        throw core::exception::InitializationException(
+            ENCRYPT_STRING("direct3d11::Pass"),
+            ENCRYPT_STRING("pixel shader creation failed"));
     }
 
     _pixelShader.reset(pixelShader);
@@ -689,7 +500,9 @@ direct3d11::ShaderApplicator::ShaderApplicator(
     ID3D11InputLayout *inputLayout = nullptr;
     result = device->CreateInputLayout(polygonLayout, count, vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), &inputLayout);
     if (FAILED(result)) {
-        throw core::exception::InitializationException(ENCRYPT_STRING("direct3d11::ShaderApplicator"), ENCRYPT_STRING("input layout creation failed"));
+        throw core::exception::InitializationException(
+            ENCRYPT_STRING("direct3d11::Pass"),
+            ENCRYPT_STRING("input layout creation failed"));
     }
 
     _inputLayout.reset(inputLayout);
@@ -705,7 +518,9 @@ direct3d11::ShaderApplicator::ShaderApplicator(
     ID3D11Buffer *matrixBuffer = nullptr;
     result = device->CreateBuffer(&matrixBufferDescription, NULL, &matrixBuffer);
     if (FAILED(result)) {
-        throw core::exception::InitializationException(ENCRYPT_STRING("direct3d11::ShaderApplicator"), ENCRYPT_STRING("buffer creation failed"));
+        throw core::exception::InitializationException(
+            ENCRYPT_STRING("direct3d11::Pass"),
+            ENCRYPT_STRING("buffer creation failed"));
     }
 
     _matrixBuffer.reset(matrixBuffer);
@@ -732,9 +547,13 @@ direct3d11::ShaderApplicator::ShaderApplicator(
     _states.push_back(std::shared_ptr<direct3d11::IState>(new direct3d11::DeviceContextVSShader(deviceContext.get())));
     _states.push_back(std::shared_ptr<direct3d11::IState>(new direct3d11::DeviceContextPSShader(deviceContext.get())));
     _states.push_back(std::shared_ptr<direct3d11::IState>(new direct3d11::DeviceContextPSSamplers(deviceContext.get())));
+    _states.push_back(std::shared_ptr<direct3d11::IState>(new direct3d11::DeviceContextRSViewports(deviceContext.get())));
 }
 
-void direct3d11::ShaderApplicator::begin() {
+void direct3d11::Pass::render() {
+    direct3d11::utility::setNoRenderer(_context);
+    _renderer->begin();
+
     auto worldMatrix = DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4(&_matrixBufferType.world));
     auto viewMatrix = DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4(&_matrixBufferType.view));
     auto projectionMatrix = DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4(&_matrixBufferType.projection));
@@ -745,7 +564,9 @@ void direct3d11::ShaderApplicator::begin() {
     D3D11_MAPPED_SUBRESOURCE resource;
     auto result = deviceContext->Map(matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
     if (FAILED(result)) {
-        throw core::exception::OperationException(ENCRYPT_STRING("direct3d11::ShaderApplicator"), ENCRYPT_STRING("resource could not be mapped"));
+        throw core::exception::OperationException(
+            ENCRYPT_STRING("direct3d11::Pass"),
+            ENCRYPT_STRING("resource could not be mapped"));
     }
 
     auto data = (direct3d11::dto::MatrixBufferType*)resource.pData;
@@ -758,13 +579,23 @@ void direct3d11::ShaderApplicator::begin() {
         state->acquire();
     }
 
-    unsigned int textureViewCount;
-    auto textureViews = _code.getTextureViews(textureViewCount);
+    D3D11_VIEWPORT viewport;
+    ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
+    viewport.Width = (float)_resolution.width;
+    viewport.Height = (float)_resolution.height;
+    viewport.MinDepth = 0.0f;
+    viewport.MaxDepth = 1.0f;
+    viewport.TopLeftX = 0.0f;
+    viewport.TopLeftY = 0.0f;
+    deviceContext->RSSetViewports(1, &viewport);
 
-    for (unsigned int i = 0; i < textureViewCount; i++) {
-        ID3D11ShaderResourceView *textureView[1] = { textureViews[i] };
-        deviceContext->PSSetShaderResources(i, 1, textureView);
-    }
+    core::type_slot inCount;
+    auto in = _passSettings->getIn(inCount);
+    deviceContext->PSSetShaderResources(0, inCount, in);
+
+    core::type_slot outCount;
+    auto out = _passSettings->getOut(outCount);
+    deviceContext->OMSetRenderTargets(outCount, out, NULL);
 
     deviceContext->VSSetConstantBuffers(0, 1, &matrixBuffer);
     deviceContext->IASetInputLayout(_inputLayout.get());
@@ -776,10 +607,12 @@ void direct3d11::ShaderApplicator::begin() {
 
     sampler = _bilinearSampler.get();
     deviceContext->PSSetSamplers(1, 1, &sampler);
-}
 
-void direct3d11::ShaderApplicator::end() {
+    _renderer->render();
+
     for (auto state : _states) {
         state->restore();
     }
+
+    _renderer->end();
 }

@@ -14,7 +14,7 @@ namespace core {
         pluginactivationfailed = 6
     };
 
-    enum class EffectType {
+    enum class TechniqueType {
         bokehdof = 0,
         denoise = 1,
         hdr = 2,
@@ -276,11 +276,16 @@ namespace core {
             float depthMaximum = 0;
         };
 
-        struct EffectData final {
+        struct TechniqueData final {
             std::string id;
-            EffectType type;
+            TechniqueType type;
             bool isEnabled = false;
             std::string data;
+        };
+
+        struct GaussianBlur final {
+            unsigned int size = 0;
+            float sigma = 0;
         };
 
         struct HDR final {
@@ -333,7 +338,7 @@ namespace core {
         };
 
         struct Direct3D11Settings final {
-            std::list<EffectData> effects;
+            std::list<TechniqueData> effects;
             DepthBuffer depthBuffer;
             Direct3D11PluginSettings pluginSettings;
             Textures textures;
@@ -369,6 +374,16 @@ namespace core {
         struct ProcessDetail final {
             unsigned long id;
             std::string path;
+        };
+
+        struct Resolution final {
+            unsigned int width = 0;
+            unsigned int height = 0;
+            Resolution() {}
+            Resolution(unsigned int width, unsigned int height) {
+                this->width = width;
+                this->height = height;
+            }
         };
     }
 

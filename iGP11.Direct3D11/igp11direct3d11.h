@@ -14,24 +14,9 @@ namespace direct3d11 {
     class ITextureService;
 
     namespace dto {
-        struct GaussianBlurConfiguration {
-            unsigned int size = 0;
-            float sigma = 0;
-            GaussianBlurConfiguration() {}
-            GaussianBlurConfiguration(unsigned int size, float sigma) {
-                this->size = size;
-                this->sigma = sigma;
-            }
-        };
-
         struct PostProcessingSettings {
             ID3D11Texture2D *colorTexture;
             ID3D11Texture2D *depthTexture;
-        };
-
-        struct RenderingResolution {
-            unsigned int height;
-            unsigned int width;
         };
     }
 
@@ -60,13 +45,10 @@ namespace direct3d11 {
         virtual bool initializationRequired(const dto::PostProcessingSettings &postProcessingSettings) = 0;
     };
 
-    class IEffect {
+    class ITechnique {
     public:
-        virtual ~IEffect() {}
-        virtual std::string getName() = 0;
-        virtual void begin() = 0;
+        virtual ~ITechnique() {}
         virtual void render() = 0;
-        virtual void end() = 0;
     };
 
     class IProfile {
@@ -95,8 +77,8 @@ namespace direct3d11 {
     public:
         virtual ~ITexture() {}
         virtual ID3D11Texture2D* get() const = 0;
-        virtual ID3D11ShaderResourceView* getShaderView() const = 0;
-        virtual void setAsRenderer() = 0;
+        virtual ID3D11ShaderResourceView* getInView() const = 0;
+        virtual ID3D11RenderTargetView* getOutView() const = 0;
     };
 
     class ITextureService {

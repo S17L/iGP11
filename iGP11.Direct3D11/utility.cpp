@@ -8,6 +8,19 @@ std::map<DXGI_FORMAT, DXGI_FORMAT> _depthFormatTranslator = {
     { DXGI_FORMAT_R32G8X24_TYPELESS, DXGI_FORMAT_R32_FLOAT_X8X24_TYPELESS }
 };
 
+std::string direct3d11::stringify::toString(const direct3d11::ITexture *texture) {
+    if (texture != nullptr) {
+        return core::stringFormat(
+            "[ texture: %p, in: %p, out: %p ]",
+            texture->get(),
+            texture->getInView(),
+            texture->getOutView());
+    }
+    else {
+        return ENCRYPT_STRING("[]");
+    }
+}
+
 std::string direct3d11::stringify::toString(const D3D11_TEXTURE2D_DESC *description) {
     if (description != nullptr) {
         return core::stringFormat(
@@ -98,6 +111,13 @@ std::string direct3d11::stringify::toString(const DXGI_SWAP_CHAIN_DESC *descript
     }
 }
 
+D3D11_TEXTURE2D_DESC direct3d11::utility::apply(D3D11_TEXTURE2D_DESC description, core::dto::Resolution resolution) {
+    description.Width = resolution.width;
+    description.Height = resolution.height;
+
+    return description;
+}
+
 D3D11_TEXTURE2D_DESC direct3d11::utility::createFloatTextureDescription(D3D11_TEXTURE2D_DESC textureDescription) {
     textureDescription.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
     return textureDescription;
@@ -139,25 +159,18 @@ D3D11_DEPTH_STENCIL_DESC direct3d11::utility::getDescription(ID3D11DepthStencilS
     return description;
 }
 
-direct3d11::dto::GaussianBlurConfiguration direct3d11::utility::getGaussianBlurConfiguration(float smoothness) {
-    const float coefficient = 5;
-    const unsigned int size = 3;
-
-    return direct3d11::dto::GaussianBlurConfiguration(size, smoothness * coefficient);
-}
-
-direct3d11::dto::RenderingResolution direct3d11::utility::getRenderingResolution(ID3D11Texture2D *texture) {
+core::dto::Resolution direct3d11::utility::getRenderingResolution(ID3D11Texture2D *texture) {
     auto description = direct3d11::utility::getDescription(texture);
-    direct3d11::dto::RenderingResolution resolution;
+    core::dto::Resolution resolution;
     resolution.height = description.Height;
     resolution.width = description.Width;
 
     return resolution;
 }
 
-direct3d11::dto::RenderingResolution direct3d11::utility::getRenderingResolution(IDXGISwapChain *chain) {
+core::dto::Resolution direct3d11::utility::getRenderingResolution(IDXGISwapChain *chain) {
     auto description = direct3d11::utility::getDescription(chain);
-    direct3d11::dto::RenderingResolution resolution;
+    core::dto::Resolution resolution;
     resolution.height = description.BufferDesc.Height;
     resolution.width = description.BufferDesc.Width;
 
@@ -168,7 +181,9 @@ core::disposing::unique_ptr<ID3D11Texture2D> direct3d11::utility::getBackBuffer(
     ID3D11Texture2D *texture = nullptr;
     auto result = chain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&texture);
     if (FAILED(result)) {
-        throw core::exception::OperationException(ENCRYPT_STRING("direct3d11::utility::getBackBuffer"), ENCRYPT_STRING("back buffer could not be obtained"));
+        throw core::exception::OperationException(
+            ENCRYPT_STRING("direct3d11::utility::getBackBuffer"),
+            ENCRYPT_STRING("back buffer could not be obtained"));
     }
 
     return core::disposing::makeUnknown<ID3D11Texture2D>(texture);

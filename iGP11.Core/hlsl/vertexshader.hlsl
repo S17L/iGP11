@@ -17,7 +17,7 @@ struct PixelInputType
     float2 texcoord : TEXCOORD0;
 };
 
-PixelInputType vsmain(VertexInputType input)
+PixelInputType vsMain(VertexInputType input)
 {
     PixelInputType output;
     

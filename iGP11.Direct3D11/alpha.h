@@ -14,6 +14,6 @@ namespace direct3d11 {
         virtual ~AlphaEffect() {}
     protected:
         virtual std::string getName() override;
-        virtual ShaderCode getCode(Direct3D11Context *context, ShaderCodeFactory *codeFactory) override;
+        virtual PassSettings getCode(Direct3D11Context *context, ShaderCodeFactory *codeFactory) override;
     };
 }

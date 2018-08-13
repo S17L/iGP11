@@ -67,7 +67,7 @@ D3D11_SHADER_RESOURCE_VIEW_DESC applyTextureDetailLevel(D3D11_SHADER_RESOURCE_VI
 
 direct3d11::dto::FilterSettings Direct3D11Plugin::getFilterConfiguration() {
     direct3d11::dto::FilterSettings filterSettings;
-    filterSettings.effects = _settings.effects;
+    filterSettings.techniques = _settings.effects;
     filterSettings.codeDirectoryPath = _pluginSettings.proxyDirectoryPath;
     filterSettings.depthBuffer = _settings.depthBuffer;
     filterSettings.pluginSettings = _settings.pluginSettings;
@@ -192,7 +192,7 @@ HRESULT __stdcall dxgiSwapChainPresentOverride(IDXGISwapChain *chain, UINT inter
 
         if (_this._activationStatus == core::ActivationStatus::pluginactivated) {
             if (_this._applicator == nullptr) {
-                _this._applicator.reset(new direct3d11::EffectsApplicator(_this.getFilterConfiguration(), _this._context.get(), _this._serializer));
+                _this._applicator.reset(new direct3d11::TechniqueApplicator(_this.getFilterConfiguration(), _this._context.get(), _this._serializer));
             }
 
             if (_this._frameCounter->nextFrame()) {

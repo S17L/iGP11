@@ -4,6 +4,17 @@
 
 using namespace core::logging;
 
+core::dto::GaussianBlur getGaussianBlur(float smoothness) {
+    const float coefficient = 5;
+    const unsigned int size = 3;
+
+    core::dto::GaussianBlur gaussianBlur;
+    gaussianBlur.size = size;
+    gaussianBlur.sigma = smoothness * coefficient;
+
+    return gaussianBlur;
+}
+
 void calculateGaussianBlur(unsigned int size, float sigma, float minWeight, int &length, float **offsets, float **weights) {
     size *= 2;
     std::unique_ptr<float[]> initial(new float[size + 1]);
@@ -379,39 +390,49 @@ core::PixelsResult core::PixelArray::getPixels() {
     return result;
 }
 
-void core::BokehDoFCodeBuilder::build() {
-    _codeBuilder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_ENABLED"), ::translate(true)));
-    _codeBuilder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_DEPTH_MIN"), translate(_depthMinimum)));
-    _codeBuilder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_DEPTH_MAX"), translate(_depthMaximum)));
-    _codeBuilder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_DEPTH_RATE_GAIN"), translate(_depthRateGain)));
-    _codeBuilder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_LUMINESCENCE_MIN"), translate(_luminescenceMinimum)));
-    _codeBuilder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_LUMINESCENCE_MAX"), translate(_luminescenceMaximum)));
-    _codeBuilder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_LUMINESCENCE_RATE_GAIN"), translate(_luminescenceRateGain)));
+core::HlslTechniqueBuilder::HlslTechniqueBuilder(core::dto::Resolution resolution) {
+    _resolution = resolution;
+    _cachedResourceProvider.reset(new core::CachedCodeResourceProvider());
+    _realResourceProvider.reset(new core::NoCodeFileResourceProvider());
 }
 
-void core::BokehDoFCodeBuilder::buildBokehDoFPassType(BokehDoFPassType passType, bool preserveShape, unsigned int size, float rotation) {
-    float radians = 0;
+core::HlslTechniqueBuilder::HlslTechniqueBuilder(core::dto::Resolution resolution, std::string directoryPath) {
+    _resolution = resolution;
+    _cachedResourceProvider.reset(new core::CachedCodeResourceProvider());
+    _realResourceProvider.reset(new core::RealCodeFileResourceProvider(directoryPath));
+}
 
+void core::HlslTechniqueBuilder::applyBokehDoFPassType(
+    ConcreteHlslTechniqueBuilder *builder,
+    BokehDoFPassType passType,
+    const core::dto::BokehDoF &bokehDoF) {
+    float radians = 0;
     switch (passType) {
     case core::first:
-        radians = ((float)M_PI / 180) * rotation;
+        radians = ((float)M_PI / 180) * bokehDoF.shapeRotation;
         break;
     case core::second:
-        radians = ((float)M_PI / 180) * (240 + rotation);
+        radians = ((float)M_PI / 180) * (240 + bokehDoF.shapeRotation);
         break;
     case core::third:
-        radians = ((float)M_PI / 180) * (120 + rotation);
+        radians = ((float)M_PI / 180) * (120 + bokehDoF.shapeRotation);
         break;
     }
 
-    PixelArray pixelArray(ENCRYPT_STRING("_pass_0_texture"), ENCRYPT_STRING("_point_sampler"), ENCRYPT_STRING("input.texcoord"), ENCRYPT_STRING("texel"));
-    for (unsigned int i = 1; i <= size; i++) {
+    PixelArray pixelArray(
+        core::stringFormat(ENCRYPT_STRING("_tex_%d"), static_cast<int>(passType) % 2),
+        ENCRYPT_STRING("_point_sampler"),
+        ENCRYPT_STRING("input.texcoord"),
+        ENCRYPT_STRING("texel"));
+
+    for (unsigned int i = 1; i <= bokehDoF.shapeSize; i++) {
         pixelArray.add(i * cos(radians), i * sin(radians));
     }
 
     size_t count = 0;
     auto pixelsResult = pixelArray.getPixels();
     std::stringstream stream;
+    stream << ENCRYPT_STRING("float4 pixelColor = 0;") << "\n";
     stream << pixelsResult.toInitializeTexelCache();
 
     for (auto pixelAggregate : pixelsResult._pixels) {
@@ -422,7 +443,7 @@ void core::BokehDoFCodeBuilder::buildBokehDoFPassType(BokehDoFPassType passType,
         stream << pixelAggregate.toGetTexelVariables(texelVariableNames);
         count += texelVariableNames.size();
 
-        if (preserveShape)
+        if (bokehDoF.isPreservingShape)
         {
             for (auto texelVariableName : texelVariableNames) {
                 auto texel = texelVariableName.c_str();
@@ -437,51 +458,310 @@ if (%s.w >= bokehDoFCoC)
         stream << ENCRYPT_STRING("bokehDoFColor += pixelColor;") << "\n";
     }
 
-    _codeBuilder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_ENABLED"), ::translate(true)));
-    _codeBuilder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_TEXEL_COUNT"), ::translate(count)));
-    _codeBuilder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_PRESERVE_SHAPE"), ::translate(preserveShape)));
-    _codeBuilder->add(new core::LineAlterationElement(ENCRYPT_STRING("/* BOKEH DOF: PLACEHOLDER */"), stream.str()));
+    builder->add(new core::DefineAlterationElement(core::stringFormat(ENCRYPT_STRING("BOKEH_DOF_SHAPE_PASS_%d_TEXEL_COUNT"), static_cast<int>(passType)), ::translate(count)));
+    builder->add(new core::LineAlterationElement(core::stringFormat(ENCRYPT_STRING("/* BOKEH_DOF_SHAPE_PASS_%d_PLACEHOLDER */"), static_cast<int>(passType)), stream.str()));
 }
 
-void core::BokehDoFCodeBuilder::buildCoC() {
-    build();
+void core::HlslTechniqueBuilder::applyDepthBuffer(ConcreteHlslTechniqueBuilder *builder, const core::dto::DepthBuffer &depthBuffer) {
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("DEPTH_BUFFER_AVAILABLE"), ::translate(true)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("DEPTH_LINEAR_Z_NEAR"), core::toDefaultString(depthBuffer.linearZNear)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("DEPTH_LINEAR_Z_FAR"), core::toDefaultString(depthBuffer.linearZFar)));
+    
+    if (depthBuffer.isLimitEnabled) {
+        builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("DEPTH_LIMIT_AVAILABLE"), ::translate(true)));
+        builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("DEPTH_MIN"), core::toDefaultString(depthBuffer.depthMinimum)));
+        builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("DEPTH_MAX"), core::toDefaultString(depthBuffer.depthMaximum)));
+    }
 }
 
-void core::BokehDoFCodeBuilder::buildBlur(BokehDoFPassType passType, bool isPreservingShape, unsigned int size, float rotation) {
-    build();
-    buildBokehDoFPassType(passType, isPreservingShape, size, rotation);
+std::unique_ptr<core::ConcreteHlslTechniqueBuilder> core::HlslTechniqueBuilder::getConcreteShaderCodeBuilder() {
+    auto builder = new core::ConcreteHlslTechniqueBuilder(
+        _cachedResourceProvider.get(),
+        _realResourceProvider.get());
+
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("SCREEN_WIDTH"), translate(_resolution.width)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("SCREEN_HEIGHT"), translate(_resolution.height)));
+
+    return std::unique_ptr<core::ConcreteHlslTechniqueBuilder>(builder);
 }
 
-void core::BokehDoFCodeBuilder::buildChromaticAberration(float fringe) {
-    build();
-    _codeBuilder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_CHROMATIC_ABERRATION_ENABLED"), ::translate(true)));
-    _codeBuilder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_CHROMATIC_ABERRATION_FRINGE"), translate(fringe)));
+core::Technique core::HlslTechniqueBuilder::buildAlpha() {
+    auto builder = getConcreteShaderCodeBuilder();
+
+    core::Technique technique("technique::alpha", core::TechniqueCode(builder->buildVertexShaderCode(), builder->buildPixelShaderCode()));
+    core::Pass pass("vsMain", "psAlpha");
+    pass.out.push_back(OutputTexId);
+    technique.passes.push_back(pass);
+
+    return technique;
 }
 
-void core::BokehDoFCodeBuilder::buildBlend(float strength) {
-    build();
-    _codeBuilder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_BLUR_STRENGTH"), translate(strength)));
+core::Technique core::HlslTechniqueBuilder::buildBokehDoF(dto::BokehDoF bokehDoF, dto::DepthBuffer depthBuffer) {
+    auto builder = getConcreteShaderCodeBuilder();
+    auto gaussianBlur = ::getGaussianBlur(bokehDoF.blurStrength);
+
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_ENABLED"), ::translate(true)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_DEPTH_MIN"), translate(bokehDoF.depthMinimum)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_DEPTH_MAX"), translate(bokehDoF.depthMaximum)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_DEPTH_RATE_GAIN"), translate(bokehDoF.depthRateGain)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_LUMINESCENCE_MIN"), translate(bokehDoF.luminescenceMinimum)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_LUMINESCENCE_MAX"), translate(bokehDoF.luminescenceMaximum)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_LUMINESCENCE_RATE_GAIN"), translate(bokehDoF.luminescenceRateGain)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_PRESERVE_SHAPE"), ::translate(bokehDoF.isPreservingShape)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_CHROMATIC_ABERRATION_ENABLED"), ::translate(bokehDoF.isChromaticAberrationEnabled)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_CHROMATIC_ABERRATION_FRINGE"), translate(bokehDoF.chromaticAberrationFringe)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_BLUR_STRENGTH"), translate(bokehDoF.shapeStrength)));
+    
+    applyBokehDoFPassType(builder.get(), core::BokehDoFPassType::first, bokehDoF);
+    applyBokehDoFPassType(builder.get(), core::BokehDoFPassType::second, bokehDoF);
+    applyBokehDoFPassType(builder.get(), core::BokehDoFPassType::third, bokehDoF);
+    applyDepthBuffer(builder.get(), depthBuffer);
+
+    const float minWeight = 0.001f;
+
+    int length;
+    float *offsets;
+    float *weights;
+
+    ::calculateGaussianBlur(
+        gaussianBlur.size,
+        gaussianBlur.sigma,
+        minWeight,
+        length,
+        &offsets,
+        &weights);
+
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("BOKEH_DOF_BLUR_SIZE"), translate(length)));
+    builder->add(new core::LineAlterationElement(ENCRYPT_STRING("static const float _bokeh_dof_blur_offset"), core::stringFormat(ENCRYPT_STRING("static const float _bokeh_dof_blur_offset[BOKEH_DOF_BLUR_SIZE] = { %s };"), core::join(ENCRYPT_STRING(", "), ::translate(offsets, length)).c_str())));
+    builder->add(new core::LineAlterationElement(ENCRYPT_STRING("static const float _bokeh_dof_blur_weight"), core::stringFormat(ENCRYPT_STRING("static const float _bokeh_dof_blur_weight[BOKEH_DOF_BLUR_SIZE] = { %s };"), core::join(ENCRYPT_STRING(", "), ::translate(weights, length)).c_str())));
+
+    delete[] offsets;
+    delete[] weights;
+
+    core::Texture tex0(core::TextureDataType::typefloat, _resolution);
+    core::Texture tex1(core::TextureDataType::typefloat, _resolution);
+
+    core::Technique technique("technique::bokehDoF", core::TechniqueCode(builder->buildVertexShaderCode(), builder->buildPixelShaderCode()));
+    technique.textures[2] = tex0;
+    technique.textures[3] = tex1;
+
+    core::Pass pass0("vsMain", "psBokehDoFCoC");
+    pass0.out.push_back(tex0.id);
+    technique.passes.push_back(pass0);
+
+    core::Pass pass1("vsMain", "psBokehDoFShapePass_0");
+    pass1.in.push_back(tex0.id);
+    pass1.out.push_back(tex1.id);
+    technique.passes.push_back(pass1);
+
+    core::Pass pass2("vsMain", "psBokehDoFShapePass_1");
+    pass2.in.push_back(tex1.id);
+    pass2.out.push_back(tex0.id);
+    technique.passes.push_back(pass2);
+
+    core::Pass pass3("vsMain", "psBokehDoFShapePass_2");
+    pass3.in.push_back(tex0.id);
+    pass3.out.push_back(tex1.id);
+    technique.passes.push_back(pass3);
+
+    if (bokehDoF.isBlurEnabled) {
+        core::Pass pass4("vsMain", "psBokehDoFHorizontalGaussianBlur");
+        pass4.in.push_back(tex1.id);
+        pass4.out.push_back(tex0.id);
+        technique.passes.push_back(pass4);
+
+        core::Pass pass5("vsMain", "psBokehDoFVerticalGaussianBlur");
+        pass5.in.push_back(tex0.id);
+        pass5.out.push_back(tex1.id);
+        technique.passes.push_back(pass5);
+    }
+
+    core::Pass pass6("vsMain", "psBokehDoFChromaticAberration");
+    pass6.in.push_back(tex1.id);
+    pass6.out.push_back(tex0.id);
+    technique.passes.push_back(pass6);
+
+    core::Pass pass7("vsMain", "psBokehDoFBlend");
+    pass7.in.push_back(tex0.id);
+    pass7.out.push_back(OutputTexId);
+    technique.passes.push_back(pass7);
+    
+    return technique;
 }
 
-void core::BokehDoFCodeBuilder::enable() {
-    build();
+core::Technique core::HlslTechniqueBuilder::buildDenoise(dto::Denoise denoise) {
+    auto builder = getConcreteShaderCodeBuilder();
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("DENOISE_ENABLED"), translate(true)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("DENOISE_NOISE_LEVEL"), translate(denoise.noiseLevel)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("DENOISE_BLENDING_COEFFICIENT"), translate(denoise.blendingCoefficient)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("DENOISE_WEIGHT_THRESHOLD"), translate(denoise.weightThreshold)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("DENOISE_COUNTER_THRESHOLD"), translate(denoise.counterThreshold)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("DENOISE_GAUSSIAN_SIGMA"), translate(denoise.gaussianSigma)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("DENOISE_WINDOW_SIZE"), translate(denoise.windowSize)));
+
+    core::Technique technique("technique::denoise", core::TechniqueCode(builder->buildVertexShaderCode(), builder->buildPixelShaderCode()));
+    core::Pass pass("vsMain", "psDenoise");
+    pass.out.push_back(OutputTexId);
+    technique.passes.push_back(pass);
+
+    return technique;
 }
 
-core::ShaderCodeBuilder::ShaderCodeBuilder() {
-    _cachedResourceProvider.reset(new core::CachedCodeResourceProvider());
-    _realResourceProvider.reset(new core::NoCodeFileResourceProvider());
+core::Technique core::HlslTechniqueBuilder::buildDepth(dto::DepthBuffer depthBuffer) {
+    auto builder = getConcreteShaderCodeBuilder();
+    applyDepthBuffer(builder.get(), depthBuffer);
+
+    core::Technique technique("technique::depth", core::TechniqueCode(builder->buildVertexShaderCode(), builder->buildPixelShaderCode()));
+    core::Pass pass("vsMain", "psDepth");
+    pass.out.push_back(OutputTexId);
+    technique.passes.push_back(pass);
+
+    return technique;
 }
 
-core::ShaderCodeBuilder::ShaderCodeBuilder(std::string directoryPath) {
-    _cachedResourceProvider.reset(new core::CachedCodeResourceProvider());
-    _realResourceProvider.reset(new core::RealCodeFileResourceProvider(directoryPath));
+core::Technique core::HlslTechniqueBuilder::buildGaussianBlur(dto::GaussianBlur gaussianBlur) {
+    const float minWeight = 0.05f;
+
+    int length;
+    float *offsets;
+    float *weights;
+
+    calculateGaussianBlur(
+        gaussianBlur.size,
+        gaussianBlur.sigma,
+        minWeight,
+        length,
+        &offsets,
+        &weights);
+
+    auto builder = getConcreteShaderCodeBuilder();
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("GAUSSIAN_BLUR_ENABLED"), translate(true)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("GAUSSIAN_BLUR_SIZE"), translate(length)));
+    builder->add(new core::LineAlterationElement(ENCRYPT_STRING("static const float _gaussianblur_offset"), core::stringFormat(ENCRYPT_STRING("static const float _gaussianblur_offset[GAUSSIAN_BLUR_SIZE] = { %s };"), core::join(ENCRYPT_STRING(", "), ::translate(offsets, length)).c_str())));
+    builder->add(new core::LineAlterationElement(ENCRYPT_STRING("static const float _gaussianblur_weight"), core::stringFormat(ENCRYPT_STRING("static const float _gaussianblur_weight[GAUSSIAN_BLUR_SIZE] = { %s };"), core::join(ENCRYPT_STRING(", "), ::translate(weights, length)).c_str())));
+
+    delete[] offsets;
+    delete[] weights;
+
+    core::Texture tex(core::TextureDataType::typefloat, _resolution);
+
+    core::Technique technique("technique::gaussianBlur", core::TechniqueCode(builder->buildVertexShaderCode(), builder->buildPixelShaderCode()));
+    technique.textures[2] = tex;
+
+    core::Pass pass0("vsMain", "psHorizontalGaussianBlur");
+    pass0.out.push_back(tex.id);
+    technique.passes.push_back(pass0);
+
+    core::Pass pass1("vsMain", "psVerticalGaussianBlur");
+    pass1.in.push_back(tex.id);
+    pass1.out.push_back(OutputTexId);
+    technique.passes.push_back(pass1);
+
+    return technique;
 }
 
-void core::ShaderCodeBuilder::add(core::IAlterationElement *element) {
+core::Technique core::HlslTechniqueBuilder::buildHDR(dto::HDR hdr) {
+    auto builder = getConcreteShaderCodeBuilder();
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("HDR_ENABLED"), translate(true)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("HDR_STRENGTH"), translate(hdr.strength)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("HDR_RADIUS_2"), translate(hdr.radius)));
+
+    core::Technique technique("technique::hdr", core::TechniqueCode(builder->buildVertexShaderCode(), builder->buildPixelShaderCode()));
+    core::Pass pass("vsMain", "psHDR");
+    pass.out.push_back(OutputTexId);
+    technique.passes.push_back(pass);
+
+    return technique;
+}
+
+core::Technique core::HlslTechniqueBuilder::buildLiftGammaGain(dto::LiftGammaGain liftGammaGain) {
+    auto builder = getConcreteShaderCodeBuilder();
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_ENABLED"), translate(true)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_LIFT_RED"), translate(liftGammaGain.lift.red)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_LIFT_GREEN"), translate(liftGammaGain.lift.green)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_LIFT_BLUE"), translate(liftGammaGain.lift.blue)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_GAMMA_RED"), translate(liftGammaGain.gamma.red)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_GAMMA_GREEN"), translate(liftGammaGain.gamma.green)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_GAMMA_BLUE"), translate(liftGammaGain.gamma.blue)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_GAIN_RED"), translate(liftGammaGain.gain.red)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_GAIN_GREEN"), translate(liftGammaGain.gain.green)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_GAIN_BLUE"), translate(liftGammaGain.gain.blue)));
+
+    core::Technique technique("technique::liftGammaGain", core::TechniqueCode(builder->buildVertexShaderCode(), builder->buildPixelShaderCode()));
+    core::Pass pass("vsMain", "psLiftGammaGain");
+    pass.out.push_back(OutputTexId);
+    technique.passes.push_back(pass);
+
+    return technique;
+}
+
+core::Technique core::HlslTechniqueBuilder::buildLumaSharpen(dto::LumaSharpen lumaSharpen) {
+    auto builder = getConcreteShaderCodeBuilder();
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("LUMASHARPEN_ENABLED"), translate(true)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("LUMASHARPEN_SHARPENING_STRENGTH"), translate(lumaSharpen.sharpeningStrength)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("LUMASHARPEN_SHARPENING_CLAMP"), translate(lumaSharpen.sharpeningClamp)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("LUMASHARPEN_OFFSET"), translate(lumaSharpen.offset)));
+
+    core::Technique technique("technique::lumaSharpen", core::TechniqueCode(builder->buildVertexShaderCode(), builder->buildPixelShaderCode()));
+    core::Pass pass("vsMain", "psLumaSharpen");
+    pass.out.push_back(OutputTexId);
+    technique.passes.push_back(pass);
+
+    return technique;
+}
+
+core::Technique core::HlslTechniqueBuilder::buildLuminescence() {
+    auto builder = getConcreteShaderCodeBuilder();
+
+    core::Technique technique("technique::luminescence", core::TechniqueCode(builder->buildVertexShaderCode(), builder->buildPixelShaderCode()));
+    core::Pass pass("vsMain", "psLuminescence");
+    pass.out.push_back(OutputTexId);
+    technique.passes.push_back(pass);
+
+    return technique;
+}
+
+core::Technique core::HlslTechniqueBuilder::buildTonemap(dto::Tonemap tonemap) {
+    auto builder = getConcreteShaderCodeBuilder();
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_ENABLED"), translate(true)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_GAMMA"), translate(tonemap.gamma)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_EXPOSURE"), translate(tonemap.exposure)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_SATURATION"), translate(tonemap.saturation)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_BLEACH"), translate(tonemap.bleach)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_DEFOG"), translate(tonemap.defog)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_FOG_RED"), translate(tonemap.fog.red)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_FOG_GREEN"), translate(tonemap.fog.green)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_FOG_BLUE"), translate(tonemap.fog.blue)));
+
+    core::Technique technique("technique::tonemap", core::TechniqueCode(builder->buildVertexShaderCode(), builder->buildPixelShaderCode()));
+    core::Pass pass("vsMain", "psTonemap");
+    pass.out.push_back(OutputTexId);
+    technique.passes.push_back(pass);
+
+    return technique;
+}
+
+core::Technique core::HlslTechniqueBuilder::buildVibrance(dto::Vibrance vibrance) {
+    auto builder = getConcreteShaderCodeBuilder();
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("VIBRANCE_ENABLED"), translate(true)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("VIBRANCE_STRENGTH"), translate(vibrance.strength)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("VIBRANCE_GAIN_RED"), translate(vibrance.gain.red)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("VIBRANCE_GAIN_GREEN"), translate(vibrance.gain.green)));
+    builder->add(new core::DefineAlterationElement(ENCRYPT_STRING("VIBRANCE_GAIN_BLUE"), translate(vibrance.gain.blue)));
+
+    core::Technique technique("technique::vibrance", core::TechniqueCode(builder->buildVertexShaderCode(), builder->buildPixelShaderCode()));
+    core::Pass pass("vsMain", "psVibrance");
+    pass.out.push_back(OutputTexId);
+    technique.passes.push_back(pass);
+
+    return technique;
+}
+
+void core::ConcreteHlslTechniqueBuilder::add(core::IAlterationElement *element) {
     _elements.push_back(std::shared_ptr<IAlterationElement>(element));
 }
 
-std::string core::ShaderCodeBuilder::getResource(const std::string &key) {
+std::string core::ConcreteHlslTechniqueBuilder::getResource(const std::string &key) {
     try {
         log(debug, core::stringFormat(ENCRYPT_STRING("getting file: %s..."), key.c_str()));
         return _realResourceProvider->get(key);
@@ -493,100 +773,7 @@ std::string core::ShaderCodeBuilder::getResource(const std::string &key) {
     }
 }
 
-void core::ShaderCodeBuilder::setLinearDepthTextureAccessibility(float distanceNear, float distanceFar) {
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("DEPTH_BUFFER_AVAILABLE"), ::translate(true)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("DEPTH_LINEAR_Z_NEAR"), core::toDefaultString(distanceNear)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("DEPTH_LINEAR_Z_FAR"), core::toDefaultString(distanceFar)));
-}
-
-void core::ShaderCodeBuilder::setDepthTextureLimit(float depthMin, float depthMax) {
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("DEPTH_LIMIT_AVAILABLE"), ::translate(true)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("DEPTH_MIN"), core::toDefaultString(depthMin)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("DEPTH_MAX"), core::toDefaultString(depthMax)));
-}
-
-core::BokehDoFCodeBuilder core::ShaderCodeBuilder::setBokehDoF(float depthMinimum, float depthMaximum, float depthRateGain, float luminescenceMinimum, float luminescenceMaximum, float luminescenceRateGain) {
-    return core::BokehDoFCodeBuilder(this, depthMinimum, depthMaximum, depthRateGain, luminescenceMinimum, luminescenceMaximum, luminescenceRateGain);
-}
-
-void core::ShaderCodeBuilder::setDenoise(float noiseLevel, float blendingCoefficient, float weightThreshold, float counterThreshold, float gaussianSigma, unsigned int windowSize) {
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("DENOISE_ENABLED"), translate(true)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("DENOISE_NOISE_LEVEL"), translate(noiseLevel)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("DENOISE_BLENDING_COEFFICIENT"), translate(blendingCoefficient)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("DENOISE_WEIGHT_THRESHOLD"), translate(weightThreshold)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("DENOISE_COUNTER_THRESHOLD"), translate(counterThreshold)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("DENOISE_GAUSSIAN_SIGMA"), translate(gaussianSigma)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("DENOISE_WINDOW_SIZE"), translate(windowSize)));
-}
-
-void core::ShaderCodeBuilder::setHDR(float strength, float radius) {
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("HDR_ENABLED"), translate(true)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("HDR_STRENGTH"), translate(strength)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("HDR_RADIUS_2"), translate(radius)));
-}
-
-void core::ShaderCodeBuilder::setLiftGammaGain(core::dto::Color lift, core::dto::Color gamma, core::dto::Color gain) {
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_ENABLED"), translate(true)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_LIFT_RED"), translate(lift.red)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_LIFT_GREEN"), translate(lift.green)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_LIFT_BLUE"), translate(lift.blue)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_GAMMA_RED"), translate(gamma.red)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_GAMMA_GREEN"), translate(gamma.green)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_GAMMA_BLUE"), translate(gamma.blue)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_GAIN_RED"), translate(gain.red)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_GAIN_GREEN"), translate(gain.green)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("LIFTGAMMAGAIN_GAIN_BLUE"), translate(gain.blue)));
-}
-
-void core::ShaderCodeBuilder::setLumaSharpen(float sharpeningStrength, float sharpeningClamp, float offset) {
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("LUMASHARPEN_ENABLED"), translate(true)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("LUMASHARPEN_SHARPENING_STRENGTH"), translate(sharpeningStrength)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("LUMASHARPEN_SHARPENING_CLAMP"), translate(sharpeningClamp)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("LUMASHARPEN_OFFSET"), translate(offset)));
-}
-
-void core::ShaderCodeBuilder::setResolution(unsigned int width, unsigned int height) {
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("SCREEN_WIDTH"), translate(width)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("SCREEN_HEIGHT"), translate(height)));
-}
-
-void core::ShaderCodeBuilder::setTonemap(float gamma, float exposure, float saturation, float bleach, float defog, core::dto::Color fog) {
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_ENABLED"), translate(true)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_GAMMA"), translate(gamma)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_EXPOSURE"), translate(exposure)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_SATURATION"), translate(saturation)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_BLEACH"), translate(bleach)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_DEFOG"), translate(defog)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_FOG_RED"), translate(fog.red)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_FOG_GREEN"), translate(fog.green)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("TONEMAP_FOG_BLUE"), translate(fog.blue)));
-}
-
-void core::ShaderCodeBuilder::setVibrance(float strength, core::dto::Color gain) {
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("VIBRANCE_ENABLED"), translate(true)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("VIBRANCE_STRENGTH"), translate(strength)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("VIBRANCE_GAIN_RED"), translate(gain.red)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("VIBRANCE_GAIN_GREEN"), translate(gain.green)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("VIBRANCE_GAIN_BLUE"), translate(gain.blue)));
-}
-
-void core::ShaderCodeBuilder::setGaussianBlur(unsigned int size, float sigma, float minWeight) {
-    int length;
-    float *offsets;
-    float *weights;
-
-    calculateGaussianBlur(size, sigma, minWeight, length, &offsets, &weights);
-
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("GAUSSIAN_BLUR_ENABLED"), translate(true)));
-    add(new core::DefineAlterationElement(ENCRYPT_STRING("GAUSSIAN_BLUR_SIZE"), translate(length)));
-    add(new core::LineAlterationElement(ENCRYPT_STRING("static const float _gaussianblur_offset"), core::stringFormat(ENCRYPT_STRING("static const float _gaussianblur_offset[GAUSSIAN_BLUR_SIZE] = { %s };"), core::join(ENCRYPT_STRING(", "), ::translate(offsets, length)).c_str())));
-    add(new core::LineAlterationElement(ENCRYPT_STRING("static const float _gaussianblur_weight"), core::stringFormat(ENCRYPT_STRING("static const float _gaussianblur_weight[GAUSSIAN_BLUR_SIZE] = { %s };"), core::join(ENCRYPT_STRING(", "), ::translate(weights, length)).c_str())));
-
-    delete[] offsets;
-    delete[] weights;
-}
-
-std::string core::ShaderCodeBuilder::buildPixelShaderCode() {
+std::string core::ConcreteHlslTechniqueBuilder::buildPixelShaderCode() {
     core::CodeVisitor codeVisitor(getResource(ENCRYPT_STRING("pixelshader.hlsl")));
     for (auto element : _elements) {
         element->accept(codeVisitor);
@@ -595,11 +782,40 @@ std::string core::ShaderCodeBuilder::buildPixelShaderCode() {
     return codeVisitor.build();
 }
 
-std::string core::ShaderCodeBuilder::buildVertexShaderCode() {
+std::string core::ConcreteHlslTechniqueBuilder::buildVertexShaderCode() {
     core::CodeVisitor codeVisitor(getResource(ENCRYPT_STRING("vertexshader.hlsl")));
     for (auto element : _elements) {
         element->accept(codeVisitor);
     }
 
     return codeVisitor.build();
+}
+
+core::HlslTechniqueFactory::HlslTechniqueFactory(
+    core::HlslTechniqueBuilder *hlslTechniqueBuilder,
+    core::ISerializer *serializer,
+    core::dto::DepthBuffer depthBuffer) {
+    _hlslTechniqueBuilder = hlslTechniqueBuilder;
+    _serializer = serializer;
+    _depthBuffer = depthBuffer;
+    _policies = {
+        { core::TechniqueType::bokehdof, [&](const std::string &data) { return _hlslTechniqueBuilder->buildBokehDoF(_serializer->deserializeBokehDoF(data), _depthBuffer); } },
+        { core::TechniqueType::denoise, [&](const std::string &data) { return _hlslTechniqueBuilder->buildDenoise(_serializer->deserializeDenoise(data)); } },
+        { core::TechniqueType::hdr, [&](const std::string &data) { return _hlslTechniqueBuilder->buildHDR(_serializer->deserializeHDR(data)); } },
+        { core::TechniqueType::liftgammagain, [&](const std::string &data) { return _hlslTechniqueBuilder->buildLiftGammaGain(_serializer->deserializeLiftGammaGain(data)); } },
+        { core::TechniqueType::lumasharpen, [&](const std::string &data) { return _hlslTechniqueBuilder->buildLumaSharpen(_serializer->deserializeLumaSharpen(data)); } },
+        { core::TechniqueType::tonemap, [&](const std::string &data) { return _hlslTechniqueBuilder->buildTonemap(_serializer->deserializeTonemap(data)); } },
+        { core::TechniqueType::vibrance, [&](const std::string &data) { return _hlslTechniqueBuilder->buildVibrance(_serializer->deserializeVibrance(data)); } }
+    };
+}
+
+core::Technique core::HlslTechniqueFactory::create(core::TechniqueType type, const std::string &data) {
+    auto iterator = _policies.find(type);
+    if (iterator == _policies.end()) {
+        throw core::exception::OperationException(
+            ENCRYPT_STRING("core::HlslTechniqueFactory"),
+            core::stringFormat(ENCRYPT_STRING("technique: %d could not be created"), static_cast<int>(type)));
+    }
+
+    return iterator->second(data);
 }

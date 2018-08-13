@@ -13,7 +13,7 @@ std::string toString(rapidjson::Value &value) {
     return stringBuffer.GetString();
 }
 
-void write(rapidjson::Writer<rapidjson::StringBuffer> &writer, const core::dto::EffectData &data) {
+void write(rapidjson::Writer<rapidjson::StringBuffer> &writer, const core::dto::TechniqueData &data) {
     writer.StartObject();
     {
         writer.String(ENCRYPT_STRING("data"));
@@ -241,13 +241,13 @@ core::dto::Direct3D11Settings core::JsonSerializer::deserializeDirect3D11Setting
     rapidjson::Value &effectsJson = document[ENCRYPT_STRING("effects")];
     if (!effectsJson.IsNull() && effectsJson.IsArray()) {
         for (rapidjson::SizeType i = 0; i < effectsJson.Size(); i++) {
-            rapidjson::Value &effectDataJson = effectsJson[i];
-            core::dto::EffectData effectData;
-            effectData.data = effectDataJson[ENCRYPT_STRING("data")].GetString();
-            effectData.id = effectDataJson[ENCRYPT_STRING("id")].GetString();
-            effectData.isEnabled = effectDataJson[ENCRYPT_STRING("isEnabled")].GetBool();
-            effectData.type = static_cast<core::EffectType>(effectDataJson[ENCRYPT_STRING("type")].GetInt());
-            settings.effects.push_back(effectData);
+            rapidjson::Value &techniqueDataJson = effectsJson[i];
+            core::dto::TechniqueData techniqueData;
+            techniqueData.data = techniqueDataJson[ENCRYPT_STRING("data")].GetString();
+            techniqueData.id = techniqueDataJson[ENCRYPT_STRING("id")].GetString();
+            techniqueData.isEnabled = techniqueDataJson[ENCRYPT_STRING("isEnabled")].GetBool();
+            techniqueData.type = static_cast<core::TechniqueType>(techniqueDataJson[ENCRYPT_STRING("type")].GetInt());
+            settings.effects.push_back(techniqueData);
         }
     }
 

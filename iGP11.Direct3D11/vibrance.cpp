@@ -11,6 +11,6 @@ std::string direct3d11::VibranceEffect::getName() {
     return ENCRYPT_STRING("direct3d11::VibranceEffect");
 }
 
-direct3d11::ShaderCode direct3d11::VibranceEffect::getCode(direct3d11::Direct3D11Context *context, direct3d11::ShaderCodeFactory *codeFactory) {
+direct3d11::PassSettings direct3d11::VibranceEffect::getCode(direct3d11::Direct3D11Context *context, direct3d11::ShaderCodeFactory *codeFactory) {
     return codeFactory->createVibranceCode(_colorTexture->getShaderView(), _vibrance);
 }

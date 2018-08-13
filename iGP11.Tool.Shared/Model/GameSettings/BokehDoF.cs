@@ -20,7 +20,7 @@ namespace iGP11.Tool.Shared.Model.GameSettings
         [ComponentName("BlurStrength")]
         [DataMember(Name = "blurStrength")]
         [Editable]
-        [FloatRange(0)]
+        [FloatRange(0, 1)]
         [GroupedBy(BlurGroupedBy)]
         [Order(1)]
         public float BlurStrength { get; set; } = 1;

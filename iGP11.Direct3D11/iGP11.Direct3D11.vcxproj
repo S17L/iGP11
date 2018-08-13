@@ -160,23 +160,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="alpha.h" />
-    <ClInclude Include="baseefect.h" />
-    <ClInclude Include="bokehdof.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="darksouls2profile.h" />
     <ClInclude Include="darksouls3profile.h" />
-    <ClInclude Include="denoise.h" />
-    <ClInclude Include="depth.h" />
     <ClInclude Include="fallout4profile.h" />
-    <ClInclude Include="hdr.h" />
-    <ClInclude Include="horizontalgaussianblur.h" />
     <ClInclude Include="igp11direct3d11.h" />
     <ClInclude Include="direct3d11plugin.h" />
     <ClInclude Include="effect.h" />
-    <ClInclude Include="liftgammagain.h" />
-    <ClInclude Include="lumasharpen.h" />
-    <ClInclude Include="luminescence.h" />
     <ClInclude Include="genericprofile.h" />
     <ClInclude Include="profilepicker.h" />
     <ClInclude Include="render.h" />
@@ -185,20 +175,12 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="textureservice.h" />
-    <ClInclude Include="tonemap.h" />
     <ClInclude Include="utility.h" />
-    <ClInclude Include="verticalgaussianblur.h" />
-    <ClInclude Include="vibrance.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="alpha.cpp" />
-    <ClCompile Include="baseefect.cpp" />
-    <ClCompile Include="bokehdof.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="darksouls2profile.cpp" />
     <ClCompile Include="darksouls3profile.cpp" />
-    <ClCompile Include="denoise.cpp" />
-    <ClCompile Include="depth.cpp" />
     <ClCompile Include="entrypoint.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>
@@ -215,13 +197,8 @@
     </ClCompile>
     <ClCompile Include="direct3d11plugin.cpp" />
     <ClCompile Include="fallout4profile.cpp" />
-    <ClCompile Include="hdr.cpp" />
-    <ClCompile Include="horizontalgaussianblur.cpp" />
     <ClCompile Include="igp11direct3d11.cpp" />
     <ClCompile Include="effect.cpp" />
-    <ClCompile Include="liftgammagain.cpp" />
-    <ClCompile Include="lumasharpen.cpp" />
-    <ClCompile Include="luminescence.cpp" />
     <ClCompile Include="genericprofile.cpp" />
     <ClCompile Include="profilepicker.cpp" />
     <ClCompile Include="render.cpp" />
@@ -233,10 +210,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="textureservice.cpp" />
-    <ClCompile Include="tonemap.cpp" />
     <ClCompile Include="utility.cpp" />
-    <ClCompile Include="verticalgaussianblur.cpp" />
-    <ClCompile Include="vibrance.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\external\DirectXTK\DirectXTK_Desktop_2015.vcxproj">

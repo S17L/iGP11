@@ -15,8 +15,8 @@ namespace direct3d11 {
         Direct3D11Context *_context;
         dto::RenderingResolution _resolution;
         ShaderCodeFactory *_codeFactory;
-        std::unique_ptr<SquareRenderTarget> _renderTarget;
-        std::unique_ptr<ShaderApplicator> _shaderApplicator;
+        std::unique_ptr<Renderer> _renderTarget;
+        std::unique_ptr<Pass> _shaderApplicator;
     public:
         BaseEffect(Direct3D11Context *context, dto::RenderingResolution resolution, ShaderCodeFactory *codeFactory);
         virtual ~BaseEffect() {};
@@ -25,6 +25,6 @@ namespace direct3d11 {
         virtual void end() override final;
     protected:
         virtual std::string getName() = 0;
-        virtual ShaderCode getCode(Direct3D11Context *context, ShaderCodeFactory *codeFactory) = 0;
+        virtual PassSettings getCode(Direct3D11Context *context, ShaderCodeFactory *codeFactory) = 0;
     };
 }

@@ -12,6 +12,6 @@ std::string direct3d11::DepthEffect::getName() {
     return ENCRYPT_STRING("direct3d11::DepthEffect");
 }
 
-direct3d11::ShaderCode direct3d11::DepthEffect::getCode(direct3d11::Direct3D11Context *context, direct3d11::ShaderCodeFactory *codeFactory) {
+direct3d11::PassSettings direct3d11::DepthEffect::getCode(direct3d11::Direct3D11Context *context, direct3d11::ShaderCodeFactory *codeFactory) {
     return codeFactory->createDepthRenderingCode(_colorTexture->getShaderView(), _depthTextureView, _depthBuffer);
 }

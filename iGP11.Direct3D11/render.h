@@ -38,12 +38,11 @@ namespace direct3d11 {
         virtual ID3D11Texture2D* get() const override {
             return _texture;
         }
-        virtual ID3D11ShaderResourceView* getShaderView() const override {
+        virtual ID3D11ShaderResourceView* getInView() const override {
             return _textureShaderView;
         }
-        virtual void setAsRenderer() override {
-            auto deviceContext = _context->getDeviceContext();
-            deviceContext->OMSetRenderTargets(1, &_textureRenderView, nullptr);
+        virtual ID3D11RenderTargetView* getOutView() const override {
+            return _textureRenderView;
         }
     };
 
@@ -58,13 +57,11 @@ namespace direct3d11 {
         virtual ID3D11Texture2D* get() const override {
             return _texture.get();
         }
-        virtual ID3D11ShaderResourceView* getShaderView() const override {
+        virtual ID3D11ShaderResourceView* getInView() const override {
             return _textureShaderView.get();
         }
-        virtual void setAsRenderer() override {
-            auto deviceContext = _context->getDeviceContext();
-            auto renderTargetView = _textureRenderView.get();
-            deviceContext->OMSetRenderTargets(1, &renderTargetView, nullptr);
+        virtual ID3D11RenderTargetView* getOutView() const override {
+            return _textureRenderView.get();
         }
     };
 
@@ -72,12 +69,12 @@ namespace direct3d11 {
     private:
         unsigned int _count = 0;
         unsigned int _index = 0;
+        bool _last = false;
         Direct3D11Context *_context;
-        dto::RenderingResolution _resolution;
-        ID3D11Texture2D *_inputColorTexture;
-        ID3D11Texture2D *_inputDepthTexture;
+        ID3D11Texture2D *_color;
+        ID3D11Texture2D *_depth;
         std::unique_ptr<CustomizableTexture> _renderingTexture;
-        std::unique_ptr<ITexture> _inputTexture;
+        std::unique_ptr<ITexture> _colorTexture;
         std::unique_ptr<ITexture> _chainFirstTexture;
         std::unique_ptr<ITexture> _chainSecondTexture;
         core::disposing::unique_ptr<ID3D11Texture2D> _depthTexture;
@@ -87,111 +84,83 @@ namespace direct3d11 {
         core::disposing::unique_ptr<ID3D11DepthStencilState> _depthStencilState;
         std::list<std::shared_ptr<direct3d11::IState>> _states;
     public:
-        RenderingProxy(Direct3D11Context *context, dto::RenderingResolution resolution, ID3D11Texture2D *inputColorTexture, ID3D11Texture2D *inputDepthTexture);
+        RenderingProxy(Direct3D11Context *context, ID3D11Texture2D *color, ID3D11Texture2D *depth);
         virtual ~RenderingProxy() {}
         void begin();
         void end();
-        void iterate();
-        ITexture* nextColorTexture();
-        ITexture* getRenderingDestinationTexture() const;
+        ITexture* iterateIn();
+        ITexture* iterateOut(bool last);
         ID3D11ShaderResourceView* getDepthTextureView() const;
     };
 
-    class SquareRenderTarget {
+    class Renderer {
     private:
         const unsigned int _positionX = 0;
         const unsigned int _positionY = 0;
         Direct3D11Context *_context;
-        dto::RenderingResolution _resolution;
+        core::dto::Resolution _resolution;
         int _count;
         core::disposing::unique_ptr<ID3D11Buffer> _indexBuffer;
         core::disposing::unique_ptr<ID3D11Buffer> _vertexBuffer;
         std::list<std::shared_ptr<direct3d11::IState>> _states;
     public:
-        SquareRenderTarget(Direct3D11Context *context, dto::RenderingResolution resolution);
+        Renderer(Direct3D11Context *context, core::dto::Resolution resolution);
         void begin();
         void render();
         void end();
     };
 
-    class ShaderCode {
+    class PassSettings {
     private:
-        static const unsigned int _textureViewsCount = 8;
-        ID3D11ShaderResourceView *_textureViews[_textureViewsCount] = {};
-        std::string _vertexShaderCode;
-        std::string _vertexShaderFunctionName;
-        std::string _pixelShaderCode;
-        std::string _pixelShaderFunctionName;
+        static const core::type_slot _count = 8;
+        core::TechniqueCode _code;
+        ID3D11ShaderResourceView *_in[_count] = {};
+        ID3D11RenderTargetView *_out[_count] = {};
+        std::string _vsFunctionName;
+        std::string _psFunctionName;
     public:
-        void setColorTextureView(ID3D11ShaderResourceView *textureView) {
-            _textureViews[0] = textureView;
+        PassSettings(
+            core::TechniqueCode code,
+            std::string vsFunctionName,
+            std::string psFunctionName)
+            : _code(code), _vsFunctionName(vsFunctionName), _psFunctionName(psFunctionName) {}
+        void setIn(core::type_slot slot, ID3D11ShaderResourceView *view) {
+            _in[slot] = view;
+            log(core::stringFormat("set in: [ slot: %u, view: %p ]", slot, view));
         }
-        void setDepthTextureView(ID3D11ShaderResourceView *textureView) {
-            _textureViews[1] = textureView;
+        void setOut(core::type_slot slot, ID3D11RenderTargetView *view) {
+            _out[slot] = view;
+            log(core::stringFormat("set out: [ slot: %u, view: %p ]", slot, view));
         }
-        void setTextureView(ID3D11ShaderResourceView *textureView, unsigned int slot) {
-            if (slot <= 1 || slot >= _textureViewsCount) {
-                throw core::exception::OperationException(ENCRYPT_STRING("direct3d11::ShaderCode"), ENCRYPT_STRING("invalid texture view slot"));
-            }
-
-            _textureViews[slot] = textureView;
+        ID3D11ShaderResourceView* const* getIn(core::type_slot &count) const {
+            count = _count;
+            return _in;
         }
-        void setVertexShaderCode(std::string code, std::string functionName) {
-            _vertexShaderCode = code;
-            _vertexShaderFunctionName = functionName;
-        }
-        void setPixelShaderCode(std::string code, std::string functionName) {
-            _pixelShaderCode = code;
-            _pixelShaderFunctionName = functionName;
-        }
-        ID3D11ShaderResourceView* const* getTextureViews(unsigned int &count) const {
-            count = _textureViewsCount;
-            return _textureViews;
+        ID3D11RenderTargetView* const* getOut(core::type_slot &count) const {
+            count = _count;
+            return _out;
         }
         const char* getVertexShaderCode() const {
-            return _vertexShaderCode.c_str();
-        }
-        const char* getPixelShaderCode() const {
-            return _pixelShaderCode.c_str();
+            return _code.vsCode.c_str();
         }
         const char* getVertexShaderFunctionName() const {
-            return _vertexShaderFunctionName.c_str();
+            return _vsFunctionName.c_str();
+        }
+        const char* getPixelShaderCode() const {
+            return _code.psCode.c_str();
         }
         const char* getPixelShaderFunctionName() const {
-            return _pixelShaderFunctionName.c_str();
+            return _psFunctionName.c_str();
         }
     };
 
-    class ShaderCodeFactory {
-    private:
-        std::string _codeDirectoryPath;
-        dto::RenderingResolution _resolution;
-        std::unique_ptr<core::ShaderCodeBuilder> getCodeBuilder();
-    public:
-        ShaderCodeFactory(std::string codeDirectoryPath, dto::RenderingResolution resolution)
-            : _codeDirectoryPath(codeDirectoryPath), _resolution(resolution) { }
-        ShaderCode createAlphaCode(ID3D11ShaderResourceView *colorTextureView);
-        ShaderCode createDenoiseCode(ID3D11ShaderResourceView *colorTextureView, core::dto::Denoise denoise);
-        ShaderCode createHDRCode(ID3D11ShaderResourceView *colorTextureView, core::dto::HDR hdr);
-        ShaderCode createLiftGammaGainCode(ID3D11ShaderResourceView *colorTextureView, core::dto::LiftGammaGain liftGammaGain);
-        ShaderCode createLumaSharpenCode(ID3D11ShaderResourceView *colorTextureView, core::dto::LumaSharpen lumaSharpen);
-        ShaderCode createLuminescenceCode(ID3D11ShaderResourceView *colorTextureView);
-        ShaderCode createTonemapCode(ID3D11ShaderResourceView *colorTextureView, core::dto::Tonemap tonemap);
-        ShaderCode createVibranceCode(ID3D11ShaderResourceView *colorTextureView, core::dto::Vibrance vibrance);
-        ShaderCode createBokehDoFCoCCode(ID3D11ShaderResourceView *colorTextureView, ID3D11ShaderResourceView *depthTextureView, core::dto::BokehDoF bokehDoF, core::dto::DepthBuffer depthBuffer);
-        ShaderCode createBokehDoFCode(ID3D11ShaderResourceView *colorTextureView, ID3D11ShaderResourceView *depthTextureView, ID3D11ShaderResourceView *previousPassTextureView, core::BokehDoFPassType passType, core::dto::BokehDoF bokehDoF, core::dto::DepthBuffer depthBuffer);
-        ShaderCode createBokehDoFChromaticAberrationCode(ID3D11ShaderResourceView *previousPassTextureView, core::dto::BokehDoF bokehDoF);
-        ShaderCode createBokehDoFBlendingCode(ID3D11ShaderResourceView *colorTextureView, ID3D11ShaderResourceView *depthTextureView, ID3D11ShaderResourceView *previousPassTextureView, core::dto::BokehDoF bokehDoF, core::dto::DepthBuffer depthBuffer);
-        ShaderCode createDepthRenderingCode(ID3D11ShaderResourceView *colorTextureView, ID3D11ShaderResourceView *depthTextureView, core::dto::DepthBuffer depthBuffer);
-        ShaderCode createHorizontalGaussianBlurCode(ID3D11ShaderResourceView *colorTextureView, unsigned int size, float sigma);
-        ShaderCode createVerticalGaussianBlurCode(ID3D11ShaderResourceView *colorTextureView, unsigned int size, float sigma);
-    };
-
-    class ShaderApplicator {
+    class Pass {
     private:
         Direct3D11Context *_context;
-        ShaderCode _code;
+        PassSettings *_passSettings;
+        core::dto::Resolution _resolution;
         dto::MatrixBufferType _matrixBufferType;
+        std::unique_ptr<Renderer> _renderer;
         core::disposing::unique_ptr<ID3D11VertexShader> _vertexShader;
         core::disposing::unique_ptr<ID3D11PixelShader> _pixelShader;
         core::disposing::unique_ptr<ID3D11InputLayout> _inputLayout;
@@ -200,9 +169,8 @@ namespace direct3d11 {
         core::disposing::unique_ptr<ID3D11SamplerState> _bilinearSampler;
         std::list<std::shared_ptr<direct3d11::IState>> _states;
     public:
-        ShaderApplicator(Direct3D11Context *context, ShaderCode code, dto::RenderingResolution resolution);
-        virtual ~ShaderApplicator() {}
-        void begin();
-        void end();
+        Pass(Direct3D11Context *context, PassSettings *passSettings, core::dto::Resolution resolution);
+        virtual ~Pass() {}
+        void render();
     };
 }

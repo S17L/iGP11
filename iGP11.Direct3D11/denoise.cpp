@@ -11,6 +11,6 @@ std::string direct3d11::DenoiseEffect::getName() {
     return ENCRYPT_STRING("direct3d11::DenoiseEffect");
 }
 
-direct3d11::ShaderCode direct3d11::DenoiseEffect::getCode(direct3d11::Direct3D11Context *context, direct3d11::ShaderCodeFactory *codeFactory) {
+direct3d11::PassSettings direct3d11::DenoiseEffect::getCode(direct3d11::Direct3D11Context *context, direct3d11::ShaderCodeFactory *codeFactory) {
     return codeFactory->createDenoiseCode(_colorTexture->getShaderView(), _denoise);
 }

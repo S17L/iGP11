@@ -7,8 +7,8 @@ direct3d11::BaseEffect::BaseEffect(direct3d11::Direct3D11Context *context, direc
 void direct3d11::BaseEffect::begin() {
     if (!_init) {
         ThreadLoggerAppenderScope scope(core::stringFormat(ENCRYPT_STRING("%s: initialization"), getName().c_str()));
-        _renderTarget.reset(new direct3d11::SquareRenderTarget(_context, _resolution));
-        _shaderApplicator.reset(new direct3d11::ShaderApplicator(_context, getCode(_context, _codeFactory), _resolution));
+        _renderTarget.reset(new direct3d11::Renderer(_context, _resolution));
+        _shaderApplicator.reset(new direct3d11::Pass(_context, getCode(_context, _codeFactory), _resolution));
         _init = true;
     }
 

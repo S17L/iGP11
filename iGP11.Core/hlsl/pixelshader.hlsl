@@ -85,7 +85,10 @@ float getDepth(float2 texcoord)
 
 #define BOKEH_DOF_ENABLED 0
 #define BOKEH_DOF_PRESERVE_SHAPE 0
-#define BOKEH_DOF_TEXEL_COUNT 0
+#define BOKEH_DOF_SHAPE_PASS_0_TEXEL_COUNT 0
+#define BOKEH_DOF_SHAPE_PASS_1_TEXEL_COUNT 0
+#define BOKEH_DOF_SHAPE_PASS_2_TEXEL_COUNT 0
+#define BOKEH_DOF_BLUR_SIZE 2
 #define BOKEH_DOF_BLUR_STRENGTH 1.0
 #define BOKEH_DOF_DEPTH_MIN 0.0
 #define BOKEH_DOF_DEPTH_MAX 1.0
@@ -102,7 +105,11 @@ float getDepth(float2 texcoord)
 #define BOKEH_DOF_BLUR_STRENGTH_MAX pow(BOKEH_DOF_DEPTH_MAX, BOKEH_DOF_DEPTH_RATE_GAIN) * pow(BOKEH_DOF_LUMINESCENCE_REAL_MAX, BOKEH_DOF_LUMINESCENCE_RATE_GAIN) + BOKEH_DOF_BLUR_STRENGTH_OFFSET
 
 #if BOKEH_DOF_ENABLED == 1
-Texture2D _pass_0_texture : register(t2);
+Texture2D<float4> _tex_0 : register(t2);
+Texture2D<float4> _tex_1 : register(t3);
+
+static const float _bokeh_dof_blur_offset[BOKEH_DOF_BLUR_SIZE] = { 0.000000, 1.002473 };
+static const float _bokeh_dof_blur_weight[BOKEH_DOF_BLUR_SIZE] = { 0.786986, 0.106771 };
 
 float calculateCoC(float3 color, float depth)
 {
@@ -118,7 +125,21 @@ float getCoC(float2 texcoord)
     return calculateCoC(_color_texture.Sample(_bilinear_sampler, texcoord).xyz, getDepth(texcoord));
 }
 
-float4 renderBokehDoFCoC(PixelInputType input) : SV_TARGET
+float4 limitColor(float4 color, float coc, int texelCount)
+{
+#if BOKEH_DOF_PRESERVE_SHAPE == 0
+    color /= texelCount;
+#else
+    color /= color.w;
+    color = saturate(color);
+    color *= coc;
+    color.w = coc;
+#endif
+
+    return color;
+}
+
+float4 psBokehDoFCoC(PixelInputType input) : SV_TARGET
 {
     float4 color = _color_texture.Sample(_point_sampler, input.texcoord);
     float depth = getDepth(input.texcoord);
@@ -130,7 +151,6 @@ float4 renderBokehDoFCoC(PixelInputType input) : SV_TARGET
         + getCoC(input.texcoord + float2(-1.5, -0.5) * _texel);
 
     outsideCoC /= 4;
-
     coc = min(coc, outsideCoC);
 
     color *= coc;
@@ -139,51 +159,87 @@ float4 renderBokehDoFCoC(PixelInputType input) : SV_TARGET
     return color;
 }
 
-float4 renderBokehDoF(PixelInputType input) : SV_TARGET
+float4 psBokehDoFShapePass_0(PixelInputType input) : SV_TARGET
 {
-    float4 bokehDoFColor = _pass_0_texture.Sample(_point_sampler, input.texcoord);
-    
+    float4 bokehDoFColor = _tex_0.Sample(_point_sampler, input.texcoord);
     float bokehDoFCoC = bokehDoFColor.w;
-    float4 pixelColor = 0;
 
-    /* BOKEH DOF: PLACEHOLDER */
+    /* BOKEH_DOF_SHAPE_PASS_0_PLACEHOLDER */
 
-#if BOKEH_DOF_PRESERVE_SHAPE == 0
-    bokehDoFColor /= BOKEH_DOF_TEXEL_COUNT;
-#else
-    bokehDoFColor /= bokehDoFColor.w;
-    bokehDoFColor = saturate(bokehDoFColor);
-    bokehDoFColor *= bokehDoFCoC;
-    bokehDoFColor.w = bokehDoFCoC;
-#endif
-
-    return bokehDoFColor;
+    return limitColor(bokehDoFColor, bokehDoFCoC, BOKEH_DOF_SHAPE_PASS_0_TEXEL_COUNT);
 }
 
-float4 renderBokehDoFChromaticAberration(PixelInputType input) : SV_TARGET
+float4 psBokehDoFShapePass_1(PixelInputType input) : SV_TARGET
 {
-    float4 color = _pass_0_texture.Sample(_point_sampler, input.texcoord);
+    float4 bokehDoFColor = _tex_1.Sample(_point_sampler, input.texcoord);
+    float bokehDoFCoC = bokehDoFColor.w;
+
+    /* BOKEH_DOF_SHAPE_PASS_1_PLACEHOLDER */
+
+    return limitColor(bokehDoFColor, bokehDoFCoC, BOKEH_DOF_SHAPE_PASS_1_TEXEL_COUNT);
+}
+
+float4 psBokehDoFShapePass_2(PixelInputType input) : SV_TARGET
+{
+    float4 bokehDoFColor = _tex_0.Sample(_point_sampler, input.texcoord);
+    float bokehDoFCoC = bokehDoFColor.w;
+
+    /* BOKEH_DOF_SHAPE_PASS_2_PLACEHOLDER */
+
+    return limitColor(bokehDoFColor, bokehDoFCoC, BOKEH_DOF_SHAPE_PASS_2_TEXEL_COUNT);
+}
+
+float4 psBokehDoFHorizontalGaussianBlur(PixelInputType input) : SV_TARGET
+{
+    float4 color = _tex_1.Sample(_point_sampler, input.texcoord) * _bokeh_dof_blur_weight[0];
+
+    [unroll(BOKEH_DOF_BLUR_SIZE - 1)]
+    for (uint i = 1; i < BOKEH_DOF_BLUR_SIZE; i++)
+    {
+        color += _tex_1.Sample(_bilinear_sampler, input.texcoord + float2(-_bokeh_dof_blur_offset[i], 0) * _texel) * _bokeh_dof_blur_weight[i];
+        color += _tex_1.Sample(_bilinear_sampler, input.texcoord + float2(_bokeh_dof_blur_offset[i], 0) * _texel) * _bokeh_dof_blur_weight[i];
+    }
+
+    return color;
+}
+
+float4 psBokehDoFVerticalGaussianBlur(PixelInputType input) : SV_TARGET
+{
+    float4 color = _tex_0.Sample(_point_sampler, input.texcoord) * _bokeh_dof_blur_weight[0];
+
+    [unroll(BOKEH_DOF_BLUR_SIZE - 1)]
+    for (uint i = 1; i < BOKEH_DOF_BLUR_SIZE; i++)
+    {
+        color += _tex_0.Sample(_bilinear_sampler, input.texcoord + float2(0, -_bokeh_dof_blur_offset[i]) * _texel) * _bokeh_dof_blur_weight[i];
+        color += _tex_0.Sample(_bilinear_sampler, input.texcoord + float2(0, _bokeh_dof_blur_offset[i]) * _texel) * _bokeh_dof_blur_weight[i];
+    }
+
+    return color;
+}
+
+float4 psBokehDoFChromaticAberration(PixelInputType input) : SV_TARGET
+{
+    float4 color = _tex_1.Sample(_point_sampler, input.texcoord);
 #if BOKEH_DOF_CHROMATIC_ABERRATION_ENABLED == 1
     float ratio = saturate(color.w - BOKEH_DOF_BLUR_STRENGTH_MIN) / (BOKEH_DOF_BLUR_STRENGTH_MAX - BOKEH_DOF_BLUR_STRENGTH_MIN);
     return float4(
-        _pass_0_texture.Sample(_bilinear_sampler, input.texcoord + float2(0, 1) * _texel * ratio * BOKEH_DOF_CHROMATIC_ABERRATION_FRINGE).x,
-        _pass_0_texture.Sample(_bilinear_sampler, input.texcoord + float2(-0.866, -0.5) * _texel * ratio * BOKEH_DOF_CHROMATIC_ABERRATION_FRINGE).y,
-        _pass_0_texture.Sample(_bilinear_sampler, input.texcoord + float2(0.866, -0.5) * _texel * ratio * BOKEH_DOF_CHROMATIC_ABERRATION_FRINGE).z,
+        _tex_1.Sample(_bilinear_sampler, input.texcoord + float2(0, 1) * _texel * ratio * BOKEH_DOF_CHROMATIC_ABERRATION_FRINGE).x,
+        _tex_1.Sample(_bilinear_sampler, input.texcoord + float2(-0.866, -0.5) * _texel * ratio * BOKEH_DOF_CHROMATIC_ABERRATION_FRINGE).y,
+        _tex_1.Sample(_bilinear_sampler, input.texcoord + float2(0.866, -0.5) * _texel * ratio * BOKEH_DOF_CHROMATIC_ABERRATION_FRINGE).z,
         color.w);
 #else
     return color;
 #endif
 }
 
-float4 renderBokehDoFBlending(PixelInputType input) : SV_TARGET
+float4 psBokehDoFBlend(PixelInputType input) : SV_TARGET
 {
     float4 color = _color_texture.Sample(_point_sampler, input.texcoord);
-    float4 bokehDoFColor = _pass_0_texture.Sample(_point_sampler, input.texcoord);
+    float4 bokehDoFColor = _tex_0.Sample(_point_sampler, input.texcoord);
     float weight = BOKEH_DOF_BLUR_STRENGTH * getDepth(input.texcoord);
 
-    color = (color + weight * bokehDoFColor) / (1 + weight * bokehDoFColor.w);
-    color = saturate(color);
-    color.w = 0;
+    color.rgb = (color.rgb + weight * bokehDoFColor.rgb) / (1 + weight * bokehDoFColor.w);
+    color.rgb = saturate(color.rgb);
 
     return color;
 }
@@ -203,7 +259,7 @@ float4 renderBokehDoFBlending(PixelInputType input) : SV_TARGET
 #define DENOISE_WINDOW_AREA pow(2.0 * DENOISE_WINDOW_SIZE + 1.0, 2)
 
 #if DENOISE_ENABLED == 1
-float4 renderDenoise(PixelInputType input) : SV_TARGET
+float4 psDenoise(PixelInputType input) : SV_TARGET
 {
     float4 color = _color_texture.Sample(_point_sampler, input.texcoord);
     float4 output = 0;
@@ -243,7 +299,7 @@ float4 renderDenoise(PixelInputType input) : SV_TARGET
 static const float _gaussianblur_offset[GAUSSIAN_BLUR_SIZE] = { 0.000000, 1.002473 };
 static const float _gaussianblur_weight[GAUSSIAN_BLUR_SIZE] = { 0.786986, 0.106771 };
 
-float4 renderHorizontalGaussianBlur(PixelInputType input) : SV_TARGET
+float4 psHorizontalGaussianBlur(PixelInputType input) : SV_TARGET
 {
     float4 color = _color_texture.Sample(_bilinear_sampler, input.texcoord) * _gaussianblur_weight[0];
 
@@ -257,7 +313,7 @@ float4 renderHorizontalGaussianBlur(PixelInputType input) : SV_TARGET
     return color;
 }
 
-float4 renderVerticalGaussianBlur(PixelInputType input) : SV_TARGET
+float4 psVerticalGaussianBlur(PixelInputType input) : SV_TARGET
 {
     float4 color = _color_texture.Sample(_bilinear_sampler, input.texcoord) * _gaussianblur_weight[0];
 
@@ -282,7 +338,7 @@ float4 renderVerticalGaussianBlur(PixelInputType input) : SV_TARGET
 #define HDR_RADIUS_2 0.87
 
 #if HDR_ENABLED == 1
-float4 renderHDR(PixelInputType input) : SV_TARGET
+float4 psHDR(PixelInputType input) : SV_TARGET
 {
     float4 color = _color_texture.Sample(_point_sampler, input.texcoord);
 
@@ -336,7 +392,7 @@ static const float3 _lift_color = float3(LIFTGAMMAGAIN_LIFT_RED, LIFTGAMMAGAIN_L
 static const float3 _gamma_color = float3(LIFTGAMMAGAIN_GAMMA_RED, LIFTGAMMAGAIN_GAMMA_GREEN, LIFTGAMMAGAIN_GAMMA_BLUE);
 static const float3 _gain_color = float3(LIFTGAMMAGAIN_GAIN_RED, LIFTGAMMAGAIN_GAIN_GREEN, LIFTGAMMAGAIN_GAIN_BLUE);
 
-float4 renderLiftGammaGain(PixelInputType input) : SV_TARGET
+float4 psLiftGammaGain(PixelInputType input) : SV_TARGET
 {
     float4 color = _color_texture.Sample(_point_sampler, input.texcoord);
     
@@ -360,7 +416,7 @@ float4 renderLiftGammaGain(PixelInputType input) : SV_TARGET
 #define LUMASHARPEN_OFFSET 1
 
 #if LUMASHARPEN_ENABLED == 1
-float4 renderLumaSharpen(PixelInputType input) : SV_TARGET
+float4 psLumaSharpen(PixelInputType input) : SV_TARGET
 {
     float3 color = _color_texture.Sample(_point_sampler, input.texcoord).rgb;
     float3 sharpeningStrengthLuma = LUMASHARPEN_SHARPENING_STRENGTH * _luminescence_coefficient;
@@ -400,7 +456,7 @@ float4 renderLumaSharpen(PixelInputType input) : SV_TARGET
 #if TONEMAP_ENABLED == 1
 static const float3 _defog_color = TONEMAP_DEFOG * float3(TONEMAP_FOG_RED, TONEMAP_FOG_GREEN, TONEMAP_FOG_BLUE);
 
-float4 renderTonemap(PixelInputType input) : SV_TARGET
+float4 psTonemap(PixelInputType input) : SV_TARGET
 {
     float4 color = _color_texture.Sample(_point_sampler, input.texcoord);
     color.rgb = saturate(color.rgb - _defog_color * 2.55);
@@ -429,7 +485,7 @@ float4 renderTonemap(PixelInputType input) : SV_TARGET
 #if VIBRANCE_ENABLED == 1
 static const float3 _vibrance_coefficient = VIBRANCE_STRENGTH * float3(VIBRANCE_GAIN_RED, VIBRANCE_GAIN_GREEN, VIBRANCE_GAIN_BLUE);
 
-float4 renderVibrance(PixelInputType input) : SV_TARGET
+float4 psVibrance(PixelInputType input) : SV_TARGET
 {
     float4 color = _color_texture.Sample(_point_sampler, input.texcoord);
     float luminescence = getLuminescence(color.rgb);
@@ -444,19 +500,19 @@ float4 renderVibrance(PixelInputType input) : SV_TARGET
 
 /* END -> VIBRANCE */
 
-float4 renderAlpha(PixelInputType input) : SV_TARGET
+float4 psAlpha(PixelInputType input) : SV_TARGET
 {
     float alpha = _color_texture.Sample(_point_sampler, input.texcoord).a;
     return float4(alpha, alpha, alpha, 0);
 }
 
-float4 renderDepth(PixelInputType input) : SV_TARGET
+float4 psDepth(PixelInputType input) : SV_TARGET
 {
     float depth = getDepth(input.texcoord);
     return float4(depth, depth, depth, 0);
 }
 
-float4 renderLuminescence(PixelInputType input) : SV_TARGET
+float4 psLuminescence(PixelInputType input) : SV_TARGET
 {
     float luminescence = getLuminescence(_color_texture.Sample(_point_sampler, input.texcoord).rgb);
     return float4(luminescence, luminescence, luminescence, 0);

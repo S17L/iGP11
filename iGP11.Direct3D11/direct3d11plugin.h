@@ -77,7 +77,7 @@ private:
 	std::shared_ptr<core::ITextureCache> _textureCache;
 	std::unique_ptr<core::time::ITimeProvider> _timeProvider;
 	std::unique_ptr<direct3d11::Direct3D11Context> _context;
-	std::unique_ptr<direct3d11::EffectsApplicator> _applicator;
+	std::unique_ptr<direct3d11::TechniqueApplicator> _applicator;
 	IDXGIFactoryCreateSwapChainDefinition _dxgiFactoryCreateSwapChain = nullptr;
 	IDXGISwapChainResizeBuffersDefinition _dxgiSwapChainResizeBuffers = nullptr;
 	IDXGISwapChainResizeTargetDefinition _dxgiSwapChainResizeTarget = nullptr;

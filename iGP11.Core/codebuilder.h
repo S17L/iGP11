@@ -31,6 +31,14 @@ namespace core {
 
     static const unsigned int TexelCacheSize = 4;
 
+    typedef unsigned int type_slot;
+    typedef unsigned int type_tex_id;
+    static const type_tex_id OutputTexId = 0;
+    static type_tex_id _tex_id = 1;
+    inline type_tex_id nextTexId() {
+        return _tex_id++;
+    }
+
     enum BokehDoFPassType {
         first = 0,
         second = 1,
@@ -251,50 +259,112 @@ namespace core {
         PixelsResult getPixels();
     };
 
-    class ShaderCodeBuilder final {
-        friend class BokehDoFCodeBuilder;
+    enum class TextureDataType {
+        typefloat = 0
+    };
+
+    struct Texture final {
+        type_tex_id id = nextTexId();
+        TextureDataType dataType;
+        dto::Resolution resolution;
+        Texture() {}
+        Texture(TextureDataType dataType, dto::Resolution resolution) {
+            this->dataType = dataType;
+            this->resolution = resolution;
+        }
+    };
+
+    struct Pass {
+        std::string vsFunctionName;
+        std::string psFunctionName;
+        std::list<type_tex_id> in;
+        std::list<type_tex_id> out;
+        Pass(
+            std::string vsFunctionName,
+            std::string psFunctionName) {
+            this->vsFunctionName = vsFunctionName;
+            this->psFunctionName = psFunctionName;
+        }
+    };
+
+    struct TechniqueCode final {
+        std::string vsCode;
+        std::string psCode;
+        TechniqueCode() {}
+        TechniqueCode(std::string vsCode, std::string psCode) {
+            this->vsCode = vsCode;
+            this->psCode = psCode;
+        }
+    };
+
+    struct Technique {
+        std::string name;
+        TechniqueCode code;
+        type_slot color = 0;
+        type_slot depth = 1;
+        std::list<Pass> passes;
+        std::map<type_slot, Texture> textures;
+        Technique() {}
+        Technique(
+            std::string name,
+            TechniqueCode code) {
+            this->name = name;
+            this->code = code;
+        }
+    };
+
+    class ConcreteHlslTechniqueBuilder final {
     private:
-        std::unique_ptr<IResourceProvider> _cachedResourceProvider;
-        std::unique_ptr<IResourceProvider> _realResourceProvider;
+        IResourceProvider *_cachedResourceProvider;
+        IResourceProvider *_realResourceProvider;
         std::list<std::shared_ptr<IAlterationElement>> _elements;
-        void add(IAlterationElement *element);
         std::string getResource(const std::string &key);
     public:
-        ShaderCodeBuilder();
-        ShaderCodeBuilder(std::string directoryPath);
-        void setLinearDepthTextureAccessibility(float distanceNear, float distanceFar);
-        void setDepthTextureLimit(float depthMin, float depthMax);
-        BokehDoFCodeBuilder setBokehDoF(float depthMinimum, float depthMaximum, float depthRateGain, float luminescenceMinimum, float luminescenceMaximum, float luminescenceRateGain);
-        void setDenoise(float noiseLevel, float blendingCoefficient, float weightThreshold, float counterThreshold, float gaussianSigma, unsigned int windowSize);
-        void setHDR(float strength, float radius);
-        void setGaussianBlur(unsigned int size, float sigma, float minWeight = 0.005);
-        void setLiftGammaGain(dto::Color lift, dto::Color gamma, dto::Color gain);
-        void setLumaSharpen(float sharpeningStrength, float sharpeningClamp, float offset);
-        void setResolution(unsigned int width, unsigned int height);
-        void setTonemap(float gamma, float exposure, float saturation, float bleach, float defog, dto::Color fog);
-        void setVibrance(float strength, dto::Color gain);
+        ConcreteHlslTechniqueBuilder(IResourceProvider *cachedResourceProvider, IResourceProvider *realResourceProvider)
+            : _cachedResourceProvider(cachedResourceProvider), _realResourceProvider(realResourceProvider) {}
+        void add(IAlterationElement *element);
         std::string buildPixelShaderCode();
         std::string buildVertexShaderCode();
     };
 
-    class BokehDoFCodeBuilder final {
+    class HlslTechniqueBuilder final {
     private:
-        ShaderCodeBuilder *_codeBuilder;
-        float _depthMinimum;
-        float _depthMaximum;
-        float _depthRateGain;
-        float _luminescenceMinimum;
-        float _luminescenceMaximum;
-        float _luminescenceRateGain;
-        void build();
-        void buildBokehDoFPassType(BokehDoFPassType passType, bool preserveShape, unsigned int size, float rotation);
+        dto::Resolution _resolution;
+        std::unique_ptr<IResourceProvider> _cachedResourceProvider;
+        std::unique_ptr<IResourceProvider> _realResourceProvider;
+        void applyBokehDoFPassType(ConcreteHlslTechniqueBuilder *builder, BokehDoFPassType pass, const dto::BokehDoF &bokehDoF);
+        void applyDepthBuffer(ConcreteHlslTechniqueBuilder *builder, const dto::DepthBuffer &depthBuffer);
+        std::unique_ptr<ConcreteHlslTechniqueBuilder> getConcreteShaderCodeBuilder();
     public:
-        BokehDoFCodeBuilder(ShaderCodeBuilder *codeBuilder, float depthMinimum, float depthMaximum, float depthRateGain, float luminescenceMinimum, float luminescenceMaximum, float luminescenceRateGain)
-            : _codeBuilder(codeBuilder), _depthMinimum(depthMinimum), _depthMaximum(depthMaximum), _depthRateGain(depthRateGain), _luminescenceMinimum(luminescenceMinimum), _luminescenceMaximum(luminescenceMaximum), _luminescenceRateGain(luminescenceRateGain) {}
-        void buildCoC();
-        void buildBlur(BokehDoFPassType passType, bool isPreservingShape, unsigned int size, float rotation);
-        void buildChromaticAberration(float fringe);
-        void buildBlend(float strength);
-        void enable();
+        HlslTechniqueBuilder(dto::Resolution resolution);
+        HlslTechniqueBuilder(dto::Resolution resolution, std::string directoryPath);
+        Technique buildAlpha();
+        Technique buildBokehDoF(dto::BokehDoF bokehDoF, dto::DepthBuffer depthBuffer);
+        Technique buildDenoise(dto::Denoise denoise);
+        Technique buildDepth(dto::DepthBuffer depthBuffer);
+        Technique buildGaussianBlur(dto::GaussianBlur gaussianBlur);
+        Technique buildHDR(dto::HDR hdr);
+        Technique buildLiftGammaGain(dto::LiftGammaGain liftGammaGain);
+        Technique buildLumaSharpen(dto::LumaSharpen);
+        Technique buildLuminescence();
+        Technique buildTonemap(dto::Tonemap tonemap);
+        Technique buildVibrance(dto::Vibrance vibrance);
+    };
+
+    typedef std::function<Technique(const std::string &data)> TechniqueFactoryFunction;
+
+    class HlslTechniqueFactory final {
+    private:
+        HlslTechniqueBuilder *_hlslTechniqueBuilder;
+        core::ISerializer *_serializer;
+        dto::DepthBuffer _depthBuffer;
+        std::map<core::TechniqueType, TechniqueFactoryFunction> _policies;
+    public:
+        HlslTechniqueFactory(
+            HlslTechniqueBuilder *hlslTechniqueBuilder,
+            core::ISerializer *serializer,
+            dto::DepthBuffer depthBuffer);
+        virtual ~HlslTechniqueFactory() {}
+        virtual Technique create(core::TechniqueType type, const std::string &data);
     };
 }
